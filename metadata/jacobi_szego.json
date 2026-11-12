@@ -1,0 +1,24 @@
+{
+  "id": "jacobi_szego",
+  "status": "prototype_not_matlab_executed",
+  "measure": {
+    "type": "absolutely_continuous_circle_probability",
+    "parameters": {"a": "real > -1", "b": "real > -1"},
+    "real_line_source": "(1-t)^a (1+t)^b / (2^(a+b+1) B(a+1,b+1)) dt, t in [-1,1]",
+    "mapping": "x = z + z^(-1) = 2 cos(theta)",
+    "circle_density_dtheta": "(1-cos(theta))^(a+1/2) (1+cos(theta))^(b+1/2) / (2^(a+b+2) B(a+1,b+1))"
+  },
+  "coefficients": {
+    "convention": "Phi_(k+1) = z Phi_k - conjugate(alpha_k) Phi_k^*",
+    "even": "alpha_(2k) = (b-a)/(2k+a+b+2)",
+    "odd": "alpha_(2k+1) = -(a+b+1)/(2k+a+b+3)",
+    "finite_order": "first n-1 coefficients, terminal beta separately"
+  },
+  "representations": ["hessenberg", "inverse_hessenberg", "cmv", "twisted"],
+  "real_orthogonal_condition": "a,b real > -1 and beta in {+1,-1}",
+  "finite_spectral_reference": "paraorthogonal n-point nodes and distinguished e1 weights; moments through order n-1",
+  "trace_spectral_reference": "equal-weight empirical eigenvalue measure differs from e1 quadrature measure",
+  "method": "measure -> Verblunsky -> terminal closure -> shared Theta cores -> product ordering",
+  "refs": ["Simon 2005 OPUC on One Foot", "Bultheel-Cantero-Cruz-Barroso 2015", "Cantero-Moral-Velazquez 2003"],
+  "scope_notes": "No rational Arnoldi or matrix-free method in this prototype; MATLAB/Anymatrix tests pending"
+}

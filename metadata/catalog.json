@@ -1,0 +1,65 @@
+{
+  "schema_version": "0.1.0",
+  "project": "anymatrix-unitary",
+  "matrix_families": [
+    {
+      "id": "cycle_shift",
+      "status": "implemented",
+      "type": "matrix-generator"
+    },
+    {
+      "id": "diagonal_phase",
+      "status": "implemented",
+      "type": "matrix-generator"
+    },
+    {
+      "id": "cycle_propagator",
+      "status": "implemented",
+      "type": "matrix-generator"
+    },
+    {
+      "id": "finite_cmv",
+      "status": "implemented",
+      "type": "matrix-generator"
+    },
+    {
+      "id": "jacobi_szego",
+      "status": "implemented",
+      "type": "matrix-generator"
+    },
+    {
+      "id": "opuc_matrix",
+      "status": "implemented",
+      "type": "matrix-generator"
+    },
+    {
+      "id": "split_step_walk",
+      "status": "implemented",
+      "type": "matrix-generator"
+    },
+    {
+      "id": "haar_unitary",
+      "status": "implemented",
+      "type": "matrix-generator"
+    }
+  ],
+  "mathematical_objects": [
+    {
+      "id": "jacobi_szego_measure",
+      "type": "probability-measure",
+      "parameters": [
+        "a",
+        "b"
+      ],
+      "domain": "unit circle",
+      "verblunsky": "explicit",
+      "representations": [
+        "hessenberg",
+        "inverse_hessenberg",
+        "cmv",
+        "twisted"
+      ]
+    }
+  ],
+  "qualification": "Anymatrix property vocabulary is more limited than the mathematical metadata; eigenvalue laws and vector weights should be stored separately."
+}

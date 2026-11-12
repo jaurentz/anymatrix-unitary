@@ -1,0 +1,10 @@
+.DS_Store
+*.asv
+*.m~
+*.mex*
+*.mlx.autosave
+*.mat
+*.fig
+slprj/
+codegen/
+matlab_crash_dump.*
