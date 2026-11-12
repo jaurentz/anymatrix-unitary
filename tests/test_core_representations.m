@@ -65,7 +65,7 @@ function test_terminal_phase_for_order_one(testCase)
 for beta=[1,-1,exp(1i*.31)]
     for form={'cmv','hessenberg','inverse_hessenberg','twisted'}
         U=js_core_product(zeros(0,1),beta,form{1});
-        verifyEqual(testCase,U,conj(beta),'AbsTol',1e-14);
+        verifyEqual(testCase,full(U),conj(beta),'AbsTol',1e-14);
     end
 end
 end
