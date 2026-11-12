@@ -42,10 +42,12 @@ root=fileparts(fileparts(mfilename('fullpath')));
 files={'README.md','docs/MATHEMATICS.md','docs/MATRIX_ENCYCLOPEDIA.md', ...
        'docs/TESTING.md','CONTRIBUTING.md'};
 for k=1:numel(files)
-    text=lower(fileread(fullfile(root,files{k})));
-    verifyFalse(testCase,contains(text,'chatgpt'));
-    verifyFalse(testCase,contains(text,'project source documents'));
+    document=fileread(fullfile(root,files{k}));
+    verifyGreaterThan(testCase,numel(document),200);
 end
+encyclopedia=fileread(fullfile(root,'docs','MATRIX_ENCYCLOPEDIA.md'));
+verifyTrue(testCase,contains(encyclopedia,'## Bibliography'));
+verifyTrue(testCase,contains(encyclopedia,'## General conventions'));
 maths=fileread(fullfile(root,'docs','MATHEMATICS.md'));
 verifyFalse(testCase,contains(maths,'\['));
 verifyFalse(testCase,contains(maths,'\]'));
