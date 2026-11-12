@@ -1,65 +1,316 @@
 {
-  "schema_version": "0.1.0",
+  "schema_version": "0.2.0",
   "project": "anymatrix-unitary",
+  "description": "Independent MATLAB/Anymatrix collection of unitary and orthogonal test matrices.",
+  "encyclopedia": "docs/MATRIX_ENCYCLOPEDIA.md",
+  "mathematics": "docs/MATHEMATICS.md",
+  "tests": "docs/TESTING.md",
   "matrix_families": [
     {
       "id": "cycle_shift",
       "status": "implemented",
-      "type": "matrix-generator"
+      "category": "prescribed",
+      "matrix_order": "n",
+      "representation": "sparse permutation",
+      "spectral_reference": "exact roots of unity",
+      "encyclopedia_references": [
+        1
+      ]
+    },
+    {
+      "id": "weighted_shift",
+      "status": "implemented",
+      "category": "prescribed",
+      "matrix_order": "n",
+      "representation": "sparse monomial",
+      "spectral_reference": "exact rotated roots of unity",
+      "encyclopedia_references": [
+        1
+      ]
     },
     {
       "id": "diagonal_phase",
       "status": "implemented",
-      "type": "matrix-generator"
+      "category": "prescribed",
+      "matrix_order": "n",
+      "representation": "sparse diagonal",
+      "spectral_reference": "exact prescribed eigenphases",
+      "encyclopedia_references": [
+        1
+      ]
+    },
+    {
+      "id": "phase_circulant",
+      "status": "implemented",
+      "category": "prescribed",
+      "matrix_order": "n",
+      "representation": "dense circulant / FFT",
+      "spectral_reference": "exact prescribed eigenphases",
+      "encyclopedia_references": [
+        1
+      ]
     },
     {
       "id": "cycle_propagator",
       "status": "implemented",
-      "type": "matrix-generator"
+      "category": "prescribed",
+      "matrix_order": "n",
+      "representation": "dense circulant / FFT",
+      "spectral_reference": "exact exp(-2it cos(2pi k/n)); wrapped arcsine limit",
+      "encyclopedia_references": [
+        2
+      ]
+    },
+    {
+      "id": "orthogonal_blocks",
+      "status": "implemented",
+      "category": "prescribed",
+      "matrix_order": "n",
+      "representation": "real sparse block diagonal",
+      "spectral_reference": "exact conjugate rotation pairs",
+      "encyclopedia_references": [
+        3,
+        4
+      ]
     },
     {
       "id": "finite_cmv",
       "status": "implemented",
-      "type": "matrix-generator"
-    },
-    {
-      "id": "jacobi_szego",
-      "status": "implemented",
-      "type": "matrix-generator"
+      "category": "opuc",
+      "matrix_order": "n",
+      "representation": "sparse five diagonal",
+      "spectral_reference": "paraorthogonal polynomial zeros",
+      "encyclopedia_references": [
+        5,
+        6,
+        7
+      ]
     },
     {
       "id": "opuc_matrix",
       "status": "implemented",
-      "type": "matrix-generator"
+      "category": "opuc",
+      "matrix_order": "n",
+      "representation": "core product; Hessenberg, inverse, CMV, twisted",
+      "spectral_reference": "isospectral for fixed coefficients and closure",
+      "encyclopedia_references": [
+        8,
+        9,
+        10
+      ]
     },
     {
-      "id": "split_step_walk",
+      "id": "jacobi_szego",
       "status": "implemented",
-      "type": "matrix-generator"
+      "category": "opuc",
+      "matrix_order": "n",
+      "representation": "core product; multiple forms",
+      "spectral_reference": "explicit Verblunsky formula; finite Gauss-Szego spectra",
+      "encyclopedia_references": [
+        5,
+        7,
+        11,
+        12
+      ]
+    },
+    {
+      "id": "bernstein_szego",
+      "status": "implemented",
+      "category": "opuc",
+      "matrix_order": "n",
+      "representation": "core product; multiple forms",
+      "spectral_reference": "Poisson weight moments known exactly",
+      "encyclopedia_references": [
+        5,
+        12
+      ]
+    },
+    {
+      "id": "circular_beta",
+      "status": "implemented",
+      "category": "opuc",
+      "matrix_order": "n",
+      "representation": "random sparse CMV",
+      "spectral_reference": "circular beta eigenangle law",
+      "encyclopedia_references": [
+        13
+      ]
     },
     {
       "id": "haar_unitary",
       "status": "implemented",
-      "type": "matrix-generator"
+      "category": "random_signal",
+      "matrix_order": "n",
+      "representation": "random dense",
+      "spectral_reference": "Haar U(n), CUE eigenvalues",
+      "encyclopedia_references": [
+        14
+      ]
+    },
+    {
+      "id": "haar_orthogonal",
+      "status": "implemented",
+      "category": "random_signal",
+      "matrix_order": "n",
+      "representation": "random dense real",
+      "spectral_reference": "Haar O(n), conjugate phase pairs",
+      "encyclopedia_references": [
+        14
+      ]
+    },
+    {
+      "id": "haar_wavelet",
+      "status": "implemented",
+      "category": "random_signal",
+      "matrix_order": "n power of 2",
+      "representation": "real sparse multiresolution",
+      "spectral_reference": "parameter-dependent; no universal eigenphase law",
+      "encyclopedia_references": [
+        15
+      ]
+    },
+    {
+      "id": "split_step_walk",
+      "status": "implemented",
+      "category": "quantum",
+      "matrix_order": "2n",
+      "representation": "real sparse product",
+      "spectral_reference": "two quasienergy branches; periodic finite model",
+      "encyclopedia_references": [
+        16
+      ]
+    },
+    {
+      "id": "dirac_automaton",
+      "status": "implemented",
+      "category": "quantum",
+      "matrix_order": "2n",
+      "representation": "complex sparse blocks",
+      "spectral_reference": "exact +/-arccos dispersion; gapped limit",
+      "encyclopedia_references": [
+        17,
+        18
+      ]
+    },
+    {
+      "id": "grover_operator",
+      "status": "implemented",
+      "category": "quantum",
+      "matrix_order": "n",
+      "representation": "real dense product of reflections",
+      "spectral_reference": "exact two eigenphases and +/-1 atoms",
+      "encyclopedia_references": [
+        19
+      ]
+    },
+    {
+      "id": "quantum_baker",
+      "status": "implemented",
+      "category": "quantum",
+      "matrix_order": "n even",
+      "representation": "dense Fourier product",
+      "spectral_reference": "chaotic map spectrum; no universal exact phase law",
+      "encyclopedia_references": [
+        20,
+        21
+      ]
+    },
+    {
+      "id": "kicked_harper",
+      "status": "implemented",
+      "category": "quantum",
+      "matrix_order": "n",
+      "representation": "dense FFT-stage product",
+      "spectral_reference": "quasienergies depend on K,L",
+      "encyclopedia_references": [
+        22
+      ]
+    },
+    {
+      "id": "cayley_jacobi",
+      "status": "implemented",
+      "category": "matrix_function",
+      "matrix_order": "n",
+      "representation": "dense Cayley of Jacobi tridiagonal",
+      "spectral_reference": "exact Möbius spectral pushforward",
+      "encyclopedia_references": [
+        23
+      ]
+    },
+    {
+      "id": "polar_unitary",
+      "status": "implemented",
+      "category": "matrix_function",
+      "matrix_order": "n",
+      "representation": "dense polar factor",
+      "spectral_reference": "parameter-dependent spectrum",
+      "encyclopedia_references": [
+        24
+      ]
+    },
+    {
+      "id": "julia_unitary",
+      "status": "implemented",
+      "category": "matrix_function",
+      "matrix_order": "2n",
+      "representation": "dense 2x2 operator block",
+      "spectral_reference": "unitary dilation with no universal phase law",
+      "encyclopedia_references": [
+        25
+      ]
     }
   ],
-  "mathematical_objects": [
+  "probability_measures": [
     {
-      "id": "jacobi_szego_measure",
-      "type": "probability-measure",
+      "id": "jacobi_szego",
+      "kind": "absolutely_continuous",
+      "domain": "unit circle",
       "parameters": [
         "a",
         "b"
       ],
-      "domain": "unit circle",
-      "verblunsky": "explicit",
+      "coefficient_source": "explicit Jacobi-Szego formula",
       "representations": [
         "hessenberg",
         "inverse_hessenberg",
         "cmv",
         "twisted"
       ]
+    },
+    {
+      "id": "bernstein_szego",
+      "kind": "absolutely_continuous",
+      "domain": "unit circle",
+      "parameters": [
+        "a"
+      ],
+      "coefficient_source": "alpha0=a, alpha_j=0 (j>=1)",
+      "representations": [
+        "hessenberg",
+        "inverse_hessenberg",
+        "cmv",
+        "twisted"
+      ]
+    },
+    {
+      "id": "circular_beta",
+      "kind": "random_finite_atomic",
+      "domain": "unit circle",
+      "parameters": [
+        "n",
+        "dysonBeta",
+        "seed"
+      ],
+      "coefficient_source": "Killip-Nenciu random Verblunsky coefficients",
+      "representations": [
+        "cmv"
+      ]
     }
   ],
-  "qualification": "Anymatrix property vocabulary is more limited than the mathematical metadata; eigenvalue laws and vector weights should be stored separately."
+  "notes": [
+    "The equal-weight trace spectral measure differs from the cyclic-vector Gauss-Szego spectral measure.",
+    "Finite matrices have atomic spectra.",
+    "A Hilbert-space dimension can differ from a site count.",
+    "Reference numbers are defined in docs/MATRIX_ENCYCLOPEDIA.md."
+  ]
 }

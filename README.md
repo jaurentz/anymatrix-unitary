@@ -4,11 +4,12 @@ A MATLAB collection of finite **unitary and orthogonal test matrices**, designed
 an external group for [Anymatrix](https://github.com/north-numerical-computing/anymatrix).
 The repository is organized around reproducible mathematical constructions,
 known spectral information, and executable regression tests. It starts with
-eight generators; it is not yet an exhaustive catalog.
+22 generators; additional benchmark families are under development.
 
-**Status:** initial development release. MATLAB is the sole implementation
-and testing environment. GitHub Actions executes the MATLAB tests after
-pushes and on pull requests; consult the Actions tab for the latest result.
+**Status:** development collection with MATLAB-only tests. Automated MATLAB
+regression and Anymatrix integration tests run on GitHub Actions after every
+push or pull request. See the [Actions tab](https://github.com/jaurentz/anymatrix-unitary/actions)
+for the current branch status.
 
 ## Clone and test locally
 
@@ -40,19 +41,28 @@ assertSuccess(results)
 
 ## Matrix generator interfaces
 
-| ID in Anymatrix | Generator | Structural/spectral point |
-|---|---|---|
-| `unitary/cycle_shift` | `cycle_shift(n)` | Sparse permutation; exact roots of unity |
-| `unitary/diagonal_phase` | `diagonal_phase(n,theta)` | Sparse prescribed eigenphases |
-| `unitary/cycle_propagator` | `cycle_propagator(n,t)` | Circulant propagator; analytically known phases |
-| `unitary/finite_cmv` | `finite_cmv(n,alpha)` | Sparse finite CMV matrix |
-| `unitary/jacobi_szego` | `jacobi_szego(n,a,b,rep,beta,twists)` | Jacobi/Szegő family; several representations |
-| `unitary/opuc_matrix` | `opuc_matrix(n,alpha,beta,rep,twists)` | General finite unitary core product |
-| `unitary/split_step_walk` | `split_step_walk(n,theta1,theta2)` | Sparse real orthogonal quantum walk |
-| `unitary/haar_unitary` | `haar_unitary(n,seed)` | Haar unitary, reproducible seeded draws |
+The collection currently has **22 public generators**. Each has a complete
+entry with formulas, spectral information, applications, parameter conventions,
+and references in the [matrix encyclopedia](docs/MATRIX_ENCYCLOPEDIA.md).
+The [mathematical notes](docs/MATHEMATICS.md) explain the shared OPUC engine.
 
-**Do not interpret `n` uniformly across physical models**: `split_step_walk(n)`
-returns a `2*n`-by-`2*n` matrix. The other current generators return `n`-by-`n`.
+| Category | Generators |
+|---|---|
+| Prescribed spectra and circulants | `cycle_shift`, `weighted_shift`, `diagonal_phase`, `phase_circulant`, `cycle_propagator`, `orthogonal_blocks` |
+| OPUC / Szegő / core matrices | `finite_cmv`, `opuc_matrix`, `jacobi_szego`, `bernstein_szego`, `circular_beta` |
+| Random and signal-processing | `haar_unitary`, `haar_orthogonal`, `haar_wavelet` |
+| Quantum maps, walks, and algorithms | `split_step_walk`, `dirac_automaton`, `grover_operator`, `quantum_baker`, `kicked_harper` |
+| Matrix functions and dilations | `cayley_jacobi`, `polar_unitary`, `julia_unitary` |
+
+Generators return **actual finite square matrices**, not matrix-free objects.
+`split_step_walk`, `dirac_automaton`, and `julia_unitary` return order `2*n`
+for an input physical size `n`. `quantum_baker` requires even order;
+`haar_wavelet` requires power-of-two order. MATLAB R2020b or newer is required.
+
+**Spectral reference data:** exact eigenvalues are provided or described for
+several families; other families have ensemble laws, limiting densities, or
+no universal law. The encyclopedia distinguishes these cases. Do not infer a
+limiting eigenphase distribution from unitarity alone.
 
 ## Measure-first Jacobi--Szegő construction
 
@@ -97,7 +107,7 @@ pattern is used when omitted. All four representations are isospectral and
 have matching distinguished-vector moments in the stated convention, but
 are not identical matrices. They may have different sparsity patterns.
 
-The shared implementation is in root-level `js_*` helper files; mathematical
+The shared implementation is in root-level `js_*` MATLAB helpers; mathematical
 interface functions and individual historical Anymatrix generators are at
 the repository root. This directory layout is compatible with Anymatrix's
 remote-group installation, which clones the repository inside its own
@@ -120,6 +130,26 @@ the group worktree. If an update fails, update the repository in
 `<anymatrix-root>/unitary/private/` using `git -C <path> pull --ff-only`,
 then run `anymatrix('scan')`.
 
+## Example gallery
+
+```matlab
+% Exact spectrum, but dense circulant eigenvectors.
+U = phase_circulant(24,linspace(-2,2,24));
+
+% Sparse random circular-beta matrix; beta=2 has the CUE eigenvalue law.
+C = circular_beta(64,2,123);
+
+% Matrix of order 2*n with a known gapped dispersion relation.
+D = dirac_automaton(40,0.45);
+
+% Orthogonal finite transform from real signal processing.
+W = haar_wavelet(32);
+
+% Nonuniform Szego probability measure and a CMV realization.
+mu = szego_bernstein_measure(0.3+0.2i);
+B = szego_matrix(mu,24,'cmv',1);
+```
+
 ## Automatic tests
 
 - **MATLAB unit tests** under [`tests/`](tests/) check normalizations,
@@ -130,23 +160,21 @@ then run `anymatrix('scan')`.
 - [GitHub Actions](.github/workflows/matlab-tests.yml) runs MATLAB on each
   push and pull request. It also clones upstream Anymatrix and tests the
   installed local Git checkout as an external group.
-- `tests/test_independent_stieltjes.m` constructs a Gauss--Jacobi quadrature
-  rule using a symmetric tridiagonal Jacobi matrix, independently recovers
-  its recurrence by the discrete Stieltjes procedure, and then checks the
-  resulting inverse Geronimus coefficients against the explicit formulas.
-  No Python, SciPy, or NumPy runtime is required.
+- `tests/test_independent_stieltjes.m` independently reconstructs the Jacobi
+  recurrence from Gauss--Jacobi nodes and weights using MATLAB only.
 
 **CI status** is displayed in the repository's *Actions* tab. The status of
 any unexecuted workflow should not be interpreted as a passing test.
 
 ## Scope and mathematical roadmap
 
-The OPUC branch is **measure -> Verblunsky sequence -> finite closure ->
+The OPUC branch is **measure → Verblunsky coefficients → finite closure →
 representation**, leaving room for future isometric/rational Arnoldi and
-non-core representations. Other families will use shared construction
-layers where appropriate while retaining historical public names. The
-research survey and bibliography remain in project source documents;
-additional families are not treated as implemented until tested.
+non-core representations. Historical CMV/Hessenberg interfaces share their
+numerical core implementation. The encyclopedia is the authoritative
+human-readable record of included families, reference spectra and citations.
+Future candidates are labeled as unimplemented, rather than silently treated
+as available matrices.
 
 ## License
 
