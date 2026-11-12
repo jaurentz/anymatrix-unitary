@@ -19,37 +19,37 @@ For an orthonormal real-line polynomial basis `p_k` on `[-2,2]`, write
 The direct Geronimus formulas, with `alpha_(-1)=-1` and zero contribution from
 any `alpha_(-2)` term in the `k=0` identity, are
 
-\[
+$$
  a_{k+1}^2=(1-\alpha_{2k-1})(1-\alpha_{2k}^2)
            (1+\alpha_{2k+1}),
-\]
-\[
+$$
+$$
  b_{k+1}=(1-\alpha_{2k-1})\alpha_{2k}
   -(1+\alpha_{2k-1})\alpha_{2k-2}.
-\]
+$$
 
 The inverse endpoint Riccati algorithm sets `u_0=2-b_1`, `v_0=2+b_1` and
 for `k>=1`
 
-\[
+$$
  u_k=2-b_{k+1}-a_k^2/u_{k-1},\quad
  v_k=2+b_{k+1}-a_k^2/v_{k-1}.
-\]
+$$
 
 Then
 
-\[
+$$
  \alpha_{2k}=(v_k-u_k)/(v_k+u_k),\qquad
  \alpha_{2k-1}=1-(u_k+v_k)/2 \quad(k\ge1).
-\]
+$$
 
 These use the `x=2*cos(theta)` normalization, so factors of 2 must not be
 silently imported from formulas written for Jacobi measures on `[-1,1]`.
 The initial positive Jacobi off-diagonal is
 
-\[
+$$
  a_1^2=\frac{16(a+1)(b+1)}{(a+b+2)^2(a+b+3)}.
-\]
+$$
 
 The code treats this term separately to avoid a removable singularity when
 `a+b=-1`. Both recurrence paths are useful for regression but the inverse
@@ -88,3 +88,109 @@ both eigenvalues and the first component of normalized eigenvectors.
 - N. J. Higham, M. Mikaitis, *Anymatrix: An Extensible MATLAB Matrix Collection*,
   Numer. Algorithms 90 (2022), 1175–1196.
   DOI: https://doi.org/10.1007/s11075-021-01226-2
+
+## Canonical finite multiplication-matrix pipeline
+
+For a measure on the unit circle, the design principle is
+
+$$
+\text{probability measure}\;\longrightarrow\;
+(\alpha_0,\alpha_1,\ldots)\;\longrightarrow\;
+(\alpha_0,\ldots,\alpha_{n-2};\beta)\;\longrightarrow\;U_n.
+$$
+
+The interior coefficients satisfy $|\alpha_j|<1$; the boundary closure
+$\beta\in\mathbb T$ is independent of the infinite measure. With the
+specified terminal parameter, different admissible snake-shaped core
+orderings give isospectral finite matrices and the same $e_1$ spectral
+moments, even though their sparsity patterns are different. The module
+`js_core_product.m` owns this representation logic; the measure and
+coefficient modules never construct a second copy of the core formulas.
+
+The entry points `szego_jacobi_measure`, `szego_bernstein_measure` and
+`szego_verblunsky` define the measure and coefficient layers.
+`szego_matrix(mu,n,representation,beta)` closes and assembles the finite
+matrix. The historically named matrix generators are thin adapters.
+
+## Normalized Jacobi–Szegő measure
+
+For $a,b>-1$, let the real-line probability measure be
+
+$$
+ d\nu(t)=\frac{(1-t)^a(1+t)^b}{2^{a+b+1}B(a+1,b+1)}\,dt,
+ \qquad -1<t<1.
+$$
+
+Under $t=\cos\theta$, its conjugation-symmetric circle lift has density
+(with respect to $d\theta$)
+
+$$
+ \frac{d\mu}{d\theta}=
+ \frac{(1-\cos\theta)^{a+1/2}(1+\cos\theta)^{b+1/2}}
+ {2^{a+b+2}B(a+1,b+1)}.
+$$
+
+The explicit Verblunsky coefficients are
+
+$$
+ \alpha_{2k}=\frac{b-a}{2k+a+b+2},\qquad
+ \alpha_{2k+1}=-\frac{a+b+1}{2k+a+b+3}.
+$$
+
+The Jacobi real-line recurrence uses the rescaled variable
+$x=2t=z+z^{-1}$. This accounts for the factor-of-two differences between
+Jacobi polynomial formulas stated on $[-1,1]$ and the direct Geronimus
+relations above.
+
+## One-parameter Bernstein–Szegő measure
+
+For a complex parameter $a\in\mathbb D$, the Poisson/Szegő probability
+measure in our convention has density
+
+$$
+ d\mu_a(e^{i\theta})=\frac{1-|a|^2}
+ {2\pi|e^{i\theta}-\overline a|^2}\,d\theta.
+$$
+
+Its moments and Verblunsky sequence are known explicitly:
+
+$$
+ \int z^k\,d\mu_a(z)=\overline a^{\,k}\quad(k\geq0),
+ \qquad \alpha_0=a,\quad \alpha_j=0\;(j\geq1).
+$$
+
+This is the first family added beyond Jacobi to the measure-first dispatcher,
+`js_verblunsky`. Its finite CMV, Hessenberg, inverse Hessenberg and twisted
+realizations are all constructed through the same shared core function.
+
+## Random circular-$\beta$ measures
+
+The Killip–Nenciu distribution generates a *finite random* discrete spectral
+measure, rather than starting from one predetermined continuous weight.
+For matrix order $n$ and Dyson parameter $\beta>0$, independent interior
+coefficients have uniform argument and
+
+$$
+ |\alpha_j|^2\sim\operatorname{Beta}\!\left(
+ 1,\tfrac{\beta(n-j-1)}2\right),\qquad j=0,\ldots,n-2.
+$$
+
+The terminal $\beta_{\mathrm{terminal}}$ is uniform on $\mathbb T$ (not
+the positive Dyson parameter). A sparse CMV realization then has precisely
+the circular-$\beta$ eigenangle law in finite dimension. The CUE eigenvalue
+law occurs when $\beta=2$, but the sparse CMV matrix is not itself Haar
+unitary in its entries. The implementation samples radial squares by an
+inverse CDF using MATLAB's core `rand` function.
+
+## Orthogonal versus complex unitary representation
+
+For real Verblunsky coefficients and closure $\beta\in\{\pm1\}$, the
+finite CMV, Hessenberg, inverse-Hessenberg and twisted matrices are real
+orthogonal. Complex Verblunsky coefficients or terminal phases generally
+produce complex unitary matrices. The generic interfaces therefore declare
+`unitary` but not `orthogonal` as an unconditional Anymatrix property.
+
+Additional representations motivated by isometric or rational Arnoldi
+require further basis/pole parameters and cannot always be described by
+simply permuting the same adjacent cores. They will use the shared measure
+and coefficient layers with new representation backends.

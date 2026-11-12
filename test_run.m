@@ -17,6 +17,14 @@ if strcmp(folderName,'private')
     assert(ok,'Could not copy group M-files to temporary test folder: %s',msg);
     [ok,msg] = copyfile(fullfile(root,'tests'),fullfile(temporaryRoot,'tests'));
     assert(ok,'Could not copy group tests to temporary test folder: %s',msg);
+    [ok,msg] = copyfile(fullfile(root,'metadata'),fullfile(temporaryRoot,'metadata'));
+    assert(ok,'Could not copy metadata: %s',msg);
+    [ok,msg] = copyfile(fullfile(root,'docs'),fullfile(temporaryRoot,'docs'));
+    assert(ok,'Could not copy documentation: %s',msg);
+    [ok,msg] = copyfile(fullfile(root,'README.md'),fullfile(temporaryRoot,'README.md'));
+    assert(ok,'Could not copy README: %s',msg);
+    [ok,msg] = copyfile(fullfile(root,'CONTRIBUTING.md'),fullfile(temporaryRoot,'CONTRIBUTING.md'));
+    assert(ok,'Could not copy contribution guide: %s',msg);
     root = temporaryRoot;
 end
 cleanupHandle = onCleanup(@()restore_and_remove(oldPath,temporaryRoot)); %#ok<NASGU>
