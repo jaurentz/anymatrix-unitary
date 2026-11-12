@@ -6,10 +6,9 @@ The repository is organized around reproducible mathematical constructions,
 known spectral information, and executable regression tests. It starts with
 eight generators; it is not yet an exhaustive catalog.
 
-**Status:** initial development release. Independent Python/NumPy/SciPy
-cross-checks of the Jacobi--Szegő mathematics passed. The MATLAB tests are
-provided and are run automatically by GitHub Actions; consult the Actions tab
-for the result of the current commit rather than assuming a green build.
+**Status:** initial development release. MATLAB is the sole implementation
+and testing environment. GitHub Actions executes the MATLAB tests after
+pushes and on pull requests; consult the Actions tab for the latest result.
 
 ## Clone and test locally
 
@@ -131,9 +130,11 @@ then run `anymatrix('scan')`.
 - [GitHub Actions](.github/workflows/matlab-tests.yml) runs MATLAB on each
   push and pull request. It also clones upstream Anymatrix and tests the
   installed local Git checkout as an external group.
-- A separate `verification/independent_checks.py` script independently
-  reproduces the Jacobi recurrence from Gauss--Jacobi quadrature using SciPy.
-  This confirms mathematics, not MATLAB execution.
+- `tests/test_independent_stieltjes.m` constructs a Gauss--Jacobi quadrature
+  rule using a symmetric tridiagonal Jacobi matrix, independently recovers
+  its recurrence by the discrete Stieltjes procedure, and then checks the
+  resulting inverse Geronimus coefficients against the explicit formulas.
+  No Python, SciPy, or NumPy runtime is required.
 
 **CI status** is displayed in the repository's *Actions* tab. The status of
 any unexecuted workflow should not be interpreted as a passing test.
