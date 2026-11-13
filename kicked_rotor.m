@@ -13,6 +13,11 @@ function [U,properties] = kicked_rotor(n,K,hbar,theta_shift,output)
 %   Verified reference identifiers (see docs/MATRIX_ENCYCLOPEDIA.md):
 %   [35] https://doi.org/10.1016/0370-1573(90)90067-C
 properties={'square','unitary','normal','complex','scalable','parameter-dependent'};
+% Optional analytic spectral-reference mode.
+if nargin>=5 && (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
+    U=unitary_spectral_reference('kicked_rotor',n,K,hbar,theta_shift);
+    return
+end
 if nargin==0,U=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','>=',2,'finite'});
 if nargin<2 || isempty(K),K=5;end

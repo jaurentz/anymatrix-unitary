@@ -14,6 +14,11 @@ function [U,properties] = dirac_automaton(n,m,output)
 %   [18] https://doi.org/10.1103/PhysRevA.93.012328
 properties={'square','unitary','normal','sparse', ...
     'complex','eigenvalues','scalable','parameter-dependent'};
+% Optional analytic spectral-reference mode.
+if nargin>=3 && (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
+    U=unitary_spectral_reference('dirac_automaton',n,m);
+    return
+end
 if nargin==0,U=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','positive','finite'});
 if nargin<2 || isempty(m),m=0.4;end

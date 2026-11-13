@@ -1,4 +1,4 @@
-function [U,properties]=graph_fourier(n,adjacency)
+function [U,properties]=graph_fourier(n,adjacency,output)
 %GRAPH_FOURIER Orthogonal graph Fourier analysis from a weighted Laplacian.
 %   U=GRAPH_FOURIER(N,A) uses an N-by-N undirected symmetric nonnegative
 %   adjacency matrix A with zero diagonal. Default A is the path graph.
@@ -14,6 +14,11 @@ function [U,properties]=graph_fourier(n,adjacency)
 %   [57] https://doi.org/10.1109/MSP.2012.2235192
 properties={'square','unitary','normal','orthogonal','real', ...
     'scalable','parameter-dependent'};
+% Optional analytic spectral-reference mode.
+if nargin>=3 && (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
+    U=unitary_spectral_reference('graph_fourier',n,adjacency);
+    return
+end
 if nargin==0,U=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','positive','finite'});
 if nargin<2 || isempty(adjacency)

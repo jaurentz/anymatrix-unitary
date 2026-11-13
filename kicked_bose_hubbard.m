@@ -27,6 +27,11 @@ function [U,properties] = kicked_bose_hubbard(n,J,g,tau_hop,tau_kick,bias,output
 %   [40] https://doi.org/10.1088/1367-2630/10/1/013024
 %   [41] https://doi.org/10.1103/PhysRevE.87.012910
 properties={'square','unitary','normal','complex','parameter-dependent'};
+% Optional analytic spectral-reference mode.
+if nargin>=7 && (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
+    U=unitary_spectral_reference('kicked_bose_hubbard',n,J,g,tau_hop,tau_kick,bias);
+    return
+end
 if nargin==0,U=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','nonnegative','finite'});
 if nargin<2 || isempty(J),J=1;end

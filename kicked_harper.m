@@ -8,6 +8,11 @@ function [U,properties] = kicked_harper(n,K,L,output)
 %   Reference: Artuso, Casati, Shepelyansky, Phys. Rev. Lett. 68
 %   (1992), 3826-3829. https://doi.org/10.1103/PhysRevLett.68.3826
 properties={'square','unitary','normal','complex','scalable','parameter-dependent'};
+% Optional analytic spectral-reference mode.
+if nargin>=4 && (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
+    U=unitary_spectral_reference('kicked_harper',n,K,L);
+    return
+end
 if nargin==0,U=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','positive','finite'});
 if nargin<2 || isempty(K),K=1.2;end

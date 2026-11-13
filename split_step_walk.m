@@ -1,4 +1,4 @@
-function [U, properties] = split_step_walk(n, theta1, theta2)
+function [U, properties] = split_step_walk(n,theta1,theta2,output)
 %SPLIT_STEP_WALK Periodic split-step discrete-time quantum walk.
 %   U = SPLIT_STEP_WALK(N,THETA1,THETA2) returns a sparse 2N-by-2N
 %   matrix acting on a periodic chain with a two-state coin. The basis
@@ -21,6 +21,11 @@ function [U, properties] = split_step_walk(n, theta1, theta2)
 %   033429. https://doi.org/10.1103/PhysRevA.82.033429
 properties = {'unitary', 'orthogonal', 'real', 'square', ...
               'sparse', 'scalable', 'parameter-dependent'};
+% Optional analytic spectral-reference mode.
+if nargin>=4 && (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
+    U=unitary_spectral_reference('split_step_walk',n,theta1,theta2);
+    return
+end
 if nargin == 0
     U = [];
     return

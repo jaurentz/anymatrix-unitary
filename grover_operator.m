@@ -8,6 +8,11 @@ function [U,properties] = grover_operator(n,marked,output)
 %   https://doi.org/10.1145/237814.237866
 properties={'square','unitary','normal','real','orthogonal', ...
     'scalable','eigenvalues','parameter-dependent'};
+% Optional analytic spectral-reference mode.
+if nargin>=3 && (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
+    U=unitary_spectral_reference('grover_operator',n,marked);
+    return
+end
 if nargin==0,U=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','>=',2,'finite'});
 if nargin<2 || isempty(marked),marked=1;end

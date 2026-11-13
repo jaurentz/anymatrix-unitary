@@ -12,6 +12,11 @@ function [U,properties] = selfdual_kicked_ising(n,fields,output)
 %   Reference: B. Bertini, P. Kos, T. Prosen, Phys. Rev. Lett. 121
 %   (2018), 264101. https://doi.org/10.1103/PhysRevLett.121.264101
 properties={'square','unitary','normal','complex','parameter-dependent'};
+% Optional analytic spectral-reference mode.
+if nargin>=3 && (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
+    U=unitary_spectral_reference('selfdual_kicked_ising',n,fields);
+    return
+end
 if nargin==0,U=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','>=',3,'<=',20,'finite'});
 if nargin<2 || isempty(fields),fields=0.3*sin(1:n);end
