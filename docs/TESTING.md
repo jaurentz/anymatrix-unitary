@@ -33,7 +33,7 @@ pull requests and manually dispatched workflows.
 | `test_floquet_extended` | Rotor exact phases, embedded two-site gates, local dual-unitarity, XXZ Yang-Baxter, and global magnetization sectors |
 | `test_quantum_expansion` | Dimer exact spectra, Jaynes–Cummings invariant blocks, Chalker–Coddington network and pi-pairing |
 | `test_quantum_matrix_free` | Explicit/implicit multi-RHS forward and adjoint actions; sparse tridiagonal EXPM, MATLAB EXPMV and Chebyshev fallback; large bosonic, kicked-top, Jaynes and network tests |
-| `test_spectral_examples` | Executes the existing MATLAB examples without figures; checks period-two CMV transfer discriminant, Dirac support/density, and tight-binding Bessel moment |
+| `test_spectral_examples` | Runs the two example scripts without figures in a full checkout; for Anymatrix installations without `examples/`, verifies equivalent generator invariants. In both contexts checks period-two CMV transfer discriminant, Dirac support/density, and tight-binding Bessel moment |
 | `test_catalog` | Catalog/documentation completeness and consistency of Anymatrix property declarations |
 | `test_math_markup` | GitHub display-math fence consistency and guards against bare dollar delimiters / unsupported notation |
 
