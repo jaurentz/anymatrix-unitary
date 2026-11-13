@@ -62,4 +62,3 @@ verifyFalse(testCase,contains(maths,'\['));
 verifyFalse(testCase,contains(maths,'\]'));
 verifyGreaterThan(testCase,count(maths,'```math'),6);
 end
-end

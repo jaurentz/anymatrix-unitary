@@ -70,7 +70,6 @@ function test_bad_opuc_parameters(testCase)
 verifyError(testCase,@()szego_bernstein_measure(1),'js_bernstein_measure:Alpha');
 verifyTrue(testCase,throws_error(@()circular_beta(4,0)));
 end
-end
 
 function yes=throws_error(f)
 yes=false;

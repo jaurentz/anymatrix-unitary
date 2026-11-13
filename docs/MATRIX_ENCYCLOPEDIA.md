@@ -558,11 +558,11 @@ Periodic $n=2$ is disallowed to avoid double-bond ambiguity.
 **Structure:** dense but explicitly factored into unitary Fourier and diagonal
 stages. On the finite Fourier grid, define
 
-$
+```math
 U_F=D_pF_n^*D_xF_n,\qquad
 (D_p)_{kk}=\exp(-i\hbar k^2/2),\qquad
 (D_x)_{jj}=\exp[-i(K/\hbar)\cos(2\pi(j+\eta)/n)],
-$
+```
 
 for $j,k=0,\ldots,n-1$. The momentum labels are **uncentered** and
 $\eta$ is a position-grid offset, not a general Bloch-twist parameter.
@@ -570,9 +570,9 @@ Default $\hbar=2\pi/n$, $K=5$, and $\eta=0$.
 All factors are unitary, independently of finite $n$. The zero-kick
 spectrum is known exactly:
 
-$
+```math
 \sigma(U_F|_{K=0})=\{\exp(-i\hbar k^2/2):0\le k<n\}.
-$
+```
 
 For nonzero kick strength, quasienergy statistics, clustering, and
 localization-like behavior depend on dimension and the quantization
@@ -588,12 +588,12 @@ Applications: quantum chaos, phase aliasing and DFT-based matrix tests.
 **Order:** $2^n$ for $n$ qubits; dense matrices are capped at $n=10$.
 Each elementary two-qubit gate is
 
-$
+```math
 G(\chi,a,b,c,d)=
 (R_y(a)\otimes R_z(b))\,S\,
 e^{-i\chi Z\otimes Z}\,
 (R_z(c)\otimes R_y(d)),
-$
+```
 
 where $S$ swaps the two qubits and $R_{y,z}$ denote single-qubit
 rotations. This choice is **dual-unitary**: $G^*G=I_4$ and its
@@ -624,7 +624,7 @@ factor experiments with appropriately chosen randomness.
 dense assembly. For real rapidity $u$, anisotropy $0<\gamma<\pi$,
 and $\Delta=\cos\gamma$, define
 
-$
+```math
 \rho=\sqrt{\sinh^2 u+\sin^2\gamma},\qquad
 \check R(u,\gamma)=\frac{1}{\rho}
 \begin{pmatrix}
@@ -633,15 +633,15 @@ $
 0&\sinh u&i\sin\gamma&0\\
 0&0&0&\sinh(u+i\gamma)
 \end{pmatrix}.
-$
+```
 
 This is a normalized, **unitary** checked six-vertex
 $R$-matrix. It also satisfies the braid-form Yang–Baxter equation,
 
-$
+```math
 \check R_{12}(u)\check R_{23}(u+v)\check R_{12}(v)
 =\check R_{23}(v)\check R_{12}(u+v)\check R_{23}(u).
-$
+```
 
 The finite Floquet step is $U_F=U_{\rm even}U_{\rm odd}$, where the
 odd and even bond layers comprise copies of this gate. For periodic
