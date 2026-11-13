@@ -74,7 +74,8 @@
       "dois": [
         "10.1090/S0273-0979-05-01075-X"
       ],
-      "permalink": "https://web.ma.utexas.edu/mp_arc/c/05/05-78.pdf"
+      "permalink": "https://doi.org/10.1090/S0273-0979-05-01075-X",
+      "alternate_permalink": "https://web.ma.utexas.edu/mp_arc/c/05/05-78.pdf"
     },
     {
       "number": 12,
@@ -93,7 +94,8 @@
       "dois": [
         "10.48550/arXiv.math-ph/0609050"
       ],
-      "permalink": "https://arxiv.org/abs/math-ph/0609050"
+      "permalink": "https://doi.org/10.48550/arXiv.math-ph/0609050",
+      "alternate_permalink": "https://arxiv.org/abs/math-ph/0609050"
     },
     {
       "number": 15,
@@ -313,7 +315,8 @@
       "dois": [
         "10.1142/S0129055X26500054"
       ],
-      "permalink": "https://arxiv.org/abs/2409.08428"
+      "permalink": "https://doi.org/10.1142/S0129055X26500054",
+      "alternate_permalink": "https://arxiv.org/abs/2409.08428"
     }
   ]
 }

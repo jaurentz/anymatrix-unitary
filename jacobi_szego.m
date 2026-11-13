@@ -20,6 +20,12 @@ function [U,properties] = jacobi_szego(n,a,b,representation,beta,twists,output)
 %   References: Simon (2005), OPUC on One Foot, Section 11;
 %   Bultheel-Cantero-Cruz-Barroso (2015), JCAM 284, 78-100.
 %   https://dlmf.nist.gov/18.33
+%   Verified reference identifiers (see docs/MATRIX_ENCYCLOPEDIA.md):
+%   [5] https://doi.org/10.1090/coll054.1
+%   [5] https://doi.org/10.1090/coll/054.2
+%   [7] https://doi.org/10.1016/j.cam.2006.10.033
+%   [9] https://doi.org/10.1016/j.cam.2014.11.002
+%   [11] https://doi.org/10.1090/S0273-0979-05-01075-X
 properties = {'square','scalable','unitary','normal','parameter-dependent'};
 if nargin==0
     U=[];return;

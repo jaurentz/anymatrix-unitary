@@ -8,6 +8,11 @@ function [U, properties] = finite_cmv(n, alpha,output)
 %   and OPUC_MATRIX, with no duplicated core implementation.
 %
 %   Reference: Cantero, Moral, Velazquez, Linear Algebra Appl. 362 (2003).
+%   Verified reference identifiers (see docs/MATRIX_ENCYCLOPEDIA.md):
+%   [5] https://doi.org/10.1090/coll054.1
+%   [5] https://doi.org/10.1090/coll/054.2
+%   [6] https://doi.org/10.1016/S0024-3795(02)00457-3
+%   [7] https://doi.org/10.1016/j.cam.2006.10.033
 properties = {'square','unitary','normal','sparse','banded','scalable', ...
               'parameter-dependent'};
 if nargin == 0
