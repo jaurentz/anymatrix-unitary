@@ -227,6 +227,53 @@
       ]
     },
     {
+      "id": "kicked_top",
+      "status": "implemented",
+      "category": "quantum",
+      "matrix_order": "n = 2j+1",
+      "representation": "dense spin-j rotation and diagonal twist",
+      "spectral_reference": "exact twist-only and rotation-only phases; quasienergies parameter-dependent",
+      "encyclopedia_references": [
+        27,
+        28
+      ]
+    },
+    {
+      "id": "floquet_ising",
+      "status": "implemented",
+      "category": "quantum",
+      "matrix_order": "2^n for n spins",
+      "representation": "diagonal Ising layer times Kronecker X rotations",
+      "spectral_reference": "integrable free-fermion Floquet chain, sector-dependent many-body quasienergies",
+      "encyclopedia_references": [
+        29,
+        30
+      ]
+    },
+    {
+      "id": "selfdual_kicked_ising",
+      "status": "implemented",
+      "category": "quantum",
+      "matrix_order": "2^n for n spins",
+      "representation": "Kronecker X kick times disordered diagonal Ising layer",
+      "spectral_reference": "self-dual many-body spectral form factors under ensemble and limiting assumptions",
+      "encyclopedia_references": [
+        31
+      ]
+    },
+    {
+      "id": "driven_kitaev",
+      "status": "implemented",
+      "category": "quantum",
+      "matrix_order": "2n BdG for n sites",
+      "representation": "dense product of two exponentials of Hermitian BdG matrices",
+      "spectral_reference": "particle-hole conjugate phases; optional 0/pi Majorana edge modes",
+      "encyclopedia_references": [
+        32,
+        33
+      ]
+    },
+    {
       "id": "cayley_jacobi",
       "status": "implemented",
       "category": "matrix_function",
