@@ -326,6 +326,18 @@ different from the eigenvalues of the resulting transform matrix.
 - `tests/test_independent_stieltjes.m` independently reconstructs the Jacobi
   recurrence from Gauss--Jacobi nodes and weights using MATLAB only.
 
+The public [unitary-spectral-density](https://github.com/jaurentz/unitary-spectral-density)
+repository additionally tests this matrix library with Fourier moments,
+weighted Gauss--Szego quadrature, and Poisson-resolvent algorithms. Its CI runs
+against both a pinned submodule and the latest Anymatrix main commit every day.
+When upstream MATLAB CI passes on `main`, this repository's workflow can
+immediately dispatch the tested SHA downstream. This requires the one-time
+upstream Actions secret `SPECTRAL_DENSITY_DISPATCH_TOKEN`, a fine-grained token
+restricted to the downstream repository with **Contents: Read and write**.
+Until that secret is configured, the dispatch job skips with a notice and
+the downstream daily CI remains active. See the
+[development guide](https://github.com/jaurentz/unitary-spectral-density/blob/main/docs/DEVELOPMENT.md).
+
 **CI status** is displayed in the repository's *Actions* tab. The status of
 any unexecuted workflow should not be interpreted as a passing test.
 
