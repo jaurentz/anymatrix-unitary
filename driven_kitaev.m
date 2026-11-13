@@ -11,7 +11,7 @@ function [U,properties] = driven_kitaev(n,opts)
 %   Open boundaries can support topological edge quasienergies; they
 %   are not guaranteed for every choice of drive parameters.
 %   References: D. J. Yates and A. Mitra, Phys. Rev. B 96 (2017),
-%   115108; J. K. Asboth et al., Phys. Rev. B 99 (2019), 155424.
+%   115108; M. van Caspel et al., SciPost Phys. 6 (2019), 026.
 properties={'square','unitary','normal','complex','scalable','parameter-dependent'};
 if nargin==0,U=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','>=',2,'finite'});
