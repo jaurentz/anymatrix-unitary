@@ -1090,7 +1090,7 @@ filtering and irregular-domain data analysis. [57]
 ## Bibliography
 
 1. P. J. Davis, *Circulant Matrices*, Wiley, 1979. ISBN 9780471057710. [Library record](https://openlibrary.org/books/OL4407364M/Circulant_matrices).
-2. N. W. Ashcroft and N. D. Mermin, *Solid State Physics*, Holt, Rinehart and Winston, 1976. ISBN 9780030839931. [Publisher record](https://www.cengage.com/c/isbn/9780030839931/).
+2. N. W. Ashcroft and N. D. Mermin, *Solid State Physics*, Holt, Rinehart and Winston, 1976. ISBN 9780030839931. [Book record](https://books.google.com/books?id=1C9HAQAAIAAJ).
 3. S. Mataigne and K. A. Gallivan, “The eigenvalue decomposition of normal matrices by the skew-symmetric part,” *Electron. J. Linear Algebra* **42** (2026), 349–386. [DOI](https://doi.org/10.13001/ela.2026.9957).
 4. J. L. Aurentz, T. Mach, L. Robol, R. Vandebril and D. S. Watkins, *Core-Chasing Algorithms for the Eigenvalue Problem*, SIAM, 2018. [DOI](https://doi.org/10.1137/1.9781611975345).
 5. B. Simon, *Orthogonal Polynomials on the Unit Circle*, AMS Colloquium Publications **54**, 2005: Part 1, *Classical Theory* [DOI](https://doi.org/10.1090/coll054.1); Part 2, *Spectral Theory* [DOI](https://doi.org/10.1090/coll/054.2).
@@ -1143,6 +1143,6 @@ filtering and irregular-domain data analysis. [57]
 52. M. Püschel and J. M. F. Moura, “Algebraic signal processing theory: Foundation and 1-D time,” *IEEE Trans. Signal Process.* **56**(8) (2008), 3572–3585. [DOI](https://doi.org/10.1109/TSP.2008.925261); [author PDF](https://users.ece.cmu.edu/~moura/papers/t-sp-aug08-part1--pueschelmoura-ieeexplore.pdf).
 53. K. Gröchenig, *Foundations of Time-Frequency Analysis*, Birkhäuser, 2001. [DOI](https://doi.org/10.1007/978-1-4612-0003-1).
 54. V. Britanak, P. C. Yip and K. R. Rao, *Discrete Cosine and Sine Transforms: General Properties, Fast Algorithms and Integer Approximations*, Academic Press, 2007. [DOI](https://doi.org/10.1016/b978-0-12-373624-6.x5000-0); [publisher](https://shop.elsevier.com/books/discrete-cosine-and-sine-transforms/britanak/978-0-12-373624-6).
-55. K. G. Beauchamp, *Applications of Walsh and Related Functions: With an Introduction to Sequency Theory*, Academic Press, 1984. [Catalog](https://books.google.com/books?id=BvZSAAAAMAAJ).
+55. K. G. Beauchamp, *Applications of Walsh and Related Functions: With an Introduction to Sequency Theory*, Academic Press, 1984. ISBN 9780120841806. [Library record](https://openlibrary.org/works/OL2903378W/Applications_of_Walsh_and_related_functions_with_an_introduction_to_sequency_theory); [book record](https://books.google.com/books?id=BvZSAAAAMAAJ).
 56. D. Slepian, "Prolate spheroidal wave functions, Fourier analysis, and uncertainty—V: The discrete case," *Bell Syst. Tech. J.* **57** (1978), 1371–1430. [DOI](https://doi.org/10.1002/j.1538-7305.1978.tb02104.x).
 57. D. I. Shuman, S. K. Narang, P. Frossard, A. Ortega and P. Vandergheynst, “The emerging field of signal processing on graphs: Extending high-dimensional data analysis to networks and other irregular domains,” *IEEE Signal Process. Mag.* **30**(3) (2013), 83–98. [DOI](https://doi.org/10.1109/MSP.2012.2235192).

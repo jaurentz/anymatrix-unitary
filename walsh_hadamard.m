@@ -8,7 +8,7 @@ function [U,properties]=walsh_hadamard(n,ordering,output)
 %   Reference: K. G. Beauchamp, Applications of Walsh and Related
 %   Functions, Academic Press, 1984.
 %   Verified reference identifiers (see docs/MATRIX_ENCYCLOPEDIA.md):
-%   [55] https://books.google.com/books?id=BvZSAAAAMAAJ
+%   [55] https://openlibrary.org/works/OL2903378W/Applications_of_Walsh_and_related_functions_with_an_introduction_to_sequency_theory
 properties={'square','unitary','normal','orthogonal','real', ...
     'scalable','parameter-dependent'};
 if nargin==0,U=[];return;end
