@@ -40,4 +40,11 @@ jobs:
             assert(any(strcmp(ids,'unitary/jacobi_szego')));
             U = anymatrix('unitary/jacobi_szego',8,0,0,'cmv',1);
             assert(norm(full(U'*U-eye(8)),'fro') < 1e-11);
+            S = anymatrix('unitary/dirac_automaton',12,.45,'spectral');
+            assert(strcmp(S.finite.kind,'exact'));
+            assert(S.dimension==24);
+            A = anymatrix('unitary/dirac_automaton',12,.45);
+            assert(abs(trace(A)/24-S.finite.moments(1))<1e-11);
+            [~,P] = anymatrix('unitary/dirac_automaton',12,.45);
+            assert(any(strcmp(P,'unitary')));
             anymatrix('test','unitary');
