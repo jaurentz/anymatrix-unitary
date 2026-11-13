@@ -194,4 +194,6 @@ verifyEqual(testCase,S.dimension,12);
 [Q,q]=orthogonal_blocks(5,[.2;.3],-1);
 verifyEqual(testCase,size(Q),[5 5]);
 verifyTrue(testCase,ismember('orthogonal',q));
+verifyError(testCase,@()orthogonal_blocks(5,[],[],'operator'), ...
+    'orthogonal_blocks:Mode');
 end
