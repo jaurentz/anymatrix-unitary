@@ -7,8 +7,8 @@ end
 
 function test_display_math_fences(testCase)
 root = fileparts(fileparts(mfilename('fullpath')));
-paths = {'docs/MATRIX_ENCYCLOPEDIA.md','docs/MATHEMATICS.md'};
-minimum = [15,10];
+paths = {'docs/MATRIX_ENCYCLOPEDIA.md','docs/MATHEMATICS.md','README.md'};
+minimum = [15,10,1];
 for j = 1:numel(paths)
     source = fileread(fullfile(root,paths{j}));
     starts = regexp(source,'(?m)^```math\r?$','match');
@@ -24,6 +24,8 @@ for j = 1:numel(paths)
     verifyFalse(testCase,contains(source,'\overline\alpha'),paths{j});
     verifyFalse(testCase,contains(source,'\['),paths{j});
     verifyFalse(testCase,contains(source,'\]'),paths{j});
+    verifyFalse(testCase,contains(source,'alpha_(2k)'),paths{j});
+    verifyFalse(testCase,contains(source,'z^(-1)'),paths{j});
     for k = 1:numel(blocks)
         verifyNotEmpty(testCase,strtrim(blocks{k}{1}),paths{j});
     end
@@ -36,4 +38,9 @@ source = fileread(fullfile(root,'docs','MATRIX_ENCYCLOPEDIA.md'));
 verifyTrue(testCase,contains(source,'e_{n+1}=e_1'));
 verifyTrue(testCase,contains(source,'\mathbf{1}_{n\mid k}'));
 verifyTrue(testCase,contains(source,'\mathcal{U}(T)'));
+readme = fileread(fullfile(root,'README.md'));
+verifyTrue(testCase,contains(readme,'\alpha_{2k}'));
+verifyTrue(testCase,contains(readme,'\alpha_{2k+1}'));
+verifyTrue(testCase,contains(readme,'examples/unit_circle_spectral_bands.m'));
+verifyFalse(testCase,contains(readme,'showcase_new_families'));
 end

@@ -1,4 +1,4 @@
-%SHOWCASE_NEW_FAMILIES Unit-circle spectral bands, gaps and exact references.
+%UNIT_CIRCLE_SPECTRAL_BANDS Finite eigenphases, gaps, and limiting spectral bands.
 % Run from the repository root after: addpath(pwd)
 % Set plotSpectralBands=false before running to skip the optional figure.
 % MATLAB R2020b or later, no additional toolboxes.
@@ -112,7 +112,7 @@ for r=1:3
     assert(abs(trace(S^r)-2*sum(cos(r*omegaS)))<1e-9)
 end
 
-% 7. Additional independent examples already in the collection.
+% 7. Circular ensembles, unitary dilations, and OPUC quadrature.
 % CUE beta=2 is an ensemble law, not a deterministic finite density.
 C=circular_beta(64,2,42);
 assert(norm(full(C'*C-speye(64)),'fro')<1e-11)

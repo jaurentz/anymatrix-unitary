@@ -1,4 +1,4 @@
-%QUICKSTART Minimal OPUC and spectral-band examples.
+%QUICKSTART Jacobi--Szego quadrature, Dirac gaps, and periodic CMV operators.
 % Run from the repository root after: addpath(pwd)
 %
 % A finite unitary matrix has an atomic eigenvalue-counting measure.
