@@ -371,13 +371,17 @@ Procrustes problems and perturbation analysis. **Reference:** [24].
 
 ### 22. Julia/Halmos unitary extension — [`julia_unitary.m`](../julia_unitary.m)
 
-**Order:** $2n$ for an $n\times n$ contraction $T$, $\|T\|_2\leq1$.
+**Order:** $2n$ for an $n\times n$ contraction $T$, $\lVert T\rVert_2\leq1$. 
 **Structure:** generally dense, block unitary. With defect operators
 $D_T=(I-T^*T)^{1/2}$ and $D_{T^*}=(I-TT^*)^{1/2}$,
 
-$$
-\mathcal U(T)=\begin{pmatrix}T&D_{T^*}\\D_T&-T^*\end{pmatrix}.
-$$
+```math
+\mathcal{U}(T)=
+\begin{pmatrix}
+T & D_{T^*} \\
+D_T & -T^*
+\end{pmatrix}.
+```
 
 This gives a finite unitary containing the nonnormal contraction $T$ in
 its leading block. **It is not automatically a unitary power dilation**:
