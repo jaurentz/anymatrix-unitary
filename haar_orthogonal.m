@@ -8,9 +8,12 @@ function [U,properties] = haar_orthogonal(n,seed,output)
 %   [14] https://doi.org/10.48550/arXiv.math-ph/0609050 (arXiv preprint DOI)
 properties={'square','unitary','normal','orthogonal','real','random','scalable'};
 % Optional analytic spectral-reference mode.
-if nargin>=3 && (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
-    U=unitary_spectral_reference('haar_orthogonal',n,seed);
-    return
+if nargin>=3
+    if (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
+        U=unitary_spectral_reference('haar_orthogonal',n,seed);
+        return
+    end
+    error('haar_orthogonal:Mode','Only terminal spectral mode is supported for this generator.');
 end
 if nargin==0,U=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','positive','finite'});

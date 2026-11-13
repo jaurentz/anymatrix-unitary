@@ -14,9 +14,12 @@ function [U,properties]=dpss_transform(n,W,output)
 properties={'square','unitary','normal','orthogonal','real', ...
     'scalable','parameter-dependent'};
 % Optional analytic spectral-reference mode.
-if nargin>=3 && (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
-    U=unitary_spectral_reference('dpss_transform',n,W);
-    return
+if nargin>=3
+    if (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
+        U=unitary_spectral_reference('dpss_transform',n,W);
+        return
+    end
+    error('dpss_transform:Mode','Only terminal spectral mode is supported for this generator.');
 end
 if nargin==0,U=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','positive','finite'});

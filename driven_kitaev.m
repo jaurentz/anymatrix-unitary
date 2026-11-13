@@ -17,9 +17,12 @@ function [U,properties] = driven_kitaev(n,opts,output)
 %   [34] https://doi.org/10.21468/SciPostPhys.6.2.026
 properties={'square','unitary','normal','complex','scalable','parameter-dependent'};
 % Optional analytic spectral-reference mode.
-if nargin>=3 && (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
-    U=unitary_spectral_reference('driven_kitaev',n,opts);
-    return
+if nargin>=3
+    if (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
+        U=unitary_spectral_reference('driven_kitaev',n,opts);
+        return
+    end
+    error('driven_kitaev:Mode','Only terminal spectral mode is supported for this generator.');
 end
 if nargin==0,U=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','>=',2,'finite'});

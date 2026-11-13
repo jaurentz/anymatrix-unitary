@@ -8,9 +8,12 @@ function [U,properties] = polar_unitary(n,A,output)
 %   1160-1174. https://doi.org/10.1137/0907079
 properties={'square','unitary','normal','scalable','parameter-dependent'};
 % Optional analytic spectral-reference mode.
-if nargin>=3 && (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
-    U=unitary_spectral_reference('polar_unitary',n,A);
-    return
+if nargin>=3
+    if (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
+        U=unitary_spectral_reference('polar_unitary',n,A);
+        return
+    end
+    error('polar_unitary:Mode','Only terminal spectral mode is supported for this generator.');
 end
 if nargin==0,U=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','positive','finite'});

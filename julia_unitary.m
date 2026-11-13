@@ -9,9 +9,12 @@ function [U,properties] = julia_unitary(n,T,output)
 %   CBMS 19, AMS, 1974. https://doi.org/10.1090/CBMS/019
 properties={'square','unitary','normal','scalable','parameter-dependent'};
 % Optional analytic spectral-reference mode.
-if nargin>=3 && (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
-    U=unitary_spectral_reference('julia_unitary',n,T);
-    return
+if nargin>=3
+    if (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
+        U=unitary_spectral_reference('julia_unitary',n,T);
+        return
+    end
+    error('julia_unitary:Mode','Only terminal spectral mode is supported for this generator.');
 end
 if nargin==0,U=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','positive','finite'});

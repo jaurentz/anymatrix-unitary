@@ -15,9 +15,12 @@ function [U,properties]=graph_fourier(n,adjacency,output)
 properties={'square','unitary','normal','orthogonal','real', ...
     'scalable','parameter-dependent'};
 % Optional analytic spectral-reference mode.
-if nargin>=3 && (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
-    U=unitary_spectral_reference('graph_fourier',n,adjacency);
-    return
+if nargin>=3
+    if (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
+        U=unitary_spectral_reference('graph_fourier',n,adjacency);
+        return
+    end
+    error('graph_fourier:Mode','Only terminal spectral mode is supported for this generator.');
 end
 if nargin==0,U=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','positive','finite'});

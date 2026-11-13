@@ -22,9 +22,12 @@ function [U, properties] = split_step_walk(n,theta1,theta2,output)
 properties = {'unitary', 'orthogonal', 'real', 'square', ...
               'sparse', 'scalable', 'parameter-dependent'};
 % Optional analytic spectral-reference mode.
-if nargin>=4 && (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
-    U=unitary_spectral_reference('split_step_walk',n,theta1,theta2);
-    return
+if nargin>=4
+    if (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
+        U=unitary_spectral_reference('split_step_walk',n,theta1,theta2);
+        return
+    end
+    error('split_step_walk:Mode','Only terminal spectral mode is supported for this generator.');
 end
 if nargin == 0
     U = [];
