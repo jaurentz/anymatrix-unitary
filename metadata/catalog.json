@@ -686,5 +686,6 @@
     "Finite matrices have atomic spectra.",
     "A Hilbert-space dimension can differ from a site count.",
     "Reference numbers are defined in docs/MATRIX_ENCYCLOPEDIA.md."
-  ]
+  ],
+  "reference_registry": "metadata/references.json"
 }

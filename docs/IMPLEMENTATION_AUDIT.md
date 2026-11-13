@@ -58,8 +58,9 @@ a CMV-only implementation.
 
 ## General shapes beyond CMV
 
-Watkins, *Some Perspectives on the Eigenvalue Problem*, SIAM Review 35
-(1993), 430–471, develops the unit-circle Lanczos/Laurent-polynomial
+Watkins, *Some Perspectives on the Eigenvalue Problem*, *SIAM Review* **35**
+(1993), 430–471, DOI: https://doi.org/10.1137/1035090,
+develops the unit-circle Lanczos/Laurent-polynomial
 perspective. The current core engine handles any single-core insertion
 ordering given by a `twists` vector (snake-shaped factorizations) and a
 terminal boundary phase. Additional block, repeated-core, or multi-snake

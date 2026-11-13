@@ -1,0 +1,319 @@
+{
+  "schema_version": "1.0.0",
+  "updated": "2026-11-13",
+  "bibliography": "docs/MATRIX_ENCYCLOPEDIA.md",
+  "notes": "Publication DOIs were checked against Crossref records where registered; arXiv DOI in entry 14 is DataCite-registered and identifies the preprint, not the Notices article. Non-DOI sources use the publisher, archive, or library identifier. No DOI was invented for books, ETNA papers, DLMF pages or online lecture notes lacking a verified registered DOI.",
+  "references": [
+    {
+      "number": 1,
+      "dois": [],
+      "permalink": "https://openlibrary.org/books/OL4407364M/Circulant_matrices"
+    },
+    {
+      "number": 2,
+      "dois": [],
+      "permalink": "https://www.cengage.com/c/isbn/9780030839931/"
+    },
+    {
+      "number": 3,
+      "dois": [
+        "10.13001/ela.2026.9957"
+      ],
+      "permalink": "https://doi.org/10.13001/ela.2026.9957"
+    },
+    {
+      "number": 4,
+      "dois": [
+        "10.1137/1.9781611975345"
+      ],
+      "permalink": "https://doi.org/10.1137/1.9781611975345"
+    },
+    {
+      "number": 5,
+      "dois": [
+        "10.1090/coll054.1",
+        "10.1090/coll/054.2"
+      ],
+      "permalink": "https://doi.org/10.1090/coll054.1"
+    },
+    {
+      "number": 6,
+      "dois": [
+        "10.1016/S0024-3795(02)00457-3"
+      ],
+      "permalink": "https://doi.org/10.1016/S0024-3795(02)00457-3"
+    },
+    {
+      "number": 7,
+      "dois": [
+        "10.1016/j.cam.2006.10.033"
+      ],
+      "permalink": "https://doi.org/10.1016/j.cam.2006.10.033"
+    },
+    {
+      "number": 8,
+      "dois": [],
+      "permalink": "https://etna.ricam.oeaw.ac.at/volumes/2011-2020/vol44/abstract.php?pages=327-341"
+    },
+    {
+      "number": 9,
+      "dois": [
+        "10.1016/j.cam.2014.11.002"
+      ],
+      "permalink": "https://doi.org/10.1016/j.cam.2014.11.002"
+    },
+    {
+      "number": 10,
+      "dois": [
+        "10.1016/0377-0427(86)90169-X"
+      ],
+      "permalink": "https://doi.org/10.1016/0377-0427(86)90169-X"
+    },
+    {
+      "number": 11,
+      "dois": [
+        "10.1090/S0273-0979-05-01075-X"
+      ],
+      "permalink": "https://web.ma.utexas.edu/mp_arc/c/05/05-78.pdf"
+    },
+    {
+      "number": 12,
+      "dois": [],
+      "permalink": "https://dlmf.nist.gov/18.33"
+    },
+    {
+      "number": 13,
+      "dois": [
+        "10.1155/S1073792804141597"
+      ],
+      "permalink": "https://doi.org/10.1155/S1073792804141597"
+    },
+    {
+      "number": 14,
+      "dois": [
+        "10.48550/arXiv.math-ph/0609050"
+      ],
+      "permalink": "https://arxiv.org/abs/math-ph/0609050"
+    },
+    {
+      "number": 15,
+      "dois": [
+        "10.1137/1.9781611970104"
+      ],
+      "permalink": "https://doi.org/10.1137/1.9781611970104"
+    },
+    {
+      "number": 16,
+      "dois": [
+        "10.1103/PhysRevA.82.033429"
+      ],
+      "permalink": "https://doi.org/10.1103/PhysRevA.82.033429"
+    },
+    {
+      "number": 17,
+      "dois": [
+        "10.1016/j.aop.2014.12.016"
+      ],
+      "permalink": "https://doi.org/10.1016/j.aop.2014.12.016"
+    },
+    {
+      "number": 18,
+      "dois": [
+        "10.1103/PhysRevA.93.012328"
+      ],
+      "permalink": "https://doi.org/10.1103/PhysRevA.93.012328"
+    },
+    {
+      "number": 19,
+      "dois": [
+        "10.1145/237814.237866"
+      ],
+      "permalink": "https://doi.org/10.1145/237814.237866"
+    },
+    {
+      "number": 20,
+      "dois": [
+        "10.1016/0003-4916(89)90259-5"
+      ],
+      "permalink": "https://doi.org/10.1016/0003-4916(89)90259-5"
+    },
+    {
+      "number": 21,
+      "dois": [
+        "10.1016/0003-4916(90)90367-W"
+      ],
+      "permalink": "https://doi.org/10.1016/0003-4916(90)90367-W"
+    },
+    {
+      "number": 22,
+      "dois": [
+        "10.1103/PhysRevLett.68.3826"
+      ],
+      "permalink": "https://doi.org/10.1103/PhysRevLett.68.3826"
+    },
+    {
+      "number": 23,
+      "dois": [],
+      "permalink": "https://www.maths.tcd.ie/EMIS/journals/ETNA/volumes/2011-2020/vol46/abstract_vol46_pp447-459.html?pages=447-459&vol=46"
+    },
+    {
+      "number": 24,
+      "dois": [
+        "10.1137/0907079"
+      ],
+      "permalink": "https://doi.org/10.1137/0907079"
+    },
+    {
+      "number": 25,
+      "dois": [
+        "10.1090/CBMS/019"
+      ],
+      "permalink": "https://doi.org/10.1090/CBMS/019"
+    },
+    {
+      "number": 26,
+      "dois": [
+        "10.1109/FOCS.2004.53"
+      ],
+      "permalink": "https://doi.org/10.1109/FOCS.2004.53"
+    },
+    {
+      "number": 27,
+      "dois": [
+        "10.1093/imrn/rnp092"
+      ],
+      "permalink": "https://doi.org/10.1093/imrn/rnp092"
+    },
+    {
+      "number": 28,
+      "dois": [
+        "10.1007/978-3-642-05428-0"
+      ],
+      "permalink": "https://doi.org/10.1007/978-3-642-05428-0"
+    },
+    {
+      "number": 29,
+      "dois": [
+        "10.1103/PhysRevLett.112.140408"
+      ],
+      "permalink": "https://doi.org/10.1103/PhysRevLett.112.140408"
+    },
+    {
+      "number": 30,
+      "dois": [
+        "10.1016/0003-4916(61)90115-4"
+      ],
+      "permalink": "https://doi.org/10.1016/0003-4916(61)90115-4"
+    },
+    {
+      "number": 31,
+      "dois": [
+        "10.1016/0003-4916(70)90270-8"
+      ],
+      "permalink": "https://doi.org/10.1016/0003-4916(70)90270-8"
+    },
+    {
+      "number": 32,
+      "dois": [
+        "10.1103/PhysRevLett.121.264101"
+      ],
+      "permalink": "https://doi.org/10.1103/PhysRevLett.121.264101"
+    },
+    {
+      "number": 33,
+      "dois": [
+        "10.1103/PhysRevB.96.115108"
+      ],
+      "permalink": "https://doi.org/10.1103/PhysRevB.96.115108"
+    },
+    {
+      "number": 34,
+      "dois": [
+        "10.21468/SciPostPhys.6.2.026"
+      ],
+      "permalink": "https://doi.org/10.21468/SciPostPhys.6.2.026"
+    },
+    {
+      "number": 35,
+      "dois": [
+        "10.1016/0370-1573(90)90067-C"
+      ],
+      "permalink": "https://doi.org/10.1016/0370-1573(90)90067-C"
+    },
+    {
+      "number": 36,
+      "dois": [
+        "10.1103/PhysRevLett.123.210601"
+      ],
+      "permalink": "https://doi.org/10.1103/PhysRevLett.123.210601"
+    },
+    {
+      "number": 37,
+      "dois": [
+        "10.1007/s00220-021-04139-2"
+      ],
+      "permalink": "https://doi.org/10.1007/s00220-021-04139-2"
+    },
+    {
+      "number": 38,
+      "dois": [
+        "10.1103/PhysRevLett.133.050606"
+      ],
+      "permalink": "https://doi.org/10.1103/PhysRevLett.133.050606"
+    },
+    {
+      "number": 39,
+      "dois": [],
+      "permalink": "https://integrability.org/a_xxz.html"
+    },
+    {
+      "number": 40,
+      "dois": [
+        "10.1088/1367-2630/10/1/013024"
+      ],
+      "permalink": "https://doi.org/10.1088/1367-2630/10/1/013024"
+    },
+    {
+      "number": 41,
+      "dois": [
+        "10.1103/PhysRevE.87.012910"
+      ],
+      "permalink": "https://doi.org/10.1103/PhysRevE.87.012910"
+    },
+    {
+      "number": 42,
+      "dois": [
+        "10.1103/PhysRevA.109.033316"
+      ],
+      "permalink": "https://doi.org/10.1103/PhysRevA.109.033316"
+    },
+    {
+      "number": 43,
+      "dois": [
+        "10.1109/PROC.1963.1664"
+      ],
+      "permalink": "https://doi.org/10.1109/PROC.1963.1664"
+    },
+    {
+      "number": 44,
+      "dois": [
+        "10.1088/0022-3719/21/14/008"
+      ],
+      "permalink": "https://doi.org/10.1088/0022-3719/21/14/008"
+    },
+    {
+      "number": 45,
+      "dois": [
+        "10.1103/PhysRevB.54.8708"
+      ],
+      "permalink": "https://doi.org/10.1103/PhysRevB.54.8708"
+    },
+    {
+      "number": 46,
+      "dois": [
+        "10.1142/S0129055X26500054"
+      ],
+      "permalink": "https://arxiv.org/abs/2409.08428"
+    }
+  ]
+}

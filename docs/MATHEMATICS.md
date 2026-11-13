@@ -71,7 +71,11 @@ both eigenvalues and the first component of normalized eigenvectors.
 ## Source references
 
 - B. Simon, *OPUC on One Foot*, Bull. Amer. Math. Soc. 42 (2005), 431–460,
-  esp. Section 11, https://web.ma.utexas.edu/mp_arc/c/05/05-78.pdf
+  esp. Section 11, DOI: https://doi.org/10.1090/S0273-0979-05-01075-X;
+  free text: https://web.ma.utexas.edu/mp_arc/c/05/05-78.pdf
+- B. Simon, *Orthogonal Polynomials on the Unit Circle*, AMS Colloquium
+  Publications 54 (2005), Part 1 DOI: https://doi.org/10.1090/coll054.1;
+  Part 2 DOI: https://doi.org/10.1090/coll/054.2.
 - NIST DLMF, *Polynomials Orthogonal on the Unit Circle*, §18.33,
   https://dlmf.nist.gov/18.33
 - A. Bultheel, M. J. Cantero, R. Cruz-Barroso,

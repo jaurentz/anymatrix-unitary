@@ -48,6 +48,8 @@ assertSuccess(results)
 The collection currently has **37 public generators**. Each has a complete
 entry with formulas, spectral information, applications, parameter conventions,
 and references in the [matrix encyclopedia](docs/MATRIX_ENCYCLOPEDIA.md).
+Verified DOI and persistent-link identifiers are indexed in
+[metadata/references.json](metadata/references.json).
 The [mathematical notes](docs/MATHEMATICS.md) explain the shared OPUC engine.
 
 | Category | Generators |
