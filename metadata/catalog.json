@@ -294,9 +294,9 @@
         28,
         29
       ],
-      "matrix_free_supported": false,
-      "operator_kernel": null,
-      "operator_note": "No generally validated faster action for the current family definition."
+      "matrix_free_supported": true,
+      "operator_kernel": "um_sparse_hermitian_tridiag / um_kick_tridiag_apply / um_tridiag_exp_apply",
+      "operator_note": "Sparse Hermitian-tridiagonal spin generator; MATLAB expmv from R2023b, Chebyshev-Bessel fallback before R2023b. Explicit expm on sparse generator yields a generally dense matrix."
     },
     {
       "id": "floquet_ising",
@@ -385,6 +385,51 @@
       "matrix_free_supported": true,
       "operator_kernel": "um_circuit_apply",
       "operator_note": "Local gate sequence; exponential vector size 2^n but no dense 4^n matrix."
+    },
+    {
+      "id": "kicked_bose_hubbard",
+      "status": "implemented",
+      "category": "quantum",
+      "matrix_order": "n+1 for n identical bosons",
+      "representation": "diagonal kick times dense symmetric-tridiagonal hopping exponential",
+      "spectral_reference": "exact tunneling-only spin-Jx phases and interaction-only diagonal phases",
+      "encyclopedia_references": [
+        40,
+        41
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_sparse_hermitian_tridiag / um_kick_tridiag_apply / um_tridiag_exp_apply",
+      "operator_note": "Sparse Hermitian-tridiagonal hopping generator; MATLAB expmv from R2023b, Chebyshev-Bessel fallback on older releases. Explicit expm returns a generally dense matrix."
+    },
+    {
+      "id": "jaynes_cummings",
+      "status": "implemented",
+      "category": "quantum",
+      "matrix_order": "2(n+1) for maximum photon number n",
+      "representation": "sparse independent excitation blocks plus two photon-cutoff edge phases",
+      "spectral_reference": "complete exact block eigenphases including two finite-cutoff edge states",
+      "encyclopedia_references": [
+        43
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_jaynes_apply",
+      "operator_note": "Direct sparse 2-by-2 excitation-block actions; O(n) storage and arithmetic; also available as a sparse numeric matrix."
+    },
+    {
+      "id": "chalker_coddington",
+      "status": "implemented",
+      "category": "quantum",
+      "matrix_order": "4*nx*ny on periodic 2nx by 2ny directed-link grid",
+      "representation": "sparse permutation-linked 2-by-2 unitary node scatterers",
+      "spectral_reference": "exact pi-paired eigenphases and vanishing odd trace moments; signed-permutation limits",
+      "encyclopedia_references": [
+        44,
+        45,
+        46
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_scattering_apply / um_cc_geometry",
+      "operator_note": "Ordered two-channel disjoint node scattering and link phases; O(n) network data and O(n*RHS) action cost; sparse default retained."
     },
     {
       "id": "cayley_jacobi",

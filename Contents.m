@@ -38,6 +38,9 @@
 %   kicked_rotor         Quantum kicked rotor (Fourier grid and kinetic phases).
 %   dual_unitary_circuit Dual-unitary two-qubit brickwork Floquet circuit.
 %   xxz_floquet          Integrable six-vertex XXZ brickwork Floquet circuit.
+%   kicked_bose_hubbard Two-mode bosonic Floquet dimer, order n+1.
+%   jaynes_cummings     Sparse cavity-QED propagator, order 2(n+1).
+%   chalker_coddington  Directed sparse quantum-Hall network on a torus.
 %
 % Matrix functions, polar factors and unitary extensions:
 %   cayley_jacobi        Cayley image of a Jacobi recurrence matrix.
