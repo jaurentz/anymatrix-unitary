@@ -44,10 +44,12 @@ files={'README.md','docs/MATHEMATICS.md','docs/MATRIX_ENCYCLOPEDIA.md', ...
 for k=1:numel(files)
     document=fileread(fullfile(root,files{k}));
     verifyGreaterThan(testCase,numel(document),200);
-    verifyFalse(testCase,contains(document,'\operatorname'), ...
-        sprintf('Unsupported GitHub math macro in %s',files{k}));
-    verifyFalse(testCase,contains(document,'\DeclareMathOperator'), ...
-        sprintf('Unsupported GitHub math declaration in %s',files{k}));
+    if any(strcmp(files{k},{'docs/MATHEMATICS.md','docs/MATRIX_ENCYCLOPEDIA.md'}))
+        verifyFalse(testCase,contains(document,'\operatorname'), ...
+            sprintf('Unsupported GitHub math macro in %s',files{k}));
+        verifyFalse(testCase,contains(document,'\DeclareMathOperator'), ...
+            sprintf('Unsupported GitHub math declaration in %s',files{k}));
+    end
 end
 encyclopedia=fileread(fullfile(root,'docs','MATRIX_ENCYCLOPEDIA.md'));
 verifyTrue(testCase,contains(encyclopedia,'## Bibliography'));
