@@ -25,6 +25,16 @@
 %   haar_orthogonal      Haar random O(n) via sign-corrected real QR.
 %   haar_wavelet         Orthogonal finite Haar wavelet analysis transform.
 %
+% Non-quantum signal-processing transforms:
+%   orthogonal_dct       Orthonormal DCT-I, II, III, IV finite transforms.
+%   discrete_hartley     Symmetric real orthogonal Hartley involution.
+%   cazac_circulant      Zadoff-Chu circulant complex Hadamard matrices.
+%   fresnel_transform    Discrete Fresnel chirp transform (OCDM).
+%   affine_fourier       AFDM chirp-DFT-chirp modulation transform.
+%   finite_zak           Finite Zak transform on a factored signal length.
+%   time_frequency_shift Sparse Weyl-Heisenberg modulation/translation.
+%   periodic_hilbert     Real orthogonal periodic Hilbert completion.
+%
 % Quantum maps, walks and algorithms:
 %   split_step_walk      Periodic real-orthogonal two-state quantum walk.
 %   dirac_automaton      Periodic 1D Dirac cellular automaton (size 2n).

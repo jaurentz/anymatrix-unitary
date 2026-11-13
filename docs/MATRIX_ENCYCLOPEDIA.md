@@ -682,6 +682,155 @@ chaotic many-body spectral statistics. **References:** [38, 39].
   Floquet Ising models, kicked tops, cat maps and interferometer meshes.
   Different symmetry sectors and truncations cannot be conflated. [26]
 
+## H. Non-quantum signal-processing transforms
+
+This section gives independent finite matrix constructions. They are distinct
+from the FFT, wavelet and paraunitary filter-bank families discussed earlier;
+where a new generator is a specialized Fourier conjugation, the spectral
+redundancy is explicit. Frequencies of a **signal** are not to be mistaken for
+eigenphases of the **transform matrix**.
+
+### Orthonormal cosine transforms — [`orthogonal_dct.m`](../orthogonal_dct.m)
+
+**Order:** $n$. The parameter `kind` selects DCT-I through DCT-IV.
+For type II, with zero-based indices $j,k$, the matrix is
+
+```math
+U_{kj}=\sqrt{\frac{2}{n}}\,c_k
+\cos\left(\frac{\pi k(j+1/2)}{n}\right),
+\qquad c_0=2^{-1/2},\quad c_k=1\ (k>0).
+```
+
+Type III is its transpose; type IV uses
+$\sqrt{2/n}\cos(\pi(k+1/2)(j+1/2)/n)$. Type I uses
+$\sqrt{2/(n-1)}c_kc_j\cos(\pi kj/(n-1))$ for $n\geq2$,
+with $c_0=c_{n-1}=1/\sqrt2$.
+
+All variants are **real orthogonal**; I and IV are also symmetric
+involutions. Eigenphases of DCT-II/III generally depend on order and
+are unrelated to the transform-frequency sample points. Uses:
+compression, image coding, cosine-basis spectral methods. [45]
+
+### Discrete Hartley — [`discrete_hartley.m`](../discrete_hartley.m)
+
+**Order:** $n$. The orthonormal kernel is
+
+```math
+H_{jk}=\frac{\cos(2\pi jk/n)+\sin(2\pi jk/n)}{\sqrt n}.
+```
+
+This is real, symmetric, orthogonal, and $H^2=I$.
+The entire spectrum is in $\{-1,+1\}$; exact multiplicities may be
+determined from $n$ and the trace. Useful as a two-atom spectrum in
+real signal processing, independent of the Hadamard construction. [40]
+
+### Chu/CAZAC unitary circulants — [`cazac_circulant.m`](../cazac_circulant.m)
+
+**Order:** $n$. Choose an integer root $r$ coprime to $n$, and set
+
+```math
+c_k=\begin{cases}
+\exp[-\pi i r k^2/n],&n\text{ even},\\
+\exp[-\pi i r k(k+1)/n],&n\text{ odd}.
+\end{cases}
+\qquad U_{jk}=\frac{c_{(j-k)\bmod n}}{\sqrt n}.
+```
+
+Chu's perfect periodic autocorrelation yields $U^*U=I$,
+with **constant-modulus entries** $|U_{jk}|=n^{-1/2}$.
+The exact eigenvalues, including multiplicities, are
+$z_\ell=n^{-1/2}\mathop{\mathrm{fft}}(c)_\ell$.
+This is a restricted, application-derived subfamily of
+unitary circulants (not a new general matrix class).
+Applications: channel synchronization, radar/sonar pulse coding. [41]
+
+### Discrete Fresnel transform — [`fresnel_transform.m`](../fresnel_transform.m)
+
+**Order:** $n$. For $d=(j-k)\bmod n$ and
+$\delta=0$ (even $n$) or $\delta=1/2$ (odd $n$), set
+
+```math
+U_{jk}=\frac{e^{-i\pi/4}}{\sqrt n}
+\exp\left(\frac{i\pi(d+\delta)^2}{n}\right).
+```
+
+Both parity choices are circularly periodic and exactly unitary.
+It is circulant; its eigenvalues are the FFT of its first column.
+OCDM uses this discrete Fresnel transform for chirp multiplexing.
+The matrix is unitary independently of the physical channel. [42]
+
+### Affine Fourier / AFDM modulation — [`affine_fourier.m`](../affine_fourier.m)
+
+**Order:** $n$. For real parameters $c_1,c_2$, define
+
+```math
+A=D(c_2)F_nD(c_1),\qquad
+D(c)=\mathop{\mathrm{diag}}_{0\leq k<n}
+(e^{-2\pi i c k^2}),
+```
+
+where $F_n$ is the normalized negative-exponent DFT.
+This is an exactly unitary chirp-DFT-chirp multiplication.
+At $c_1=c_2=0$ it reduces to the DFT, whose spectrum has
+at most four atoms; away from that point the phase law can differ.
+Application: affine frequency-division multiplexing in
+delay-Doppler channels. Do not conflate modulation $A$ with the
+generally **nonunitary** wireless channel. [43]
+
+### Finite Zak transforms — [`finite_zak.m`](../finite_zak.m)
+
+**Order:** $n=pq$, $p\mid n$. Use the indexing $j+pk$
+for $0\leq j<p$, $0\leq k<q$. Apply a normalized $q$-point
+DFT to the second coordinate for each fixed first coordinate:
+
+```math
+Z_{n,p}=F_q\otimes I_p.
+```
+
+This is unitary; $p=1$ gives the DFT, and $p=n$ gives $I_n$.
+It is a particular finite normalized Zak convention, used in
+Gabor analysis and polyphase signal processing. Its spectrum
+is exactly that of $F_q$, each eigenvalue repeated $p$ times. [44]
+
+### Finite Weyl–Heisenberg shifts — [`time_frequency_shift.m`](../time_frequency_shift.m)
+
+**Order:** $n$. Define $T e_j=e_{j+1\bmod n}$ and
+$M e_j=e^{2\pi i j/n}e_j$, with zero-based indices.
+The generator returns $U=M^pT^q$ for integer $p,q$.
+It is a sparse monomial unitary, and its exact eigenvalues
+are determined by the cycles of translation $q$ and the
+product of modulation weights around each cycle. Uses:
+Gabor time-frequency shifts and Weyl–Heisenberg systems. [44,46]
+
+### Periodic Hilbert transform completion — [`periodic_hilbert.m`](../periodic_hilbert.m)
+
+**Order:** $n$. Start from the DFT multiplier $-i$ at
+positive frequencies and $+i$ at negative frequencies.
+Replace the conventional *zero* DC multiplier (and, for
+even $n$, zero Nyquist multiplier) by signs $s_0,s_\pi\in\{-1,+1\}$.
+The resulting multiplier $d$ satisfies
+$|d_j|=1$ and the conjugation symmetry needed for a real matrix.
+
+```math
+U=F_n^*\mathop{\mathrm{diag}}(d_0,\ldots,d_{n-1})F_n.
+```
+
+Hence $U$ is **real orthogonal and circulant**, with exact spectral
+atoms among $\{-i,+i,-1,+1\}$. The zero-ended conventional periodic
+Hilbert filter is **not** unitary on the whole finite-dimensional
+space. The endpoint completion is a benchmark choice, not a claim
+that all conventional Hilbert transforms are orthogonal. [45]
+
+### Planned further additions (not yet implemented)
+
+Canonical Candan–Kutay–Ozaktas discrete fractional Fourier matrices
+(require specifying a Hermite-like basis inside degenerate DFT eigenspaces);
+properly assembled lapped/MDCT orthogonal transforms (overlap and boundary
+conventions); discrete Slepian/DPSS bases; graph Fourier bases;
+discrete Wilson bases; unitary ESPRIT transformations; and unitary
+space-time communication constellations. These are **not** registered
+as implemented generators.
+
 ## Bibliography
 
 1. P. J. Davis, *Circulant Matrices*, Wiley, 1979.
@@ -723,3 +872,11 @@ chaotic many-body spectral statistics. **References:** [38, 39].
 37. B. Bertini, P. Kos and T. Prosen, “Random matrix spectral form factor of dual-unitary quantum circuits,” *Commun. Math. Phys.* **387** (2021), 597–620. [DOI](https://doi.org/10.1007/s00220-021-04139-2).
 38. E. Vernier, H.-C. Yeh, L. Piroli and A. Mitra, “Strong zero modes in integrable quantum circuits,” *Phys. Rev. Lett.* **133** (2024), 050606. [DOI](https://doi.org/10.1103/PhysRevLett.133.050606).
 39. J.-S. Caux, “The Bethe Ansatz: Another example: the trigonometric R-matrix and the XXZ model.” *The Bethe Ansatz* online reference (2024). [Source](https://integrability.org/a_xxz.html).
+
+40. R. N. Bracewell, "Discrete Hartley transform," *J. Opt. Soc. Amer.* **73** (1983), 1832–1835. [DOI](https://doi.org/10.1364/JOSA.73.001832).
+41. D. C. Chu, "Polyphase codes with good periodic correlation properties," *IEEE Trans. Inform. Theory* **18** (1972), 531–532. [DOI](https://doi.org/10.1109/TIT.1972.1054840).
+42. X. Ouyang and J. Zhao, "Orthogonal chirp division multiplexing," *IEEE Trans. Commun.* **64** (2016). [Preprint](https://arxiv.org/abs/1601.06576).
+43. A. Bemani, N. Ksairi and M. Kountouris, "AFDM: A full diversity next generation waveform for high mobility communications," (2023). [Preprint](https://arxiv.org/abs/2204.12798).
+44. H. Bölcskei and F. Hlawatsch, "Discrete Zak transforms, polyphase transforms, and applications," *IEEE Trans. Signal Process.* **45** (1997), 851–866. [DOI](https://doi.org/10.1109/78.564174).
+45. M. Püschel and J. M. F. Moura, "Algebraic signal processing theory: Foundation and 1-D time," *IEEE Trans. Signal Process.* **56** (2008), 3572–3585. [Author PDF](https://users.ece.cmu.edu/~moura/papers/t-sp-aug08-part1--pueschelmoura-ieeexplore.pdf).
+46. K. Gröchenig, *Foundations of Time-Frequency Analysis*, Birkhäuser, 2001. [Publisher](https://link.springer.com/book/10.1007/978-1-4612-0003-1).

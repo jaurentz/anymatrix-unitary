@@ -4,7 +4,7 @@ A MATLAB collection of finite **unitary and orthogonal test matrices**, designed
 an external group for [Anymatrix](https://github.com/north-numerical-computing/anymatrix).
 The repository is organized around reproducible mathematical constructions,
 known spectral information, and executable regression tests. It contains
-34 generators; additional benchmark families are under development.
+42 generators; additional benchmark families are under development.
 
 **Status:** development collection with MATLAB-only tests. Automated MATLAB
 regression and Anymatrix integration tests run on GitHub Actions after every
@@ -41,7 +41,7 @@ assertSuccess(results)
 
 ## Matrix generator interfaces
 
-The collection currently has **34 public generators**. Each has a complete
+The collection currently has **42 public generators**. Each has a complete
 entry with formulas, spectral information, applications, parameter conventions,
 and references in the [matrix encyclopedia](docs/MATRIX_ENCYCLOPEDIA.md).
 The [mathematical notes](docs/MATHEMATICS.md) explain the shared OPUC engine.
@@ -51,6 +51,7 @@ The [mathematical notes](docs/MATHEMATICS.md) explain the shared OPUC engine.
 | Prescribed spectra and circulants | `cycle_shift`, `weighted_shift`, `diagonal_phase`, `phase_circulant`, `cycle_propagator`, `orthogonal_blocks` |
 | OPUC / Szegő / core matrices | `finite_cmv`, `opuc_matrix`, `jacobi_szego`, `bernstein_szego`, `circular_beta`, `circular_jacobi`, `rogers_szego`, `geronimus_cmv`, `periodic_cmv`, `bernstein_szego_finite` |
 | Random and signal-processing | `haar_unitary`, `haar_orthogonal`, `haar_wavelet` |
+| Signal-processing transforms | `orthogonal_dct`, `discrete_hartley`, `cazac_circulant`, `fresnel_transform`, `affine_fourier`, `finite_zak`, `time_frequency_shift`, `periodic_hilbert` |
 | Quantum maps, walks, and algorithms | `split_step_walk`, `dirac_automaton`, `grover_operator`, `quantum_baker`, `kicked_harper`, `kicked_top`, `floquet_ising`, `selfdual_kicked_ising`, `driven_kitaev`, `kicked_rotor`, `dual_unitary_circuit`, `xxz_floquet` |
 | Matrix functions and dilations | `cayley_jacobi`, `polar_unitary`, `julia_unitary` |
 
@@ -186,6 +187,29 @@ X = xxz_floquet(6,.6,pi/3);
 mu = szego_bernstein_measure(0.3+0.2i);
 B = szego_matrix(mu,24,'cmv',1);
 ```
+
+## Additional signal-processing transform examples
+
+The signal-processing expansion is developed independently on the
+`feature/signal-processing-transforms` branch until it can be
+reconciled with the matrix-free refactor.
+
+```matlab
+C = cazac_circulant(13,5);       % unitary constant-modulus circulant
+D = orthogonal_dct(16,2);       % orthonormal DCT-II analysis matrix
+H = discrete_hartley(16);      % real symmetric orthogonal involution
+F = fresnel_transform(16);     % parity-corrected discrete Fresnel chirp
+A = affine_fourier(16,.01,.03); % chirp-DFT-chirp (AFDM) modulation
+Z = finite_zak(16,4);          % four polyphase channels, four-point DFT
+W = time_frequency_shift(16,3,5); % sparse Weyl-Heisenberg element
+T = periodic_hilbert(16,1,-1); % real orthogonal Hilbert completion
+```
+
+The cyclic Hilbert transform ordinarily annihilates the DC (and even-order
+Nyquist) component; `periodic_hilbert` instead supplies unimodular
+endpoint signs to obtain a **square orthogonal** test matrix. The spectral
+statistics of these transforms should not be conflated with signal-frequency
+responses or the eigenvalues of related covariance operators.
 
 ## Automatic tests
 

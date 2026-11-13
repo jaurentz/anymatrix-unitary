@@ -401,6 +401,94 @@
         5,
         12
       ]
+    },
+    {
+      "id": "orthogonal_dct",
+      "status": "implemented",
+      "category": "signal_processing",
+      "matrix_order": "n",
+      "representation": "real dense DCT-I--IV",
+      "spectral_reference": "parameter-dependent eigenphases",
+      "encyclopedia_references": [
+        45
+      ]
+    },
+    {
+      "id": "discrete_hartley",
+      "status": "implemented",
+      "category": "signal_processing",
+      "matrix_order": "n",
+      "representation": "real symmetric dense involution",
+      "spectral_reference": "exact eigenvalues +/-1",
+      "encyclopedia_references": [
+        40
+      ]
+    },
+    {
+      "id": "cazac_circulant",
+      "status": "implemented",
+      "category": "signal_processing",
+      "matrix_order": "n",
+      "representation": "dense constant-modulus circulant",
+      "spectral_reference": "exact DFT of Chu sequence",
+      "encyclopedia_references": [
+        41
+      ]
+    },
+    {
+      "id": "fresnel_transform",
+      "status": "implemented",
+      "category": "signal_processing",
+      "matrix_order": "n",
+      "representation": "dense chirp circulant / FFT",
+      "spectral_reference": "exact FFT of first chirp column",
+      "encyclopedia_references": [
+        42
+      ]
+    },
+    {
+      "id": "affine_fourier",
+      "status": "implemented",
+      "category": "signal_processing",
+      "matrix_order": "n",
+      "representation": "dense chirp-DFT-chirp",
+      "spectral_reference": "parameter-dependent eigenphases; DFT special case",
+      "encyclopedia_references": [
+        43
+      ]
+    },
+    {
+      "id": "finite_zak",
+      "status": "implemented",
+      "category": "signal_processing",
+      "matrix_order": "n",
+      "representation": "Kronecker DFT by polyphase index",
+      "spectral_reference": "exact DFT eigenvalues, repeated p-fold",
+      "encyclopedia_references": [
+        44
+      ]
+    },
+    {
+      "id": "time_frequency_shift",
+      "status": "implemented",
+      "category": "signal_processing",
+      "matrix_order": "n",
+      "representation": "sparse Weyl-Heisenberg monomial",
+      "spectral_reference": "exact phase-weighted permutation cycles",
+      "encyclopedia_references": [
+        44
+      ]
+    },
+    {
+      "id": "periodic_hilbert",
+      "status": "implemented",
+      "category": "signal_processing",
+      "matrix_order": "n",
+      "representation": "real circulant orthogonal filter",
+      "spectral_reference": "exact four-atom Fourier multiplier law",
+      "encyclopedia_references": [
+        45
+      ]
     }
   ],
   "probability_measures": [
