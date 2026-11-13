@@ -1,4 +1,4 @@
-function [U,properties] = orthogonal_blocks(n,theta,epsilon)
+function [U,properties] = orthogonal_blocks(n,theta,epsilon,output)
 %ORTHOGONAL_BLOCKS Real orthogonal matrix with prescribed rotation angles.
 %   U=ORTHOGONAL_BLOCKS(N,THETA,EPSILON) is block diagonal with
 %   floor(N/2) blocks R(t)=[cos(t),-sin(t);sin(t),cos(t)]. For odd N,
@@ -11,6 +11,11 @@ function [U,properties] = orthogonal_blocks(n,theta,epsilon)
 %   [4] https://doi.org/10.1137/1.9781611975345
 properties={'square','unitary','normal','orthogonal','real','sparse', ...
     'banded','scalable','eigenvalues','parameter-dependent'};
+% Optional spectral-reference mode; preserve legacy output properties.
+if nargin>=4 && (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
+    U=unitary_spectral_reference('orthogonal_blocks',n,theta,epsilon);
+    return
+end
 if nargin==0,U=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','positive','finite'});
 m=floor(n/2);

@@ -8,6 +8,11 @@ function [U,properties] = weighted_shift(n,theta,output)
 %   [1] https://openlibrary.org/books/OL4407364M/Circulant_matrices
 properties={'square','unitary','normal','sparse','scalable', ...
     'eigenvalues','parameter-dependent'};
+% Optional spectral-reference mode; preserve legacy output properties.
+if nargin>=3 && (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
+    U=unitary_spectral_reference('weighted_shift',n,theta);
+    return
+end
 if nargin==0, U=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','positive','finite'});
 if nargin<2 || isempty(theta), theta=pi*(0:n-1)'/n;end

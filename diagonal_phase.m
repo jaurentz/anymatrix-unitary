@@ -13,6 +13,11 @@ function [U, properties] = diagonal_phase(n, theta, output)
 %   [1] https://openlibrary.org/books/OL4407364M/Circulant_matrices
 properties = {'unitary', 'square', 'sparse', 'scalable', ...
               'complex', 'eigenvalues', 'parameter-dependent'};
+% Optional spectral-reference mode; preserve legacy output properties.
+if nargin>=3 && (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
+    U=unitary_spectral_reference('diagonal_phase',n,theta);
+    return
+end
 if nargin == 0
     U = [];
     return

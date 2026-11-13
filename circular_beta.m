@@ -12,6 +12,11 @@ function [U,properties] = circular_beta(n,dysonBeta,seed,output)
 %   https://doi.org/10.1155/S1073792804141597
 properties={'square','unitary','normal','sparse','banded','random', ...
     'scalable','parameter-dependent'};
+% Optional spectral-reference mode; preserve legacy output properties.
+if nargin>=4 && (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
+    U=unitary_spectral_reference('circular_beta',n,dysonBeta,seed);
+    return
+end
 if nargin==0,U=[];return;end
 if nargin<2 || isempty(dysonBeta),dysonBeta=2;end
 if nargin<3,seed=[];end

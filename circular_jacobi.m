@@ -11,6 +11,11 @@ function [U,properties] = circular_jacobi(n,a,eta,representation,beta,twists,out
 %   [12] https://dlmf.nist.gov/18.33
 %   [27] https://doi.org/10.1093/imrn/rnp092
 properties={'square','unitary','normal','scalable','parameter-dependent'};
+% Optional spectral-reference mode; preserve legacy output properties.
+if nargin>=7 && (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
+    U=unitary_spectral_reference('circular_jacobi',n,a,eta,representation,beta,twists);
+    return
+end
 if nargin==0,U=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','positive','finite'});
 if nargin<2 || isempty(a),a=0.3;end

@@ -9,6 +9,11 @@ function [U,properties] = phase_circulant(n,theta,output)
 %   [1] https://openlibrary.org/books/OL4407364M/Circulant_matrices
 properties={'square','unitary','normal','circulant','complex', ...
     'scalable','eigenvalues','parameter-dependent'};
+% Optional spectral-reference mode; preserve legacy output properties.
+if nargin>=3 && (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
+    U=unitary_spectral_reference('phase_circulant',n,theta);
+    return
+end
 if nargin==0, U=[]; return; end
 validateattributes(n,{'numeric'},{'scalar','integer','positive','finite'});
 if nargin<2 || isempty(theta), theta=2*pi*(0:n-1)'/n; end
