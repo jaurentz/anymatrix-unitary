@@ -216,6 +216,37 @@ mu = szego_bernstein_measure(0.3+0.2i);
 B = szego_matrix(mu,24,'cmv',1);
 ```
 
+### Spectral-band examples
+
+The existing [quickstart](examples/quickstart.m) now pairs the
+measure-first Jacobi--Szego example with a **Dirac two-band model** and a
+matrix-free periodic CMV action. The expanded
+[spectral showcase](examples/showcase_new_families.m) includes:
+
+- Exactly prescribed finite spectral arcs (via `phase_circulant`).
+- The Dirac automaton's two gapped bands, exact finite eigenphases and
+  analytic limiting **equal-weight trace density**.
+- A real period-two CMV discriminant and its **infinite-operator** band
+  endpoints, plus the Geronimus constant-coefficient essential arc.
+- An unwrapped tight-binding propagator with a known arcsine phase law
+  and a periodic split-step walk with two exact quasienergy branches.
+
+From the repository root, run:
+
+```matlab
+addpath(pwd);
+run('examples/quickstart.m');
+plotSpectralBands = true;    % use false for batch runs
+run('examples/showcase_new_families.m');
+```
+
+For periodic CMV and Geronimus, the theoretical bands describe the
+**infinite operator**; finite eigenvalues depend on the terminal phase
+and can occur in gaps. These examples never equate OPUC quadrature
+weights with the empirical eigenvalue-counting measure. The showcase
+plots finite eigenphases separately from theoretical limiting bands
+or densities.
+
 ## Signal-processing matrix-free examples
 
 All eight new generators return numeric matrices by default or a function
