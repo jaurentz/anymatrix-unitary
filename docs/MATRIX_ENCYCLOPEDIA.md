@@ -18,7 +18,7 @@ $z_j=e^{i\theta_j}$. The **empirical spectral measure** and its moments are
 
 $$
 \mu_U^{\mathrm{trace}}=\frac1n\sum_{j=1}^n\delta_{z_j},\qquad
-m_k(U)=\frac1n\operatorname{tr}(U^k).
+m_k(U)=\frac1n\mathop{\mathrm{tr}}(U^k).
 $$
 
 For a unit vector $v$, the different **vector spectral measure** is
@@ -50,7 +50,7 @@ circulant. **Spectrum:** precisely the $n$th roots of unity.
 
 $$
 P_ne_j=e_{j+1\pmod n},\qquad P_n^n=I,\qquad
-\frac1n\operatorname{tr}(P_n^k)=\mathbf1_{n\mid k}.
+\frac1n\mathop{\mathrm{tr}}(P_n^k)=\mathbf1_{n\mid k}.
 $$
 
 Useful as an exact uniform-phase reference and to detect phase aliasing in
@@ -78,7 +78,7 @@ only rotates the perfectly spaced cycle spectrum. **Reference:** [1].
 $\theta_j$,
 
 $$
-D=\operatorname{diag}(e^{i\theta_1},\ldots,e^{i\theta_n}).
+D=\mathop{\mathrm{diag}}(e^{i\theta_1},\ldots,e^{i\theta_n}).
 $$
 
 The spectrum, algebraic multiplicities, and trace moments are known exactly.
@@ -92,7 +92,7 @@ The default gives equally spaced roots of unity. **Reference:** [1].
 For the normalized DFT $F$ and real phases $\theta_j$,
 
 $$
-U=F^*\operatorname{diag}(e^{i\theta_j})F.
+U=F^*\mathop{\mathrm{diag}}(e^{i\theta_j})F.
 $$
 
 It has **the same eigenvalues as the diagonal control**, but generally
@@ -211,7 +211,7 @@ The Killip–Nenciu construction chooses independent interior coefficients
 with uniform angle and
 
 $$
-|\alpha_{j}|^2\sim\operatorname{Beta}\!\left(
+|\alpha_{j}|^2\sim\mathop{\mathrm{Beta}}\!\left(
 1,\frac{\beta(n-j-1)}{2}\right),\qquad 0\leq j\leq n-2,
 $$
 
@@ -315,7 +315,7 @@ miss them. **Reference:** [19].
 The Balazs–Voros quantization is
 
 $$
-B_n=F_n^*\operatorname{diag}(F_{n/2},F_{n/2}).
+B_n=F_n^*\mathop{\mathrm{diag}}(F_{n/2},F_{n/2}).
 $$
 
 The optional Saraceno variant uses half-integer/antiperiodic Fourier phases

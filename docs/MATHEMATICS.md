@@ -171,7 +171,7 @@ For matrix order $n$ and Dyson parameter $\beta>0$, independent interior
 coefficients have uniform argument and
 
 $$
- |\alpha_j|^2\sim\operatorname{Beta}\!\left(
+ |\alpha_j|^2\sim\mathop{\mathrm{Beta}}\!\left(
  1,\tfrac{\beta(n-j-1)}2\right),\qquad j=0,\ldots,n-2.
 $$
 
