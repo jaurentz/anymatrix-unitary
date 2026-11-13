@@ -389,7 +389,79 @@ compressing arbitrary powers of $\mathcal U(T)$ need not yield $T^k$.
 Useful for conservative system matrices, passive control and dilation theory.
 **Reference:** [25].
 
-## F. Families reserved for future versions (not implemented)
+
+## F. Further real and complex OPUC matrix generators
+
+### 23. Generalized circular Jacobi — [`circular_jacobi.m`](../circular_jacobi.m)
+
+**Order:** $n$. **Structure:** unitary, sparse five-diagonal by default.
+For real $a>-1/2$ and $\eta\in\mathbb R$, the positive circle weight is
+proportional to $e^{(\pi-\theta)\eta}|1-e^{i\theta}|^{2a}$ for
+$0<\theta<2\pi$. With $b=a+i\eta$, the Verblunsky sequence is
+
+$
+\alpha_k=-\frac{(b)_{k+1}}{(1+\overline b)_{k+1}}.
+$
+
+At $\eta=0$ all coefficients are real; otherwise they are generally
+complex. Supports an explicitly prescribed nonuniform *vector* measure,
+but does not promise the same limiting unweighted phase density.
+The finite boundary $\beta$ is independent of the measure.
+**References:** [5, 12, 27].
+
+### 24. Rogers--Szego wrapped Gaussian — [`rogers_szego.m`](../rogers_szego.m)
+
+**Order:** $n$. **Structure:** real orthogonal if the terminal boundary is
+real. For $0<q<1$, the circle measure is a wrapped Gaussian with variance
+$-\log q$, and its Verblunsky coefficients satisfy
+
+$
+\alpha_k=(-1)^k q^{(k+1)/2}.
+$
+
+Its positive circular density is smooth and the $k$th Fourier moment is
+$q^{k^2/2}$. This is a nontrivial parameter-dependent real-coefficient
+OPUC benchmark with a known cyclic-vector measure. **References:** [5, 12].
+
+### 25. Constant Geronimus CMV — [`geronimus_cmv.m`](../geronimus_cmv.m)
+
+**Order:** $n$. **Structure:** unitary five-diagonal by default;
+orthogonal for real $a$ and real $\beta$. Use $\alpha_k=a$ for
+all $k\ge0$, $|a|<1$. In the infinite model the measure can have a
+proper absolutely continuous arc and a point mass. This generator
+tests finite approximations to arc gaps with complex coefficients.
+**References:** [5, 7].
+
+### 26. Periodic Verblunsky CMV — [`periodic_cmv.m`](../periodic_cmv.m)
+
+**Order:** $n$. **Structure:** sparse unitary. Repeat a nonempty
+complex or real coefficient pattern $a_0,\ldots,a_{p-1}$ with all
+$|a_j|<1$; close the first $n-1$ entries using a terminal unit
+phase. The infinite periodic theory has bands and gaps governed by
+a transfer-matrix discriminant. Boundary effects and finite eigenvalues
+must be kept distinct from the infinite spectral measure.
+**References:** [5, 7].
+
+### 27. Finite generalized Bernstein--Szego — [`bernstein_szego_finite.m`](../bernstein_szego_finite.m)
+
+**Order:** $n$. **Structure:** unitary, sparse five-diagonal by default.
+Specify a finite complex coefficient list $a_0,\ldots,a_{m-1}$
+strictly inside the disk and set $\alpha_k=0$ for $k\ge m$.
+With the associated reversed polynomial $\Phi_m^*$, the positive
+weight is
+
+$
+\frac{d\mu}{d\theta}=
+\frac{\prod_{j=0}^{m-1}(1-|a_j|^2)}
+{2\pi|\Phi_m^*(e^{i\theta})|^2}.
+$
+
+The previous one-coefficient Poisson family is a special case.
+These rational weights give arbitrarily chosen real or complex
+Schur parameters with an exact and evaluable cyclic-vector density.
+**References:** [5, 12].
+
+## G. Families reserved for future versions (not implemented)
 
 - **ETNA core-factor stress tests:** the five experimental constructions in
   Aurentz–Mach–Vandebril–Watkins (2015), including the nearly reducible Type
@@ -398,9 +470,9 @@ Useful for conservative system matrices, passive control and dilation theory.
 - **Rational and isometric Arnoldi:** pole sequences, orthonormal rational
   basis conventions, unitary closures and appropriate generalized matrices/
   pencils. Not every finite compression is unitary. [9, 10]
-- **Other OPUC measures:** constant and periodic coefficients, Rogers–Szegő,
-  additional Bernstein–Szegő weights, inverse spectral finite atomic measures
-  and matrix-valued/block CMV. [5, 12]
+- **Other OPUC measures:** positive Pastro and generalized $q$-weight
+  specializations, inverse spectral finite atomic measures, Aleksandrov
+  families, skew-shift parameters, and matrix-valued/block CMV. [5, 12]
 - **Additional signal-processing matrices:** normalized DCT/DST variants,
   Daubechies wavelets, paraunitary polyphase banks and lossless scattering.
   Boundary and frequency conventions must be specified before admitting a
@@ -437,3 +509,4 @@ Useful for conservative system matrices, passive control and dilation theory.
 24. N. J. Higham, “Computing the polar decomposition—with applications,” *SIAM J. Sci. Statist. Comput.* **7** (1986), 1160–1174. [DOI](https://doi.org/10.1137/0907079).
 25. B. Sz.-Nagy, *Unitary Dilations of Hilbert Space Operators and Related Topics*, CBMS 19, AMS, 1974. [DOI](https://doi.org/10.1090/CBMS/019).
 26. M. Szegedy, “Quantum speed-up of Markov chain based algorithms,” *Proc. FOCS* (2004), 32–41. [DOI](https://doi.org/10.1109/FOCS.2004.53).
+27. P. Bourgade, A. Nikeghbali and A. Rouault, “Circular Jacobi ensembles and deformed Verblunsky coefficients,” *Int. Math. Res. Not.* (2009). [DOI](https://doi.org/10.1093/imrn/rnp092).
