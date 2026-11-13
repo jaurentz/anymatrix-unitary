@@ -31,6 +31,7 @@ pull requests and manually dispatched workflows.
 | `test_opuc_extended` | Generalized circular Jacobi and Rogers–Szegő weights, finite Bernstein–Szegő, constant/periodic real-complex Verblunsky sequences, unitarity and finite closure |
 | `test_floquet_families` | Floquet unitarity, exact limits, spin-layer isospectrality, and Kitaev particle-hole symmetry |
 | `test_catalog` | Catalog/documentation completeness and consistency of Anymatrix property declarations |
+| `test_math_markup` | GitHub display-math fence consistency and guards against bare dollar delimiters / unsupported notation |
 
 ## Accuracy versus identity
 

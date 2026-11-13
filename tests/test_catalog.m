@@ -60,6 +60,6 @@ verifyFalse(testCase,contains(encyclopedia,'\\mathcal U(T)'));
 maths=fileread(fullfile(root,'docs','MATHEMATICS.md'));
 verifyFalse(testCase,contains(maths,'\['));
 verifyFalse(testCase,contains(maths,'\]'));
-verifyGreaterThan(testCase,count(maths,'$$'),6);
+verifyGreaterThan(testCase,count(maths,'```math'),6);
 end
 end
