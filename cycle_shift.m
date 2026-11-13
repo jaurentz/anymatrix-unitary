@@ -1,4 +1,4 @@
-function [U, properties] = cycle_shift(n)
+function [U, properties] = cycle_shift(n, output)
 %CYCLE_SHIFT Cyclic permutation matrix, a unitary test matrix.
 %   U = CYCLE_SHIFT(N) returns the N-by-N cyclic right shift, defined by
 %   U*e_j = e_{j+1} (indices are taken modulo N).
@@ -18,5 +18,10 @@ end
 validateattributes(n, {'numeric'}, {'scalar', 'integer', 'positive', 'finite'});
 j = 1:n;
 i = mod(j,n) + 1;
-U = sparse(i,j,1,n,n);
+if nargin<2,output='matrix';end
+if um_is_operator(output)
+    U=@(X,flag)um_monomial_apply(X,flag,i,ones(n,1));
+else
+    U = sparse(i,j,1,n,n);
+end
 end

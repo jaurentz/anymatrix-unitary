@@ -25,7 +25,7 @@ factor order under adjoints. No custom MATLAB matrix class is required.
 | Kernel | Families / mathematics | Storage |
 | --- | --- | --- |
 | `um_core_apply` | CMV, Hessenberg, inverse-Hessenberg, arbitrary twisted OPUC core chains and all Szegő coefficient families | O(n) |
-| `um_fft_apply` | Circulants, tight-binding cycle, kicked Harper/rotor, quantized baker | O(n) |
+| `um_monomial_apply` | Cyclic/permutation shifts, weighted shifts, and diagonal phase operators | O(n) |\n| `um_fft_apply` | Circulants, tight-binding cycle, kicked Harper/rotor, quantized baker | O(n) |
 | `um_gate_apply`, `um_circuit_apply` | Two-site qubit gates, XXZ and dual-unitary Floquet circuits | O(1) per local gate |
 | `um_spin_apply` | Floquet Ising chains | O(2^n) phase vector |
 | `um_reflection_apply` | Grover rank-one reflection | O(n) temporary memory |

@@ -94,6 +94,15 @@ check_operator(testCase,cayley_jacobi(1,0,0,.7), ...
     cayley_jacobi(1,0,0,.7,'operator'));
 end
 
+function test_monomial_permutations_and_diagonals(testCase)
+for n=[1 2 8 19]
+    check_operator(testCase,cycle_shift(n),cycle_shift(n,'operator'));
+    theta=.15*(1:n)';
+    check_operator(testCase,weighted_shift(n,theta),weighted_shift(n,theta,'operator'));
+    check_operator(testCase,diagonal_phase(n,theta),diagonal_phase(n,theta,'operator'));
+end
+end
+
 function test_larger_implicit_actions(testCase)
 n=1024;
 alpha=.2*exp(1i*(1:n-1)'*.1);
