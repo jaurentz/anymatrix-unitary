@@ -22,7 +22,7 @@ for number=1:46
     else
         for j=1:numel(dois)
             doi=dois{j};
-            verifyFalse(testCase,isempty(regexp(doi,'^10\\.[0-9]{4,9}/\\S+$','once')));
+            verifyFalse(testCase,isempty(regexp(doi,'^10\.[0-9]{4,9}/\S+$','once')));
             url=['https://doi.org/',doi];
             verifyTrue(testCase,contains(lower(encyclopedia),lower(url)), ...
                 sprintf('Unlisted DOI in bibliography reference %d',number));
