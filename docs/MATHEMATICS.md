@@ -197,7 +197,7 @@ produce complex unitary matrices. The generic interfaces therefore declare
 Additional representations motivated by isometric or rational Arnoldi
 require further basis/pole parameters and cannot always be described by
 simply permuting the same adjacent cores. They will use the shared measure
-and coefficient layers with new representation backends.
+and coefficient layers with additional representation backends.
 
 ## Real and complex OPUC expansions (November 2026)
 

@@ -840,7 +840,7 @@ finite-size one-point eigenphase density is asserted.
 
 This section gives independent finite matrix constructions. They are distinct
 from the FFT, wavelet and paraunitary filter-bank families discussed earlier;
-where a new generator is a specialized Fourier conjugation, the spectral
+where a generator specializes Fourier conjugation, the spectral
 redundancy is explicit. Frequencies of a **signal** are not to be mistaken for
 eigenphases of the **transform matrix**.
 
@@ -895,7 +895,7 @@ with **constant-modulus entries** $|U_{jk}|=n^{-1/2}$.
 The exact eigenvalues, including multiplicities, are
 $z_\ell=n^{-1/2}\mathop{\mathrm{fft}}(c)_\ell$.
 This is a restricted, application-derived subfamily of
-unitary circulants (not a new general matrix class).
+unitary circulants (not a distinct general matrix class).
 Applications: channel synchronization, radar/sonar pulse coding. [48]
 
 ### Discrete Fresnel transform — [`fresnel_transform.m`](../fresnel_transform.m)

@@ -108,11 +108,13 @@ assert(norm(full(U'*U-speye(16)),'fro') < 1e-12)
 
 The underlying Jacobi weight is proportional to `(1-t)^a (1+t)^b` on
 `[-1,1]`, `a,b > -1`. The symmetric Szegő lift under
-`x=2*t=z+z^(-1)` has the explicit Verblunsky sequence
+$x=2t=z+z^{-1}$ has the explicit Verblunsky sequence
 
-```text
-alpha_(2k)   =  (b-a)/(2k+a+b+2)
-alpha_(2k+1) = -(a+b+1)/(2k+a+b+3).
+```math
+\begin{aligned}
+\alpha_{2k}&=\frac{b-a}{2k+a+b+2},\\
+\alpha_{2k+1}&=-\frac{a+b+1}{2k+a+b+3}.
+\end{aligned}
 ```
 
 For a finite `n`-by-`n` realization, the first `n-1` coefficients are
@@ -140,7 +142,7 @@ remote-group installation, which clones the repository inside its own
 
 ## Additional real and complex OPUC measures
 
-Five new finite-matrix generators share the canonical measure-first pipeline:
+Five finite-matrix families share the canonical measure-first pipeline:
 
 ```matlab
 % Real orthogonal CMV from a wrapped Gaussian.
@@ -220,10 +222,10 @@ B = szego_matrix(mu,24,'cmv',1);
 
 ### Spectral-band examples
 
-The existing [quickstart](examples/quickstart.m) now pairs the
-measure-first Jacobi--Szego example with a **Dirac two-band model** and a
-matrix-free periodic CMV action. The expanded
-[spectral showcase](examples/showcase_new_families.m) includes:
+The [OPUC and spectral-gap quickstart](examples/quickstart.m) combines
+measure-first Jacobi--Szego construction, a **Dirac two-band model**, and a
+matrix-free periodic CMV action. The
+[unit-circle spectral-band examples](examples/unit_circle_spectral_bands.m) cover:
 
 - Exactly prescribed finite spectral arcs (via `phase_circulant`).
 - The Dirac automaton's two gapped bands, exact finite eigenphases and
@@ -239,7 +241,7 @@ From the repository root, run:
 addpath(pwd);
 run('examples/quickstart.m');
 plotSpectralBands = true;    % use false for batch runs
-run('examples/showcase_new_families.m');
+run('examples/unit_circle_spectral_bands.m');
 ```
 
 For periodic CMV and Geronimus, the theoretical bands describe the
@@ -251,8 +253,8 @@ or densities.
 
 ## Signal-processing matrix-free examples
 
-All eight new generators return numeric matrices by default or a function
-handle with a final `'operator'` argument, following the existing
+The eight signal-processing generators below return numeric matrices by
+default or a function handle with a final `'operator'` argument, following the
 [matrix-free convention](docs/MATRIX_FREE.md).
 
 ```matlab
@@ -275,10 +277,11 @@ The conventional discrete Hilbert filter with zero DC/Nyquist
 multipliers is not unitary on the entire space. Our finite completed
 version assigns unimodular signs. Signal-frequency variables must
 not be confused with eigenphases of the transform matrix.
-### Further transforms
+### Fourier, sine, Walsh, Slepian, and graph transforms
 
-Five additional families are available: normalized DFT, orthonormal DST I–IV,
-natural/sequency-ordered Walsh–Hadamard, DPSS/Slepian, and graph Fourier.
+The normalized DFT, orthonormal DST I–IV, natural/sequency-ordered
+Walsh–Hadamard, DPSS/Slepian, and graph Fourier provide complementary
+signal-processing transform families.
 
 ```matlab
 S = discrete_sine(24,4);           % real orthogonal DST-IV

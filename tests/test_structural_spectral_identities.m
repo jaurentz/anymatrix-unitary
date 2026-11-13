@@ -1,5 +1,5 @@
-function tests=test_new_families
-%TEST_NEW_FAMILIES Algebraic/spectral reference tests for new generators.
+function tests=test_structural_spectral_identities
+%TEST_STRUCTURAL_SPECTRAL_IDENTITIES Algebraic and exact-spectrum checks for matrix families.
 tests=functiontests(localfunctions);
 end
 

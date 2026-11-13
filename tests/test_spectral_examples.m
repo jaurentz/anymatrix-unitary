@@ -9,7 +9,7 @@ script=fullfile(root,'examples','quickstart.m');
 if ~isfile(script)
     % Upstream Anymatrix installs group tests but not examples/.
     % Check an equivalent exact Dirac gap instead; other tests below
-    % independently verify the formulas used by the showcase.
+    % independently verify the formulas used by the spectral-band examples.
     D=dirac_automaton(16,.45);
     verifyGreaterThanOrEqual(testCase, ...
         min(abs(angle(eig(full(D))))),asin(.45)-1e-12);
@@ -25,9 +25,9 @@ verifyEqual(testCase,Pop([],'size'),[48,48]);
 verifyLessThan(testCase,abs(sum(weights)-1),1e-12);
 end
 
-function test_showcase_without_plot(testCase)
+function test_unit_circle_spectral_bands_without_plot(testCase)
 root=fileparts(fileparts(mfilename('fullpath')));
-script=fullfile(root,'examples','showcase_new_families.m');
+script=fullfile(root,'examples','unit_circle_spectral_bands.m');
 if ~isfile(script)
     % The installed Anymatrix group omits example scripts. Verify a
     % numerical periodic-CMV unitary here; the discriminant and

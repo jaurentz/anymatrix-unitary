@@ -33,7 +33,7 @@ No uniformly O(n)-time or certified arbitrary-tolerance claim is made.
 The *explicit* Bose–Hubbard and kicked-top generators call MATLAB **`expm`**
 on a sparse Hermitian-tridiagonal input; the result is generally dense.
 Matrix-free mode never constructs that full exponential.
-Both new sparse families retain their sparse numeric defaults.
+Jaynes–Cummings and Chalker–Coddington retain their sparse numeric defaults.
 
 ## Already economical as MATLAB sparse arrays
 
