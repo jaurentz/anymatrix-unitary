@@ -8,7 +8,7 @@ root=fileparts(fileparts(mfilename('fullpath')));
 raw=fileread(fullfile(root,'metadata','catalog.json'));
 meta=jsondecode(raw);
 entries=meta.matrix_families;
-verifyEqual(testCase,numel(entries),31);
+verifyEqual(testCase,numel(entries),34);
 ids={entries.id};
 verifyEqual(testCase,numel(unique(ids)),numel(ids));
 encyclopedia=fileread(fullfile(root,'docs','MATRIX_ENCYCLOPEDIA.md'));
@@ -55,11 +55,10 @@ encyclopedia=fileread(fullfile(root,'docs','MATRIX_ENCYCLOPEDIA.md'));
 verifyTrue(testCase,contains(encyclopedia,'## Bibliography'));
 verifyTrue(testCase,contains(encyclopedia,'## General conventions'));
 verifyTrue(testCase,contains(encyclopedia,'```math'));
-verifyTrue(testCase,contains(encyclopedia,'\\lVert T\\rVert'));
-verifyFalse(testCase,contains(encyclopedia,'\\mathcal U(T)'));
+verifyTrue(testCase,contains(encyclopedia,'\lVert T\rVert'));
+verifyFalse(testCase,contains(encyclopedia,'\mathcal U(T)'));
 maths=fileread(fullfile(root,'docs','MATHEMATICS.md'));
 verifyFalse(testCase,contains(maths,'\['));
 verifyFalse(testCase,contains(maths,'\]'));
 verifyGreaterThan(testCase,count(maths,'```math'),6);
-end
 end

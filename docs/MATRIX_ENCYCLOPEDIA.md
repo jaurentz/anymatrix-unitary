@@ -550,7 +550,119 @@ quasienergies $0$ or $\pi$; their presence is not universal.
 Periodic $n=2$ is disallowed to avoid double-bond ambiguity.
 **References:** [33, 34].
 
-## H. Families reserved for future versions (not implemented)
+## H. Further quantum Floquet maps and Yang–Baxter circuits
+
+### 32. Quantum kicked rotor — [`kicked_rotor.m`](../kicked_rotor.m)
+
+**Order:** $n$, with normalized negative-exponent Fourier matrix $F_n$.
+**Structure:** dense but explicitly factored into unitary Fourier and diagonal
+stages. On the finite Fourier grid, define
+
+```math
+U_F=D_pF_n^*D_xF_n,\qquad
+(D_p)_{kk}=\exp(-i\hbar k^2/2),\qquad
+(D_x)_{jj}=\exp[-i(K/\hbar)\cos(2\pi(j+\eta)/n)],
+```
+
+for $j,k=0,\ldots,n-1$. The momentum labels are **uncentered** and
+$\eta$ is a position-grid offset, not a general Bloch-twist parameter.
+Default $\hbar=2\pi/n$, $K=5$, and $\eta=0$.
+All factors are unitary, independently of finite $n$. The zero-kick
+spectrum is known exactly:
+
+```math
+\sigma(U_F|_{K=0})=\{\exp(-i\hbar k^2/2):0\le k<n\}.
+```
+
+For nonzero kick strength, quasienergy statistics, clustering, and
+localization-like behavior depend on dimension and the quantization
+convention; no universal finite-size density is asserted.
+This is a **specified finite-grid model**, not an arbitrary principal
+truncation of the infinite kicked-rotor operator, and should not be
+identified with every possible twisted torus quantization.
+Applications: quantum chaos, phase aliasing and DFT-based matrix tests.
+**Reference:** [35].
+
+### 33. Dual-unitary brickwork Floquet circuits — [`dual_unitary_circuit.m`](../dual_unitary_circuit.m)
+
+**Order:** $2^n$ for $n$ qubits; dense matrices are capped at $n=10$.
+Each elementary two-qubit gate is
+
+```math
+G(\chi,a,b,c,d)=
+(R_y(a)\otimes R_z(b))\,S\,
+e^{-i\chi Z\otimes Z}\,
+(R_z(c)\otimes R_y(d)),
+```
+
+where $S$ swaps the two qubits and $R_{y,z}$ denote single-qubit
+rotations. This choice is **dual-unitary**: $G^*G=I_4$ and its
+space–time reshuffling is also unitary. In explicit indices, define
+$\widetilde G_{(a,c),(b,d)}=G_{(a,b),(c,d)}$, where the indices range over
+$\{0,1\}$. Dual unitarity of the *local gate* does **not** mean
+that the full many-body circuit is itself a dual-unitary $4\times4$
+matrix or has a fixed one-point spectral law.
+
+A Floquet period applies disjoint odd bonds first and even bonds
+second, then repeats this period a nonnegative integer number of times.
+Open boundaries are available for all $n\ge2$; periodic wrap bonds
+require even $n\ge4$. The default is periodic for even $n\ge4$ and
+open otherwise. For $n=2$ and open boundaries, the matrix is a single
+two-qubit gate when depth is one; at zero depth it is the identity.
+Spatially homogeneous fixed-angle gates are deterministic and do not
+automatically inherit random-matrix claims derived for disordered
+dual-unitary circuit ensembles.
+
+Applications: structured many-body spectral problems, local
+space–time-duality checks, products of low-order gates, and spectral-form-
+factor experiments with appropriately chosen randomness.
+**References:** [36, 37].
+
+### 34. Integrable XXZ Floquet circuits — [`xxz_floquet.m`](../xxz_floquet.m)
+
+**Order:** $2^n$ for $n$ spin-$1/2$ sites, capped at $n=10$ for
+dense assembly. For real rapidity $u$, anisotropy $0<\gamma<\pi$,
+and $\Delta=\cos\gamma$, define
+
+```math
+\rho=\sqrt{\sinh^2 u+\sin^2\gamma},\qquad
+\check R(u,\gamma)=\frac{1}{\rho}
+\begin{pmatrix}
+\sinh(u+i\gamma)&0&0&0\\
+0&i\sin\gamma&\sinh u&0\\
+0&\sinh u&i\sin\gamma&0\\
+0&0&0&\sinh(u+i\gamma)
+\end{pmatrix}.
+```
+
+This is a normalized, **unitary** checked six-vertex
+$R$-matrix. It also satisfies the braid-form Yang–Baxter equation,
+
+```math
+\check R_{12}(u)\check R_{23}(u+v)\check R_{12}(v)
+=\check R_{23}(v)\check R_{12}(u+v)\check R_{23}(u).
+```
+
+The finite Floquet step is $U_F=U_{\rm even}U_{\rm odd}$, where the
+odd and even bond layers comprise copies of this gate. For periodic
+boundaries, $n$ must be even and at least four, with oriented wrap bond
+$(n,1)$. Open boundaries are an explicitly specified finite-circuit
+extension; integrable reflection-boundary conditions are **not**
+automatically claimed for that case.
+
+The gate and hence the global evolution preserve total $Z$ magnetization,
+so sector-resolved spectra can differ substantially from the full
+eigenphase measure. At $u=0$ the local gate equals $iI_4$ and the entire
+operator is a known scalar phase: $i^nI$ (even periodic $n$) or
+$i^{n-1}I$ (open $n$). This gives exact spectral and degeneracy checks.
+Default $u=0.6$, $\gamma=\pi/3$; default boundaries are periodic
+for even $n\ge4$ and open otherwise.
+
+Applications: Yang–Baxter-integrable interacting Floquet operators,
+conservation-law sectors, and test cases contrasting integrable and
+chaotic many-body spectral statistics. **References:** [38, 39].
+
+## I. Families reserved for future versions (not implemented)
 
 - **ETNA core-factor stress tests:** the five experimental constructions in
   Aurentz–Mach–Vandebril–Watkins (2015), including the nearly reducible Type
@@ -606,3 +718,8 @@ Periodic $n=2$ is disallowed to avoid double-bond ambiguity.
 32. B. Bertini, P. Kos and T. Prosen, “Exact spectral form factor in a minimal model of many-body quantum chaos,” *Phys. Rev. Lett.* **121** (2018), 264101. [DOI](https://doi.org/10.1103/PhysRevLett.121.264101).
 33. D. J. Yates and A. Mitra, “Entanglement properties of the time-periodic Kitaev chain,” *Phys. Rev. B* **96** (2017), 115108. [DOI](https://doi.org/10.1103/PhysRevB.96.115108).
 34. M. van Caspel, S. E. Tapias Arze and I. Pérez Castillo, “Dynamical signatures of topological order in the driven-dissipative Kitaev chain,” *SciPost Phys.* **6** (2019), 026 (closed-system Floquet discussion in §4). [DOI](https://doi.org/10.21468/SciPostPhys.6.2.026).
+35. F. M. Izrailev, “Simple models of quantum chaos: Spectrum and eigenfunctions,” *Phys. Rep.* **196** (1990), 299–392. [DOI](https://doi.org/10.1016/0370-1573(90)90067-C).
+36. B. Bertini, P. Kos and T. Prosen, “Exact correlation functions for dual-unitary lattice models in 1+1 dimensions,” *Phys. Rev. Lett.* **123** (2019), 210601. [DOI](https://doi.org/10.1103/PhysRevLett.123.210601).
+37. B. Bertini, P. Kos and T. Prosen, “Random matrix spectral form factor of dual-unitary quantum circuits,” *Commun. Math. Phys.* **387** (2021), 597–620. [DOI](https://doi.org/10.1007/s00220-021-04139-2).
+38. E. Vernier, H.-C. Yeh, L. Piroli and A. Mitra, “Strong zero modes in integrable quantum circuits,” *Phys. Rev. Lett.* **133** (2024), 050606. [DOI](https://doi.org/10.1103/PhysRevLett.133.050606).
+39. J.-S. Caux, “The Bethe Ansatz: Another example: the trigonometric R-matrix and the XXZ model.” *The Bethe Ansatz* online reference (2024). [Source](https://integrability.org/a_xxz.html).
