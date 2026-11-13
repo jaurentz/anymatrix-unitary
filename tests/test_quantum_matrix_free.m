@@ -21,6 +21,40 @@ for n=[1 2 3 7 17 70]
 end
 end
 
+
+function test_sparse_generator_and_builtin_expmv(testCase)
+% EXPM of a sparse tridiagonal is generally full, but EXPMV need not
+% form that exponential. Check explicit, MATLAB and fallback actions.
+s=rng;cleanup=onCleanup(@()rng(s)); %#ok<NASGU>
+rng(37,'twister');
+hasExpmv=exist('expmv','file')~=0 || exist('expmv','builtin')~=0;
+for n=[1 2 8 23]
+    d=.17*sin((1:n)'*.27);
+    u=.2*exp(1i*(1:n-1)'*.39);
+    H=um_sparse_hermitian_tridiag(d,u);
+    verifyTrue(testCase,issparse(H));
+    verifyEqual(testCase,size(H),[n n]);
+    verifyLessThanOrEqual(testCase,nnz(H),3*n-2);
+    verifyLessThan(testCase,norm(H-H','fro'),1e-14);
+    X=randn(n,3)+1i*randn(n,3);
+    for t=[-.91 0 .73]
+        E=full(expm(-1i*t*H));
+        Y=E*X;
+        B=um_tridiag_exp_apply(X,d,u,t,'chebyshev');
+        verifyLessThan(testCase,norm(B-Y,'fro'), ...
+            5e-11*max(1,norm(X,'fro')));
+        A=um_tridiag_exp_apply(X,d,u,t);
+        verifyLessThan(testCase,norm(A-Y,'fro'), ...
+            5e-11*max(1,norm(X,'fro')));
+        if hasExpmv
+            M=um_tridiag_exp_apply(X,d,u,t,'expmv');
+            verifyLessThan(testCase,norm(M-Y,'fro'), ...
+                5e-11*max(1,norm(X,'fro')));
+        end
+    end
+end
+end
+
 function test_bose_matrix_free_vs_explicit(testCase)
 for n=[0 1 2 3 8 16]
     for parameters={[.7 .4 .81 1.27 .3],[1.1 .05 -.6 .5 -.2], ...

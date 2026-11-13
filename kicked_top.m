@@ -6,7 +6,7 @@ function [U,properties] = kicked_top(n,kappa,p,output)
 %   At p=0 the eigenvalues are exact diagonal twist phases.
 %   At kappa=0 the eigenvalues are exp(-1i*p*m), m=-j,...,j.
 %   Final OUTPUT='operator' reuses UM_KICK_TRIDIAG_APPLY for a
-%   matrix-free, accuracy-controlled spin-j tridiagonal rotation.
+%   sparse-tridiagonal EXPMV spin rotation (Chebyshev fallback).
 %   References: F. Haake, Quantum Signatures of Chaos (2010);
 %   V. M. Bastidas et al., Phys. Rev. Lett. 112 (2014), 140408.
 properties={'square','unitary','normal','complex','scalable','parameter-dependent'};
@@ -26,8 +26,7 @@ if implicit
     U=@(X,flag)um_kick_tridiag_apply(X,flag,phase,zeros(n,1),upper(:),p);
     return
 end
-raising=diag(sqrt((1:n-1).*(n-(1:n-1))),1);
-Jy=(raising-raising')/(2i);
-twist=diag(exp(-1i*kappa*(m.^2)/(2*j)));
-U=twist*expm(-1i*p*Jy);
+% The Hermitian spin generator is sparse; EXPM produces a dense rotation.
+Jy=um_sparse_hermitian_tridiag(zeros(n,1),upper(:));
+U=bsxfun(@times,phase,full(expm(-1i*p*Jy)));
 end

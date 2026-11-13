@@ -295,8 +295,8 @@
         29
       ],
       "matrix_free_supported": true,
-      "operator_kernel": "um_kick_tridiag_apply / um_tridiag_exp_apply",
-      "operator_note": "Spin-Jy exponential via Chebyshev-Bessel action of Hermitian tridiagonal generator; O(n) storage, time increases with |p|*spin."
+      "operator_kernel": "um_sparse_hermitian_tridiag / um_kick_tridiag_apply / um_tridiag_exp_apply",
+      "operator_note": "Sparse Hermitian-tridiagonal spin generator; MATLAB expmv from R2023b, Chebyshev-Bessel fallback before R2023b. Explicit expm on sparse generator yields a generally dense matrix."
     },
     {
       "id": "floquet_ising",
@@ -398,8 +398,8 @@
         41
       ],
       "matrix_free_supported": true,
-      "operator_kernel": "um_kick_tridiag_apply / um_tridiag_exp_apply",
-      "operator_note": "Tridiagonal Hermitian exponential via Chebyshev-Bessel recurrence; O(n) coefficient storage and O(n*RHS) working memory, time proportional to Bessel truncation order."
+      "operator_kernel": "um_sparse_hermitian_tridiag / um_kick_tridiag_apply / um_tridiag_exp_apply",
+      "operator_note": "Sparse Hermitian-tridiagonal hopping generator; MATLAB expmv from R2023b, Chebyshev-Bessel fallback on older releases. Explicit expm returns a generally dense matrix."
     },
     {
       "id": "jaynes_cummings",

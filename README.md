@@ -15,6 +15,10 @@ for the current branch status.
 
 Requires **MATLAB R2020b or later**, with no additional MATLAB toolboxes for
 these generators or tests.
+The tridiagonal matrix-free action uses MATLAB `expmv` on R2023b and later;
+on R2020b–R2023a the shared kernel falls back to Chebyshev–Bessel.
+For explicit Bose–Hubbard and kicked-top matrices, `expm` receives a sparse
+Hermitian-tridiagonal generator but produces a generally dense propagator.
 
 ```bash
 git clone https://github.com/jaurentz/anymatrix-unitary.git

@@ -17,7 +17,7 @@ actions. MATLAB numeric matrices remain the default Anymatrix output.
 | `floquet_ising`, `selfdual_kicked_ising` | `um_spin_apply` | O(2^n) phases | O(n 2^n) |
 | `dual_unitary_circuit`, `xxz_floquet` | `um_circuit_apply` | O(n) local gates | O(depth n 2^n) |
 | `cayley_jacobi` | `um_cayley_apply` | O(n) sparse factors (typically) | O(n) |
-| `kicked_bose_hubbard`, `kicked_top` | `um_kick_tridiag_apply` + `um_tridiag_exp_apply` | O(n) coefficient data and O(n·RHS) workspace | O(n·m·RHS), m is Chebyshev truncation order |
+| `kicked_bose_hubbard`, `kicked_top` | `um_kick_tridiag_apply` + `um_tridiag_exp_apply` (`expmv`/fallback) | O(n) coefficient data and O(n·RHS) workspace | O(n·m·RHS), m is Chebyshev truncation order |
 | `jaynes_cummings` | `um_jaynes_apply` | O(n) excitation block coefficients | O(n·RHS) |
 | `chalker_coddington` | `um_cc_geometry` + `um_scattering_apply` | O(n) scattering ports, phases, and blocks | O(n·RHS) |
 
@@ -26,10 +26,13 @@ The final `'operator'` argument returns `@(X,flag) ...`; valid flags are
 and `'size'`. Multiple right-hand sides are supported. Materialize
 an n-by-n matrix using `op(eye(n),'notransp')` only when memory allows.
 
-The Hermitian-tridiagonal exponential uses a Chebyshev–Bessel series with
-a numerical tail cutoff, not a guaranteed optimal or certified exponential
-action. Operator mode does not claim **O(n)** arithmetic uniformly in time,
-or exact unitarity of a truncated series: the explicit reference uses EXPM.
+The Hermitian-tridiagonal exponential defaults to MATLAB's **`expmv`**
+(R2023b and later), using a sparse tridiagonal matrix. For R2020b–R2023a,
+a Chebyshev–Bessel fallback with numerical tail selection remains available.
+No uniformly O(n)-time or certified arbitrary-tolerance claim is made.
+The *explicit* Bose–Hubbard and kicked-top generators call MATLAB **`expm`**
+on a sparse Hermitian-tridiagonal input; the result is generally dense.
+Matrix-free mode never constructs that full exponential.
 Both new sparse families retain their sparse numeric defaults.
 
 ## Already economical as MATLAB sparse arrays

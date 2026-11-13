@@ -478,11 +478,12 @@ Both factors are unitary. At $p=0$ the eigenvalues are
 $\exp(-i\kappa m^2/(2j))$; at $\kappa=0$ they are $\exp(-ipm)$.
 Otherwise the quasienergies vary with torsion and rotation.
 Applications: quantum chaos and dense small-to-medium spectral tests.
-The spin rotation can also be applied without forming a dense matrix by
-choosing final output `'operator'`; the Hermitian-tridiagonal exponential
-action uses the same shared Chebyshev–Bessel kernel as the Bose–Hubbard
-dimer. This is a truncation-controlled numerical action, not a claim that
-an arbitrary spin-$j$ exponential has a closed-form $O(n)$ action.
+The spin rotation can also be applied without forming a dense matrix
+using final output `'operator'`. This uses the same sparse Hermitian-
+tridiagonal generator and `expmv` action as the Bose–Hubbard dimer
+(MATLAB R2023b+), with a Chebyshev–Bessel fallback on older releases.
+Explicit mode uses `expm` of a sparse tridiagonal generator, whose
+exponential is generally dense. No uniformly $O(n)$-time action is claimed.
 **References:** [28, 29].
 
 ### 29. Integrable kicked Ising chain — [`floquet_ising.m`](../floquet_ising.m)
@@ -698,6 +699,11 @@ E_k=\frac{g}{2}\bigl[k(k-1)+(n-k)(n-k-1)\bigr]
 and the hopping Hamiltonian is real symmetric tridiagonal, with
 adjacent off-diagonal entries $-J\sqrt{(k+1)(n-k)}$.
 Thus both factors are exactly unitary mathematically.
+In explicit mode the Hermitian tridiagonal hopping generator is assembled
+as a MATLAB sparse matrix and passed to `expm`; the exponential itself
+is generally dense. In matrix-free mode MATLAB `expmv` (R2023b+) acts on
+that sparse generator without forming the exponential, with a
+Chebyshev–Bessel fallback for older MATLAB releases.
 This is a number-conserving **many-boson** operator of order $n+1$,
 rather than a $2^n$ spin-chain matrix.
 

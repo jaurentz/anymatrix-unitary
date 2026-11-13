@@ -51,11 +51,19 @@ Already economical sparse families (e.g., the cyclic shifts, the Dirac
 automaton, and the split-step walk) retain their sparse defaults and do not
 need redundant custom matvec algorithms. General Haar and polar-factor
 matrices remain dense. The kicked-top generator now reuses the Hermitian-tridiagonal exponential
-kernel developed for the two-mode Bose–Hubbard dimer. The Chebyshev–Bessel
-action uses O(n) storage and has a numerically selected Bessel cutoff;
-its arithmetic cost grows with the spectral time range, and it is **not**
-a certified arbitrary-tolerance expmv routine. For a dense explicit matrix,
-the original EXPM construction remains available as an independent reference.
+kernel developed for the two-mode Bose–Hubbard dimer. In MATLAB R2023b and later,
+its implicit mode assembles a sparse Hermitian-tridiagonal generator and
+uses MathWorks `expmv` separately for each right-hand side. The repository's
+R2020b minimum is preserved by a Chebyshev–Bessel fallback if `expmv`
+is unavailable. The fallback is selected using a numerical Bessel-tail
+criterion, not a certified tolerance bound. With either method, arithmetic
+cost depends on the spectral time range; no uniformly linear-time claim
+is made.
+
+The **explicit** Bose–Hubbard and kicked-top paths also construct sparse
+tridiagonal generators, then call MATLAB `expm`. Their exponential matrices
+are generally **dense** and must be stored as such. Sparse generator storage
+does not make `expm(H)` a sparse matrix.
 
 Jaynes–Cummings and Chalker–Coddington retain their economical **sparse
 numeric defaults**. Their optional implicit modes use analytic two-state

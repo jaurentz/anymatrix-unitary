@@ -12,7 +12,8 @@ function [U,properties] = kicked_bose_hubbard(n,J,g,tau_hop,tau_kick,bias,output
 %   evaluated explicitly, not by truncating a nonunitary propagator.
 %   With final OUTPUT='operator', return a matrix-free function handle
 %   for both forward and conjugate-adjoint actions. The hopping action
-%   uses the shared tridiagonal Chebyshev-Bessel exponential kernel.
+%   uses sparse tridiagonal EXPMV (MATLAB R2023b+) with a
+%   Chebyshev-Bessel fallback on older releases.
 %
 %   Defaults: J=1, G=.4, TAU_HOP=1, TAU_KICK=1, BIAS=.17.
 %   With G=BIAS=0 the exact eigenvalues are
@@ -54,6 +55,8 @@ if implicit
     U=@(X,flag)um_kick_tridiag_apply(X,flag,phase,zeros(n+1,1),upper,tau_hop);
     return
 end
-Hhop=-J*(diag(hop,1)+diag(hop,-1));
-U=bsxfun(@times,exp(-1i*tau_kick*E),expm(-1i*tau_hop*Hhop));
+% The generator is sparse tridiagonal; its matrix exponential is
+% generally dense. EXPM is used only for the explicit output.
+Hhop=um_sparse_hermitian_tridiag(zeros(n+1,1),-J*hop);
+U=bsxfun(@times,exp(-1i*tau_kick*E),full(expm(-1i*tau_hop*Hhop)));
 end

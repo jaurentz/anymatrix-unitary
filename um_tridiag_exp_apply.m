@@ -1,18 +1,17 @@
-function Y=um_tridiag_exp_apply(X,d,u,t)
-%UM_TRIDIAG_EXP_APPLY Matrix-free exponential of Hermitian tridiagonal H.
-%   Y=UM_TRIDIAG_EXP_APPLY(X,D,U,T) returns exp(-1i*T*H)*X,
-%   where H has real diagonal D, upper diagonal U and lower
-%   diagonal conj(U). No dense eigendecomposition or EXPM is formed.
+function Y=um_tridiag_exp_apply(X,d,u,t,method)
+%UM_TRIDIAG_EXP_APPLY Hermitian-tridiagonal exponential times columns.
+%   Y=UM_TRIDIAG_EXP_APPLY(X,D,U,T) computes exp(-1i*T*H)*X for
+%   sparse Hermitian tridiagonal H with diagonal D and superdiagonal U.
 %
-%   Uses the Chebyshev-Bessel series on a Gershgorin spectral interval,
-%   with a numerically selected tail cutoff. The kernel stores O(n)
-%   coefficients and O(n*number_of_rhs) working arrays. Computation
-%   scales with the spectral radius times |T|; it is not uniformly
-%   O(n) arithmetic for an arbitrary time or spectral range.
+%   On MATLAB R2023b+ the default calls MathWorks EXPMV, one column
+%   at a time, with a sparse H. Unlike EXPM it does not form exp(H).
+%   On older MATLAB (repository minimum R2020b), a Chebyshev-Bessel
+%   exponential action provides a compatible fallback.
+%   Internal optional METHOD='chebyshev' tests that fallback explicitly,
+%   and METHOD='expmv' requests the MathWorks implementation.
 %
-%   The cutoff estimate checks a generously extended Bessel sequence;
-%   numerical truncation error is typically near roundoff in tested
-%   regimes. It is NOT a certified arbitrary-precision expmv routine.
+%   Neither action is an exactly unitary finite matrix operation in
+%   floating point; the mathematical propagator is unitary.
 d=d(:);
 u=u(:);
 n=numel(d);
@@ -26,6 +25,31 @@ end
 if ~isnumeric(X) || ndims(X)>2 || size(X,1)~=n
     error('um_tridiag_exp_apply:Dimension','Input must have n rows.');
 end
+if nargin<5 || isempty(method),method='auto';end
+if ~(ischar(method) || (isstring(method) && isscalar(method)))
+    error('um_tridiag_exp_apply:Method','Method must be auto, expmv or chebyshev.');
+end
+method=lower(char(method));
+if ~any(strcmp(method,{'auto','expmv','chebyshev'}))
+    error('um_tridiag_exp_apply:Method','Unknown exponential-action method.');
+end
+hasExpmv=exist('expmv','file')~=0 || exist('expmv','builtin')~=0;
+useExpmv=strcmp(method,'expmv') || (strcmp(method,'auto') && hasExpmv);
+if useExpmv
+    if ~hasExpmv
+        error('um_tridiag_exp_apply:Availability', ...
+              'EXPMV requires MATLAB R2023b or later.');
+    end
+    if t==0,Y=X;return;end
+    H=um_sparse_hermitian_tridiag(d,u);
+    A=-1i*H;
+    Y=complex(zeros(size(X)));
+    for j=1:size(X,2)
+        Y(:,j)=expmv(A,X(:,j),t);
+    end
+    return
+end
+% Compatible R2020b fallback: Chebyshev-Bessel on a spectral enclosure.
 c=(max(d)+min(d))/2;
 a=max(abs(d-c));
 if ~isempty(u),a=a+2*max(abs(u));end
