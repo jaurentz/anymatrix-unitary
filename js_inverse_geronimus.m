@@ -5,6 +5,8 @@ function alpha = js_inverse_geronimus(diagJ,subJ,count)
 %   Requires at least floor(K/2)+1 diagonal and floor(K/2) subdiagonal
 %   Jacobi coefficients. This is an independent check against the
 %   explicit Jacobi-Szego Verblunsky formula.
+%   Primary reference DOI / stable reference:
+%   https://doi.org/10.1090/S0273-0979-05-01075-X
 validateattributes(count,{'numeric'},{'scalar','integer','nonnegative'});
 alpha = zeros(count,1);
 if count == 0, return; end

@@ -4,6 +4,8 @@ function [diagJ,subJ] = js_forward_geronimus(alpha,m)
 %   Requires alpha_0,...,alpha_(2*m-1). Output has m diagonal and
 %   m positive subdiagonal values, including the coupling beyond an
 %   m-by-m principal Jacobi section.
+%   Primary reference DOI / stable reference:
+%   https://doi.org/10.1090/S0273-0979-05-01075-X
 validateattributes(m,{'numeric'},{'scalar','integer','nonnegative'});
 assert(isreal(alpha) && all(abs(alpha(:))<1), ...
     'Forward Geronimus requires real interior Verblunsky coefficients.');

@@ -4,6 +4,8 @@ function mu = szego_geronimus_measure(a)
 %   Its spectral measure can include an absolutely continuous arc and
 %   a point mass. No universal full-circle density is implied.
 %   Reference: Simon, OPUC (2005), Example 1.6.12.
+%   Primary reference DOI / stable reference:
+%   https://doi.org/10.1090/coll054.1
 if nargin<1 || isempty(a),a=0.3+0.2i;end
 validateattributes(a,{'numeric'},{'scalar','finite'});
 if abs(a)>=1,error('szego_geronimus_measure:Alpha','A must lie in the open disk.');end

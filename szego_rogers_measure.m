@@ -3,6 +3,8 @@ function mu = szego_rogers_measure(q)
 %   0<Q<1. The wrapped Gaussian variance is -log(Q) and
 %   alpha_k=(-1)^k*Q^((k+1)/2), k>=0 (real Verblunsky coefficients).
 %   Reference: Simon, OPUC (2005), Example 1.6.5.
+%   Primary reference DOI / stable reference:
+%   https://doi.org/10.1090/coll054.1
 if nargin<1 || isempty(q),q=0.6;end
 validateattributes(q,{'numeric'},{'scalar','real','finite','>',0,'<',1});
 mu=struct('family','rogers_szego','measure_type','absolutely_continuous', ...
