@@ -1089,20 +1089,20 @@ filtering and irregular-domain data analysis. [57]
 
 ## Bibliography
 
-1. P. J. Davis, *Circulant Matrices*, Wiley, 1979.
-2. N. W. Ashcroft and N. D. Mermin, *Solid State Physics*, Holt, Rinehart and Winston, 1976.
+1. P. J. Davis, *Circulant Matrices*, Wiley, 1979. ISBN 9780471057710. [Library record](https://openlibrary.org/books/OL4407364M/Circulant_matrices).
+2. N. W. Ashcroft and N. D. Mermin, *Solid State Physics*, Holt, Rinehart and Winston, 1976. ISBN 9780030839931. [Book record](https://books.google.com/books?id=1C9HAQAAIAAJ).
 3. S. Mataigne and K. A. Gallivan, “The eigenvalue decomposition of normal matrices by the skew-symmetric part,” *Electron. J. Linear Algebra* **42** (2026), 349–386. [DOI](https://doi.org/10.13001/ela.2026.9957).
 4. J. L. Aurentz, T. Mach, L. Robol, R. Vandebril and D. S. Watkins, *Core-Chasing Algorithms for the Eigenvalue Problem*, SIAM, 2018. [DOI](https://doi.org/10.1137/1.9781611975345).
-5. B. Simon, *Orthogonal Polynomials on the Unit Circle*, Vols. 1–2, AMS, 2005. [AMS](https://www.ams.org/books/coll/054.1/).
+5. B. Simon, *Orthogonal Polynomials on the Unit Circle*, AMS Colloquium Publications **54**, 2005: Part 1, *Classical Theory* [DOI](https://doi.org/10.1090/coll054.1); Part 2, *Spectral Theory* [DOI](https://doi.org/10.1090/coll/054.2).
 6. M. J. Cantero, L. Moral and L. Velázquez, “Five-diagonal matrices and zeros of orthogonal polynomials on the unit circle,” *Linear Algebra Appl.* **362** (2003), 29–56. [DOI](https://doi.org/10.1016/S0024-3795(02)00457-3).
 7. B. Simon, “CMV matrices: Five years after,” *J. Comput. Appl. Math.* **208** (2007), 120–154. [DOI](https://doi.org/10.1016/j.cam.2006.10.033).
 8. J. L. Aurentz, T. Mach, R. Vandebril and D. S. Watkins, “Fast and stable unitary QR algorithm,” *Electron. Trans. Numer. Anal.* **44** (2015), 327–341. [ETNA](https://etna.ricam.oeaw.ac.at/volumes/2011-2020/vol44/abstract.php?pages=327-341).
 9. A. Bultheel, M. J. Cantero and R. Cruz-Barroso, “Matrix methods for quadrature formulas on the unit circle: A survey,” *J. Comput. Appl. Math.* **284** (2015), 78–100. [DOI](https://doi.org/10.1016/j.cam.2014.11.002).
 10. W. B. Gragg, “The QR algorithm for unitary Hessenberg matrices,” *J. Comput. Appl. Math.* **16** (1986), 1–8. [DOI](https://doi.org/10.1016/0377-0427(86)90169-X).
-11. B. Simon, “OPUC on one foot,” *Bull. Amer. Math. Soc.* **42** (2005), 431–460. [Full text](https://web.ma.utexas.edu/mp_arc/c/05/05-78.pdf).
+11. B. Simon, “OPUC on one foot,” *Bull. Amer. Math. Soc.* **42** (2005), 431–460. [DOI](https://doi.org/10.1090/S0273-0979-05-01075-X); [full text](https://web.ma.utexas.edu/mp_arc/c/05/05-78.pdf).
 12. NIST Digital Library of Mathematical Functions, [§18.33, Orthogonal Polynomials on the Unit Circle](https://dlmf.nist.gov/18.33).
 13. R. Killip and I. Nenciu, “Matrix models for circular ensembles,” *Int. Math. Res. Not.* **2004**(50), 2665–2701. [DOI](https://doi.org/10.1155/S1073792804141597).
-14. F. Mezzadri, “How to generate random matrices from the classical compact groups,” *Notices Amer. Math. Soc.* **54** (2007), 592–604. [Preprint](https://arxiv.org/abs/math-ph/0609050).
+14. F. Mezzadri, “How to generate random matrices from the classical compact groups,” *Notices Amer. Math. Soc.* **54**(5) (2007), 592–604. [arXiv preprint DOI](https://doi.org/10.48550/arXiv.math-ph/0609050) (DataCite, not a DOI for the journal article); [preprint](https://arxiv.org/abs/math-ph/0609050).
 15. I. Daubechies, *Ten Lectures on Wavelets*, SIAM, 1992. [DOI](https://doi.org/10.1137/1.9781611970104).
 16. T. Kitagawa, M. S. Rudner, E. Berg and E. Demler, “Exploring topological phases with quantum walks,” *Phys. Rev. A* **82** (2010), 033429. [DOI](https://doi.org/10.1103/PhysRevA.82.033429).
 17. A. Bisio, G. M. D’Ariano and A. Tosini, “Quantum field as a quantum cellular automaton: The Dirac free evolution in one dimension,” *Ann. Phys.* **354** (2015), 244–264. [DOI](https://doi.org/10.1016/j.aop.2014.12.016).
@@ -1115,7 +1115,7 @@ filtering and irregular-domain data analysis. [57]
 24. N. J. Higham, “Computing the polar decomposition—with applications,” *SIAM J. Sci. Statist. Comput.* **7** (1986), 1160–1174. [DOI](https://doi.org/10.1137/0907079).
 25. B. Sz.-Nagy, *Unitary Dilations of Hilbert Space Operators and Related Topics*, CBMS 19, AMS, 1974. [DOI](https://doi.org/10.1090/CBMS/019).
 26. M. Szegedy, “Quantum speed-up of Markov chain based algorithms,” *Proc. FOCS* (2004), 32–41. [DOI](https://doi.org/10.1109/FOCS.2004.53).
-27. P. Bourgade, A. Nikeghbali and A. Rouault, “Circular Jacobi ensembles and deformed Verblunsky coefficients,” *Int. Math. Res. Not.* (2009). [DOI](https://doi.org/10.1093/imrn/rnp092).
+27. P. Bourgade, A. Nikeghbali and A. Rouault, “Circular Jacobi ensembles and deformed Verblunsky coefficients,” *Int. Math. Res. Not.* **2009**(23) (2009), 4357–4394. [DOI](https://doi.org/10.1093/imrn/rnp092).
 28. F. Haake, *Quantum Signatures of Chaos*, 3rd ed., Springer, 2010. [DOI](https://doi.org/10.1007/978-3-642-05428-0).
 29. V. M. Bastidas, P. Pérez-Fernández, M. Vogl and T. Brandes, “Quantum criticality and dynamical instability in the kicked-top model,” *Phys. Rev. Lett.* **112** (2014), 140408. [DOI](https://doi.org/10.1103/PhysRevLett.112.140408).
 30. E. Lieb, T. Schultz and D. Mattis, “Two soluble models of an antiferromagnetic chain,” *Ann. Phys.* **16** (1961), 407–466. [DOI](https://doi.org/10.1016/0003-4916(61)90115-4).
@@ -1127,7 +1127,7 @@ filtering and irregular-domain data analysis. [57]
 36. B. Bertini, P. Kos and T. Prosen, “Exact correlation functions for dual-unitary lattice models in 1+1 dimensions,” *Phys. Rev. Lett.* **123** (2019), 210601. [DOI](https://doi.org/10.1103/PhysRevLett.123.210601).
 37. B. Bertini, P. Kos and T. Prosen, “Random matrix spectral form factor of dual-unitary quantum circuits,” *Commun. Math. Phys.* **387** (2021), 597–620. [DOI](https://doi.org/10.1007/s00220-021-04139-2).
 38. E. Vernier, H.-C. Yeh, L. Piroli and A. Mitra, “Strong zero modes in integrable quantum circuits,” *Phys. Rev. Lett.* **133** (2024), 050606. [DOI](https://doi.org/10.1103/PhysRevLett.133.050606).
-39. J.-S. Caux, “The Bethe Ansatz: Another example: the trigonometric R-matrix and the XXZ model.” *The Bethe Ansatz* online reference (2024). [Source](https://integrability.org/a_xxz.html).
+39. J.-S. Caux, “Another example: the trigonometric R-matrix and the anisotropic S=1/2 antiferromagnet (XXZ model),” in *The Bethe Ansatz*, online notes, section a.xxz (2024). [Permanent section URL](https://integrability.org/a_xxz.html).
 40. M. P. Strzys, E.-M. Graefe and H. J. Korsch, “Kicked Bose–Hubbard systems and kicked tops—destruction and stimulation of tunneling,” *New J. Phys.* **10** (2008), 013024. [DOI](https://doi.org/10.1088/1367-2630/10/1/013024).
 41. C. Khripkov, D. Cohen and A. Vardi, “Coherence dynamics of kicked Bose-Hubbard dimers: Interferometric signatures of chaos,” *Phys. Rev. E* **87** (2013), 012910. [DOI](https://doi.org/10.1103/PhysRevE.87.012910).
 42. C. Liang, Y. Zhang and S. Chen, “Statistical and dynamical aspects of quantum chaos in a kicked Bose-Hubbard dimer,” *Phys. Rev. A* **109** (2024), 033316. [DOI](https://doi.org/10.1103/PhysRevA.109.033316).
@@ -1137,12 +1137,12 @@ filtering and irregular-domain data analysis. [57]
 46. A. Joye, “Unitary and open scattering quantum walks on graphs,” *Rev. Math. Phys.* (2026), 2650005. [DOI](https://doi.org/10.1142/S0129055X26500054); [arXiv](https://arxiv.org/abs/2409.08428) (see §3.1, Eq. (3.3)).
 47. R. N. Bracewell, "Discrete Hartley transform," *J. Opt. Soc. Amer.* **73** (1983), 1832–1835. [DOI](https://doi.org/10.1364/JOSA.73.001832).
 48. D. C. Chu, "Polyphase codes with good periodic correlation properties," *IEEE Trans. Inform. Theory* **18** (1972), 531–532. [DOI](https://doi.org/10.1109/TIT.1972.1054840).
-49. X. Ouyang and J. Zhao, "Orthogonal chirp division multiplexing," *IEEE Trans. Commun.* **64** (2016). [Preprint](https://arxiv.org/abs/1601.06576).
-50. A. Bemani, N. Ksairi and M. Kountouris, "AFDM: A full diversity next generation waveform for high mobility communications," (2023). [Preprint](https://arxiv.org/abs/2204.12798).
+49. X. Ouyang and J. Zhao, “Orthogonal chirp division multiplexing,” *IEEE Trans. Commun.* **64**(9) (2016), 3946–3957. [DOI](https://doi.org/10.1109/TCOMM.2016.2594792); [preprint](https://arxiv.org/abs/1601.06576).
+50. A. Bemani, N. Ksairi and M. Kountouris, “AFDM: A full diversity next generation waveform for high mobility communications,” *IEEE International Conference on Communications Workshops (ICC Workshops)* (2021), 1–6. [DOI](https://doi.org/10.1109/ICCWorkshops50388.2021.9473655); [preprint](https://arxiv.org/abs/2104.11331).
 51. H. Bölcskei and F. Hlawatsch, "Discrete Zak transforms, polyphase transforms, and applications," *IEEE Trans. Signal Process.* **45** (1997), 851–866. [DOI](https://doi.org/10.1109/78.564174).
-52. M. Püschel and J. M. F. Moura, "Algebraic signal processing theory: Foundation and 1-D time," *IEEE Trans. Signal Process.* **56** (2008), 3572–3585. [Author PDF](https://users.ece.cmu.edu/~moura/papers/t-sp-aug08-part1--pueschelmoura-ieeexplore.pdf).
-53. K. Gröchenig, *Foundations of Time-Frequency Analysis*, Birkhäuser, 2001. [Publisher](https://link.springer.com/book/10.1007/978-1-4612-0003-1).
-54. V. Britanak, P. C. Yip and K. R. Rao, *Discrete Cosine and Sine Transforms: General Properties, Fast Algorithms and Integer Approximations*, Academic Press, 2007. [Publisher](https://shop.elsevier.com/books/discrete-cosine-and-sine-transforms/britanak/978-0-12-373624-6).
-55. K. G. Beauchamp, *Applications of Walsh and Related Functions: With an Introduction to Sequency Theory*, Academic Press, 1984. [Catalog](https://books.google.com/books?id=BvZSAAAAMAAJ).
+52. M. Püschel and J. M. F. Moura, “Algebraic signal processing theory: Foundation and 1-D time,” *IEEE Trans. Signal Process.* **56**(8) (2008), 3572–3585. [DOI](https://doi.org/10.1109/TSP.2008.925261); [author PDF](https://users.ece.cmu.edu/~moura/papers/t-sp-aug08-part1--pueschelmoura-ieeexplore.pdf).
+53. K. Gröchenig, *Foundations of Time-Frequency Analysis*, Birkhäuser, 2001. [DOI](https://doi.org/10.1007/978-1-4612-0003-1).
+54. V. Britanak, P. C. Yip and K. R. Rao, *Discrete Cosine and Sine Transforms: General Properties, Fast Algorithms and Integer Approximations*, Academic Press, 2007. [DOI](https://doi.org/10.1016/b978-0-12-373624-6.x5000-0); [publisher](https://shop.elsevier.com/books/discrete-cosine-and-sine-transforms/britanak/978-0-12-373624-6).
+55. K. G. Beauchamp, *Applications of Walsh and Related Functions: With an Introduction to Sequency Theory*, Academic Press, 1984. ISBN 9780120841806. [Library record](https://openlibrary.org/works/OL2903378W/Applications_of_Walsh_and_related_functions_with_an_introduction_to_sequency_theory); [book record](https://books.google.com/books?id=BvZSAAAAMAAJ).
 56. D. Slepian, "Prolate spheroidal wave functions, Fourier analysis, and uncertainty—V: The discrete case," *Bell Syst. Tech. J.* **57** (1978), 1371–1430. [DOI](https://doi.org/10.1002/j.1538-7305.1978.tb02104.x).
-57. D. I. Shuman, S. K. Narang, P. Frossard, A. Ortega and P. Vandergheynst, "The emerging field of signal processing on graphs," *IEEE Signal Process. Mag.* **30** (2013), 83–98. [DOI](https://doi.org/10.1109/MSP.2012.2235192).
+57. D. I. Shuman, S. K. Narang, P. Frossard, A. Ortega and P. Vandergheynst, “The emerging field of signal processing on graphs: Extending high-dimensional data analysis to networks and other irregular domains,” *IEEE Signal Process. Mag.* **30**(3) (2013), 83–98. [DOI](https://doi.org/10.1109/MSP.2012.2235192).

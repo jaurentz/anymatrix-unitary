@@ -8,6 +8,10 @@ function [U,properties] = bernstein_szego(n,a,representation,beta,twists,output)
 %   All the historic/twisted matrix representations share the OPUC
 %   coefficient machinery; see JACOBI_SZEGO and SZEGO_MATRIX.
 %   References: B. Simon, OPUC, AMS, 2005; DLMF section 18.33.
+%   Verified reference identifiers (see docs/MATRIX_ENCYCLOPEDIA.md):
+%   [5] https://doi.org/10.1090/coll054.1
+%   [5] https://doi.org/10.1090/coll/054.2
+%   [12] https://dlmf.nist.gov/18.33
 properties={'square','unitary','normal','scalable','parameter-dependent'};
 if nargin==0,U=[];return;end
 if nargin<2 || isempty(a),a=0.4;end

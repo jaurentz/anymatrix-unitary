@@ -8,6 +8,8 @@ function [U,properties] = cayley_jacobi(n,a,b,t,output)
 %   or Gauss-Szego quadrature matrix.
 %   Reference: Aurentz, Mach, Vandebril, Watkins, ETNA 46 (2017),
 %   447-459 (Cayley eigenvalue methods).
+%   Verified reference identifiers (see docs/MATRIX_ENCYCLOPEDIA.md):
+%   [23] https://www.maths.tcd.ie/EMIS/journals/ETNA/volumes/2011-2020/vol46/abstract_vol46_pp447-459.html?pages=447-459&vol=46
 properties={'square','unitary','normal','complex','scalable', ...
     'eigenvalues','parameter-dependent'};
 if nargin==0,U=[];return;end

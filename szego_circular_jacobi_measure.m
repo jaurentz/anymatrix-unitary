@@ -4,6 +4,9 @@ function mu = szego_circular_jacobi_measure(a,eta)
 %   weight proportional to exp((pi-theta)*ETA)*|1-exp(i*theta)|^(2*A)
 %   for theta in (0,2*pi). For ETA=0 the Verblunsky data are real.
 %   See Simon, OPUC (2005); Bourgade, Nikeghbali, Rouault (2009).
+%   Primary reference DOI / stable reference:
+%   https://doi.org/10.1090/coll054.1
+%   https://doi.org/10.1093/imrn/rnp092
 if nargin<1 || isempty(a),a=0.3;end
 if nargin<2 || isempty(eta),eta=0.5;end
 validateattributes(a,{'numeric'},{'scalar','real','finite','>',-0.5});

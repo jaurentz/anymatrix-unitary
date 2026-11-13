@@ -4,6 +4,8 @@ function [U,properties]=discrete_sine(n,kind,output)
 %   KIND defaults to 2. DST-III is the inverse/transpose of DST-II.
 %   DISCRETE_SINE(N,KIND,'operator') applies the FFT-based actions.
 %   Reference: M. Puschel and J. M. F. Moura, IEEE TSP 56 (2008).
+%   Verified reference identifiers (see docs/MATRIX_ENCYCLOPEDIA.md):
+%   [54] https://doi.org/10.1016/b978-0-12-373624-6.x5000-0
 properties={'square','unitary','normal','orthogonal','real', ...
     'scalable','parameter-dependent'};
 if nargin==0,U=[];return;end

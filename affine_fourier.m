@@ -5,6 +5,8 @@ function [U,properties] = affine_fourier(n,c1,c2,output)
 %   C1,C2 are finite real chirp parameters (default zero).
 %   This is the modulation transform, not the physical channel matrix.
 %   Reference: A. Bemani, N. Ksairi and M. Kountouris, AFDM (2023).
+%   Verified reference identifiers (see docs/MATRIX_ENCYCLOPEDIA.md):
+%   [50] https://doi.org/10.1109/ICCWorkshops50388.2021.9473655
 properties={'square','unitary','normal','complex','scalable', ...
     'parameter-dependent'};
 if nargin==0,U=[];return;end

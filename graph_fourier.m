@@ -10,6 +10,8 @@ function [U,properties]=graph_fourier(n,adjacency)
 %   Only an explicit matrix is returned; a dense cached eigensystem
 %   is not a matrix-free implementation.
 %   Reference: D. I. Shuman et al., IEEE SPM 30 (2013).
+%   Verified reference identifiers (see docs/MATRIX_ENCYCLOPEDIA.md):
+%   [57] https://doi.org/10.1109/MSP.2012.2235192
 properties={'square','unitary','normal','orthogonal','real', ...
     'scalable','parameter-dependent'};
 if nargin==0,U=[];return;end

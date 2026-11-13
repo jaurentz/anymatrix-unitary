@@ -9,6 +9,8 @@ function [U,properties]=dpss_transform(n,W)
 %   Only an explicit matrix is returned: a function handle that caches
 %   the complete dense eigenbasis would provide no matrix-free benefit.
 %   Reference: D. Slepian, Bell Syst. Tech. J. 57 (1978), 1371-1430.
+%   Verified reference identifiers (see docs/MATRIX_ENCYCLOPEDIA.md):
+%   [56] https://doi.org/10.1002/j.1538-7305.1978.tb02104.x
 properties={'square','unitary','normal','orthogonal','real', ...
     'scalable','parameter-dependent'};
 if nargin==0,U=[];return;end

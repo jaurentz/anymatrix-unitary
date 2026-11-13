@@ -5,6 +5,8 @@ function [U,properties] = phase_circulant(n,theta,output)
 %   Fourier convention, U=F'*diag(exp(1i*THETA))*F.
 %   Default THETA(j)=2*pi*(j-1)/N, giving a circulant shift.
 %   Reference: P. J. Davis, Circulant Matrices, Wiley, 1979.
+%   Verified reference identifiers (see docs/MATRIX_ENCYCLOPEDIA.md):
+%   [1] https://openlibrary.org/books/OL4407364M/Circulant_matrices
 properties={'square','unitary','normal','circulant','complex', ...
     'scalable','eigenvalues','parameter-dependent'};
 if nargin==0, U=[]; return; end

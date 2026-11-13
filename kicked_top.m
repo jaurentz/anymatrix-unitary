@@ -9,6 +9,9 @@ function [U,properties] = kicked_top(n,kappa,p,output)
 %   sparse-tridiagonal EXPMV spin rotation (Chebyshev fallback).
 %   References: F. Haake, Quantum Signatures of Chaos (2010);
 %   V. M. Bastidas et al., Phys. Rev. Lett. 112 (2014), 140408.
+%   Verified reference identifiers (see docs/MATRIX_ENCYCLOPEDIA.md):
+%   [28] https://doi.org/10.1007/978-3-642-05428-0
+%   [29] https://doi.org/10.1103/PhysRevLett.112.140408
 properties={'square','unitary','normal','complex','scalable','parameter-dependent'};
 if nargin==0,U=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','>=',2,'finite'});

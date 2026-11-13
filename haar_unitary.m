@@ -14,6 +14,8 @@ function [U, properties] = haar_unitary(n, seed)
 %   F. Mezzadri, How to generate random matrices from the classical
 %   compact groups, Notices Amer. Math. Soc. 54 (2007), 592-604.
 %   https://arxiv.org/abs/math-ph/0609050
+%   Verified reference identifiers (see docs/MATRIX_ENCYCLOPEDIA.md):
+%   [14] https://doi.org/10.48550/arXiv.math-ph/0609050 (arXiv preprint DOI)
 properties = {'unitary', 'square', 'complex', 'scalable', 'random'};
 if nargin == 0
     U = [];

@@ -15,6 +15,9 @@ function [U,properties] = xxz_floquet(n,u,gamma,boundary,output)
 %   n<=10 caps dense matrix storage; use factorized circuits for more.
 %   References: J.-S. Caux, The Bethe Ansatz (trigonometric R-matrix);
 %   E. Vernier et al., Phys. Rev. Lett. 133 (2024), 050606.
+%   Verified reference identifiers (see docs/MATRIX_ENCYCLOPEDIA.md):
+%   [38] https://doi.org/10.1103/PhysRevLett.133.050606
+%   [39] https://integrability.org/a_xxz.html
 properties={'square','unitary','normal','complex','parameter-dependent'};
 if nargin==0,U=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','>=',2,'<=',20,'finite'});

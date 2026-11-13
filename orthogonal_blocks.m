@@ -6,6 +6,9 @@ function [U,properties] = orthogonal_blocks(n,theta,epsilon)
 %   THETA must contain floor(N/2) angles (default 0.3*j).
 %   Spectrum: exp(+-1i*THETA(j)), plus EPSILON if N is odd.
 %   Uses: real normal EVD, conjugate pairing, spectral clusters.
+%   Verified reference identifiers (see docs/MATRIX_ENCYCLOPEDIA.md):
+%   [3] https://doi.org/10.13001/ela.2026.9957
+%   [4] https://doi.org/10.1137/1.9781611975345
 properties={'square','unitary','normal','orthogonal','real','sparse', ...
     'banded','scalable','eigenvalues','parameter-dependent'};
 if nargin==0,U=[];return;end

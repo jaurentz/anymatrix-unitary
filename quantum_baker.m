@@ -7,6 +7,9 @@ function [U,properties] = quantum_baker(n,variant,output)
 %   must be recorded when comparing eigenphase statistics.
 %   References: Balazs-Voros, Ann. Phys. 190 (1989), 1-31;
 %   Saraceno, Ann. Phys. 199 (1990), 37-60.
+%   Verified reference identifiers (see docs/MATRIX_ENCYCLOPEDIA.md):
+%   [20] https://doi.org/10.1016/0003-4916(89)90259-5
+%   [21] https://doi.org/10.1016/0003-4916(90)90367-W
 properties={'square','unitary','normal','complex','scalable','parameter-dependent'};
 if nargin==0,U=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','positive','finite'});

@@ -11,6 +11,8 @@ regression and Anymatrix integration tests run on GitHub Actions after every
 push or pull request. See the [Actions tab](https://github.com/jaurentz/anymatrix-unitary/actions)
 for the current branch status.
 
+A structured registry of verified DOI and archive/publisher permalinks is available in [metadata/references.json](metadata/references.json).
+
 ## Clone and test locally
 
 Requires **MATLAB R2020b or later**, with no additional MATLAB toolboxes for

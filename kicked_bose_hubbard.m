@@ -23,6 +23,9 @@ function [U,properties] = kicked_bose_hubbard(n,J,g,tau_hop,tau_kick,bias,output
 %
 %   References: Strzys, Graefe, Korsch, New J. Phys. 10 (2008), 013024;
 %   Khripkov, Cohen, Vardi, Phys. Rev. E 87 (2013), 012910.
+%   Verified reference identifiers (see docs/MATRIX_ENCYCLOPEDIA.md):
+%   [40] https://doi.org/10.1088/1367-2630/10/1/013024
+%   [41] https://doi.org/10.1103/PhysRevE.87.012910
 properties={'square','unitary','normal','complex','parameter-dependent'};
 if nargin==0,U=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','nonnegative','finite'});

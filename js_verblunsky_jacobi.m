@@ -5,6 +5,8 @@ function alpha = js_verblunsky_jacobi(count,a,b)
 %   alpha_(2*j+1) = -(a+b+1)/(2*j+a+b+3).
 %   K counts *interior* coefficients; a unit-modulus finite closure beta
 %   is a separate independent parameter.
+%   Primary reference DOI / stable reference:
+%   https://doi.org/10.1090/S0273-0979-05-01075-X
 validateattributes(count,{'numeric'},{'scalar','integer','nonnegative','finite'});
 validateattributes(a,{'numeric'},{'scalar','real','finite','>',-1});
 validateattributes(b,{'numeric'},{'scalar','real','finite','>',-1});

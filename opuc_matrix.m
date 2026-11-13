@@ -7,6 +7,10 @@ function [U,properties] = opuc_matrix(n,alpha,beta,representation,twists,output)
 %   Options: 'hessenberg', 'inverse_hessenberg', 'cmv', 'twisted'.
 %   See JS_CORE_PRODUCT for the TWISTS convention.
 %   No-argument call returns the Anymatrix property list.
+%   Verified reference identifiers (see docs/MATRIX_ENCYCLOPEDIA.md):
+%   [8] https://etna.ricam.oeaw.ac.at/volumes/2011-2020/vol44/abstract.php?pages=327-341
+%   [9] https://doi.org/10.1016/j.cam.2014.11.002
+%   [10] https://doi.org/10.1016/0377-0427(86)90169-X
 properties = {'square','scalable','unitary','normal','parameter-dependent'};
 if nargin==0
     U=[];return;

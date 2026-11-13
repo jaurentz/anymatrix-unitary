@@ -4,6 +4,8 @@ function [U,properties] = time_frequency_shift(n,p,q,output)
 %   M*e_j=exp(2*pi*1i*j/N)*e_j, indexed from j=0.
 %   This sparse monomial unitary admits exact cycle-based eigenvalues.
 %   Application: discrete time-frequency shifts and Gabor analysis.
+%   Verified reference identifiers (see docs/MATRIX_ENCYCLOPEDIA.md):
+%   [51] https://doi.org/10.1109/78.564174
 properties={'square','unitary','normal','sparse','complex', ...
     'scalable','eigenvalues','parameter-dependent'};
 if nargin==0,U=[];return;end

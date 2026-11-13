@@ -14,6 +14,8 @@ function [U, properties] = cycle_propagator(n, t, output)
 %   Reference:
 %   N. W. Ashcroft and N. D. Mermin, Solid State Physics, 1976
 %   (periodic tight-binding dispersion relation).
+%   Verified reference identifiers (see docs/MATRIX_ENCYCLOPEDIA.md):
+%   [2] https://books.google.com/books?id=1C9HAQAAIAAJ
 properties = {'unitary', 'square', 'circulant', 'scalable', ...
               'complex', 'eigenvalues', 'parameter-dependent'};
 if nargin == 0

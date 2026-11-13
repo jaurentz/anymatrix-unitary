@@ -4,6 +4,8 @@ function mu = szego_periodic_measure(pattern)
 %   The resulting infinite-periodic CMV measure can have spectral bands
 %   and gaps; the finite realization requires a terminal unit phase.
 %   Reference: Simon, OPUC Part 2 (2005), periodic coefficients.
+%   Primary reference DOI / stable reference:
+%   https://doi.org/10.1090/coll/054.2
 if nargin<1 || isempty(pattern),pattern=[0.25; 0.2i];end
 validateattributes(pattern,{'numeric'},{'vector','nonempty','finite'});
 if any(abs(pattern(:))>=1)

@@ -4,6 +4,8 @@ function [U,properties] = orthogonal_dct(n,kind,output)
 %   KIND defaults to 2. Type III is the transpose/inverse of type II.
 %   Type I requires N >= 2. The k-th row is a transform coefficient.
 %   Reference: M. Puschel and J. M. F. Moura, IEEE TSP 56 (2008).
+%   Verified reference identifiers (see docs/MATRIX_ENCYCLOPEDIA.md):
+%   [52] https://doi.org/10.1109/TSP.2008.925261
 properties={'square','unitary','normal','orthogonal','real', ...
     'scalable','parameter-dependent'};
 if nargin==0,U=[];return;end

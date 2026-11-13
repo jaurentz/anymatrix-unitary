@@ -9,6 +9,8 @@ function [U, properties] = diagonal_phase(n, theta, output)
 %
 %   Uses: controlled clustered spectra, arc gaps, phase wrapping, and
 %   exact Fourier moment benchmarks.
+%   Verified reference identifiers (see docs/MATRIX_ENCYCLOPEDIA.md):
+%   [1] https://openlibrary.org/books/OL4407364M/Circulant_matrices
 properties = {'unitary', 'square', 'sparse', 'scalable', ...
               'complex', 'eigenvalues', 'parameter-dependent'};
 if nargin == 0

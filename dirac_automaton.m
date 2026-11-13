@@ -8,6 +8,8 @@ function [U,properties] = dirac_automaton(n,m)
 %   has a mass-dependent band gap and square-root band edges (0<M<1).
 %   Reference: Bisio, D'Ariano, Tosini, Ann. Phys. 354 (2015) 244-264.
 %   https://doi.org/10.1016/j.aop.2014.12.016
+%   Verified reference identifiers (see docs/MATRIX_ENCYCLOPEDIA.md):
+%   [18] https://doi.org/10.1103/PhysRevA.93.012328
 properties={'square','unitary','normal','sparse', ...
     'complex','eigenvalues','scalable','parameter-dependent'};
 if nargin==0,U=[];return;end

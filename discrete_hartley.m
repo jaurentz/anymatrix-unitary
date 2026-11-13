@@ -3,6 +3,8 @@ function [U,properties] = discrete_hartley(n,output)
 %   U(j+1,k+1) = [cos(2*pi*j*k/n)+sin(2*pi*j*k/n)]/sqrt(n).
 %   U'=U and U^2=I, hence the only eigenvalues are +1 and -1.
 %   Reference: R. N. Bracewell, JOSA 73 (1983), 1832-1835.
+%   Verified reference identifiers (see docs/MATRIX_ENCYCLOPEDIA.md):
+%   [47] https://doi.org/10.1364/JOSA.73.001832
 properties={'square','unitary','normal','orthogonal','real', ...
     'symmetric','involutory','scalable','eigenvalues'};
 if nargin==0,U=[];return;end

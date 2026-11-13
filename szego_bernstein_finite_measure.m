@@ -5,6 +5,9 @@ function mu = szego_bernstein_finite_measure(a)
 %   proportional to product(1-|A_j|^2)/|Phi_m^*(z)|^2.
 %   A may be empty (uniform measure); use SZEGO_MATRIX for finite closure.
 %   Reference: Simon, OPUC (2005); DLMF section 18.33.
+%   Primary reference DOI / stable reference:
+%   https://doi.org/10.1090/coll054.1
+%   https://dlmf.nist.gov/18.33
 if nargin<1,a=[0.3;0.2i];end
 if ~isnumeric(a) || (~isempty(a) && ~isvector(a)) || any(~isfinite(a(:)))
     error('szego_bernstein_finite_measure:Alpha','A must be a finite numeric vector.');

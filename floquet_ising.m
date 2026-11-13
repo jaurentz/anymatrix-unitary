@@ -9,6 +9,9 @@ function [U,properties] = floquet_ising(n,J,h,boundary,output)
 %   Dense assembly scales as 4^n; cap n at 11 for practical memory.
 %   References: E. Lieb, T. Schultz, D. Mattis, Ann. Phys. 16 (1961);
 %   P. Pfeuty, Ann. Phys. 57 (1970), 79-90.
+%   Verified reference identifiers (see docs/MATRIX_ENCYCLOPEDIA.md):
+%   [30] https://doi.org/10.1016/0003-4916(61)90115-4
+%   [31] https://doi.org/10.1016/0003-4916(70)90270-8
 properties={'square','unitary','normal','complex','parameter-dependent'};
 if nargin==0,U=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','>=',2,'<=',20,'finite'});

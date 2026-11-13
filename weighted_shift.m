@@ -4,6 +4,8 @@ function [U,properties] = weighted_shift(n,theta,output)
 %   The eigenvalues are the Nth roots of exp(1i*sum(THETA)), and
 %   U^N=exp(1i*sum(THETA))*I. Default THETA(j)=pi*(j-1)/N.
 %   Reference: P. J. Davis, Circulant Matrices, Wiley, 1979.
+%   Verified reference identifiers (see docs/MATRIX_ENCYCLOPEDIA.md):
+%   [1] https://openlibrary.org/books/OL4407364M/Circulant_matrices
 properties={'square','unitary','normal','sparse','scalable', ...
     'eigenvalues','parameter-dependent'};
 if nargin==0, U=[];return;end

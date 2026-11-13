@@ -29,6 +29,10 @@ function [U,properties] = chalker_coddington(nx,ny,theta,phases,output)
 %   References: Chalker and Coddington, J. Phys. C 21 (1988), 2665;
 %   Ho and Chalker, Phys. Rev. B 54 (1996), 8708;
 %   Joye, Rev. Math. Phys. (2026), 2650005, eq. (3.3).
+%   Verified reference identifiers (see docs/MATRIX_ENCYCLOPEDIA.md):
+%   [44] https://doi.org/10.1088/0022-3719/21/14/008
+%   [45] https://doi.org/10.1103/PhysRevB.54.8708
+%   [46] https://doi.org/10.1142/S0129055X26500054
 properties={'square','unitary','normal','complex','sparse','scalable','parameter-dependent'};
 if nargin==0,U=[];return;end
 validateattributes(nx,{'numeric'},{'scalar','integer','positive','finite'});
