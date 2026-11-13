@@ -5,6 +5,8 @@ function [U,properties] = finite_zak(n,p,output)
 %   U=kron(F_Q,I_P). P defaults to 1; P=N gives identity.
 %   Suitable for finite time-frequency/Gabor analysis.
 %   Reference: H. Bolcskei and F. Hlawatsch, IEEE TSP 45 (1997).
+%   Verified reference identifiers (see docs/MATRIX_ENCYCLOPEDIA.md):
+%   [51] https://doi.org/10.1109/78.564174
 properties={'square','unitary','normal','complex','scalable', ...
     'parameter-dependent'};
 if nargin==0,U=[];return;end

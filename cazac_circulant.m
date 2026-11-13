@@ -6,6 +6,8 @@ function [U,properties] = cazac_circulant(n,root,output)
 %   U(j+1,k+1)=c(mod(j-k,N))/sqrt(N); every entry has modulus 1/sqrt(N).
 %   The exact eigenvalues are fft(c)/sqrt(N), in Fourier frequency order.
 %   Reference: D. C. Chu, IEEE Trans. Inf. Theory 18 (1972), 531-532.
+%   Verified reference identifiers (see docs/MATRIX_ENCYCLOPEDIA.md):
+%   [48] https://doi.org/10.1109/TIT.1972.1054840
 properties={'square','unitary','normal','circulant','complex', ...
     'scalable','eigenvalues','parameter-dependent'};
 if nargin==0,U=[];return;end

@@ -6,6 +6,8 @@ function [U,properties] = periodic_hilbert(n,dc,nyquist,output)
 %   Without these unimodular endpoint signs the conventional discrete
 %   Hilbert transform is not unitary on the entire finite signal space.
 %   Eigenvalues are exactly the specified Fourier multipliers.
+%   Verified reference identifiers (see docs/MATRIX_ENCYCLOPEDIA.md):
+%   [52] https://doi.org/10.1109/TSP.2008.925261
 properties={'square','unitary','normal','orthogonal','real', ...
     'circulant','scalable','eigenvalues','parameter-dependent'};
 if nargin==0,U=[];return;end

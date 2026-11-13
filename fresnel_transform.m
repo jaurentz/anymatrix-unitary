@@ -6,6 +6,8 @@ function [U,properties] = fresnel_transform(n,output)
 %   chirp N-periodic. The exact eigenvalues are FFT of the first column.
 %   Application: orthogonal chirp-division multiplexing (OCDM).
 %   Reference: X. Ouyang and J. Zhao, IEEE Trans. Commun. 64 (2016).
+%   Verified reference identifiers (see docs/MATRIX_ENCYCLOPEDIA.md):
+%   [49] https://doi.org/10.1109/TCOMM.2016.2594792
 properties={'square','unitary','normal','circulant','complex', ...
     'scalable','eigenvalues'};
 if nargin==0,U=[];return;end

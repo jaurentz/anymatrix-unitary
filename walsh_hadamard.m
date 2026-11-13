@@ -7,6 +7,8 @@ function [U,properties]=walsh_hadamard(n,ordering,output)
 %   Applications: spread-spectrum communication and image coding.
 %   Reference: K. G. Beauchamp, Applications of Walsh and Related
 %   Functions, Academic Press, 1984.
+%   Verified reference identifiers (see docs/MATRIX_ENCYCLOPEDIA.md):
+%   [55] https://books.google.com/books?id=BvZSAAAAMAAJ
 properties={'square','unitary','normal','orthogonal','real', ...
     'scalable','parameter-dependent'};
 if nargin==0,U=[];return;end

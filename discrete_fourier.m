@@ -5,6 +5,9 @@ function [U,properties]=discrete_fourier(n,output)
 %   consequently the exact eigenvalues belong to {1,-1,1i,-1i}.
 %   DISCRETE_FOURIER(N,'operator') uses shared FFT multiplication.
 %   Reference: P. J. Davis, Circulant Matrices, Wiley, 1979.
+%   Verified reference identifiers (see docs/MATRIX_ENCYCLOPEDIA.md):
+%   [1] https://openlibrary.org/books/OL4407364M/Circulant_matrices
+%   [52] https://doi.org/10.1109/TSP.2008.925261
 properties={'square','unitary','normal','symmetric','complex', ...
     'scalable','eigenvalues'};
 if nargin==0,U=[];return;end
