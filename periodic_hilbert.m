@@ -10,6 +10,11 @@ function [U,properties] = periodic_hilbert(n,dc,nyquist,output)
 %   [52] https://doi.org/10.1109/TSP.2008.925261
 properties={'square','unitary','normal','orthogonal','real', ...
     'circulant','scalable','eigenvalues','parameter-dependent'};
+% Optional analytic spectral-reference mode.
+if nargin>=4 && (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
+    U=unitary_spectral_reference('periodic_hilbert',n,dc,nyquist);
+    return
+end
 if nargin==0,U=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','positive','finite'});
 if nargin<2 || isempty(dc),dc=1;end

@@ -1,4 +1,4 @@
-function [U,properties]=dpss_transform(n,W)
+function [U,properties]=dpss_transform(n,W,output)
 %DPSS_TRANSFORM Slepian/DPSS orthogonal analysis basis.
 %   U=DPSS_TRANSFORM(N,W) returns the rows of the DPSS eigenbasis,
 %   ordered by decreasing spectral concentration, using the commuting
@@ -13,6 +13,14 @@ function [U,properties]=dpss_transform(n,W)
 %   [56] https://doi.org/10.1002/j.1538-7305.1978.tb02104.x
 properties={'square','unitary','normal','orthogonal','real', ...
     'scalable','parameter-dependent'};
+% Optional analytic spectral-reference mode.
+if nargin>=3
+    if (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
+        U=unitary_spectral_reference('dpss_transform',n,W);
+        return
+    end
+    error('dpss_transform:Mode','Only terminal spectral mode is supported for this generator.');
+end
 if nargin==0,U=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','positive','finite'});
 if nargin<2 || isempty(W),W=0.25;end

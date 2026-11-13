@@ -12,6 +12,11 @@ function [U,properties] = cayley_jacobi(n,a,b,t,output)
 %   [23] https://www.maths.tcd.ie/EMIS/journals/ETNA/volumes/2011-2020/vol46/abstract_vol46_pp447-459.html?pages=447-459&vol=46
 properties={'square','unitary','normal','complex','scalable', ...
     'eigenvalues','parameter-dependent'};
+% Optional analytic spectral-reference mode.
+if nargin>=5 && (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
+    U=unitary_spectral_reference('cayley_jacobi',n,a,b,t);
+    return
+end
 if nargin==0,U=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','positive','finite'});
 if nargin<2 || isempty(a),a=0;end

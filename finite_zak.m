@@ -9,6 +9,11 @@ function [U,properties] = finite_zak(n,p,output)
 %   [51] https://doi.org/10.1109/78.564174
 properties={'square','unitary','normal','complex','scalable', ...
     'parameter-dependent'};
+% Optional analytic spectral-reference mode.
+if nargin>=3 && (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
+    U=unitary_spectral_reference('finite_zak',n,p);
+    return
+end
 if nargin==0,U=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','positive','finite'});
 if nargin<2 || isempty(p),p=1;end

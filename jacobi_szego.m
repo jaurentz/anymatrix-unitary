@@ -27,6 +27,11 @@ function [U,properties] = jacobi_szego(n,a,b,representation,beta,twists,output)
 %   [9] https://doi.org/10.1016/j.cam.2014.11.002
 %   [11] https://doi.org/10.1090/S0273-0979-05-01075-X
 properties = {'square','scalable','unitary','normal','parameter-dependent'};
+% Optional spectral-reference mode; preserve legacy output properties.
+if nargin>=7 && (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
+    U=unitary_spectral_reference('jacobi_szego',n,a,b,representation,beta,twists);
+    return
+end
 if nargin==0
     U=[];return;
 end

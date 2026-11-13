@@ -10,6 +10,11 @@ function [U,properties] = fresnel_transform(n,output)
 %   [49] https://doi.org/10.1109/TCOMM.2016.2594792
 properties={'square','unitary','normal','circulant','complex', ...
     'scalable','eigenvalues'};
+% Optional analytic spectral-reference mode.
+if nargin>=2 && (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
+    U=unitary_spectral_reference('fresnel_transform',n);
+    return
+end
 if nargin==0,U=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','positive','finite'});
 k=(0:n-1)';

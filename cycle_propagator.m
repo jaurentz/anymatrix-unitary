@@ -18,6 +18,11 @@ function [U, properties] = cycle_propagator(n, t, output)
 %   [2] https://books.google.com/books?id=1C9HAQAAIAAJ
 properties = {'unitary', 'square', 'circulant', 'scalable', ...
               'complex', 'eigenvalues', 'parameter-dependent'};
+% Optional spectral-reference mode; preserve legacy output properties.
+if nargin>=3 && (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
+    U=unitary_spectral_reference('cycle_propagator',n,t);
+    return
+end
 if nargin == 0
     U = [];
     return

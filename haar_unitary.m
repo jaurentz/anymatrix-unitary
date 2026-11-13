@@ -1,4 +1,4 @@
-function [U, properties] = haar_unitary(n, seed)
+function [U, properties] = haar_unitary(n,seed,output)
 %HAAR_UNITARY Haar-distributed random unitary matrix from complex QR.
 %   U = HAAR_UNITARY(N) uses the current MATLAB random stream.
 %   U = HAAR_UNITARY(N,SEED) gives a reproducible draw using the
@@ -17,6 +17,14 @@ function [U, properties] = haar_unitary(n, seed)
 %   Verified reference identifiers (see docs/MATRIX_ENCYCLOPEDIA.md):
 %   [14] https://doi.org/10.48550/arXiv.math-ph/0609050 (arXiv preprint DOI)
 properties = {'unitary', 'square', 'complex', 'scalable', 'random'};
+% Optional analytic spectral-reference mode.
+if nargin>=3
+    if (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
+        U=unitary_spectral_reference('haar_unitary',n,seed);
+        return
+    end
+    error('haar_unitary:Mode','Only terminal spectral mode is supported for this generator.');
+end
 if nargin == 0
     U = [];
     return

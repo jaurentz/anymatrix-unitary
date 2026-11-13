@@ -18,6 +18,11 @@ function [U,properties] = dual_unitary_circuit(n,depth,chi,angles,boundary,outpu
 %   [36] https://doi.org/10.1103/PhysRevLett.123.210601
 %   [37] https://doi.org/10.1007/s00220-021-04139-2
 properties={'square','unitary','normal','complex','parameter-dependent'};
+% Optional analytic spectral-reference mode.
+if nargin>=6 && (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
+    U=unitary_spectral_reference('dual_unitary_circuit',n,depth,chi,angles,boundary);
+    return
+end
 if nargin==0,U=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','>=',2,'<=',20,'finite'});
 if nargin<2 || isempty(depth),depth=1;end

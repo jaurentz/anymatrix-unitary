@@ -10,6 +10,11 @@ function [U,properties] = geronimus_cmv(n,a,representation,beta,twists,output)
 %   [5] https://doi.org/10.1090/coll/054.2
 %   [7] https://doi.org/10.1016/j.cam.2006.10.033
 properties={'square','unitary','normal','scalable','parameter-dependent'};
+% Optional spectral-reference mode; preserve legacy output properties.
+if nargin>=6 && (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
+    U=unitary_spectral_reference('geronimus_cmv',n,a,representation,beta,twists);
+    return
+end
 if nargin==0,U=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','positive','finite'});
 if nargin<2 || isempty(a),a=0.3+0.2i;end

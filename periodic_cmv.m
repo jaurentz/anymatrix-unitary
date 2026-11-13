@@ -10,6 +10,11 @@ function [U,properties] = periodic_cmv(n,pattern,representation,beta,twists,outp
 %   [5] https://doi.org/10.1090/coll/054.2
 %   [7] https://doi.org/10.1016/j.cam.2006.10.033
 properties={'square','unitary','normal','scalable','parameter-dependent'};
+% Optional spectral-reference mode; preserve legacy output properties.
+if nargin>=6 && (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
+    U=unitary_spectral_reference('periodic_cmv',n,pattern,representation,beta,twists);
+    return
+end
 if nargin==0,U=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','positive','finite'});
 if nargin<2 || isempty(pattern),pattern=[.25;.2i];end

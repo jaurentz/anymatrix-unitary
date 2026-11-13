@@ -19,6 +19,11 @@ function [U,properties] = xxz_floquet(n,u,gamma,boundary,output)
 %   [38] https://doi.org/10.1103/PhysRevLett.133.050606
 %   [39] https://integrability.org/a_xxz.html
 properties={'square','unitary','normal','complex','parameter-dependent'};
+% Optional analytic spectral-reference mode.
+if nargin>=5 && (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
+    U=unitary_spectral_reference('xxz_floquet',n,u,gamma,boundary);
+    return
+end
 if nargin==0,U=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','>=',2,'<=',20,'finite'});
 if nargin<2 || isempty(u),u=0.6;end

@@ -12,6 +12,11 @@ function [U,properties] = opuc_matrix(n,alpha,beta,representation,twists,output)
 %   [9] https://doi.org/10.1016/j.cam.2014.11.002
 %   [10] https://doi.org/10.1016/0377-0427(86)90169-X
 properties = {'square','scalable','unitary','normal','parameter-dependent'};
+% Optional spectral-reference mode; preserve legacy output properties.
+if nargin>=6 && (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
+    U=unitary_spectral_reference('opuc_matrix',n,alpha,beta,representation,twists);
+    return
+end
 if nargin==0
     U=[];return;
 end

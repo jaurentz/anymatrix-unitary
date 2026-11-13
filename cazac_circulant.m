@@ -10,6 +10,11 @@ function [U,properties] = cazac_circulant(n,root,output)
 %   [48] https://doi.org/10.1109/TIT.1972.1054840
 properties={'square','unitary','normal','circulant','complex', ...
     'scalable','eigenvalues','parameter-dependent'};
+% Optional analytic spectral-reference mode.
+if nargin>=3 && (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
+    U=unitary_spectral_reference('cazac_circulant',n,root);
+    return
+end
 if nargin==0,U=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','positive','finite'});
 if nargin<2 || isempty(root),root=1;end

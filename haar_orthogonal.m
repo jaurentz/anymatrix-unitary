@@ -1,4 +1,4 @@
-function [U,properties] = haar_orthogonal(n,seed)
+function [U,properties] = haar_orthogonal(n,seed,output)
 %HAAR_ORTHOGONAL Haar-distributed random real orthogonal matrix.
 %   U=HAAR_ORTHOGONAL(N,SEED) uses phase/sign-corrected Gaussian QR.
 %   A specified integer SEED restores the caller's RNG state on exit.
@@ -7,6 +7,14 @@ function [U,properties] = haar_orthogonal(n,seed)
 %   Verified reference identifiers (see docs/MATRIX_ENCYCLOPEDIA.md):
 %   [14] https://doi.org/10.48550/arXiv.math-ph/0609050 (arXiv preprint DOI)
 properties={'square','unitary','normal','orthogonal','real','random','scalable'};
+% Optional analytic spectral-reference mode.
+if nargin>=3
+    if (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
+        U=unitary_spectral_reference('haar_orthogonal',n,seed);
+        return
+    end
+    error('haar_orthogonal:Mode','Only terminal spectral mode is supported for this generator.');
+end
 if nargin==0,U=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','positive','finite'});
 if nargin>=2 && ~isempty(seed)

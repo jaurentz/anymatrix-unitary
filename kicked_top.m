@@ -13,6 +13,11 @@ function [U,properties] = kicked_top(n,kappa,p,output)
 %   [28] https://doi.org/10.1007/978-3-642-05428-0
 %   [29] https://doi.org/10.1103/PhysRevLett.112.140408
 properties={'square','unitary','normal','complex','scalable','parameter-dependent'};
+% Optional analytic spectral-reference mode.
+if nargin>=4 && (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
+    U=unitary_spectral_reference('kicked_top',n,kappa,p);
+    return
+end
 if nargin==0,U=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','>=',2,'finite'});
 if nargin<2 || isempty(kappa),kappa=3;end

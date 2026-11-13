@@ -10,6 +10,11 @@ function [U,properties] = rogers_szego(n,q,representation,beta,twists,output)
 %   [5] https://doi.org/10.1090/coll/054.2
 %   [12] https://dlmf.nist.gov/18.33
 properties={'square','unitary','normal','scalable','parameter-dependent'};
+% Optional spectral-reference mode; preserve legacy output properties.
+if nargin>=6 && (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
+    U=unitary_spectral_reference('rogers_szego',n,q,representation,beta,twists);
+    return
+end
 if nargin==0,U=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','positive','finite'});
 if nargin<2 || isempty(q),q=0.6;end

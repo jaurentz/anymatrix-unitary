@@ -13,6 +13,11 @@ function [U,properties] = floquet_ising(n,J,h,boundary,output)
 %   [30] https://doi.org/10.1016/0003-4916(61)90115-4
 %   [31] https://doi.org/10.1016/0003-4916(70)90270-8
 properties={'square','unitary','normal','complex','parameter-dependent'};
+% Optional analytic spectral-reference mode.
+if nargin>=5 && (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
+    U=unitary_spectral_reference('floquet_ising',n,J,h,boundary);
+    return
+end
 if nargin==0,U=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','>=',2,'<=',20,'finite'});
 if nargin<2 || isempty(J),J=0.65;end

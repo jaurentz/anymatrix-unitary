@@ -13,6 +13,11 @@ function [U, properties] = cycle_shift(n, output)
 %   [1] https://openlibrary.org/books/OL4407364M/Circulant_matrices
 properties = {'unitary', 'orthogonal', 'real', 'permutation', ...
               'circulant', 'sparse', 'square', 'scalable', 'eigenvalues'};
+% Optional spectral-reference mode; preserve legacy output properties.
+if nargin>=2 && (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
+    U=unitary_spectral_reference('cycle_shift',n);
+    return
+end
 if nargin == 0
     U = [];
     return

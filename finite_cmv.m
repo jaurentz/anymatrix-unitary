@@ -15,6 +15,11 @@ function [U, properties] = finite_cmv(n, alpha,output)
 %   [7] https://doi.org/10.1016/j.cam.2006.10.033
 properties = {'square','unitary','normal','sparse','banded','scalable', ...
               'parameter-dependent'};
+% Optional spectral-reference mode; preserve legacy output properties.
+if nargin>=3 && (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
+    U=unitary_spectral_reference('finite_cmv',n,alpha);
+    return
+end
 if nargin == 0
     U = [];
     return;

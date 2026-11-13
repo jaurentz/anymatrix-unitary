@@ -74,6 +74,23 @@ several families; other families have ensemble laws, limiting densities, or
 no universal law. The encyclopedia distinguishes these cases. Do not infer a
 limiting eigenphase distribution from unitarity alone.
 
+## Analytic spectral references
+
+Every public generator also accepts terminal 'spectral' mode and returns a
+classified MATLAB structure with exact finite spectra, limiting trace laws,
+ensemble expectations, or underlying OPUC weights, where analytically known.
+This mode does not construct a matrix or advance the random-number generator.
+
+~~~matlab
+S = anymatrix('unitary/dirac_automaton',100,.45,'spectral');
+theta = linspace(-pi,pi,500);
+plot(theta,S.limit.density(theta));
+~~~
+
+See [spectral reference interface](docs/SPECTRAL_REFERENCE.md) for the
+standardized data contract, distinctions between trace and vector measures,
+and complete positional argument rules.
+
 ## Optional matrix-free operators
 
 ```matlab

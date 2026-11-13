@@ -1,4 +1,4 @@
-function [U,properties] = driven_kitaev(n,opts)
+function [U,properties] = driven_kitaev(n,opts,output)
 %DRIVEN_KITAEV Two-step driven spinless p-wave Kitaev chain (BdG).
 %   U = exp(-1i*tau2*H_BdG(mu2))*exp(-1i*tau1*H_BdG(mu1)).
 %   n is number of lattice sites; U is 2*n-by-2*n in the Nambu
@@ -16,6 +16,14 @@ function [U,properties] = driven_kitaev(n,opts)
 %   [33] https://doi.org/10.1103/PhysRevB.96.115108
 %   [34] https://doi.org/10.21468/SciPostPhys.6.2.026
 properties={'square','unitary','normal','complex','scalable','parameter-dependent'};
+% Optional analytic spectral-reference mode.
+if nargin>=3
+    if (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
+        U=unitary_spectral_reference('driven_kitaev',n,opts);
+        return
+    end
+    error('driven_kitaev:Mode','Only terminal spectral mode is supported for this generator.');
+end
 if nargin==0,U=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','>=',2,'finite'});
 if nargin<2 || isempty(opts),opts=struct();end

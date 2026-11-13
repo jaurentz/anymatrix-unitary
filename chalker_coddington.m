@@ -34,6 +34,11 @@ function [U,properties] = chalker_coddington(nx,ny,theta,phases,output)
 %   [45] https://doi.org/10.1103/PhysRevB.54.8708
 %   [46] https://doi.org/10.1142/S0129055X26500054
 properties={'square','unitary','normal','complex','sparse','scalable','parameter-dependent'};
+% Optional analytic spectral-reference mode.
+if nargin>=5 && (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
+    U=unitary_spectral_reference('chalker_coddington',nx,ny,theta,phases);
+    return
+end
 if nargin==0,U=[];return;end
 validateattributes(nx,{'numeric'},{'scalar','integer','positive','finite'});
 if nargin<2 || isempty(ny),ny=nx;end
