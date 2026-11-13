@@ -16,6 +16,10 @@ end
 if ~isnumeric(X) || ndims(X)>2 || size(X,1)~=n
     error('um_fft_apply:Dimension','Input must have n rows.');
 end
+% MATLAB FFT routines do not accept sparse arrays. The FFT result is
+% generally dense, so expand sparse input only after checking dimensions.
+% This also permits canonical-basis probes used for exact trace estimates.
+if issparse(X),X=full(X);end
 switch lower(char(kind))
     case 'circulant'
         if adj,phases=conj(a(:));else,phases=a(:);end
