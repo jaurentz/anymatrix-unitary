@@ -1,4 +1,4 @@
-function [U,properties] = periodic_hilbert(n,dc,nyquist)
+function [U,properties] = periodic_hilbert(n,dc,nyquist,output)
 %PERIODIC_HILBERT Real orthogonal completion of the periodic Hilbert filter.
 %   The Fourier multiplier is -1i at positive frequencies, +1i at
 %   negative frequencies, with independently assigned DC and (for even N)
@@ -12,6 +12,7 @@ if nargin==0,U=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','positive','finite'});
 if nargin<2 || isempty(dc),dc=1;end
 if nargin<3 || isempty(nyquist),nyquist=1;end
+if nargin<4,output='matrix';end
 if ~(isnumeric(dc)&&isscalar(dc)&&isreal(dc)&&any(dc==[-1,1])) || ...
    ~(isnumeric(nyquist)&&isscalar(nyquist)&&isreal(nyquist)&&any(nyquist==[-1,1]))
     error('periodic_hilbert:Signs','DC and NYQUIST must be +1 or -1.');
@@ -20,6 +21,10 @@ d=zeros(n,1);d(1)=dc;
 d(2:ceil(n/2))=-1i;
 d(floor(n/2)+2:end)=1i;
 if mod(n,2)==0,d(n/2+1)=nyquist;end
+if um_is_operator(output)
+    U=@(X,flag)um_fft_apply(X,flag,'circulant',d,[]);
+    return
+end
 column=ifft(d);
 idx=mod((0:n-1)'-(0:n-1),n)+1;
 U=real(column(idx));

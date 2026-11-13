@@ -1,4 +1,4 @@
-function [U,properties] = orthogonal_dct(n,kind)
+function [U,properties] = orthogonal_dct(n,kind,output)
 %ORTHOGONAL_DCT Orthonormal discrete cosine transform of type I, II, III, IV.
 %   U=ORTHOGONAL_DCT(N,KIND) returns a real orthogonal N-by-N matrix.
 %   KIND defaults to 2. Type III is the transpose/inverse of type II.
@@ -9,9 +9,15 @@ properties={'square','unitary','normal','orthogonal','real', ...
 if nargin==0,U=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','positive','finite'});
 if nargin<2 || isempty(kind),kind=2;end
+if nargin<3,output='matrix';end
+if nargin==2 && (ischar(kind) || isstring(kind)),output=kind;kind=2;end
 validateattributes(kind,{'numeric'},{'scalar','integer','>=',1,'<=',4});
 if kind==1 && n==1
     error('orthogonal_dct:Order','DCT-I requires N >= 2.');
+end
+if um_is_operator(output)
+    U=@(X,flag)um_dct_apply(X,flag,n,kind);
+    return
 end
 [K,J]=ndgrid(0:n-1,0:n-1);
 switch kind
