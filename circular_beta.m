@@ -1,4 +1,4 @@
-function [U,properties] = circular_beta(n,dysonBeta,seed)
+function [U,properties] = circular_beta(n,dysonBeta,seed,output)
 %CIRCULAR_BETA Sparse random CMV model for Dyson's circular beta ensemble.
 %   U=CIRCULAR_BETA(N,BETA,SEED), BETA>0, generates the Killip-Nenciu
 %   Verblunsky coefficient ensemble and closes it with a uniform phase.
@@ -16,5 +16,6 @@ if nargin==0,U=[];return;end
 if nargin<2 || isempty(dysonBeta),dysonBeta=2;end
 if nargin<3,seed=[];end
 [alpha,betaTerminal]=js_circular_beta_coeffs(n,dysonBeta,seed);
-U=js_core_product(alpha,betaTerminal,'cmv');
+if nargin<4,output='matrix';end
+U=js_core_product(alpha,betaTerminal,'cmv',[],output);
 end

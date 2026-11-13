@@ -1,4 +1,4 @@
-function [U, properties] = finite_cmv(n, alpha)
+function [U, properties] = finite_cmv(n, alpha,output)
 %FINITE_CMV Finite CMV multiplication matrix from Verblunsky coefficients.
 %   U = FINITE_CMV(N, ALPHA) constructs an N-by-N CMV matrix, where
 %   ALPHA is an N-vector of coefficients with |ALPHA(1:N-1)| < 1 and
@@ -22,5 +22,6 @@ validateattributes(alpha, {'numeric'}, {'vector','finite'});
 if numel(alpha) ~= n
     error('finite_cmv:DimensionMismatch', 'ALPHA must contain N coefficients.');
 end
-U = js_core_product(alpha(1:end-1), alpha(end), 'cmv');
+if nargin<3,output='matrix';end
+U = js_core_product(alpha(1:end-1), alpha(end), 'cmv', [], output);
 end
