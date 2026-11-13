@@ -30,6 +30,7 @@ factor order under adjoints. No custom MATLAB matrix class is required.
 | `um_gate_apply`, `um_circuit_apply` | Two-site qubit gates, XXZ and dual-unitary Floquet circuits | O(1) per local gate |
 | `um_spin_apply` | Floquet Ising chains | O(2^n) phase vector |
 | `um_reflection_apply` | Grover rank-one reflection | O(n) temporary memory |
+| `um_dirac_apply` | Two-component periodic Dirac automaton, shift and local mass mixing | O(n) for multiple RHS |
 | `um_wavelet_apply` | Haar wavelet multilevel transform | O(n) |
 | `um_dct_apply` | DCT I–IV using FFT even extensions | O(n) |
 | `um_hartley_apply` | Hartley involution from normalized DFT and adjoint | O(n) |
@@ -67,9 +68,10 @@ general graph Fourier transforms intentionally **do not offer an
 `'operator'` output**: their explicit eigenvector matrices have no
 generic lower-storage or lower-complexity implicit action.
 
-Already economical sparse families (e.g., the cyclic shifts, the Dirac
-automaton, and the split-step walk) retain their sparse defaults and do not
-need redundant custom matvec algorithms. General Haar and polar-factor
+Already economical sparse families (e.g., the cyclic shifts and the split-step
+walk) retain their sparse defaults. The Dirac automaton also offers a direct
+matrix-free forward/adjoint interface through `um_dirac_apply`, with O(n)
+arithmetic and no assembled sparse matrix. General Haar and polar-factor
 matrices remain dense. The kicked-top generator now reuses the Hermitian-tridiagonal exponential
 kernel developed for the two-mode Bose–Hubbard dimer. In MATLAB R2023b and later,
 its implicit mode assembles a sparse Hermitian-tridiagonal generator and

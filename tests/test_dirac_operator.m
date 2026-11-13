@@ -17,9 +17,12 @@ for n=[1 2 3 12]
         verifyLessThan(tc,norm(O(X,'ctransp')-A'*X,'fro'),1e-11);
         verifyLessThan(tc,norm(O(O(X,'notransp'),'transp')-X,'fro'),1e-11);
         omega=acos(sqrt(1-mass^2)*cos(2*pi*(0:n-1)'/n));
-        exact=sort(angle(exp(1i*[omega;-omega])));
-        computed=sort(angle(eig(full(A))));
-        verifyLessThan(tc,max(abs(exact-computed)),1e-10);
+        % Compare on the circle: angles jump at +/-pi.
+        expected=exp(1i*[omega;-omega]);
+        computed=eig(full(A));
+        dist=abs(computed-expected.');
+        verifyLessThan(tc,max(min(dist,[],2)),1e-10);
+        verifyLessThan(tc,max(min(dist,[],1)),1e-10);
     end
 end
 end
