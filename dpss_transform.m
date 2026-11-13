@@ -21,10 +21,14 @@ j=(0:n-1)';
 d=((n-1)/2-j).^2*cos(2*pi*W);
 e=(1:n-1)';
 e=e.*(n-e)/2;
-T=diag(d)+diag(e,1)+diag(e,-1);
-[V,D]=eig(T);
-[~,idx]=sort(diag(D),'descend');
-V=V(:,idx);
+if n==1
+    V=1;
+else
+    T=diag(d)+diag(e,1)+diag(e,-1);
+    [V,D]=eig(T);
+    [~,idx]=sort(diag(D),'descend');
+    V=V(:,idx);
+end
 for j=1:n
     [~,pivot]=max(abs(V(:,j)));
     if V(pivot,j)<0,V(:,j)=-V(:,j);end
