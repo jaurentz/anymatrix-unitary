@@ -903,7 +903,7 @@ estimation, finite-band concentration and leakage suppression. [49]
 ### Graph Fourier transform — [`graph_fourier.m`](../graph_fourier.m)
 
 **Order:** $n$. For a symmetric, nonnegative zero-diagonal
-adjacency $A$, let $L=\mathop{\mathrm{diag}}(A\mathbf1)-A$.
+adjacency $A$, let $L=\mathop{\mathrm{diag}}(A\mathbf{1})-A$.
 If $L=V\Lambda V^T$, sorted by nondecreasing eigenvalues,
 the transform is $U=V^T$. It is real orthogonal. The generator
 uses a path graph by default and fixes repeated eigenspaces

@@ -30,7 +30,7 @@ for n=[1 2 3 5 8 13]
     verifyLessThan(testCase,norm(S{2}'-S{3},'fro'),4e-11*n);
 end
 check_operator(testCase,discrete_sine(8),discrete_sine(8,'operator'));
-verifyError(testCase,@()discrete_sine(8,5),'MATLAB:expectedLessEqual');
+verifyError(testCase,@()discrete_sine(8,5),'MATLAB:notLessEqual');
 end
 
 function test_walsh_natural_and_sequency(testCase)
