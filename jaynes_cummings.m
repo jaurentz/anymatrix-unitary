@@ -23,6 +23,11 @@ function [U,properties] = jaynes_cummings(n,g,delta,t,omega_c,output)
 %   Verified reference identifiers (see docs/MATRIX_ENCYCLOPEDIA.md):
 %   [43] https://doi.org/10.1109/PROC.1963.1664
 properties={'square','unitary','normal','complex','sparse','scalable','parameter-dependent'};
+% Optional analytic spectral-reference mode.
+if nargin>=6 && (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
+    U=unitary_spectral_reference('jaynes_cummings',n,g,delta,t,omega_c);
+    return
+end
 if nargin==0,U=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','nonnegative','finite'});
 if nargin<2 || isempty(g),g=.8;end

@@ -1,4 +1,4 @@
-function [U,properties] = polar_unitary(n,A)
+function [U,properties] = polar_unitary(n,A,output)
 %POLAR_UNITARY Unitary polar factor of a nonsingular N-by-N matrix.
 %   U=POLAR_UNITARY(N,A) returns L*R' from the singular value
 %   decomposition A=L*S*R'. A must be nonsingular, so the unitary
@@ -7,6 +7,11 @@ function [U,properties] = polar_unitary(n,A)
 %   Reference: N. J. Higham, SIAM J. Sci. Stat. Comput. 7 (1986),
 %   1160-1174. https://doi.org/10.1137/0907079
 properties={'square','unitary','normal','scalable','parameter-dependent'};
+% Optional analytic spectral-reference mode.
+if nargin>=3 && (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
+    U=unitary_spectral_reference('polar_unitary',n,A);
+    return
+end
 if nargin==0,U=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','positive','finite'});
 if nargin<2 || isempty(A)
