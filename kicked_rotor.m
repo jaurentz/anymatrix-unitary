@@ -10,6 +10,8 @@ function [U,properties] = kicked_rotor(n,K,hbar,theta_shift,output)
 %   and boundary conventions generally change the finite spectrum.
 %   K=0 gives an exactly known diagonal spectrum.
 %   Reference: F. M. Izrailev, Phys. Rep. 196 (1990), 299-392.
+%   Verified reference identifiers (see docs/MATRIX_ENCYCLOPEDIA.md):
+%   [35] https://doi.org/10.1016/0370-1573(90)90067-C
 properties={'square','unitary','normal','complex','scalable','parameter-dependent'};
 if nargin==0,U=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','>=',2,'finite'});

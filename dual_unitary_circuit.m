@@ -14,6 +14,9 @@ function [U,properties] = dual_unitary_circuit(n,depth,chi,angles,boundary,outpu
 %   is asserted for a finite, spatially homogeneous circuit.
 %   References: B. Bertini, P. Kos, T. Prosen, Phys. Rev. Lett.
 %   123 (2019), 210601; Commun. Math. Phys. 387 (2021), 597-620.
+%   Verified reference identifiers (see docs/MATRIX_ENCYCLOPEDIA.md):
+%   [36] https://doi.org/10.1103/PhysRevLett.123.210601
+%   [37] https://doi.org/10.1007/s00220-021-04139-2
 properties={'square','unitary','normal','complex','parameter-dependent'};
 if nargin==0,U=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','>=',2,'<=',20,'finite'});

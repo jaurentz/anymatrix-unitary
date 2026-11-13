@@ -20,6 +20,8 @@ function [U,properties] = jaynes_cummings(n,g,delta,t,omega_c,output)
 %   Both modes share exactly the same analytic block coefficients.
 %
 %   Reference: Jaynes and Cummings, Proc. IEEE 51 (1963), 89-109.
+%   Verified reference identifiers (see docs/MATRIX_ENCYCLOPEDIA.md):
+%   [43] https://doi.org/10.1109/PROC.1963.1664
 properties={'square','unitary','normal','complex','sparse','scalable','parameter-dependent'};
 if nargin==0,U=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','nonnegative','finite'});

@@ -12,6 +12,9 @@ function [U,properties] = driven_kitaev(n,opts)
 %   are not guaranteed for every choice of drive parameters.
 %   References: D. J. Yates and A. Mitra, Phys. Rev. B 96 (2017),
 %   115108; M. van Caspel et al., SciPost Phys. 6 (2019), 026.
+%   Verified reference identifiers (see docs/MATRIX_ENCYCLOPEDIA.md):
+%   [33] https://doi.org/10.1103/PhysRevB.96.115108
+%   [34] https://doi.org/10.21468/SciPostPhys.6.2.026
 properties={'square','unitary','normal','complex','scalable','parameter-dependent'};
 if nargin==0,U=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','>=',2,'finite'});
