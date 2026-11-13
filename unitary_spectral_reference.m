@@ -103,7 +103,7 @@ switch family
             a=2*abs(t);
             S.limit.kind='analytic';
             S.limit.density=@(theta) wrapped_arcsine(theta,a);
-            S.limit.moments=@(k) (-1i).^k.*besselj(k,2*t);
+            S.limit.moments=@(k) besselj(0,2*t*k);
             if a<pi
                 S.limit.support=[-a a];
             else
