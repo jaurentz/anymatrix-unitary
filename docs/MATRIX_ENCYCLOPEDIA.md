@@ -371,9 +371,22 @@ Procrustes problems and perturbation analysis. **Reference:** [24].
 
 ### 22. Julia/Halmos unitary extension — [`julia_unitary.m`](../julia_unitary.m)
 
-**Order:** $2n$ for an $n\times n$ contraction $T$, $\lVert T\rVert_2\leq1$. 
-**Structure:** generally dense, block unitary. With defect operators
-$D_T=(I-T^*T)^{1/2}$ and $D_{T^*}=(I-TT^*)^{1/2}$,
+**Order and assumptions:** A square contraction produces a block unitary of
+twice its order:
+
+```math
+T\in\mathbb{C}^{n\times n},\qquad
+\lVert T\rVert_2\leq 1,\qquad
+\mathcal{U}(T)\in\mathbb{C}^{2n\times 2n}.
+```
+
+**Structure:** generally dense, block unitary. Its defect operators are
+
+```math
+D_T=(I-T^*T)^{1/2},\qquad D_{T^*}=(I-TT^*)^{1/2}.
+```
+
+The Julia/Halmos extension is
 
 ```math
 \mathcal{U}(T)=
@@ -383,12 +396,20 @@ D_T & -T^*
 \end{pmatrix}.
 ```
 
-This gives a finite unitary containing the nonnormal contraction $T$ in
-its leading block. **It is not automatically a unitary power dilation**:
-compressing arbitrary powers of $\mathcal{U}(T)$ need not yield $T^k$.
-Useful for conservative system matrices, passive control and dilation theory.
-**Reference:** [25].
+The input contraction occupies the leading diagonal block of the extension.
+**This is not automatically a unitary power dilation:** taking the leading
+block of higher powers of the extension does not, in general, reproduce the
+corresponding powers of the input contraction. With the projection onto the
+first block, this distinction can be written as
 
+```math
+P=\begin{pmatrix}I_n&0\end{pmatrix},\qquad
+P\mathcal{U}(T)^kP^*\neq T^k
+\quad\text{in general for }k\geq 2.
+```
+
+Applications include conservative system matrices, passive control, and
+dilation theory. **Reference:** [25].
 
 ## F. Further real and complex OPUC matrix generators
 
