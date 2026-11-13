@@ -194,3 +194,85 @@ Additional representations motivated by isometric or rational Arnoldi
 require further basis/pole parameters and cannot always be described by
 simply permuting the same adjacent cores. They will use the shared measure
 and coefficient layers with new representation backends.
+
+## Real and complex OPUC expansions (November 2026)
+
+The classification is by the *interior* Verblunsky coefficients, independently
+of whether the underlying positive measure has a closed-form density.
+A real coefficient sequence with terminal beta = +/-1 gives a real
+orthogonal finite CMV matrix; nonreal interior coefficients or a complex
+terminal phase generally give a complex unitary matrix. The terminal phase
+is always independent of the infinite measure. The same OPUC data can be
+realized as CMV, Hessenberg, inverse Hessenberg, or twisted core products.
+
+### Generalized circular Jacobi
+
+For a > -1/2 and eta real, define the positive measure on (0,2*pi) by
+
+$$
+d\mu(\theta)=Z^{-1} e^{(\pi-\theta)\eta}
+ (4\sin^2(\theta/2))^a\,d\theta.
+$$
+
+For b=a+i*eta the complex Verblunsky sequence is
+
+$$
+\alpha_k=-\frac{(b)_{k+1}}{(1+\overline b)_{k+1}},
+\qquad k\geq 0.
+$$
+
+The code evaluates this formula by successive ratios to avoid large
+factorials and normalizes the positive weight by numerical quadrature.
+At eta=0, alpha_k=-a/(k+a+1) is real (ordinary circular Jacobi).
+This is a deterministic circle weight, not a draw from the circular
+Jacobi *random matrix ensemble*. See Simon (2005) and Bourgade,
+Nikeghbali, Rouault (2009), doi:10.1093/imrn/rnp092.
+
+### Rogers--Szego (wrapped Gaussian)
+
+For 0<q<1, let s=-log(q) and wrap N(0,s) onto the circle. Then
+
+$$
+\alpha_k=(-1)^k q^{(k+1)/2},\qquad k\geq 0.
+$$
+
+The density is evaluated as a wrapped normal sum. Its exact moments
+are integral exp(i*k*theta) dmu = q^(k^2/2), for integer k.
+Reference: Simon (2005), Example 1.6.5; DLMF 18.33.
+
+### Constant and periodic Verblunsky coefficients
+
+The constant (Geronimus) measure uses alpha_k=a, |a|<1, for all k.
+The spectral measure may have a proper absolutely continuous arc and
+an additional atom. The periodic family takes a finite coefficient
+pattern in the open disk and repeats it indefinitely; the associated
+two-sided/infinite CMV theory gives spectral bands and gaps.
+These statements concern the infinite measures. The code produces
+finite *unitary* n-by-n closures, not principal submatrices of
+infinite CMV operators. Reference: Simon (2005), Parts 1--2.
+
+### Finite Bernstein--Szego data
+
+For alpha_0,...,alpha_(m-1) in the disk and alpha_k=0 for k>=m,
+write Phi_m^* for the reversed monic Szego polynomial. Then
+
+$$
+\frac{d\mu}{d\theta} =
+\frac{\prod_{j=0}^{m-1}(1-|\alpha_j|^2)}
+ {2\pi|\Phi_m^*(e^{i\theta})|^2}.
+$$
+
+The code evaluates the reversed polynomial through the Szego recurrence,
+so it accepts arbitrary finite complex coefficients and includes the
+existing one-coefficient Poisson/Bernstein--Szego measure as a special
+case. A zero-length coefficient list denotes the uniform measure.
+
+All five descriptors are implemented by public SZEGO_*_MEASURE functions;
+`szego_verblunsky` dispatches their coefficient formulas, and
+`szego_matrix` performs finite unitary closure.
+
+**Spectral interpretation.** The finite e1 spectral measure is a positive
+Gauss--Szego quadrature measure; its nodes with *equal* weights are not,
+in general, distributed according to the original OPUC weight. An
+absolutely continuous circle weight need not give a nonuniform limiting
+unweighted eigenvalue density.
