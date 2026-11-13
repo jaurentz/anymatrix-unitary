@@ -13,6 +13,11 @@ end
 if ~isnumeric(X) || ndims(X)>2 || size(X,1)~=n
     error('um_dct_apply:Dimension','Input must have n rows.');
 end
+if n==1
+    % DCT-II, III and IV all reduce to the scalar identity.
+    Y=X;
+    return
+end
 wasReal=isreal(X);
 switch kind
     case 1
