@@ -37,10 +37,14 @@ for k=1:numel(entries)
     entry=entries(k);
     verifyTrue(testCase,islogical(entry.matrix_free_supported));
     if entry.matrix_free_supported
-        kernel=char(entry.operator_kernel);
-        verifyTrue(testCase,startsWith(kernel,'um_'));
-        verifyTrue(testCase,isfile(fullfile(root,[kernel,'.m'])), ...
-            sprintf('Missing matrix-free kernel %s for %s',kernel,name));
+        kernels=strsplit(char(entry.operator_kernel),' / ');
+        for ik=1:numel(kernels)
+            kernel=strtrim(kernels{ik});
+            verifyTrue(testCase,startsWith(kernel,'um_'), ...
+                sprintf('Invalid matrix-free kernel %s for %s',kernel,name));
+            verifyTrue(testCase,isfile(fullfile(root,[kernel,'.m'])), ...
+                sprintf('Missing matrix-free kernel %s for %s',kernel,name));
+        end
     end
 end
 end
