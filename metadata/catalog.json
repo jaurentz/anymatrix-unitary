@@ -548,6 +548,189 @@
       "matrix_free_supported": true,
       "operator_kernel": "um_core_apply",
       "operator_note": "O(n) adjacent core sequence; sparse CMV still available by default."
+    },
+    {
+      "id": "orthogonal_dct",
+      "status": "implemented",
+      "category": "signal_processing",
+      "matrix_order": "n",
+      "representation": "real dense DCT-I--IV",
+      "spectral_reference": "parameter-dependent eigenphases",
+      "encyclopedia_references": [
+        52
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_dct_apply",
+      "operator_note": "FFT even-extension DCT-I through IV, O(n) working storage, supports complex multiple RHS."
+    },
+    {
+      "id": "discrete_hartley",
+      "status": "implemented",
+      "category": "signal_processing",
+      "matrix_order": "n",
+      "representation": "real symmetric dense involution",
+      "spectral_reference": "exact eigenvalues +/-1",
+      "encyclopedia_references": [
+        47
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_hartley_apply",
+      "operator_note": "Linear combination of normalized FFT and inverse FFT; no dense Hartley matrix."
+    },
+    {
+      "id": "cazac_circulant",
+      "status": "implemented",
+      "category": "signal_processing",
+      "matrix_order": "n",
+      "representation": "dense constant-modulus circulant",
+      "spectral_reference": "exact DFT of Chu sequence",
+      "encyclopedia_references": [
+        48
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_fft_apply",
+      "operator_note": "First-column Chu chirp FFT diagonalization, O(n) spectral data."
+    },
+    {
+      "id": "fresnel_transform",
+      "status": "implemented",
+      "category": "signal_processing",
+      "matrix_order": "n",
+      "representation": "dense chirp circulant / FFT",
+      "spectral_reference": "exact FFT of first chirp column",
+      "encyclopedia_references": [
+        49
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_fft_apply",
+      "operator_note": "Paritied discrete Fresnel chirp FFT diagonalization, O(n) spectral data."
+    },
+    {
+      "id": "affine_fourier",
+      "status": "implemented",
+      "category": "signal_processing",
+      "matrix_order": "n",
+      "representation": "dense chirp-DFT-chirp",
+      "spectral_reference": "parameter-dependent eigenphases; DFT special case",
+      "encyclopedia_references": [
+        50
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_affine_apply",
+      "operator_note": "Two cached quadratic chirp vectors surrounding shared Fourier FFT."
+    },
+    {
+      "id": "finite_zak",
+      "status": "implemented",
+      "category": "signal_processing",
+      "matrix_order": "n",
+      "representation": "Kronecker DFT by polyphase index",
+      "spectral_reference": "exact DFT eigenvalues, repeated p-fold",
+      "encyclopedia_references": [
+        51
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_zak_apply",
+      "operator_note": "O(n) polyphase reshape and short FFTs; spectrum repeats DFT_q phases."
+    },
+    {
+      "id": "time_frequency_shift",
+      "status": "implemented",
+      "category": "signal_processing",
+      "matrix_order": "n",
+      "representation": "sparse Weyl-Heisenberg monomial",
+      "spectral_reference": "exact phase-weighted permutation cycles",
+      "encyclopedia_references": [
+        51
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_monomial_apply",
+      "operator_note": "Sparse phase-weighted permutation via shared monomial kernel."
+    },
+    {
+      "id": "periodic_hilbert",
+      "status": "implemented",
+      "category": "signal_processing",
+      "matrix_order": "n",
+      "representation": "real circulant orthogonal filter",
+      "spectral_reference": "exact four-atom Fourier multiplier law",
+      "encyclopedia_references": [
+        52
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_fft_apply",
+      "operator_note": "Cached unit-modulus Fourier multiplier and shared circulant FFT."
+    },
+    {
+      "id": "discrete_fourier",
+      "status": "implemented",
+      "category": "signal_processing",
+      "matrix_order": "n",
+      "representation": "dense DFT / FFT",
+      "spectral_reference": "exact fourth-root spectrum; F^4=I",
+      "encyclopedia_references": [
+        1,
+        52
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_dft_apply",
+      "operator_note": "Shares the existing normalized FFT kernel; O(n) storage."
+    },
+    {
+      "id": "discrete_sine",
+      "status": "implemented",
+      "category": "signal_processing",
+      "matrix_order": "n",
+      "representation": "real orthogonal DST I-IV",
+      "spectral_reference": "I and IV are involutions; III is transpose of II",
+      "encyclopedia_references": [
+        54
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_dst_apply",
+      "operator_note": "DST-I odd extension and DST-II--IV reduce to shared FFT-based DCT; O(n) storage."
+    },
+    {
+      "id": "walsh_hadamard",
+      "status": "implemented",
+      "category": "signal_processing",
+      "matrix_order": "power of two",
+      "representation": "real Sylvester / sequency-ordered Hadamard",
+      "spectral_reference": "natural order exact +/-1 atoms; sequency order depends on row permutation",
+      "encyclopedia_references": [
+        55
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_walsh_apply",
+      "operator_note": "FWHT O(n log n) arithmetic, O(n) storage; sparse butterfly stages."
+    },
+    {
+      "id": "dpss_transform",
+      "status": "implemented",
+      "category": "signal_processing",
+      "matrix_order": "n",
+      "representation": "real dense Slepian eigenbasis",
+      "spectral_reference": "eigenbasis transform spectrum generally non-explicit; concentration eigenvalues belong to a different matrix",
+      "encyclopedia_references": [
+        56
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": null,
+      "operator_note": "Explicit dense eigenbasis only. A full cached basis handle gives no computational or storage advantage."
+    },
+    {
+      "id": "graph_fourier",
+      "status": "implemented",
+      "category": "signal_processing",
+      "matrix_order": "n",
+      "representation": "real dense graph-Laplacian eigenbasis",
+      "spectral_reference": "Laplacian frequencies are not eigenvalues of the graph Fourier transform; basis depends on weights and multiplicities",
+      "encyclopedia_references": [
+        57
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": null,
+      "operator_note": "Explicit dense eigenbasis only. A full cached basis handle gives no computational or storage advantage."
     }
   ],
   "probability_measures": [

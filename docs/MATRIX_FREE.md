@@ -25,12 +25,19 @@ factor order under adjoints. No custom MATLAB matrix class is required.
 | Kernel | Families / mathematics | Storage |
 | --- | --- | --- |
 | `um_core_apply` | CMV, Hessenberg, inverse-Hessenberg, arbitrary twisted OPUC core chains and all Szegő coefficient families | O(n) |
-| `um_monomial_apply` | Cyclic/permutation shifts, weighted shifts, and diagonal phase operators | O(n) |
-| `um_fft_apply` | Circulants, tight-binding cycle, kicked Harper/rotor, quantized baker | O(n) |
+| `um_monomial_apply` | Cyclic/permutation shifts, weighted shifts, diagonal phases, and Weyl–Heisenberg time-frequency shifts | O(n) |
+| `um_fft_apply` | Circulants, CAZAC/Fresnel chirps, completed Hilbert transform, tight-binding cycle, kicked Harper/rotor, quantized baker | O(n) |
 | `um_gate_apply`, `um_circuit_apply` | Two-site qubit gates, XXZ and dual-unitary Floquet circuits | O(1) per local gate |
 | `um_spin_apply` | Floquet Ising chains | O(2^n) phase vector |
 | `um_reflection_apply` | Grover rank-one reflection | O(n) temporary memory |
 | `um_wavelet_apply` | Haar wavelet multilevel transform | O(n) |
+| `um_dct_apply` | DCT I–IV using FFT even extensions | O(n) |
+| `um_hartley_apply` | Hartley involution from normalized DFT and adjoint | O(n) |
+| `um_affine_apply` | Affine Fourier: cached chirp factors and shared Fourier kernel | O(n) |
+| `um_zak_apply` | Polyphase reshape and short FFTs | O(n) |
+| `um_dft_apply` | Reuses normalized Fourier FFT, with explicit size contract | O(n) |
+| `um_dst_apply` | DST-I odd FFT extension and DST-II–IV via DCT | O(n) |
+| `um_walsh_apply` | Fast Walsh butterflies with sequency permutation | O(n) |
 | `um_cayley_apply` | Cayley transform of a Jacobi recurrence using cached sparse triangular solves | O(n) for tridiagonal factors, modulo fill |
 | `um_tridiag_exp_apply`, `um_kick_tridiag_apply` | Bose–Hubbard hopping and kicked-top spin rotations; diagonal phase followed by an Hermitian-tridiagonal exponential | O(n) coefficients; O(n·RHS) workspace |
 | `um_jaynes_apply` | Analytic cavity-QED excitation blocks with uncoupled edge phases | O(n) |
@@ -46,6 +53,19 @@ Verblunsky coefficients and core ordering; the kernel is shared.
 `selfdual_kicked_ising` permit larger spin counts in implicit mode than in
 the dense default. The state vector still has exponential length `2^n`.
 The dense caps and other original parameter conventions remain in place.
+
+All eight signal-processing generators accept the shared final `'operator'` argument.
+DCT I–IV use FFT-based actions even for complex multiple RHS. CAZAC,
+Fresnel, and Hilbert directly reuse the circulant FFT kernel, while
+Weyl–Heisenberg shifts reuse `um_monomial_apply`.
+
+The DFT, DST I–IV, and Walsh–Hadamard families additionally support
+fast actions: `um_dft_apply` forwards to the shared Fourier kernel,
+`um_dst_apply` uses odd FFT extension and shared DCT routines, and
+`um_walsh_apply` uses fast Walsh butterflies. The DPSS/Slepian and
+general graph Fourier transforms intentionally **do not offer an
+`'operator'` output**: their explicit eigenvector matrices have no
+generic lower-storage or lower-complexity implicit action.
 
 Already economical sparse families (e.g., the cyclic shifts, the Dirac
 automaton, and the split-step walk) retain their sparse defaults and do not
