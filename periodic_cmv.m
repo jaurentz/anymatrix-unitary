@@ -5,6 +5,10 @@ function [U,properties] = periodic_cmv(n,pattern,representation,beta,twists,outp
 %   Supported forms: cmv (default), hessenberg, inverse_hessenberg, twisted.
 %   Interior coefficients must lie in the open disk; |BETA|=1 closes.
 %   See documentation and the corresponding SZEGO_*_MEASURE function.
+%   Verified reference identifiers (see docs/MATRIX_ENCYCLOPEDIA.md):
+%   [5] https://doi.org/10.1090/coll054.1
+%   [5] https://doi.org/10.1090/coll/054.2
+%   [7] https://doi.org/10.1016/j.cam.2006.10.033
 properties={'square','unitary','normal','scalable','parameter-dependent'};
 if nargin==0,U=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','positive','finite'});

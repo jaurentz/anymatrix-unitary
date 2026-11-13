@@ -5,6 +5,11 @@ function [U,properties] = circular_jacobi(n,a,eta,representation,beta,twists,out
 %   Supported forms: cmv (default), hessenberg, inverse_hessenberg, twisted.
 %   Interior coefficients must lie in the open disk; |BETA|=1 closes.
 %   See documentation and the corresponding SZEGO_*_MEASURE function.
+%   Verified reference identifiers (see docs/MATRIX_ENCYCLOPEDIA.md):
+%   [5] https://doi.org/10.1090/coll054.1
+%   [5] https://doi.org/10.1090/coll/054.2
+%   [12] https://dlmf.nist.gov/18.33
+%   [27] https://doi.org/10.1093/imrn/rnp092
 properties={'square','unitary','normal','scalable','parameter-dependent'};
 if nargin==0,U=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','positive','finite'});
