@@ -1,4 +1,4 @@
-function [U,properties] = kicked_harper(n,K,L)
+function [U,properties] = kicked_harper(n,K,L,output)
 %KICKED_HARPER Finite torus version of the kicked Harper Floquet operator.
 %   U=D_p(L)*F'*D_x(K)*F, with D_x and D_p diagonal phase matrices
 %   exp(-1i*K*cos(2*pi*k/N)) and exp(-1i*L*cos(2*pi*k/N)).
@@ -15,8 +15,9 @@ if nargin<3 || isempty(L),L=0.7;end
 validateattributes(K,{'numeric'},{'scalar','real','finite'});
 validateattributes(L,{'numeric'},{'scalar','real','finite'});
 q=(0:n-1)';
-F=exp(-2*pi*1i*(q*q')/n)/sqrt(n);
-Dx=diag(exp(-1i*K*cos(2*pi*q/n)));
-Dp=diag(exp(-1i*L*cos(2*pi*q/n)));
-U=Dp*(F'*Dx*F);
+Dx=exp(-1i*K*cos(2*pi*q/n));
+Dp=exp(-1i*L*cos(2*pi*q/n));
+if nargin<4,output='matrix';end
+op=@(X,flag)um_fft_apply(X,flag,'kick',Dx,Dp);
+if um_is_operator(output),U=op;else,U=op(eye(n),'notransp');end
 end

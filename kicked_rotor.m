@@ -1,4 +1,4 @@
-function [U,properties] = kicked_rotor(n,K,hbar,theta_shift)
+function [U,properties] = kicked_rotor(n,K,hbar,theta_shift,output)
 %KICKED_ROTOR Finite Fourier-grid Floquet quantum kicked rotor.
 %   U = Dp*F'*Dx*F, with F(j,k)=exp(-2*pi*1i*j*k/n)/sqrt(n),
 %   Dp(k,k)=exp(-1i*hbar*k^2/2), k=0,...,n-1,
@@ -20,8 +20,9 @@ validateattributes(K,{'numeric'},{'scalar','real','finite'});
 validateattributes(hbar,{'numeric'},{'scalar','real','finite','positive'});
 validateattributes(theta_shift,{'numeric'},{'scalar','real','finite'});
 q=(0:n-1)';
-F=exp(-2*pi*1i*(q*q')/n)/sqrt(n);
-Dp=diag(exp(-1i*(hbar/2)*(q.^2)));
-Dx=diag(exp(-1i*(K/hbar)*cos(2*pi*(q+theta_shift)/n)));
-U=Dp*(F'*Dx*F);
+Dp=exp(-1i*(hbar/2)*(q.^2));
+Dx=exp(-1i*(K/hbar)*cos(2*pi*(q+theta_shift)/n));
+if nargin<5,output='matrix';end
+op=@(X,flag)um_fft_apply(X,flag,'kick',Dx,Dp);
+if um_is_operator(output),U=op;else,U=op(eye(n),'notransp');end
 end
