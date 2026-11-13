@@ -669,9 +669,9 @@
       "encyclopedia_references": [
         49
       ],
-      "matrix_free_supported": true,
-      "operator_kernel": "um_basis_apply",
-      "operator_note": "Operator interface caches full dense DPSS eigenbasis, O(n^2) storage and apply; not a fast implicit transform."
+      "matrix_free_supported": false,
+      "operator_kernel": null,
+      "operator_note": "Explicit dense eigenbasis only. A full cached basis handle gives no computational or storage advantage."
     },
     {
       "id": "graph_fourier",
@@ -683,9 +683,9 @@
       "encyclopedia_references": [
         50
       ],
-      "matrix_free_supported": true,
-      "operator_kernel": "um_basis_apply",
-      "operator_note": "Operator interface caches a dense graph eigensystem, O(n^2) storage; deterministic repeated-eigenspace convention."
+      "matrix_free_supported": false,
+      "operator_kernel": null,
+      "operator_note": "Explicit dense eigenbasis only. A full cached basis handle gives no computational or storage advantage."
     }
   ],
   "probability_measures": [

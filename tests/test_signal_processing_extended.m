@@ -56,7 +56,6 @@ for n=[1 2 4 8 12 20]
     for W=[.09 .21 .38]
         U=dpss_transform(n,W);
         check_unitary(testCase,U,5e-11*n);
-        check_operator(testCase,U,dpss_transform(n,W,'operator'));
         j=(0:n-1)';
         delta=j-j';
         B=2*W*eye(n);
@@ -76,14 +75,13 @@ for n=[1 2 4 8 12 20]
         end
     end
 end
-check_operator(testCase,dpss_transform(7),dpss_transform(7,'operator'));
+verifyEqual(testCase,dpss_transform(7),dpss_transform(7,.25),'AbsTol',1e-12);
 end
 
 function test_graph_laplacian_basis_and_degeneracies(testCase)
 for n=[1 2 3 7 12]
     U=graph_fourier(n);
     check_unitary(testCase,U,2e-10*n);
-    check_operator(testCase,U,graph_fourier(n,'operator'));
     A=zeros(n);for j=1:n-1,A(j,j+1)=1;A(j+1,j)=1;end
     L=diag(sum(A,2))-A;
     d=sort(eig(L),'ascend');
@@ -94,7 +92,6 @@ for n=[4 6 9]
     B=graph_fourier(n,A);
     check_unitary(testCase,B,2e-10*n);
     verifyLessThan(testCase,norm(B-graph_fourier(n,A),'fro'),8e-10*n);
-    check_operator(testCase,B,graph_fourier(n,A,'operator'));
     L=diag(sum(A,2))-A;
     d=sort(eig(L),'ascend');
     verifyLessThan(testCase,norm(B*L*B'-diag(d),'fro'),5e-9*n);
@@ -115,19 +112,13 @@ for k=1:numel(ops)
     verifyEqual(testCase,F([],'size'),[n n]);
     verifyLessThan(testCase,norm(F(F(X,'notransp'),'transp')-X,'fro'),3e-9);
 end
-% Dense cached spectral bases should obey the same contract, without
-% claiming fast construction or O(n) memory.
-check_operator(testCase,dpss_transform(96,.2),dpss_transform(96,.2,'operator'));
-check_operator(testCase,graph_fourier(96),graph_fourier(96,'operator'));
+% DPSS and general graph transforms intentionally remain explicit matrices.
 end
 
 function test_operator_bad_shapes(testCase)
 F=walsh_hadamard(8,'operator');
 verifyError(testCase,@()F(ones(7,2),'notransp'),'um_walsh_apply:Dimension');
 verifyError(testCase,@()F(ones(8,2),'bad'),'um_walsh_apply:Flag');
-G=dpss_transform(8,.2,'operator');
-verifyError(testCase,@()G(ones(7,1),'notransp'),'um_basis_apply:Dimension');
-verifyError(testCase,@()G(ones(8,1),'bad'),'um_basis_apply:Flag');
 end
 
 function check_unitary(testCase,U,tol)

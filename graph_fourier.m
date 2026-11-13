@@ -1,4 +1,4 @@
-function [U,properties]=graph_fourier(n,adjacency,output)
+function [U,properties]=graph_fourier(n,adjacency)
 %GRAPH_FOURIER Orthogonal graph Fourier analysis from a weighted Laplacian.
 %   U=GRAPH_FOURIER(N,A) uses an N-by-N undirected symmetric nonnegative
 %   adjacency matrix A with zero diagonal. Default A is the path graph.
@@ -7,8 +7,9 @@ function [U,properties]=graph_fourier(n,adjacency,output)
 %   Within repeated eigenspaces, projected standard basis vectors are
 %   orthonormalized in vertex order to fix a deterministic convention.
 %   The eigenvalues of L are NOT the eigenvalues of U.
-%   'operator' stores the computed dense eigenbasis; it is not a fast
-%   graph FFT. Reference: D. I. Shuman et al., IEEE SPM 30 (2013).
+%   Only an explicit matrix is returned; a dense cached eigensystem
+%   is not a matrix-free implementation.
+%   Reference: D. I. Shuman et al., IEEE SPM 30 (2013).
 properties={'square','unitary','normal','orthogonal','real', ...
     'scalable','parameter-dependent'};
 if nargin==0,U=[];return;end
@@ -21,16 +22,8 @@ if nargin<2 || isempty(adjacency)
         A=A+A';
     end
 else
-    if nargin==2 && (ischar(adjacency)||isstring(adjacency))
-        output=adjacency;
-        if n==1,A=sparse(1,1);else
-            A=sparse(1:n-1,2:n,1,n,n);A=A+A';
-        end
-    else
-        A=adjacency;
-    end
+    A=adjacency;
 end
-if nargin<3 && ~exist('output','var'),output='matrix';end
 validateattributes(A,{'numeric'}, ...
     {'size',[n n],'real','finite','nonnegative'});
 if norm(A-A','fro')>1e-12*max(1,norm(A,'fro')) || any(diag(A)~=0)
@@ -75,9 +68,5 @@ while first<=n
     end
     first=last+1;
 end
-if um_is_operator(output)
-    U=@(X,flag)um_basis_apply(X,flag,V);
-else
-    U=V';
-end
+U=V';
 end
