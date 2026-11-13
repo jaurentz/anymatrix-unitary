@@ -901,14 +901,25 @@ real signal processing, independent of the Hadamard construction. [47]
 
 ### Chu/CAZAC unitary circulants — [`cazac_circulant.m`](../cazac_circulant.m)
 
-**Order:** $n$. Choose an integer root $r$ coprime to $n$, and set
+**Order:** $n$. Choose an integer root $r$ coprime to $n$.
+For $k=0,\ldots,n-1$, define the constant-amplitude sequence as follows.
+
+For **even** $n$,
 
 ```math
-c_k=\begin{cases}
-\exp[-\pi i r k^2/n],&n\text{ even},\\
-\exp[-\pi i r k(k+1)/n],&n\text{ odd}.
-\end{cases}
-\qquad U_{jk}=\frac{c_{(j-k)\bmod n}}{\sqrt n}.
+c_k=\exp\left(-\frac{\pi i r k^2}{n}\right).
+```
+
+For **odd** $n$,
+
+```math
+c_k=\exp\left(-\frac{\pi i r k(k+1)}{n}\right).
+```
+
+Let $d$ be the residue of $j-k$ modulo $n$. The unitary circulant is
+
+```math
+U_{jk}=\frac{c_d}{\sqrt{n}}.
 ```
 
 Chu's perfect periodic autocorrelation yields $U^*U=I$,
@@ -918,7 +929,6 @@ $z_\ell=n^{-1/2}\mathop{\mathrm{fft}}(c)_\ell$.
 This is a restricted, application-derived subfamily of
 unitary circulants (not a distinct general matrix class).
 Applications: channel synchronization, radar/sonar pulse coding. [48]
-
 ### Discrete Fresnel transform — [`fresnel_transform.m`](../fresnel_transform.m)
 
 **Order:** $n$. For $d=(j-k)\bmod n$ and
