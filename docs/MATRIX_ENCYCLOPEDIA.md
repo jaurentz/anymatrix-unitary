@@ -706,7 +706,7 @@ $\sqrt{2/n}\cos(\pi(k+1/2)(j+1/2)/n)$. Type I uses
 $\sqrt{2/(n-1)}c_kc_j\cos(\pi kj/(n-1))$ for $n\geq2$,
 with $c_0=c_{n-1}=1/\sqrt2$.
 
-All variants are **real orthogonal**; I and IV are also symmetric
+All variants are **real orthogonal** with FFT-based implicit actions; I and IV are also symmetric
 involutions. Eigenphases of DCT-II/III generally depend on order and
 are unrelated to the transform-frequency sample points. Uses:
 compression, image coding, cosine-basis spectral methods. [45]

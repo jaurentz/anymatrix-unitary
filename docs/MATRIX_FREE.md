@@ -25,11 +25,16 @@ factor order under adjoints. No custom MATLAB matrix class is required.
 | Kernel | Families / mathematics | Storage |
 | --- | --- | --- |
 | `um_core_apply` | CMV, Hessenberg, inverse-Hessenberg, arbitrary twisted OPUC core chains and all Szegő coefficient families | O(n) |
-| `um_monomial_apply` | Cyclic/permutation shifts, weighted shifts, and diagonal phase operators | O(n) |\n| `um_fft_apply` | Circulants, tight-binding cycle, kicked Harper/rotor, quantized baker | O(n) |
+| `um_monomial_apply` | Cyclic/permutation shifts, weighted shifts, diagonal phases, and Weyl–Heisenberg time-frequency shifts | O(n) |
+| `um_fft_apply` | Circulants, CAZAC/Fresnel chirps, completed Hilbert transform, tight-binding cycle, kicked Harper/rotor, quantized baker | O(n) |
 | `um_gate_apply`, `um_circuit_apply` | Two-site qubit gates, XXZ and dual-unitary Floquet circuits | O(1) per local gate |
 | `um_spin_apply` | Floquet Ising chains | O(2^n) phase vector |
 | `um_reflection_apply` | Grover rank-one reflection | O(n) temporary memory |
 | `um_wavelet_apply` | Haar wavelet multilevel transform | O(n) |
+| `um_dct_apply` | DCT I–IV using FFT even extensions | O(n) |
+| `um_hartley_apply` | Hartley involution from normalized DFT and adjoint | O(n) |
+| `um_affine_apply` | Affine Fourier: cached chirp factors and shared Fourier kernel | O(n) |
+| `um_zak_apply` | Polyphase reshape and short FFTs | O(n) |
 | `um_cayley_apply` | Cayley transform of a Jacobi recurrence using cached sparse triangular solves | O(n) for tridiagonal factors, modulo fill |
 
 The specialized `um_core_order` encodes the parity-dependent placement of the
@@ -42,6 +47,11 @@ Verblunsky coefficients and core ordering; the kernel is shared.
 `selfdual_kicked_ising` permit larger spin counts in implicit mode than in
 the dense default. The state vector still has exponential length `2^n`.
 The dense caps and other original parameter conventions remain in place.
+
+All eight signal-processing generators accept the shared final `'operator'` argument.
+DCT I–IV use FFT-based actions even for complex multiple RHS. CAZAC,
+Fresnel, and Hilbert directly reuse the circulant FFT kernel, while
+Weyl–Heisenberg shifts reuse `um_monomial_apply`.
 
 Already economical sparse families (e.g., the cyclic shifts, the Dirac
 automaton, and the split-step walk) retain their sparse defaults and do not

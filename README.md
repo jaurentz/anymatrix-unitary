@@ -55,7 +55,10 @@ The [mathematical notes](docs/MATHEMATICS.md) explain the shared OPUC engine.
 | Quantum maps, walks, and algorithms | `split_step_walk`, `dirac_automaton`, `grover_operator`, `quantum_baker`, `kicked_harper`, `kicked_top`, `floquet_ising`, `selfdual_kicked_ising`, `driven_kitaev`, `kicked_rotor`, `dual_unitary_circuit`, `xxz_floquet` |
 | Matrix functions and dilations | `cayley_jacobi`, `polar_unitary`, `julia_unitary` |
 
-Generators return **actual finite square matrices**, not matrix-free objects.
+Generators return **actual finite square matrices by default**. Selected
+generators also accept `'operator'` as their final argument and return a
+function handle supporting forward and conjugate-transpose actions, multiple
+right-hand sides, and dimension queries. See [matrix-free documentation](docs/MATRIX_FREE.md).
 `split_step_walk`, `dirac_automaton`, `driven_kitaev`, and `julia_unitary` return order `2*n`
 for an input physical size `n`. `floquet_ising` and `selfdual_kicked_ising` return order `2^n`, capped at 11 spins for dense assembly. `dual_unitary_circuit` and `xxz_floquet` also return order `2^n`, capped at 10 spins. `driven_kitaev` is a 2n-dimensional BdG operator, not the full Fock-space propagator. `quantum_baker` requires even order;
 `haar_wavelet` requires power-of-two order. MATLAB R2020b or newer is required.
@@ -64,6 +67,21 @@ for an input physical size `n`. `floquet_ising` and `selfdual_kicked_ising` retu
 several families; other families have ensemble laws, limiting densities, or
 no universal law. The encyclopedia distinguishes these cases. Do not infer a
 limiting eigenphase distribution from unitarity alone.
+
+## Optional matrix-free operators
+
+```matlab
+U = anymatrix('unitary/phase_circulant',4096,linspace(-2,2,4096),'operator');
+X = randn(4096,2);
+Y = U(X,'notransp');  % U*X
+Z = U(Y,'transp');    % U'*Y (conjugate transpose)
+A = U(eye(4096),'notransp'); % only if the explicit matrix fits memory
+```
+
+The group uses one shared core kernel for the Verblunsky-based models, one
+FFT kernel for Fourier-factor models, and shared local-gate kernels for
+many-body circuits. Default numeric output and legacy argument ordering
+remain unchanged. See [operator convention and coverage](docs/MATRIX_FREE.md).
 
 ## Measure-first Jacobi--Szegő construction
 
@@ -188,29 +206,32 @@ mu = szego_bernstein_measure(0.3+0.2i);
 B = szego_matrix(mu,24,'cmv',1);
 ```
 
-## Additional signal-processing transform examples
+## Signal-processing matrix-free examples
 
-The signal-processing expansion is developed independently on the
-`feature/signal-processing-transforms` branch until it can be
-reconciled with the matrix-free refactor.
+All eight new generators return numeric matrices by default or a function
+handle with a final `'operator'` argument, following the existing
+[matrix-free convention](docs/MATRIX_FREE.md).
 
 ```matlab
-C = cazac_circulant(13,5);       % unitary constant-modulus circulant
-D = orthogonal_dct(16,2);       % orthonormal DCT-II analysis matrix
-H = discrete_hartley(16);      % real symmetric orthogonal involution
-F = fresnel_transform(16);     % parity-corrected discrete Fresnel chirp
-A = affine_fourier(16,.01,.03); % chirp-DFT-chirp (AFDM) modulation
-Z = finite_zak(16,4);          % four polyphase channels, four-point DFT
-W = time_frequency_shift(16,3,5); % sparse Weyl-Heisenberg element
-T = periodic_hilbert(16,1,-1); % real orthogonal Hilbert completion
+C = cazac_circulant(13,5);            % unitary Chu circulant
+D = orthogonal_dct(16,2);            % real orthogonal DCT-II
+H = discrete_hartley(16);           % real orthogonal involution
+F = fresnel_transform(16);          % chirp circulant
+A = affine_fourier(16,.01,.03);      % chirp-DFT-chirp
+Z = finite_zak(16,4);               % Zak polyphase transform
+W = time_frequency_shift(16,3,5);   % Weyl-Heisenberg monomial
+T = periodic_hilbert(16,1,-1);      % completed Hilbert transform
+
+applyF = fresnel_transform(4096,'operator');
+X = randn(4096,3)+1i*randn(4096,3);
+Y = applyF(X,'notransp');
+X2 = applyF(Y,'transp');            % conjugate-transpose action
 ```
 
-The cyclic Hilbert transform ordinarily annihilates the DC (and even-order
-Nyquist) component; `periodic_hilbert` instead supplies unimodular
-endpoint signs to obtain a **square orthogonal** test matrix. The spectral
-statistics of these transforms should not be conflated with signal-frequency
-responses or the eigenvalues of related covariance operators.
-
+The conventional discrete Hilbert filter with zero DC/Nyquist
+multipliers is not unitary on the entire space. Our finite completed
+version assigns unimodular signs. Signal-frequency variables must
+not be confused with eigenphases of the transform matrix.
 ## Automatic tests
 
 - **MATLAB unit tests** under [`tests/`](tests/) check normalizations,
