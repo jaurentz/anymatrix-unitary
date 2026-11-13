@@ -8,9 +8,12 @@ switch lower(char(representation))
     case {'inverse_hessenberg','inverse'}
         order=n-1:-1:1;steps=[0 order];
     case 'cmv'
-        order=[1:2:n-1,2:2:n-1];
-        % The closing phase commutes with even cores for odd n.
-        steps=[order 0];
+        odds=1:2:n-1;evens=2:2:n-1;
+        order=[odds evens];
+        % L*M: for odd n D is in L, preceding the even cores.
+        % For even n D is in M and follows its even cores.
+        if mod(n,2),steps=[odds 0 evens];
+        else,steps=[odds evens 0];end
     case 'twisted'
         if isempty(twists),twists=mod((1:max(n-2,0))',2)==1;end
         validateattributes(twists,{'numeric','logical'},{'vector'});
