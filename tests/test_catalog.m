@@ -34,6 +34,15 @@ for k=1:numel(entries)
     verifyTrue(testCase,all(ismember(props,recognized)), ...
         sprintf('Unrecognized Anymatrix property for %s',name));
     verifyTrue(testCase,any(strcmp(props,'unitary')));
+    % Preserve the refactor's machine-readable operator capabilities.
+    entry=entries(k);
+    verifyTrue(testCase,islogical(entry.matrix_free_supported));
+    if entry.matrix_free_supported
+        kernel=char(entry.operator_kernel);
+        verifyTrue(testCase,startsWith(kernel,'um_'));
+        verifyTrue(testCase,isfile(fullfile(root,[kernel,'.m'])), ...
+            sprintf('Missing matrix-free kernel %s for %s',kernel,name));
+    end
 end
 end
 
