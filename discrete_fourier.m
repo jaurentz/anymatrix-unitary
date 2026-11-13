@@ -10,6 +10,11 @@ function [U,properties]=discrete_fourier(n,output)
 %   [52] https://doi.org/10.1109/TSP.2008.925261
 properties={'square','unitary','normal','symmetric','complex', ...
     'scalable','eigenvalues'};
+% Optional analytic spectral-reference mode.
+if nargin>=2 && (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
+    U=unitary_spectral_reference('discrete_fourier',n);
+    return
+end
 if nargin==0,U=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','positive','finite'});
 if nargin<2,output='matrix';end

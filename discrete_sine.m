@@ -8,6 +8,11 @@ function [U,properties]=discrete_sine(n,kind,output)
 %   [54] https://doi.org/10.1016/b978-0-12-373624-6.x5000-0
 properties={'square','unitary','normal','orthogonal','real', ...
     'scalable','parameter-dependent'};
+% Optional analytic spectral-reference mode.
+if nargin>=3 && (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
+    U=unitary_spectral_reference('discrete_sine',n,kind);
+    return
+end
 if nargin==0,U=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','positive','finite'});
 if nargin<2 || isempty(kind),kind=2;end

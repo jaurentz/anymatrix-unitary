@@ -7,6 +7,11 @@ function [U,properties] = discrete_hartley(n,output)
 %   [47] https://doi.org/10.1364/JOSA.73.001832
 properties={'square','unitary','normal','orthogonal','real', ...
     'symmetric','involutory','scalable','eigenvalues'};
+% Optional analytic spectral-reference mode.
+if nargin>=2 && (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
+    U=unitary_spectral_reference('discrete_hartley',n);
+    return
+end
 if nargin==0,U=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','positive','finite'});
 if nargin<2,output='matrix';end

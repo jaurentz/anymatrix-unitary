@@ -8,6 +8,11 @@ function [U,properties] = time_frequency_shift(n,p,q,output)
 %   [51] https://doi.org/10.1109/78.564174
 properties={'square','unitary','normal','sparse','complex', ...
     'scalable','eigenvalues','parameter-dependent'};
+% Optional analytic spectral-reference mode.
+if nargin>=4 && (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
+    U=unitary_spectral_reference('time_frequency_shift',n,p,q);
+    return
+end
 if nargin==0,U=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','positive','finite'});
 if nargin<2 || isempty(p),p=1;end

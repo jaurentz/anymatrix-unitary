@@ -9,6 +9,11 @@ function [U,properties] = haar_wavelet(n,levels,output)
 %   https://doi.org/10.1137/1.9781611970104
 properties={'square','unitary','normal','orthogonal','real','sparse', ...
     'scalable','parameter-dependent'};
+% Optional analytic spectral-reference mode.
+if nargin>=3 && (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
+    U=unitary_spectral_reference('haar_wavelet',n,levels);
+    return
+end
 if nargin==0,U=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','positive','finite'});
 maxLevels=round(log2(n));

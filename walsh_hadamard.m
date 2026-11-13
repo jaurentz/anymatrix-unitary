@@ -11,6 +11,11 @@ function [U,properties]=walsh_hadamard(n,ordering,output)
 %   [55] https://openlibrary.org/works/OL2903378W/Applications_of_Walsh_and_related_functions_with_an_introduction_to_sequency_theory
 properties={'square','unitary','normal','orthogonal','real', ...
     'scalable','parameter-dependent'};
+% Optional analytic spectral-reference mode.
+if nargin>=3 && (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
+    U=unitary_spectral_reference('walsh_hadamard',n,ordering);
+    return
+end
 if nargin==0,U=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','positive','finite'});
 m=round(log2(n));

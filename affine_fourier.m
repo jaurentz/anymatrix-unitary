@@ -9,6 +9,11 @@ function [U,properties] = affine_fourier(n,c1,c2,output)
 %   [50] https://doi.org/10.1109/ICCWorkshops50388.2021.9473655
 properties={'square','unitary','normal','complex','scalable', ...
     'parameter-dependent'};
+% Optional analytic spectral-reference mode.
+if nargin>=4 && (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
+    U=unitary_spectral_reference('affine_fourier',n,c1,c2);
+    return
+end
 if nargin==0,U=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','positive','finite'});
 if nargin<2 || isempty(c1),c1=0;end
