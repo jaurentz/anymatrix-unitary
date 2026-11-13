@@ -28,6 +28,8 @@ pull requests and manually dispatched workflows.
 | `test_input_validation` | Invalid orders, coefficients, boundaries, and default construction |
 | `test_new_families` | Analytical spectra, moments, limiting cases, determinant/symmetry and structural identities of added families |
 | `test_opuc_additions` | Bernstein–Szegő density/moments and circular-beta coefficient sampling law |
+| `test_opuc_extended` | Generalized circular Jacobi and Rogers–Szegő weights, finite Bernstein–Szegő, constant/periodic real-complex Verblunsky sequences, unitarity and finite closure |
+| `test_floquet_families` | Floquet unitarity, exact limits, spin-layer isospectrality, and Kitaev particle-hole symmetry |
 | `test_catalog` | Catalog/documentation completeness and consistency of Anymatrix property declarations |
 
 ## Accuracy versus identity

@@ -3,8 +3,8 @@
 A MATLAB collection of finite **unitary and orthogonal test matrices**, designed as
 an external group for [Anymatrix](https://github.com/north-numerical-computing/anymatrix).
 The repository is organized around reproducible mathematical constructions,
-known spectral information, and executable regression tests. It starts with
-26 generators; additional benchmark families are under development.
+known spectral information, and executable regression tests. It contains
+31 generators; additional benchmark families are under development.
 
 **Status:** development collection with MATLAB-only tests. Automated MATLAB
 regression and Anymatrix integration tests run on GitHub Actions after every
@@ -41,7 +41,7 @@ assertSuccess(results)
 
 ## Matrix generator interfaces
 
-The collection currently has **26 public generators**. Each has a complete
+The collection currently has **31 public generators**. Each has a complete
 entry with formulas, spectral information, applications, parameter conventions,
 and references in the [matrix encyclopedia](docs/MATRIX_ENCYCLOPEDIA.md).
 The [mathematical notes](docs/MATHEMATICS.md) explain the shared OPUC engine.
@@ -49,14 +49,14 @@ The [mathematical notes](docs/MATHEMATICS.md) explain the shared OPUC engine.
 | Category | Generators |
 |---|---|
 | Prescribed spectra and circulants | `cycle_shift`, `weighted_shift`, `diagonal_phase`, `phase_circulant`, `cycle_propagator`, `orthogonal_blocks` |
-| OPUC / Szegő / core matrices | `finite_cmv`, `opuc_matrix`, `jacobi_szego`, `bernstein_szego`, `circular_beta` |
+| OPUC / Szegő / core matrices | `finite_cmv`, `opuc_matrix`, `jacobi_szego`, `bernstein_szego`, `circular_beta`, `circular_jacobi`, `rogers_szego`, `geronimus_cmv`, `periodic_cmv`, `bernstein_szego_finite` |
 | Random and signal-processing | `haar_unitary`, `haar_orthogonal`, `haar_wavelet` |
 | Quantum maps, walks, and algorithms | `split_step_walk`, `dirac_automaton`, `grover_operator`, `quantum_baker`, `kicked_harper`, `kicked_top`, `floquet_ising`, `selfdual_kicked_ising`, `driven_kitaev` |
 | Matrix functions and dilations | `cayley_jacobi`, `polar_unitary`, `julia_unitary` |
 
 Generators return **actual finite square matrices**, not matrix-free objects.
 `split_step_walk`, `dirac_automaton`, `driven_kitaev`, and `julia_unitary` return order `2*n`
-for an input physical size `n`. `floquet_ising` and `selfdual_kicked_ising` use order `2^n` for n spins, capped at 11 spins for explicit dense matrices. `quantum_baker` requires even order;
+for an input physical size `n`. `floquet_ising` and `selfdual_kicked_ising` return order `2^n`, capped at 11 spins for dense assembly. `driven_kitaev` is a 2n-dimensional BdG operator, not the full Fock-space propagator. `quantum_baker` requires even order;
 `haar_wavelet` requires power-of-two order. MATLAB R2020b or newer is required.
 
 **Spectral reference data:** exact eigenvalues are provided or described for
@@ -113,6 +113,32 @@ the repository root. This directory layout is compatible with Anymatrix's
 remote-group installation, which clones the repository inside its own
 `unitary/private` directory.
 
+## Additional real and complex OPUC measures
+
+Five new finite-matrix generators share the canonical measure-first pipeline:
+
+```matlab
+% Real orthogonal CMV from a wrapped Gaussian.
+R = rogers_szego(40,0.6,'cmv',-1);
+
+% Generalized circular Jacobi weight with complex coefficients.
+U = circular_jacobi(40,0.3,0.7,'cmv',exp(1i*0.2));
+
+% Constant and periodic Verblunsky parameters (possibly arc/gap spectra).
+G = geronimus_cmv(40,0.25+0.15i);
+P = periodic_cmv(40,[0.2; 0.3i]);
+
+% Rational Bernstein-Szego weight from arbitrary finite Schur data.
+B = bernstein_szego_finite(40,[0.25; 0.2i; -0.1]);
+```
+
+All five provide corresponding `szego_*_measure` descriptors accepted by
+`szego_verblunsky` and `szego_matrix`. Real interior coefficients with
+real terminal phase give real orthogonal matrices; otherwise the
+finite matrices are complex unitary. See the encyclopedia for support,
+weights, and literature provenance. The measure at the distinguished
+vector is not generally the equal-weight eigenvalue-counting measure.
+
 ## Install as an Anymatrix external group
 
 Install the upstream Anymatrix package first and add its root folder to the
@@ -145,7 +171,7 @@ D = dirac_automaton(40,0.45);
 % Orthogonal finite transform from real signal processing.
 W = haar_wavelet(32);
 
-% Quantum kicked top and many-body Floquet spin chains.
+% Floquet spin, self-dual chaos and topological BdG examples.
 T = kicked_top(9,3.2,pi/2);
 I = floquet_ising(4,0.65,0.43);
 S = selfdual_kicked_ising(4,[0.1,-0.2,0.3,0.4]);
