@@ -1,4 +1,4 @@
-function [U,properties] = haar_wavelet(n,levels)
+function [U,properties] = haar_wavelet(n,levels,output)
 %HAAR_WAVELET Finite orthonormal Haar wavelet analysis transform.
 %   U=HAAR_WAVELET(N,LEVELS) forms a real orthogonal N-by-N transform.
 %   N is a power of two. Each of LEVELS decomposition steps computes
@@ -15,6 +15,11 @@ maxLevels=round(log2(n));
 if 2^maxLevels~=n,error('haar_wavelet:Order','N must be a power of two.');end
 if nargin<2 || isempty(levels),levels=maxLevels;end
 validateattributes(levels,{'numeric'},{'scalar','integer','>=',0,'<=',maxLevels});
+if nargin<3,output='matrix';end
+if um_is_operator(output)
+    U=@(X,flag)um_wavelet_apply(X,flag,n,levels);
+    return
+end
 U=speye(n);
 for ell=1:levels
     m=n/2^(ell-1);h=m/2;

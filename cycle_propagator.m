@@ -1,4 +1,4 @@
-function [U, properties] = cycle_propagator(n, t)
+function [U, properties] = cycle_propagator(n, t, output)
 %CYCLE_PROPAGATOR Continuous-time quantum propagator on a periodic chain.
 %   U = CYCLE_PROPAGATOR(N,T) returns exp(-1i*T*H), where
 %   H = P + P', and P is the N-by-N cyclic shift.
@@ -28,6 +28,11 @@ validateattributes(t, {'numeric'}, {'scalar', 'real', 'finite'});
 k = (0:n-1)';
 lambda = 2*cos(2*pi*k/n);
 z = exp(-1i*t*lambda);
+if nargin<3,output='matrix';end
+if um_is_operator(output)
+    U=@(X,flag)um_fft_apply(X,flag,'circulant',z,[]);
+    return
+end
 c = ifft(z);
 idx = mod((0:n-1)' - (0:n-1), n) + 1;
 U = c(idx);

@@ -1,4 +1,4 @@
-function [U,properties] = floquet_ising(n,J,h,boundary)
+function [U,properties] = floquet_ising(n,J,h,boundary,output)
 %FLOQUET_ISING Integrable periodically kicked transverse-field Ising chain.
 %   U = exp(-1i*J*sum(Z_j Z_(j+1)))*exp(-1i*h*sum(X_j)).
 %   n denotes spin sites; order(U)=2^n. j=n couples to j=1 for
@@ -11,7 +11,7 @@ function [U,properties] = floquet_ising(n,J,h,boundary)
 %   P. Pfeuty, Ann. Phys. 57 (1970), 79-90.
 properties={'square','unitary','normal','complex','parameter-dependent'};
 if nargin==0,U=[];return;end
-validateattributes(n,{'numeric'},{'scalar','integer','>=',2,'<=',11,'finite'});
+validateattributes(n,{'numeric'},{'scalar','integer','>=',2,'<=',20,'finite'});
 if nargin<2 || isempty(J),J=0.65;end
 if nargin<3 || isempty(h),h=0.43;end
 if nargin<4 || isempty(boundary),boundary='periodic';end
@@ -21,23 +21,19 @@ boundary=lower(char(boundary));
 if ~any(strcmp(boundary,{'open','periodic'}))
     error('floquet_ising:Boundary','Boundary must be open or periodic.');
 end
+if nargin<5,output='matrix';end
+implicit=um_is_operator(output);
+if ~implicit && n>11
+    error('floquet_ising:ExplicitOrder','Explicit matrix supports n<=11.');
+end
 N=2^n;
 states=uint64((0:N-1)');
 z=zeros(N,n);
-for j=1:n
-    z(:,j)=1-2*double(bitget(states,j));
-end
-energy=zeros(N,1);
-for j=1:n-1
-    energy=energy+z(:,j).*z(:,j+1);
-end
-if strcmp(boundary,'periodic')
-    energy=energy+z(:,n).*z(:,1);
-end
+for j=1:n,z(:,j)=1-2*double(bitget(states,j));end
+energy=sum(z(:,1:n-1).*z(:,2:n),2);
+if strcmp(boundary,'periodic'),energy=energy+z(:,n).*z(:,1);end
+phase=exp(-1i*J*energy);
 R=[cos(h),-1i*sin(h);-1i*sin(h),cos(h)];
-Ux=1;
-for j=1:n
-    Ux=kron(Ux,R);
-end
-U=bsxfun(@times,exp(-1i*J*energy),Ux);
+op=@(X,flag)um_spin_apply(X,flag,n,phase,R,'diag_left');
+if implicit,U=op;else,U=op(eye(N),'notransp');end
 end

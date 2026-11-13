@@ -1,4 +1,4 @@
-function [U,properties] = cayley_jacobi(n,a,b,t)
+function [U,properties] = cayley_jacobi(n,a,b,t,output)
 %CAYLEY_JACOBI Cayley image of the symmetric Jacobi recurrence matrix.
 %   Given the Jacobi probability weight (1-x)^A(1+x)^B on [-1,1],
 %   A,B>-1, construct its N-by-N Jacobi recurrence J for x in [-2,2].
@@ -17,7 +17,18 @@ if nargin<3 || isempty(b),b=0;end
 if nargin<4 || isempty(t),t=1;end
 validateattributes(t,{'numeric'},{'scalar','real','positive','finite'});
 [d,s]=js_jacobi_recurrence(a,b,n);
-J=diag(d)+diag(s,1)+diag(s,-1);
-I=eye(n);
-U=(J-1i*t*I)/(J+1i*t*I);
+if nargin<5,output='matrix';end
+J=spdiags(d(:),0,n,n);
+if n>1
+    J=J+sparse(1:n-1,2:n,s(:),n,n)+sparse(2:n,1:n-1,s(:),n,n);
+end
+% Explicit index lists avoid ambiguity in spdiags off-diagonal alignment.
+if um_is_operator(output)
+    plusFactor=decomposition(J+1i*t*speye(n),'lu');
+    minusFactor=decomposition(J-1i*t*speye(n),'lu');
+    U=@(X,flag)um_cayley_apply(X,flag,plusFactor,minusFactor,t,n);
+else
+    I=eye(n);
+    U=(full(J)-1i*t*I)/(full(J)+1i*t*I);
+end
 end

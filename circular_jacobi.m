@@ -1,4 +1,4 @@
-function [U,properties] = circular_jacobi(n,a,eta,representation,beta,twists)
+function [U,properties] = circular_jacobi(n,a,eta,representation,beta,twists,output)
 %CIRCULAR_JACOBI Generalized circular Jacobi complex-parameter OPUC CMV generator.
 %   Returns a finite N-by-N unitary multiplication matrix using the
 %   measure -> Verblunsky -> terminal phase -> core factorization pipeline.
@@ -14,5 +14,6 @@ if nargin<4 || isempty(representation),representation='cmv';end
 if nargin<5 || isempty(beta),beta=1;end
 if nargin<6,twists=[];end
 mu=szego_circular_jacobi_measure(a,eta);
-U=szego_matrix(mu,n,representation,beta,twists);
+if nargin<7,output='matrix';end
+U=szego_matrix(mu,n,representation,beta,twists,output);
 end

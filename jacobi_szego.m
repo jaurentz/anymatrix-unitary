@@ -1,4 +1,4 @@
-function [U,properties] = jacobi_szego(n,a,b,representation,beta,twists)
+function [U,properties] = jacobi_szego(n,a,b,representation,beta,twists,output)
 %JACOBI_SZEGO Jacobi-Szego multiplication matrices via Verblunsky cores.
 %   U=JACOBI_SZEGO(N,A,B,REPRESENTATION,BETA,TWISTS) yields an N-by-N
 %   unitary matrix from the Szego lift of the Jacobi probability measure
@@ -31,5 +31,6 @@ if nargin<5 || isempty(beta), beta=1; end
 if nargin<6, twists=[]; end
 validateattributes(n,{'numeric'},{'scalar','integer','positive','finite'});
 mu=js_jacobi_measure(a,b); % A measure-first canonical entry point.
-U=js_measure_to_matrix(mu,n,representation,beta,twists);
+if nargin<7,output='matrix';end
+U=js_measure_to_matrix(mu,n,representation,beta,twists,output);
 end
