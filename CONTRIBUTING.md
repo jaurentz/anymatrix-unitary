@@ -43,3 +43,10 @@ measure/Verblunsky layer and reuse the multiplication representation code.
 Documentation must be self-contained and use GitHub-supported `$...$` for
 inline and `$$...$$` for display mathematics; do not refer to unpublished
 working notes or external private project files.
+
+GitHub's mathematics renderer restricts some otherwise valid LaTeX macros.
+In particular, do not use `\operatorname` or `\DeclareMathOperator` in the
+public Markdown. For named operators, use, for example,
+`\mathop{\mathrm{diag}}` instead of `\operatorname{diag}`. The
+`test_catalog` MATLAB suite checks these restrictions; inspect the rendered
+GitHub preview as well as the Markdown source.
