@@ -339,9 +339,96 @@ quantization; statements about multifractality in irrational limits must
 not be transferred indiscriminately to every finite test matrix.
 **Reference:** [22].
 
+### 20. Quantum kicked top — [`kicked_top.m`](../kicked_top.m)
+
+**Order:** $n=2j+1$ (integer or half-integer spin $j>0$). **Structure:**
+dense spin rotation times diagonal phase twist. In the $J_z$ basis
+$m=j,j-1,\ldots,-j$, define $J_y=(J_+-J_+^*)/(2i)$ and
+
+$
+U_F=\exp\left(-\frac{i\kappa}{2j}J_z^2\right)\exp(-ipJ_y).
+$
+
+The nonzero superdiagonal of $J_+$ is $\sqrt{k(n-k)}$ for $1\le k<n$.
+Both factors are unitary. At $p=0$ the eigenvalues are
+$\exp(-i\kappa m^2/(2j))$; at $\kappa=0$ they are $\exp(-ipm)$.
+Otherwise the quasienergies vary with torsion and rotation.
+Applications: quantum chaos and dense small-to-medium spectral tests.
+**References:** [27, 28].
+
+### 21. Integrable kicked Ising chain — [`floquet_ising.m`](../floquet_ising.m)
+
+**Order:** $2^n$ for $n$ spins. **Structure:** a diagonal Ising layer
+followed by a Kronecker product of single-spin rotations:
+
+$
+U_F=\exp\left(-iJ\sum_rZ_rZ_{r+1}\right)
+    \exp\left(-ih\sum_{r=1}^nX_r\right).
+$
+
+The bond sum includes $(n,1)$ for periodic boundaries and excludes it
+for open boundaries. The second layer is
+$(\cos h\,I-i\sin h\,X)^{\otimes n}$.
+In the computational basis (spin $r$ corresponds to bit $r-1$),
+the first layer has exact diagonal entries
+$\exp(-iJ\sum_rz_rz_{r+1})$, $z_r=\pm1$.
+With $n=2$, the periodic convention counts both directed bonds.
+The **full many-body eigenphase measure** is not the single-particle
+quasiparticle measure. Dense assembly costs $O(4^n)$ memory and is
+capped at $n=11$ sites. **References:** [29, 30].
+
+### 22. Self-dual kicked Ising chain — [`selfdual_kicked_ising.m`](../selfdual_kicked_ising.m)
+
+**Order:** $2^n$ for $n\ge3$ periodic spins, capped at $n=11$
+for explicit dense storage. With real longitudinal fields $b_r$,
+
+$
+U_F=\exp\left(-\frac{i\pi}{4}\sum_rX_r\right)
+    \exp\left[-\frac{i\pi}{4}
+      \left(\sum_rZ_rZ_{r+1}+\sum_rb_rZ_r\right)\right].
+$
+
+The first factor is a tensor product of $2\times2$ unitary kicks;
+the second is diagonal. For zero longitudinal fields, the two layers
+are reversed relative to the $J=h=\pi/4$ integrable Ising operator,
+so the eigenvalue multiset is the same ($AB$ and $BA$ are similar
+for invertible square matrices). Inhomogeneous longitudinal fields
+provide the interacting model used in quantum-chaos research.
+Random-matrix spectral-form-factor results require explicit
+disorder and limiting assumptions and **do not** imply a universal
+finite-size phase density. Default $b_r=0.3\sin r$ is deterministic.
+**Reference:** [31].
+
+### 23. Driven Kitaev chain, BdG representation — [`driven_kitaev.m`](../driven_kitaev.m)
+
+**Order:** $2n$ for $n$ sites in Nambu basis
+$(c_1,\ldots,c_n,c_1^\dagger,\ldots,c_n^\dagger)$;
+**not** the $2^n$-dimensional Fock-space propagator.
+Let
+
+$
+H_{\mathrm{BdG}}(\mu)=
+\begin{pmatrix}h(\mu)&\Delta\\ \Delta^T&-h(\mu)^T\end{pmatrix},
+\qquad
+U_F=e^{-i\tau_2H_{\mathrm{BdG}}(\mu_2)}
+    e^{-i\tau_1H_{\mathrm{BdG}}(\mu_1)}.
+$
+
+Here $h_{rr}=-\mu$, nearest-neighbor $h_{r,r+1}=-t$,
+$\Delta_{r,r+1}=\delta$ and $\Delta_{r+1,r}=-\delta$;
+optional periodic closure preserves the oriented pairing bonds.
+Parameters are supplied as a scalar MATLAB options struct.
+For real parameters and
+$C=\begin{psmallmatrix}0&I\\I&0\end{psmallmatrix}$,
+$C\overline{U_F}C=U_F$, so phases occur in conjugate pairs.
+Certain open-boundary regimes feature Majorana edge modes at
+quasienergies $0$ or $\pi$; their presence is not universal.
+Periodic $n=2$ is disallowed to avoid double-bond ambiguity.
+**References:** [32, 33].
+
 ## E. Matrix functions, polar factors, and dilations
 
-### 20. Cayley image of a Jacobi matrix — [`cayley_jacobi.m`](../cayley_jacobi.m)
+### 24. Cayley image of a Jacobi matrix — [`cayley_jacobi.m`](../cayley_jacobi.m)
 
 **Order:** $n$. **Structure:** dense complex unitary, derived from a real
 symmetric tridiagonal Jacobi matrix $J_n$ with Jacobi weight parameters
@@ -357,7 +444,7 @@ providing controlled phase clustering near $+1$ and $-1$ as the scale
 changes. **It is not the same finite matrix as the Jacobi–Szegő lift.**
 **Reference:** [23].
 
-### 21. Nonsingular polar factor — [`polar_unitary.m`](../polar_unitary.m)
+### 25. Nonsingular polar factor — [`polar_unitary.m`](../polar_unitary.m)
 
 **Order:** $n$. **Structure:** generally dense. If $A=L\Sigma R^*$ is a
 full SVD of a nonsingular matrix, the uniquely determined unitary polar
@@ -369,7 +456,7 @@ $A$, an SVD-based square unitary extension is not unique and depends on
 choices in nullspaces. Useful for polar algorithms, structure restoration,
 Procrustes problems and perturbation analysis. **Reference:** [24].
 
-### 22. Julia/Halmos unitary extension — [`julia_unitary.m`](../julia_unitary.m)
+### 26. Julia/Halmos unitary extension — [`julia_unitary.m`](../julia_unitary.m)
 
 **Order:** $2n$ for an $n\times n$ contraction $T$, $\lVert T\rVert_2\leq1$. 
 **Structure:** generally dense, block unitary. With defect operators
@@ -437,3 +524,11 @@ Useful for conservative system matrices, passive control and dilation theory.
 24. N. J. Higham, “Computing the polar decomposition—with applications,” *SIAM J. Sci. Statist. Comput.* **7** (1986), 1160–1174. [DOI](https://doi.org/10.1137/0907079).
 25. B. Sz.-Nagy, *Unitary Dilations of Hilbert Space Operators and Related Topics*, CBMS 19, AMS, 1974. [DOI](https://doi.org/10.1090/CBMS/019).
 26. M. Szegedy, “Quantum speed-up of Markov chain based algorithms,” *Proc. FOCS* (2004), 32–41. [DOI](https://doi.org/10.1109/FOCS.2004.53).
+
+27. F. Haake, *Quantum Signatures of Chaos*, 3rd ed., Springer, 2010. [DOI](https://doi.org/10.1007/978-3-642-05428-0).
+28. V. M. Bastidas, P. Pérez-Fernández, M. Vogl and T. Brandes, “Quantum criticality and dynamical instability in the kicked-top model,” *Phys. Rev. Lett.* **112** (2014), 140408. [DOI](https://doi.org/10.1103/PhysRevLett.112.140408).
+29. E. Lieb, T. Schultz and D. Mattis, “Two soluble models of an antiferromagnetic chain,” *Ann. Phys.* **16** (1961), 407–466. [DOI](https://doi.org/10.1016/0003-4916(61)90115-4).
+30. P. Pfeuty, “The one-dimensional Ising model with a transverse field,” *Ann. Phys.* **57** (1970), 79–90. [DOI](https://doi.org/10.1016/0003-4916(70)90270-8).
+31. B. Bertini, P. Kos and T. Prosen, “Exact spectral form factor in a minimal model of many-body quantum chaos,” *Phys. Rev. Lett.* **121** (2018), 264101. [DOI](https://doi.org/10.1103/PhysRevLett.121.264101).
+32. D. J. Yates and A. Mitra, “Entanglement properties of the time-periodic Kitaev chain,” *Phys. Rev. B* **96** (2017), 115108. [DOI](https://doi.org/10.1103/PhysRevB.96.115108).
+33. M. van Caspel, S. E. Tapias Arze and I. Pérez Castillo, “Dynamical signatures of topological order in the driven-dissipative Kitaev chain,” *SciPost Phys.* **6** (2019), 026 (closed-system Floquet discussion in §4). [DOI](https://doi.org/10.21468/SciPostPhys.6.2.026).
