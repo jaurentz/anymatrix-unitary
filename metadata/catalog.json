@@ -294,9 +294,9 @@
         28,
         29
       ],
-      "matrix_free_supported": false,
-      "operator_kernel": null,
-      "operator_note": "No generally validated faster action for the current family definition."
+      "matrix_free_supported": true,
+      "operator_kernel": "um_sparse_hermitian_tridiag / um_kick_tridiag_apply / um_tridiag_exp_apply",
+      "operator_note": "Sparse Hermitian-tridiagonal spin generator; MATLAB expmv from R2023b, Chebyshev-Bessel fallback before R2023b. Explicit expm on sparse generator yields a generally dense matrix."
     },
     {
       "id": "floquet_ising",
@@ -385,6 +385,51 @@
       "matrix_free_supported": true,
       "operator_kernel": "um_circuit_apply",
       "operator_note": "Local gate sequence; exponential vector size 2^n but no dense 4^n matrix."
+    },
+    {
+      "id": "kicked_bose_hubbard",
+      "status": "implemented",
+      "category": "quantum",
+      "matrix_order": "n+1 for n identical bosons",
+      "representation": "diagonal kick times dense symmetric-tridiagonal hopping exponential",
+      "spectral_reference": "exact tunneling-only spin-Jx phases and interaction-only diagonal phases",
+      "encyclopedia_references": [
+        40,
+        41
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_sparse_hermitian_tridiag / um_kick_tridiag_apply / um_tridiag_exp_apply",
+      "operator_note": "Sparse Hermitian-tridiagonal hopping generator; MATLAB expmv from R2023b, Chebyshev-Bessel fallback on older releases. Explicit expm returns a generally dense matrix."
+    },
+    {
+      "id": "jaynes_cummings",
+      "status": "implemented",
+      "category": "quantum",
+      "matrix_order": "2(n+1) for maximum photon number n",
+      "representation": "sparse independent excitation blocks plus two photon-cutoff edge phases",
+      "spectral_reference": "complete exact block eigenphases including two finite-cutoff edge states",
+      "encyclopedia_references": [
+        43
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_jaynes_apply",
+      "operator_note": "Direct sparse 2-by-2 excitation-block actions; O(n) storage and arithmetic; also available as a sparse numeric matrix."
+    },
+    {
+      "id": "chalker_coddington",
+      "status": "implemented",
+      "category": "quantum",
+      "matrix_order": "4*nx*ny on periodic 2nx by 2ny directed-link grid",
+      "representation": "sparse permutation-linked 2-by-2 unitary node scatterers",
+      "spectral_reference": "exact pi-paired eigenphases and vanishing odd trace moments; signed-permutation limits",
+      "encyclopedia_references": [
+        44,
+        45,
+        46
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_scattering_apply / um_cc_geometry",
+      "operator_note": "Ordered two-channel disjoint node scattering and link phases; O(n) network data and O(n*RHS) action cost; sparse default retained."
     },
     {
       "id": "cayley_jacobi",
@@ -512,7 +557,7 @@
       "representation": "real dense DCT-I--IV",
       "spectral_reference": "parameter-dependent eigenphases",
       "encyclopedia_references": [
-        45
+        52
       ],
       "matrix_free_supported": true,
       "operator_kernel": "um_dct_apply",
@@ -526,7 +571,7 @@
       "representation": "real symmetric dense involution",
       "spectral_reference": "exact eigenvalues +/-1",
       "encyclopedia_references": [
-        40
+        47
       ],
       "matrix_free_supported": true,
       "operator_kernel": "um_hartley_apply",
@@ -540,7 +585,7 @@
       "representation": "dense constant-modulus circulant",
       "spectral_reference": "exact DFT of Chu sequence",
       "encyclopedia_references": [
-        41
+        48
       ],
       "matrix_free_supported": true,
       "operator_kernel": "um_fft_apply",
@@ -554,7 +599,7 @@
       "representation": "dense chirp circulant / FFT",
       "spectral_reference": "exact FFT of first chirp column",
       "encyclopedia_references": [
-        42
+        49
       ],
       "matrix_free_supported": true,
       "operator_kernel": "um_fft_apply",
@@ -568,7 +613,7 @@
       "representation": "dense chirp-DFT-chirp",
       "spectral_reference": "parameter-dependent eigenphases; DFT special case",
       "encyclopedia_references": [
-        43
+        50
       ],
       "matrix_free_supported": true,
       "operator_kernel": "um_affine_apply",
@@ -582,7 +627,7 @@
       "representation": "Kronecker DFT by polyphase index",
       "spectral_reference": "exact DFT eigenvalues, repeated p-fold",
       "encyclopedia_references": [
-        44
+        51
       ],
       "matrix_free_supported": true,
       "operator_kernel": "um_zak_apply",
@@ -596,7 +641,7 @@
       "representation": "sparse Weyl-Heisenberg monomial",
       "spectral_reference": "exact phase-weighted permutation cycles",
       "encyclopedia_references": [
-        44
+        51
       ],
       "matrix_free_supported": true,
       "operator_kernel": "um_monomial_apply",
@@ -610,7 +655,7 @@
       "representation": "real circulant orthogonal filter",
       "spectral_reference": "exact four-atom Fourier multiplier law",
       "encyclopedia_references": [
-        45
+        52
       ],
       "matrix_free_supported": true,
       "operator_kernel": "um_fft_apply",
@@ -625,7 +670,7 @@
       "spectral_reference": "exact fourth-root spectrum; F^4=I",
       "encyclopedia_references": [
         1,
-        45
+        52
       ],
       "matrix_free_supported": true,
       "operator_kernel": "um_dft_apply",
@@ -639,7 +684,7 @@
       "representation": "real orthogonal DST I-IV",
       "spectral_reference": "I and IV are involutions; III is transpose of II",
       "encyclopedia_references": [
-        47
+        54
       ],
       "matrix_free_supported": true,
       "operator_kernel": "um_dst_apply",
@@ -653,7 +698,7 @@
       "representation": "real Sylvester / sequency-ordered Hadamard",
       "spectral_reference": "natural order exact +/-1 atoms; sequency order depends on row permutation",
       "encyclopedia_references": [
-        48
+        55
       ],
       "matrix_free_supported": true,
       "operator_kernel": "um_walsh_apply",
@@ -667,7 +712,7 @@
       "representation": "real dense Slepian eigenbasis",
       "spectral_reference": "eigenbasis transform spectrum generally non-explicit; concentration eigenvalues belong to a different matrix",
       "encyclopedia_references": [
-        49
+        56
       ],
       "matrix_free_supported": false,
       "operator_kernel": null,
@@ -681,7 +726,7 @@
       "representation": "real dense graph-Laplacian eigenbasis",
       "spectral_reference": "Laplacian frequencies are not eigenvalues of the graph Fourier transform; basis depends on weights and multiplicities",
       "encyclopedia_references": [
-        50
+        57
       ],
       "matrix_free_supported": false,
       "operator_kernel": null,

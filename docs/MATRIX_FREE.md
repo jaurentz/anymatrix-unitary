@@ -39,6 +39,9 @@ factor order under adjoints. No custom MATLAB matrix class is required.
 | `um_dst_apply` | DST-I odd FFT extension and DST-II–IV via DCT | O(n) |
 | `um_walsh_apply` | Fast Walsh butterflies with sequency permutation | O(n) |
 | `um_cayley_apply` | Cayley transform of a Jacobi recurrence using cached sparse triangular solves | O(n) for tridiagonal factors, modulo fill |
+| `um_tridiag_exp_apply`, `um_kick_tridiag_apply` | Bose–Hubbard hopping and kicked-top spin rotations; diagonal phase followed by an Hermitian-tridiagonal exponential | O(n) coefficients; O(n·RHS) workspace |
+| `um_jaynes_apply` | Analytic cavity-QED excitation blocks with uncoupled edge phases | O(n) |
+| `um_cc_geometry`, `um_scattering_apply` | Disjoint two-port scattering networks, CC directed-link topology | O(n) |
 
 The specialized `um_core_order` encodes the parity-dependent placement of the
 finite CMV terminal phase and arbitrary snake-shaped insertion sequences.
@@ -67,9 +70,28 @@ generic lower-storage or lower-complexity implicit action.
 Already economical sparse families (e.g., the cyclic shifts, the Dirac
 automaton, and the split-step walk) retain their sparse defaults and do not
 need redundant custom matvec algorithms. General Haar and polar-factor
-matrices remain dense. The BdG driven-Kitaev and kicked-top families still
-need dedicated, validated high-order exponential actions before promising
-a fast implicit implementation.
+matrices remain dense. The kicked-top generator now reuses the Hermitian-tridiagonal exponential
+kernel developed for the two-mode Bose–Hubbard dimer. In MATLAB R2023b and later,
+its implicit mode assembles a sparse Hermitian-tridiagonal generator and
+uses MathWorks `expmv` separately for each right-hand side. The repository's
+R2020b minimum is preserved by a Chebyshev–Bessel fallback if `expmv`
+is unavailable. The fallback is selected using a numerical Bessel-tail
+criterion, not a certified tolerance bound. With either method, arithmetic
+cost depends on the spectral time range; no uniformly linear-time claim
+is made.
+
+The **explicit** Bose–Hubbard and kicked-top paths also construct sparse
+tridiagonal generators, then call MATLAB `expm`. Their exponential matrices
+are generally **dense** and must be stored as such. Sparse generator storage
+does not make `expm(H)` a sparse matrix.
+
+Jaynes–Cummings and Chalker–Coddington retain their economical **sparse
+numeric defaults**. Their optional implicit modes use analytic two-state
+blocks and directed-node scattering, respectively; neither requires
+materializing even the sparse matrix. In both, the action and adjoint
+require O(n·RHS) arithmetic and working memory (plus O(n) operator data).
+The driven-Kitaev BdG family still needs a validated high-order exponential
+action before an implicit interface can be promised.
 
 ## Testing
 
@@ -77,3 +99,6 @@ Run `test_run` or `runtests('tests/test_matrix_free.m')`. Tests cover
 complex adjoints, multiple right-hand sides, implicit/explicit agreement,
 unitarity, and the Saraceno Fourier convention. The existing test suite
 provides independent structural and spectral checks for the same matrices.
+`tests/test_quantum_matrix_free.m` checks the shared tridiagonal exponential
+against independent dense EXPM, as well as multi-RHS forward/adjoint equivalence
+for the three added families and the kicked top.

@@ -31,6 +31,8 @@ pull requests and manually dispatched workflows.
 | `test_opuc_extended` | Generalized circular Jacobi and Rogers–Szegő weights, finite Bernstein–Szegő, constant/periodic real-complex Verblunsky sequences, unitarity and finite closure |
 | `test_floquet_families` | Floquet unitarity, exact limits, spin-layer isospectrality, and Kitaev particle-hole symmetry |
 | `test_floquet_extended` | Rotor exact phases, embedded two-site gates, local dual-unitarity, XXZ Yang-Baxter, and global magnetization sectors |
+| `test_quantum_expansion` | Dimer exact spectra, Jaynes–Cummings invariant blocks, Chalker–Coddington network and pi-pairing |
+| `test_quantum_matrix_free` | Explicit/implicit multi-RHS forward and adjoint actions; sparse tridiagonal EXPM, MATLAB EXPMV and Chebyshev fallback; large bosonic, kicked-top, Jaynes and network tests |
 | `test_signal_processing_extended` | DFT fourth-power identity, DST I–IV, Walsh sequency, Slepian concentration and graph eigenspaces; only useful fast implicit actions |
 | `test_signal_processing` | Exact identities, spectra, autocorrelations, multi-RHS forward/adjoint, implicit matrix materialization and large-order actions |
 | `test_catalog` | Catalog/documentation completeness and consistency of Anymatrix property declarations |

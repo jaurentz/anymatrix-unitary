@@ -478,6 +478,12 @@ Both factors are unitary. At $p=0$ the eigenvalues are
 $\exp(-i\kappa m^2/(2j))$; at $\kappa=0$ they are $\exp(-ipm)$.
 Otherwise the quasienergies vary with torsion and rotation.
 Applications: quantum chaos and dense small-to-medium spectral tests.
+The spin rotation can also be applied without forming a dense matrix
+using final output `'operator'`. This uses the same sparse Hermitian-
+tridiagonal generator and `expmv` action as the Bose–Hubbard dimer
+(MATLAB R2023b+), with a Chebyshev–Bessel fallback on older releases.
+Explicit mode uses `expm` of a sparse tridiagonal generator, whose
+exponential is generally dense. No uniformly $O(n)$-time action is claimed.
 **References:** [28, 29].
 
 ### 29. Integrable kicked Ising chain — [`floquet_ising.m`](../floquet_ising.m)
@@ -662,27 +668,175 @@ Applications: Yang–Baxter-integrable interacting Floquet operators,
 conservation-law sectors, and test cases contrasting integrable and
 chaotic many-body spectral statistics. **References:** [38, 39].
 
-## I. Families reserved for future versions (not implemented)
+## I. Bosonic, cavity-QED, and quantum Hall network operators
 
-- **ETNA core-factor stress tests:** the five experimental constructions in
-  Aurentz–Mach–Vandebril–Watkins (2015), including the nearly reducible Type
-  III case with heavily clustered eigenvalues. Will use shared Verblunsky/core
-  machinery but separate benchmark presets. [8]
-- **Rational and isometric Arnoldi:** pole sequences, orthonormal rational
-  basis conventions, unitary closures and appropriate generalized matrices/
-  pencils. Not every finite compression is unitary. [9, 10]
-- **Other OPUC measures:** positive Pastro and generalized $q$-weight
-  specializations, inverse spectral finite atomic measures, Aleksandrov
-  families, skew-shift parameters, and matrix-valued/block CMV. [5, 12]
-- **Additional signal-processing matrices:** normalized DCT/DST variants,
-  Daubechies wavelets, paraunitary polyphase banks and lossless scattering.
-  Boundary and frequency conventions must be specified before admitting a
-  finite matrix as unitary. [15]
-- **Larger quantum models:** Szegedy graph walks, quantum-graph scattering,
-  Floquet Ising models, kicked tops, cat maps and interferometer meshes.
-  Different symmetry sectors and truncations cannot be conflated. [26]
+### 35. Kicked Bose–Hubbard dimer — [`kicked_bose_hubbard.m`](../kicked_bose_hubbard.m)
 
-## H. Non-quantum signal-processing transforms
+**Order:** $n+1$ for $n$ identical bosons on **two sites**, in the
+fixed-occupation Fock basis $|k,n-k\rangle$ ($0\le k\le n$).
+The two Hermitian generators are
+
+```math
+H_{\rm hop}=-J(a_1^\dagger a_2+a_2^\dagger a_1),\qquad
+H_{\rm kick}=\frac{g}{2}\sum_{r=1}^{2}n_r(n_r-1)
+                 +\frac{b}{2}(n_1-n_2).
+```
+
+The Floquet operator in the stated order is
+
+```math
+U_F=\exp(-i\tau_{\rm kick}H_{\rm kick})
+     \exp(-i\tau_{\rm hop}H_{\rm hop}).
+```
+
+The kick is diagonal with entries
+
+```math
+E_k=\frac{g}{2}\bigl[k(k-1)+(n-k)(n-k-1)\bigr]
+      +\frac{b}{2}(2k-n),
+```
+
+and the hopping Hamiltonian is real symmetric tridiagonal, with
+adjacent off-diagonal entries $-J\sqrt{(k+1)(n-k)}$.
+Thus both factors are exactly unitary mathematically.
+In explicit mode the Hermitian tridiagonal hopping generator is assembled
+as a MATLAB sparse matrix and passed to `expm`; the exponential itself
+is generally dense. In matrix-free mode MATLAB `expmv` (R2023b+) acts on
+that sparse generator without forming the exponential, with a
+Chebyshev–Bessel fallback for older MATLAB releases.
+This is a number-conserving **many-boson** operator of order $n+1$,
+rather than a $2^n$ spin-chain matrix.
+
+When $g=b=0$ the **complete exact spectrum** is
+
+```math
+\sigma(U_F)=
+\bigl\{\exp[-i\tau_{\rm hop}J(2k-n)]:k=0,\ldots,n\bigr\}.
+```
+
+When $J=0$ the eigenvalues are exactly
+$\exp(-i\tau_{\rm kick}E_k)$. For $n=0$ the vacuum sector
+is the scalar unitary $[1]$.
+Applications: Bose–Einstein condensates in double wells, quantum
+chaos, Floquet tunneling, self-trapping and avoided quasienergy
+crossings. Related to spin-$n/2$ kicked tops via Schwinger bosons,
+but the interaction and phase conventions are specified independently.
+The general interacting eigenphase law is parameter-dependent.
+**References:** [40, 41]; the alternate periodically biased dimer
+model of [42] is related but uses a different drive.
+
+### 36. Jaynes–Cummings cavity-QED propagator — [`jaynes_cummings.m`](../jaynes_cummings.m)
+
+**Order:** $2(n+1)$ for a photon cutoff at occupation $n$.
+The **interleaved atom–photon basis** is
+$|g,0\rangle,|e,0\rangle,\ldots,|g,n\rangle,|e,n\rangle$.
+In units $\hbar=1$, write
+
+```math
+H=\omega_c a^\dagger a+\frac{\omega_a}{2}\sigma_z+
+g(a\sigma_++a^\dagger\sigma_-),\qquad
+\Delta=\omega_a-\omega_c.
+```
+
+The model compresses the **Hermitian Hamiltonian** to levels
+$0,\ldots,n$ before taking $U(t)=\exp(-itH_n)$.
+This avoids the nonunitarity of principal submatrices of an infinite
+unitary. The excitation blocks act on $|e,k\rangle,|g,k+1\rangle$
+for $k=0,\ldots,n-1$:
+
+```math
+H_k=\omega_c(k+\tfrac12)I_2+
+\begin{pmatrix}
+\Delta/2 & g\sqrt{k+1}\\
+g\sqrt{k+1} & -\Delta/2
+\end{pmatrix}.
+```
+
+Set $r_k=\sqrt{(\Delta/2)^2+g^2(k+1)}$.
+The implemented analytic block exponential is
+
+```math
+e^{-itH_k}=e^{-it\omega_c(k+1/2)}
+\left[\cos(tr_k)I_2-
+i\frac{\sin(tr_k)}{r_k}
+\begin{pmatrix}\Delta/2&g\sqrt{k+1}\\
+g\sqrt{k+1}&-\Delta/2\end{pmatrix}\right],
+```
+
+using the continuous $r_k=0$ limit.
+The **complete finite spectrum** consists of
+
+```math
+e^{-it[\omega_c(k+1/2)\pm r_k]},\quad 0\le k<n,
+\qquad e^{it\omega_a/2},\quad
+e^{-it(n\omega_c+\omega_a/2)}.
+```
+
+The last two are the isolated boundary states $|g,0\rangle$ and
+$|e,n\rangle$, respectively. The upper state is an artifact of
+**finite photon truncation** and not isolated in the infinite model.
+The propagator is sparse with two-by-two blocks, making it useful
+for exact trace moments, eigenphase clusters and repeated degeneracies.
+**Reference:** [43].
+
+### 37. Chalker–Coddington directed network — [`chalker_coddington.m`](../chalker_coddington.m)
+
+**Order:** $4n_xn_y$, with directed links $(x,y)$ on the periodic
+$2n_x\times2n_y$ grid, ordered by the MATLAB index
+$1+(x\bmod 2n_x)+2n_x(y\bmod 2n_y)$.
+The implementation follows the **one-step oriented network**
+in Eq. (3.3) of [46], not an arbitrary coined-walk substitute.
+The two types of $2\times2$ scattering nodes are
+
+```math
+S_e=\begin{pmatrix}
+\cos\theta_e&\sin\theta_e\\
+-\sin\theta_e&\cos\theta_e
+\end{pmatrix},\qquad
+S_o=\begin{pmatrix}
+\sin\theta_o&\cos\theta_o\\
+-\cos\theta_o&\sin\theta_o
+\end{pmatrix}.
+```
+
+An even node maps incoming $(2j,2k)$, $(2j+1,2k-1)$
+to outgoing $(2j+1,2k)$, $(2j,2k-1)$.
+An odd node maps incoming $(2j+2,2k+1)$, $(2j+1,2k)$
+to outgoing $(2j+1,2k+1)$, $(2j+2,2k)$.
+All coordinates are taken modulo the even lattice dimensions.
+Every input link and output link belongs to exactly one node;
+hence the global scattering matrix $S$ is unitary. Assigning
+independent input-link phases gives
+
+```math
+U=S\,\mathrm{diag}(e^{i\phi_1},\ldots,e^{i\phi_{4n_xn_y}}).
+```
+
+The result has at most two nonzero entries per row and column.
+A scalar angle applies to both node types; a two-vector gives
+independent $\theta_e,\theta_o$. By default phases are zero;
+for Anderson-localization experiments, supply random phases explicitly.
+At angles in $\{0,\pi/2\}$ the matrix is a phase-weighted permutation.
+At $\theta_e=\theta_o=\pi/4$, both node types are balanced.
+
+**Exact spectrum constraint:** with
+$C_{(x,y),(x,y)}=(-1)^{x+y}$, the directed network alternates
+between the two link parities. Thus
+
+```math
+CUC=-U,\qquad \sigma(U)=-\sigma(U),\qquad
+\mathrm{tr}(U^{2r+1})=0\quad(r\ge0).
+```
+
+This $\pi$-paired eigenphase symmetry holds with arbitrary link phases
+and node angles, and gives a particularly useful exact benchmark for
+unit-circle spectral-density estimators.
+Applications: integer quantum Hall plateau transitions, localization,
+critical scattering and sparse unitary operators. No universal
+finite-size one-point eigenphase density is asserted.
+**References:** [44–46].
+
+## J. Non-quantum signal-processing transforms
 
 This section gives independent finite matrix constructions. They are distinct
 from the FFT, wavelet and paraunitary filter-bank families discussed earlier;
@@ -709,7 +863,7 @@ with $c_0=c_{n-1}=1/\sqrt2$.
 All variants are **real orthogonal** with FFT-based implicit actions; I and IV are also symmetric
 involutions. Eigenphases of DCT-II/III generally depend on order and
 are unrelated to the transform-frequency sample points. Uses:
-compression, image coding, cosine-basis spectral methods. [45]
+compression, image coding, cosine-basis spectral methods. [52]
 
 ### Discrete Hartley — [`discrete_hartley.m`](../discrete_hartley.m)
 
@@ -722,7 +876,7 @@ H_{jk}=\frac{\cos(2\pi jk/n)+\sin(2\pi jk/n)}{\sqrt n}.
 This is real, symmetric, orthogonal, and $H^2=I$.
 The entire spectrum is in $\{-1,+1\}$; exact multiplicities may be
 determined from $n$ and the trace. Useful as a two-atom spectrum in
-real signal processing, independent of the Hadamard construction. [40]
+real signal processing, independent of the Hadamard construction. [47]
 
 ### Chu/CAZAC unitary circulants — [`cazac_circulant.m`](../cazac_circulant.m)
 
@@ -742,7 +896,7 @@ The exact eigenvalues, including multiplicities, are
 $z_\ell=n^{-1/2}\mathop{\mathrm{fft}}(c)_\ell$.
 This is a restricted, application-derived subfamily of
 unitary circulants (not a new general matrix class).
-Applications: channel synchronization, radar/sonar pulse coding. [41]
+Applications: channel synchronization, radar/sonar pulse coding. [48]
 
 ### Discrete Fresnel transform — [`fresnel_transform.m`](../fresnel_transform.m)
 
@@ -757,7 +911,7 @@ U_{jk}=\frac{e^{-i\pi/4}}{\sqrt n}
 Both parity choices are circularly periodic and exactly unitary.
 It is circulant; its eigenvalues are the FFT of its first column.
 OCDM uses this discrete Fresnel transform for chirp multiplexing.
-The matrix is unitary independently of the physical channel. [42]
+The matrix is unitary independently of the physical channel. [49]
 
 ### Affine Fourier / AFDM modulation — [`affine_fourier.m`](../affine_fourier.m)
 
@@ -775,7 +929,7 @@ At $c_1=c_2=0$ it reduces to the DFT, whose spectrum has
 at most four atoms; away from that point the phase law can differ.
 Application: affine frequency-division multiplexing in
 delay-Doppler channels. Do not conflate modulation $A$ with the
-generally **nonunitary** wireless channel. [43]
+generally **nonunitary** wireless channel. [50]
 
 ### Finite Zak transforms — [`finite_zak.m`](../finite_zak.m)
 
@@ -790,7 +944,7 @@ Z_{n,p}=F_q\otimes I_p.
 This is unitary; $p=1$ gives the DFT, and $p=n$ gives $I_n$.
 It is a particular finite normalized Zak convention, used in
 Gabor analysis and polyphase signal processing. Its spectrum
-is exactly that of $F_q$, each eigenvalue repeated $p$ times. [44]
+is exactly that of $F_q$, each eigenvalue repeated $p$ times. [51]
 
 ### Finite Weyl–Heisenberg shifts — [`time_frequency_shift.m`](../time_frequency_shift.m)
 
@@ -800,7 +954,7 @@ The generator returns $U=M^pT^q$ for integer $p,q$.
 It is a sparse monomial unitary, and its exact eigenvalues
 are determined by the cycles of translation $q$ and the
 product of modulation weights around each cycle. Uses:
-Gabor time-frequency shifts and Weyl–Heisenberg systems. [44,46]
+Gabor time-frequency shifts and Weyl–Heisenberg systems. [51,53]
 
 ### Periodic Hilbert transform completion — [`periodic_hilbert.m`](../periodic_hilbert.m)
 
@@ -819,7 +973,7 @@ Hence $U$ is **real orthogonal and circulant**, with exact spectral
 atoms among $\{-i,+i,-1,+1\}$. The zero-ended conventional periodic
 Hilbert filter is **not** unitary on the whole finite-dimensional
 space. The endpoint completion is a benchmark choice, not a claim
-that all conventional Hilbert transforms are orthogonal. [45]
+that all conventional Hilbert transforms are orthogonal. [52]
 
 ### Normalized discrete Fourier — [`discrete_fourier.m`](../discrete_fourier.m)
 
@@ -835,7 +989,7 @@ belong to $\{1,-1,i,-i\}$. The default materialization is
 dense; operator mode reuses the existing normalized FFT kernel.
 This is a distinct generator interface but the same DFT
 already appearing implicitly in several earlier matrix families.
-Applications: Fourier spectral analysis, convolution, OFDM. [1,45]
+Applications: Fourier spectral analysis, convolution, OFDM. [1,52]
 
 ### Orthonormal sine transforms — [`discrete_sine.m`](../discrete_sine.m)
 
@@ -854,7 +1008,7 @@ All four are real orthogonal; types I and IV are symmetric
 involutions. Their operator mode uses an odd FFT extension
 or the existing fast DCT kernel with signs/reversals, avoiding
 dense materialization. Applications: odd-boundary spectral
-methods, transform coding, and PDE discretizations. [47]
+methods, transform coding, and PDE discretizations. [54]
 
 ### Walsh–Hadamard transforms — [`walsh_hadamard.m`](../walsh_hadamard.m)
 
@@ -874,7 +1028,7 @@ the eigenvalues of the *transform matrix*, though its singular
 values remain 1. The matrix-free kernel uses a fast Walsh
 butterfly and row permutations, with $O(n)$ storage.
 Applications: spread-spectrum signals, coding and image
-processing. [48]
+processing. [55]
 
 ### Slepian/DPSS orthogonal basis — [`dpss_transform.m`](../dpss_transform.m)
 
@@ -898,7 +1052,7 @@ the concentration eigenvalues of $B$. The matrix is **explicit
 only**: the generic DPSS eigenbasis does not admit a validated
 fast $O(n)$-storage transform merely by wrapping its dense
 eigenvectors in a function handle. Applications: multitaper
-estimation, finite-band concentration and leakage suppression. [49]
+estimation, finite-band concentration and leakage suppression. [56]
 
 ### Graph Fourier transform — [`graph_fourier.m`](../graph_fourier.m)
 
@@ -911,16 +1065,27 @@ by vertex-order projection/orthonormalization. **Graph
 Laplacian frequencies are not the eigenvalues of $U$**.
 This is **explicit only**: a generic weighted graph has no
 automatic fast graph-Fourier transform. Applications: graph
-filtering and irregular-domain data analysis. [50]
+filtering and irregular-domain data analysis. [57]
 
-### Planned further additions (not yet implemented)
+## K. Families reserved for future versions (not implemented)
 
-Canonical Candan–Kutay–Ozaktas discrete fractional Fourier matrices
-(require specifying a Hermite-like basis inside degenerate DFT eigenspaces);
-properly assembled lapped/MDCT orthogonal transforms (overlap and boundary
-conventions); discrete Wilson bases; unitary ESPRIT transformations; and unitary
-space-time communication constellations. These are **not** registered
-as implemented generators.
+- **ETNA core-factor stress tests:** the five experimental constructions in
+  Aurentz–Mach–Vandebril–Watkins (2015), including the nearly reducible Type
+  III case with heavily clustered eigenvalues. Will use shared Verblunsky/core
+  machinery but separate benchmark presets. [8]
+- **Rational and isometric Arnoldi:** pole sequences, orthonormal rational
+  basis conventions, unitary closures and appropriate generalized matrices/
+  pencils. Not every finite compression is unitary. [9, 10]
+- **Other OPUC measures:** positive Pastro and generalized $q$-weight
+  specializations, inverse spectral finite atomic measures, Aleksandrov
+  families, skew-shift parameters, and matrix-valued/block CMV. [5, 12]
+- **Additional signal-processing matrices:** normalized DCT/DST variants,
+  Daubechies wavelets, paraunitary polyphase banks and lossless scattering.
+  Boundary and frequency conventions must be specified before admitting a
+  finite matrix as unitary. [15]
+- **Larger quantum models:** Szegedy graph walks, quantum-graph scattering,
+  Floquet Ising models, kicked tops, cat maps and interferometer meshes.
+  Different symmetry sectors and truncations cannot be conflated. [26]
 
 ## Bibliography
 
@@ -963,15 +1128,21 @@ as implemented generators.
 37. B. Bertini, P. Kos and T. Prosen, “Random matrix spectral form factor of dual-unitary quantum circuits,” *Commun. Math. Phys.* **387** (2021), 597–620. [DOI](https://doi.org/10.1007/s00220-021-04139-2).
 38. E. Vernier, H.-C. Yeh, L. Piroli and A. Mitra, “Strong zero modes in integrable quantum circuits,” *Phys. Rev. Lett.* **133** (2024), 050606. [DOI](https://doi.org/10.1103/PhysRevLett.133.050606).
 39. J.-S. Caux, “The Bethe Ansatz: Another example: the trigonometric R-matrix and the XXZ model.” *The Bethe Ansatz* online reference (2024). [Source](https://integrability.org/a_xxz.html).
-
-40. R. N. Bracewell, "Discrete Hartley transform," *J. Opt. Soc. Amer.* **73** (1983), 1832–1835. [DOI](https://doi.org/10.1364/JOSA.73.001832).
-41. D. C. Chu, "Polyphase codes with good periodic correlation properties," *IEEE Trans. Inform. Theory* **18** (1972), 531–532. [DOI](https://doi.org/10.1109/TIT.1972.1054840).
-42. X. Ouyang and J. Zhao, "Orthogonal chirp division multiplexing," *IEEE Trans. Commun.* **64** (2016). [Preprint](https://arxiv.org/abs/1601.06576).
-43. A. Bemani, N. Ksairi and M. Kountouris, "AFDM: A full diversity next generation waveform for high mobility communications," (2023). [Preprint](https://arxiv.org/abs/2204.12798).
-44. H. Bölcskei and F. Hlawatsch, "Discrete Zak transforms, polyphase transforms, and applications," *IEEE Trans. Signal Process.* **45** (1997), 851–866. [DOI](https://doi.org/10.1109/78.564174).
-45. M. Püschel and J. M. F. Moura, "Algebraic signal processing theory: Foundation and 1-D time," *IEEE Trans. Signal Process.* **56** (2008), 3572–3585. [Author PDF](https://users.ece.cmu.edu/~moura/papers/t-sp-aug08-part1--pueschelmoura-ieeexplore.pdf).
-46. K. Gröchenig, *Foundations of Time-Frequency Analysis*, Birkhäuser, 2001. [Publisher](https://link.springer.com/book/10.1007/978-1-4612-0003-1).
-47. V. Britanak, P. C. Yip and K. R. Rao, *Discrete Cosine and Sine Transforms: General Properties, Fast Algorithms and Integer Approximations*, Academic Press, 2007. [Publisher](https://shop.elsevier.com/books/discrete-cosine-and-sine-transforms/britanak/978-0-12-373624-6).
-48. K. G. Beauchamp, *Applications of Walsh and Related Functions: With an Introduction to Sequency Theory*, Academic Press, 1984. [Catalog](https://books.google.com/books?id=BvZSAAAAMAAJ).
-49. D. Slepian, "Prolate spheroidal wave functions, Fourier analysis, and uncertainty—V: The discrete case," *Bell Syst. Tech. J.* **57** (1978), 1371–1430. [DOI](https://doi.org/10.1002/j.1538-7305.1978.tb02104.x).
-50. D. I. Shuman, S. K. Narang, P. Frossard, A. Ortega and P. Vandergheynst, "The emerging field of signal processing on graphs," *IEEE Signal Process. Mag.* **30** (2013), 83–98. [DOI](https://doi.org/10.1109/MSP.2012.2235192).
+40. M. P. Strzys, E.-M. Graefe and H. J. Korsch, “Kicked Bose–Hubbard systems and kicked tops—destruction and stimulation of tunneling,” *New J. Phys.* **10** (2008), 013024. [DOI](https://doi.org/10.1088/1367-2630/10/1/013024).
+41. C. Khripkov, D. Cohen and A. Vardi, “Coherence dynamics of kicked Bose-Hubbard dimers: Interferometric signatures of chaos,” *Phys. Rev. E* **87** (2013), 012910. [DOI](https://doi.org/10.1103/PhysRevE.87.012910).
+42. C. Liang, Y. Zhang and S. Chen, “Statistical and dynamical aspects of quantum chaos in a kicked Bose-Hubbard dimer,” *Phys. Rev. A* **109** (2024), 033316. [DOI](https://doi.org/10.1103/PhysRevA.109.033316).
+43. E. T. Jaynes and F. W. Cummings, “Comparison of quantum and semiclassical radiation theories with application to the beam maser,” *Proc. IEEE* **51** (1963), 89–109. [DOI](https://doi.org/10.1109/PROC.1963.1664).
+44. J. T. Chalker and P. D. Coddington, “Percolation, quantum tunnelling and the integer Hall effect,” *J. Phys. C: Solid State Phys.* **21** (1988), 2665–2679. [DOI](https://doi.org/10.1088/0022-3719/21/14/008).
+45. C.-M. Ho and J. T. Chalker, “Models for the integer quantum Hall effect: The network model, the Dirac equation, and a tight-binding Hamiltonian,” *Phys. Rev. B* **54** (1996), 8708–8713. [DOI](https://doi.org/10.1103/PhysRevB.54.8708).
+46. A. Joye, “Unitary and open scattering quantum walks on graphs,” *Rev. Math. Phys.* (2026), 2650005. [DOI](https://doi.org/10.1142/S0129055X26500054); [arXiv](https://arxiv.org/abs/2409.08428) (see §3.1, Eq. (3.3)).
+47. R. N. Bracewell, "Discrete Hartley transform," *J. Opt. Soc. Amer.* **73** (1983), 1832–1835. [DOI](https://doi.org/10.1364/JOSA.73.001832).
+48. D. C. Chu, "Polyphase codes with good periodic correlation properties," *IEEE Trans. Inform. Theory* **18** (1972), 531–532. [DOI](https://doi.org/10.1109/TIT.1972.1054840).
+49. X. Ouyang and J. Zhao, "Orthogonal chirp division multiplexing," *IEEE Trans. Commun.* **64** (2016). [Preprint](https://arxiv.org/abs/1601.06576).
+50. A. Bemani, N. Ksairi and M. Kountouris, "AFDM: A full diversity next generation waveform for high mobility communications," (2023). [Preprint](https://arxiv.org/abs/2204.12798).
+51. H. Bölcskei and F. Hlawatsch, "Discrete Zak transforms, polyphase transforms, and applications," *IEEE Trans. Signal Process.* **45** (1997), 851–866. [DOI](https://doi.org/10.1109/78.564174).
+52. M. Püschel and J. M. F. Moura, "Algebraic signal processing theory: Foundation and 1-D time," *IEEE Trans. Signal Process.* **56** (2008), 3572–3585. [Author PDF](https://users.ece.cmu.edu/~moura/papers/t-sp-aug08-part1--pueschelmoura-ieeexplore.pdf).
+53. K. Gröchenig, *Foundations of Time-Frequency Analysis*, Birkhäuser, 2001. [Publisher](https://link.springer.com/book/10.1007/978-1-4612-0003-1).
+54. V. Britanak, P. C. Yip and K. R. Rao, *Discrete Cosine and Sine Transforms: General Properties, Fast Algorithms and Integer Approximations*, Academic Press, 2007. [Publisher](https://shop.elsevier.com/books/discrete-cosine-and-sine-transforms/britanak/978-0-12-373624-6).
+55. K. G. Beauchamp, *Applications of Walsh and Related Functions: With an Introduction to Sequency Theory*, Academic Press, 1984. [Catalog](https://books.google.com/books?id=BvZSAAAAMAAJ).
+56. D. Slepian, "Prolate spheroidal wave functions, Fourier analysis, and uncertainty—V: The discrete case," *Bell Syst. Tech. J.* **57** (1978), 1371–1430. [DOI](https://doi.org/10.1002/j.1538-7305.1978.tb02104.x).
+57. D. I. Shuman, S. K. Narang, P. Frossard, A. Ortega and P. Vandergheynst, "The emerging field of signal processing on graphs," *IEEE Signal Process. Mag.* **30** (2013), 83–98. [DOI](https://doi.org/10.1109/MSP.2012.2235192).
