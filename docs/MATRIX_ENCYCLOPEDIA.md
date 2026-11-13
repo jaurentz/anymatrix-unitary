@@ -821,13 +821,104 @@ Hilbert filter is **not** unitary on the whole finite-dimensional
 space. The endpoint completion is a benchmark choice, not a claim
 that all conventional Hilbert transforms are orthogonal. [45]
 
+### Normalized discrete Fourier — [`discrete_fourier.m`](../discrete_fourier.m)
+
+**Order:** $n$. Define the negative-exponent DFT by
+
+```math
+F_{jk}=\frac{e^{-2\pi i jk/n}}{\sqrt n},\quad 0\leq j,k<n.
+```
+
+Then $F^*=F^{-1}$ and $F^2$ is the reversal permutation
+$j\mapsto-j\bmod n$. Therefore $F^4=I$ and all eigenvalues
+belong to $\{1,-1,i,-i\}$. The default materialization is
+dense; operator mode reuses the existing normalized FFT kernel.
+This is a distinct generator interface but the same DFT
+already appearing implicitly in several earlier matrix families.
+Applications: Fourier spectral analysis, convolution, OFDM. [1,45]
+
+### Orthonormal sine transforms — [`discrete_sine.m`](../discrete_sine.m)
+
+**Order:** $n$. Type II uses the kernel
+
+```math
+S_{kj}=\sqrt{\frac2n}\,c_k
+\sin\left(\frac{\pi(k+1)(j+1/2)}{n}\right),
+\quad c_{n-1}=\frac1{\sqrt2},\quad c_k=1\ (k<n-1).
+```
+
+Type III is the transpose of type II. Type I has
+$\sqrt{2/(n+1)}\sin(\pi(k+1)(j+1)/(n+1))$ and
+type IV has $\sqrt{2/n}\sin(\pi(k+1/2)(j+1/2)/n)$.
+All four are real orthogonal; types I and IV are symmetric
+involutions. Their operator mode uses an odd FFT extension
+or the existing fast DCT kernel with signs/reversals, avoiding
+dense materialization. Applications: odd-boundary spectral
+methods, transform coding, and PDE discretizations. [47]
+
+### Walsh–Hadamard transforms — [`walsh_hadamard.m`](../walsh_hadamard.m)
+
+**Order:** $n=2^m$. Natural Sylvester order satisfies
+
+```math
+H_1=[1],\qquad
+H_{2n}=\frac1{\sqrt2}
+\begin{pmatrix}H_n&H_n\\H_n&-H_n\end{pmatrix}.
+```
+
+Hence $H_n$ is real, orthogonal, symmetric, involutory,
+and every entry has magnitude $1/\sqrt n$. Sequency order
+permutes the rows into increasing zero-crossing count using
+bit-reversed Gray indices; the permutation generally changes
+the eigenvalues of the *transform matrix*, though its singular
+values remain 1. The matrix-free kernel uses a fast Walsh
+butterfly and row permutations, with $O(n)$ storage.
+Applications: spread-spectrum signals, coding and image
+processing. [48]
+
+### Slepian/DPSS orthogonal basis — [`dpss_transform.m`](../dpss_transform.m)
+
+**Order:** $n$, with half-bandwidth $0<W<1/2$.
+Let the time-band concentration matrix $B$ have entries
+
+```math
+B_{jk}=\begin{cases}
+2W,&j=k,\\
+\dfrac{\sin(2\pi W(j-k))}{\pi(j-k)},&j\neq k.
+\end{cases}
+```
+
+A commuting symmetric tridiagonal matrix has
+$T_{jj}=((n-1)/2-j)^2\cos(2\pi W)$ and
+$T_{j,j+1}=(j+1)(n-j-1)/2$, using zero-based $j$.
+The generator forms its orthonormal eigenvectors in descending
+concentration order and returns their transpose. This defines
+a real orthogonal transform; its eigenphases are **not**
+the concentration eigenvalues of $B$. The matrix is **explicit
+only**: the generic DPSS eigenbasis does not admit a validated
+fast $O(n)$-storage transform merely by wrapping its dense
+eigenvectors in a function handle. Applications: multitaper
+estimation, finite-band concentration and leakage suppression. [49]
+
+### Graph Fourier transform — [`graph_fourier.m`](../graph_fourier.m)
+
+**Order:** $n$. For a symmetric, nonnegative zero-diagonal
+adjacency $A$, let $L=\mathop{\mathrm{diag}}(A\mathbf1)-A$.
+If $L=V\Lambda V^T$, sorted by nondecreasing eigenvalues,
+the transform is $U=V^T$. It is real orthogonal. The generator
+uses a path graph by default and fixes repeated eigenspaces
+by vertex-order projection/orthonormalization. **Graph
+Laplacian frequencies are not the eigenvalues of $U$**.
+This is **explicit only**: a generic weighted graph has no
+automatic fast graph-Fourier transform. Applications: graph
+filtering and irregular-domain data analysis. [50]
+
 ### Planned further additions (not yet implemented)
 
 Canonical Candan–Kutay–Ozaktas discrete fractional Fourier matrices
 (require specifying a Hermite-like basis inside degenerate DFT eigenspaces);
 properly assembled lapped/MDCT orthogonal transforms (overlap and boundary
-conventions); discrete Slepian/DPSS bases; graph Fourier bases;
-discrete Wilson bases; unitary ESPRIT transformations; and unitary
+conventions); discrete Wilson bases; unitary ESPRIT transformations; and unitary
 space-time communication constellations. These are **not** registered
 as implemented generators.
 
@@ -880,3 +971,7 @@ as implemented generators.
 44. H. Bölcskei and F. Hlawatsch, "Discrete Zak transforms, polyphase transforms, and applications," *IEEE Trans. Signal Process.* **45** (1997), 851–866. [DOI](https://doi.org/10.1109/78.564174).
 45. M. Püschel and J. M. F. Moura, "Algebraic signal processing theory: Foundation and 1-D time," *IEEE Trans. Signal Process.* **56** (2008), 3572–3585. [Author PDF](https://users.ece.cmu.edu/~moura/papers/t-sp-aug08-part1--pueschelmoura-ieeexplore.pdf).
 46. K. Gröchenig, *Foundations of Time-Frequency Analysis*, Birkhäuser, 2001. [Publisher](https://link.springer.com/book/10.1007/978-1-4612-0003-1).
+47. V. Britanak, P. C. Yip and K. R. Rao, *Discrete Cosine and Sine Transforms: General Properties, Fast Algorithms and Integer Approximations*, Academic Press, 2007. [Publisher](https://shop.elsevier.com/books/discrete-cosine-and-sine-transforms/britanak/978-0-12-373624-6).
+48. K. G. Beauchamp, *Applications of Walsh and Related Functions: With an Introduction to Sequency Theory*, Academic Press, 1984. [Catalog](https://books.google.com/books?id=BvZSAAAAMAAJ).
+49. D. Slepian, "Prolate spheroidal wave functions, Fourier analysis, and uncertainty—V: The discrete case," *Bell Syst. Tech. J.* **57** (1978), 1371–1430. [DOI](https://doi.org/10.1002/j.1538-7305.1978.tb02104.x).
+50. D. I. Shuman, S. K. Narang, P. Frossard, A. Ortega and P. Vandergheynst, "The emerging field of signal processing on graphs," *IEEE Signal Process. Mag.* **30** (2013), 83–98. [DOI](https://doi.org/10.1109/MSP.2012.2235192).

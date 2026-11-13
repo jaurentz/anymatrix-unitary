@@ -34,6 +34,11 @@
 %   finite_zak           Finite Zak transform on a factored signal length.
 %   time_frequency_shift Sparse Weyl-Heisenberg modulation/translation.
 %   periodic_hilbert     Real orthogonal periodic Hilbert completion.
+%   discrete_fourier     Normalized DFT and exact fourth-root spectrum.
+%   discrete_sine        Orthonormal DST-I, II, III, IV transforms.
+%   walsh_hadamard       Natural/sequency ordered fast Walsh transform.
+%   dpss_transform       Explicit Slepian concentration eigenbasis.
+%   graph_fourier        Explicit weighted-graph Laplacian eigenbasis.
 %
 % Quantum maps, walks and algorithms:
 %   split_step_walk      Periodic real-orthogonal two-state quantum walk.

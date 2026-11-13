@@ -35,6 +35,9 @@ factor order under adjoints. No custom MATLAB matrix class is required.
 | `um_hartley_apply` | Hartley involution from normalized DFT and adjoint | O(n) |
 | `um_affine_apply` | Affine Fourier: cached chirp factors and shared Fourier kernel | O(n) |
 | `um_zak_apply` | Polyphase reshape and short FFTs | O(n) |
+| `um_dft_apply` | Reuses normalized Fourier FFT, with explicit size contract | O(n) |
+| `um_dst_apply` | DST-I odd FFT extension and DST-II–IV via DCT | O(n) |
+| `um_walsh_apply` | Fast Walsh butterflies with sequency permutation | O(n) |
 | `um_cayley_apply` | Cayley transform of a Jacobi recurrence using cached sparse triangular solves | O(n) for tridiagonal factors, modulo fill |
 
 The specialized `um_core_order` encodes the parity-dependent placement of the
@@ -52,6 +55,14 @@ All eight signal-processing generators accept the shared final `'operator'` argu
 DCT I–IV use FFT-based actions even for complex multiple RHS. CAZAC,
 Fresnel, and Hilbert directly reuse the circulant FFT kernel, while
 Weyl–Heisenberg shifts reuse `um_monomial_apply`.
+
+The DFT, DST I–IV, and Walsh–Hadamard families additionally support
+fast actions: `um_dft_apply` forwards to the shared Fourier kernel,
+`um_dst_apply` uses odd FFT extension and shared DCT routines, and
+`um_walsh_apply` uses fast Walsh butterflies. The DPSS/Slepian and
+general graph Fourier transforms intentionally **do not offer an
+`'operator'` output**: their explicit eigenvector matrices have no
+generic lower-storage or lower-complexity implicit action.
 
 Already economical sparse families (e.g., the cyclic shifts, the Dirac
 automaton, and the split-step walk) retain their sparse defaults and do not

@@ -4,7 +4,7 @@ A MATLAB collection of finite **unitary and orthogonal test matrices**, designed
 an external group for [Anymatrix](https://github.com/north-numerical-computing/anymatrix).
 The repository is organized around reproducible mathematical constructions,
 known spectral information, and executable regression tests. It contains
-42 generators; additional benchmark families are under development.
+47 generators; additional benchmark families are under development.
 
 **Status:** development collection with MATLAB-only tests. Automated MATLAB
 regression and Anymatrix integration tests run on GitHub Actions after every
@@ -41,7 +41,7 @@ assertSuccess(results)
 
 ## Matrix generator interfaces
 
-The collection currently has **42 public generators**. Each has a complete
+The collection currently has **47 public generators**. Each has a complete
 entry with formulas, spectral information, applications, parameter conventions,
 and references in the [matrix encyclopedia](docs/MATRIX_ENCYCLOPEDIA.md).
 The [mathematical notes](docs/MATHEMATICS.md) explain the shared OPUC engine.
@@ -51,7 +51,7 @@ The [mathematical notes](docs/MATHEMATICS.md) explain the shared OPUC engine.
 | Prescribed spectra and circulants | `cycle_shift`, `weighted_shift`, `diagonal_phase`, `phase_circulant`, `cycle_propagator`, `orthogonal_blocks` |
 | OPUC / Szegő / core matrices | `finite_cmv`, `opuc_matrix`, `jacobi_szego`, `bernstein_szego`, `circular_beta`, `circular_jacobi`, `rogers_szego`, `geronimus_cmv`, `periodic_cmv`, `bernstein_szego_finite` |
 | Random and signal-processing | `haar_unitary`, `haar_orthogonal`, `haar_wavelet` |
-| Signal-processing transforms | `orthogonal_dct`, `discrete_hartley`, `cazac_circulant`, `fresnel_transform`, `affine_fourier`, `finite_zak`, `time_frequency_shift`, `periodic_hilbert` |
+| Signal-processing transforms | `orthogonal_dct`, `discrete_hartley`, `cazac_circulant`, `fresnel_transform`, `affine_fourier`, `finite_zak`, `time_frequency_shift`, `periodic_hilbert`, `discrete_fourier`, `discrete_sine`, `walsh_hadamard`, `dpss_transform`, `graph_fourier` |
 | Quantum maps, walks, and algorithms | `split_step_walk`, `dirac_automaton`, `grover_operator`, `quantum_baker`, `kicked_harper`, `kicked_top`, `floquet_ising`, `selfdual_kicked_ising`, `driven_kitaev`, `kicked_rotor`, `dual_unitary_circuit`, `xxz_floquet` |
 | Matrix functions and dilations | `cayley_jacobi`, `polar_unitary`, `julia_unitary` |
 
@@ -232,6 +232,24 @@ The conventional discrete Hilbert filter with zero DC/Nyquist
 multipliers is not unitary on the entire space. Our finite completed
 version assigns unimodular signs. Signal-frequency variables must
 not be confused with eigenphases of the transform matrix.
+### Further transforms
+
+Five additional families are available: normalized DFT, orthonormal DST I–IV,
+natural/sequency-ordered Walsh–Hadamard, DPSS/Slepian, and graph Fourier.
+
+```matlab
+S = discrete_sine(24,4);           % real orthogonal DST-IV
+W = walsh_hadamard(32,'sequency'); % order by zero-crossing count
+P = dpss_transform(48,.18);       % Slepian concentration eigenbasis
+G = graph_fourier(16);            % path-graph Laplacian eigenvectors
+```
+
+DFT, DST, and Walsh support efficient `'operator'` multiplication. **DPSS
+and general graph Fourier do not**: they return explicit orthogonal matrices,
+because caching dense eigenvectors in a function handle is not a meaningful
+matrix-free implementation. Laplacian or concentration eigenvalues are
+different from the eigenvalues of the resulting transform matrix.
+
 ## Automatic tests
 
 - **MATLAB unit tests** under [`tests/`](tests/) check normalizations,
