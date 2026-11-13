@@ -18,8 +18,11 @@ if nargin<4 || isempty(t),t=1;end
 validateattributes(t,{'numeric'},{'scalar','real','positive','finite'});
 [d,s]=js_jacobi_recurrence(a,b,n);
 if nargin<5,output='matrix';end
-J=spdiags([[0;s(:)],d(:),[s(:);0]],[-1,0,1],n,n);
-% The diagonal triplets above are in MATLAB spdiags indexing convention.
+J=spdiags(d(:),0,n,n);
+if n>1
+    J=J+sparse(1:n-1,2:n,s(:),n,n)+sparse(2:n,1:n-1,s(:),n,n);
+end
+% Explicit index lists avoid ambiguity in spdiags off-diagonal alignment.
 if um_is_operator(output)
     plusFactor=decomposition(J+1i*t*speye(n),'lu');
     minusFactor=decomposition(J-1i*t*speye(n),'lu');
