@@ -309,6 +309,42 @@
       ]
     },
     {
+      "id": "kicked_bose_hubbard",
+      "status": "implemented",
+      "category": "quantum",
+      "matrix_order": "n+1 for n identical bosons",
+      "representation": "diagonal kick times dense symmetric-tridiagonal hopping exponential",
+      "spectral_reference": "exact tunneling-only spin-Jx phases and interaction-only diagonal phases",
+      "encyclopedia_references": [
+        40,
+        41
+      ]
+    },
+    {
+      "id": "jaynes_cummings",
+      "status": "implemented",
+      "category": "quantum",
+      "matrix_order": "2(n+1) for maximum photon number n",
+      "representation": "sparse independent excitation blocks plus two photon-cutoff edge phases",
+      "spectral_reference": "complete exact block eigenphases including two finite-cutoff edge states",
+      "encyclopedia_references": [
+        43
+      ]
+    },
+    {
+      "id": "chalker_coddington",
+      "status": "implemented",
+      "category": "quantum",
+      "matrix_order": "4*nx*ny on periodic 2nx by 2ny directed-link grid",
+      "representation": "sparse permutation-linked 2-by-2 unitary node scatterers",
+      "spectral_reference": "exact pi-paired eigenphases and vanishing odd trace moments; signed-permutation limits",
+      "encyclopedia_references": [
+        44,
+        45,
+        46
+      ]
+    },
+    {
       "id": "cayley_jacobi",
       "status": "implemented",
       "category": "matrix_function",

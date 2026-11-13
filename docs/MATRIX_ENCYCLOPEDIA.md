@@ -662,7 +662,170 @@ Applications: Yang–Baxter-integrable interacting Floquet operators,
 conservation-law sectors, and test cases contrasting integrable and
 chaotic many-body spectral statistics. **References:** [38, 39].
 
-## I. Families reserved for future versions (not implemented)
+## I. Bosonic, cavity-QED, and quantum Hall network operators
+
+### 35. Kicked Bose–Hubbard dimer — [`kicked_bose_hubbard.m`](../kicked_bose_hubbard.m)
+
+**Order:** $n+1$ for $n$ identical bosons on **two sites**, in the
+fixed-occupation Fock basis $|k,n-k\rangle$ ($0\le k\le n$).
+The two Hermitian generators are
+
+```math
+H_{\rm hop}=-J(a_1^\dagger a_2+a_2^\dagger a_1),\qquad
+H_{\rm kick}=\frac{g}{2}\sum_{r=1}^{2}n_r(n_r-1)
+                 +\frac{b}{2}(n_1-n_2).
+```
+
+The Floquet operator in the stated order is
+
+```math
+U_F=\exp(-i\tau_{\rm kick}H_{\rm kick})
+     \exp(-i\tau_{\rm hop}H_{\rm hop}).
+```
+
+The kick is diagonal with entries
+
+```math
+E_k=\frac{g}{2}\bigl[k(k-1)+(n-k)(n-k-1)\bigr]
+      +\frac{b}{2}(2k-n),
+```
+
+and the hopping Hamiltonian is real symmetric tridiagonal, with
+adjacent off-diagonal entries $-J\sqrt{(k+1)(n-k)}$.
+Thus both factors are exactly unitary mathematically.
+This is a number-conserving **many-boson** operator of order $n+1$,
+rather than a $2^n$ spin-chain matrix.
+
+When $g=b=0$ the **complete exact spectrum** is
+
+```math
+\sigma(U_F)=
+\bigl\{\exp[-i\tau_{\rm hop}J(2k-n)]:k=0,\ldots,n\bigr\}.
+```
+
+When $J=0$ the eigenvalues are exactly
+$\exp(-i\tau_{\rm kick}E_k)$. For $n=0$ the vacuum sector
+is the scalar unitary $[1]$.
+Applications: Bose–Einstein condensates in double wells, quantum
+chaos, Floquet tunneling, self-trapping and avoided quasienergy
+crossings. Related to spin-$n/2$ kicked tops via Schwinger bosons,
+but the interaction and phase conventions are specified independently.
+The general interacting eigenphase law is parameter-dependent.
+**References:** [40, 41]; the alternate periodically biased dimer
+model of [42] is related but uses a different drive.
+
+### 36. Jaynes–Cummings cavity-QED propagator — [`jaynes_cummings.m`](../jaynes_cummings.m)
+
+**Order:** $2(n+1)$ for a photon cutoff at occupation $n$.
+The **interleaved atom–photon basis** is
+$|g,0\rangle,|e,0\rangle,\ldots,|g,n\rangle,|e,n\rangle$.
+In units $\hbar=1$, write
+
+```math
+H=\omega_c a^\dagger a+\frac{\omega_a}{2}\sigma_z+
+g(a\sigma_++a^\dagger\sigma_-),\qquad
+\Delta=\omega_a-\omega_c.
+```
+
+The model compresses the **Hermitian Hamiltonian** to levels
+$0,\ldots,n$ before taking $U(t)=\exp(-itH_n)$.
+This avoids the nonunitarity of principal submatrices of an infinite
+unitary. The excitation blocks act on $|e,k\rangle,|g,k+1\rangle$
+for $k=0,\ldots,n-1$:
+
+```math
+H_k=\omega_c(k+\tfrac12)I_2+
+\begin{pmatrix}
+\Delta/2 & g\sqrt{k+1}\\
+g\sqrt{k+1} & -\Delta/2
+\end{pmatrix}.
+```
+
+Set $r_k=\sqrt{(\Delta/2)^2+g^2(k+1)}$.
+The implemented analytic block exponential is
+
+```math
+e^{-itH_k}=e^{-it\omega_c(k+1/2)}
+\left[\cos(tr_k)I_2-
+i\frac{\sin(tr_k)}{r_k}
+\begin{pmatrix}\Delta/2&g\sqrt{k+1}\\
+g\sqrt{k+1}&-\Delta/2\end{pmatrix}\right],
+```
+
+using the continuous $r_k=0$ limit.
+The **complete finite spectrum** consists of
+
+```math
+e^{-it[\omega_c(k+1/2)\pm r_k]},\quad 0\le k<n,
+\qquad e^{it\omega_a/2},\quad
+e^{-it(n\omega_c+\omega_a/2)}.
+```
+
+The last two are the isolated boundary states $|g,0\rangle$ and
+$|e,n\rangle$, respectively. The upper state is an artifact of
+**finite photon truncation** and not isolated in the infinite model.
+The propagator is sparse with two-by-two blocks, making it useful
+for exact trace moments, eigenphase clusters and repeated degeneracies.
+**Reference:** [43].
+
+### 37. Chalker–Coddington directed network — [`chalker_coddington.m`](../chalker_coddington.m)
+
+**Order:** $4n_xn_y$, with directed links $(x,y)$ on the periodic
+$2n_x\times2n_y$ grid, ordered by the MATLAB index
+$1+(x\bmod 2n_x)+2n_x(y\bmod 2n_y)$.
+The implementation follows the **one-step oriented network**
+in Eq. (3.3) of [46], not an arbitrary coined-walk substitute.
+The two types of $2\times2$ scattering nodes are
+
+```math
+S_e=\begin{pmatrix}
+\cos\theta_e&\sin\theta_e\\
+-\sin\theta_e&\cos\theta_e
+\end{pmatrix},\qquad
+S_o=\begin{pmatrix}
+\sin\theta_o&\cos\theta_o\\
+-\cos\theta_o&\sin\theta_o
+\end{pmatrix}.
+```
+
+An even node maps incoming $(2j,2k)$, $(2j+1,2k-1)$
+to outgoing $(2j+1,2k)$, $(2j,2k-1)$.
+An odd node maps incoming $(2j+2,2k+1)$, $(2j+1,2k)$
+to outgoing $(2j+1,2k+1)$, $(2j+2,2k)$.
+All coordinates are taken modulo the even lattice dimensions.
+Every input link and output link belongs to exactly one node;
+hence the global scattering matrix $S$ is unitary. Assigning
+independent input-link phases gives
+
+```math
+U=S\,\mathrm{diag}(e^{i\phi_1},\ldots,e^{i\phi_{4n_xn_y}}).
+```
+
+The result has at most two nonzero entries per row and column.
+A scalar angle applies to both node types; a two-vector gives
+independent $\theta_e,\theta_o$. By default phases are zero;
+for Anderson-localization experiments, supply random phases explicitly.
+At angles in $\{0,\pi/2\}$ the matrix is a phase-weighted permutation.
+At $\theta_e=\theta_o=\pi/4$, both node types are balanced.
+
+**Exact spectrum constraint:** with
+$C_{(x,y),(x,y)}=(-1)^{x+y}$, the directed network alternates
+between the two link parities. Thus
+
+```math
+CUC=-U,\qquad \sigma(U)=-\sigma(U),\qquad
+\mathrm{tr}(U^{2r+1})=0\quad(r\ge0).
+```
+
+This $\pi$-paired eigenphase symmetry holds with arbitrary link phases
+and node angles, and gives a particularly useful exact benchmark for
+unit-circle spectral-density estimators.
+Applications: integer quantum Hall plateau transitions, localization,
+critical scattering and sparse unitary operators. No universal
+finite-size one-point eigenphase density is asserted.
+**References:** [44–46].
+
+## J. Families reserved for future versions (not implemented)
 
 - **ETNA core-factor stress tests:** the five experimental constructions in
   Aurentz–Mach–Vandebril–Watkins (2015), including the nearly reducible Type
@@ -723,3 +886,10 @@ chaotic many-body spectral statistics. **References:** [38, 39].
 37. B. Bertini, P. Kos and T. Prosen, “Random matrix spectral form factor of dual-unitary quantum circuits,” *Commun. Math. Phys.* **387** (2021), 597–620. [DOI](https://doi.org/10.1007/s00220-021-04139-2).
 38. E. Vernier, H.-C. Yeh, L. Piroli and A. Mitra, “Strong zero modes in integrable quantum circuits,” *Phys. Rev. Lett.* **133** (2024), 050606. [DOI](https://doi.org/10.1103/PhysRevLett.133.050606).
 39. J.-S. Caux, “The Bethe Ansatz: Another example: the trigonometric R-matrix and the XXZ model.” *The Bethe Ansatz* online reference (2024). [Source](https://integrability.org/a_xxz.html).
+40. M. P. Strzys, E.-M. Graefe and H. J. Korsch, “Kicked Bose–Hubbard systems and kicked tops—destruction and stimulation of tunneling,” *New J. Phys.* **10** (2008), 013024. [DOI](https://doi.org/10.1088/1367-2630/10/1/013024).
+41. C. Khripkov, D. Cohen and A. Vardi, “Coherence dynamics of kicked Bose-Hubbard dimers: Interferometric signatures of chaos,” *Phys. Rev. E* **87** (2013), 012910. [DOI](https://doi.org/10.1103/PhysRevE.87.012910).
+42. C. Liang, Y. Zhang and S. Chen, “Statistical and dynamical aspects of quantum chaos in a kicked Bose-Hubbard dimer,” *Phys. Rev. A* **109** (2024), 033316. [DOI](https://doi.org/10.1103/PhysRevA.109.033316).
+43. E. T. Jaynes and F. W. Cummings, “Comparison of quantum and semiclassical radiation theories with application to the beam maser,” *Proc. IEEE* **51** (1963), 89–109. [DOI](https://doi.org/10.1109/PROC.1963.1664).
+44. J. T. Chalker and P. D. Coddington, “Percolation, quantum tunnelling and the integer Hall effect,” *J. Phys. C: Solid State Phys.* **21** (1988), 2665–2679. [DOI](https://doi.org/10.1088/0022-3719/21/14/008).
+45. C.-M. Ho and J. T. Chalker, “Models for the integer quantum Hall effect: The network model, the Dirac equation, and a tight-binding Hamiltonian,” *Phys. Rev. B* **54** (1996), 8708–8713. [DOI](https://doi.org/10.1103/PhysRevB.54.8708).
+46. A. Joye, “Unitary and open scattering quantum walks on graphs,” *Rev. Math. Phys.* (2026), 2650005. [DOI](https://doi.org/10.1142/S0129055X26500054); [arXiv](https://arxiv.org/abs/2409.08428) (see §3.1, Eq. (3.3)).

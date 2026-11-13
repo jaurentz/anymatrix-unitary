@@ -4,7 +4,7 @@ A MATLAB collection of finite **unitary and orthogonal test matrices**, designed
 an external group for [Anymatrix](https://github.com/north-numerical-computing/anymatrix).
 The repository is organized around reproducible mathematical constructions,
 known spectral information, and executable regression tests. It contains
-34 generators; additional benchmark families are under development.
+37 generators; additional benchmark families are under development.
 
 **Status:** development collection with MATLAB-only tests. Automated MATLAB
 regression and Anymatrix integration tests run on GitHub Actions after every
@@ -41,7 +41,7 @@ assertSuccess(results)
 
 ## Matrix generator interfaces
 
-The collection currently has **34 public generators**. Each has a complete
+The collection currently has **37 public generators**. Each has a complete
 entry with formulas, spectral information, applications, parameter conventions,
 and references in the [matrix encyclopedia](docs/MATRIX_ENCYCLOPEDIA.md).
 The [mathematical notes](docs/MATHEMATICS.md) explain the shared OPUC engine.
@@ -51,12 +51,12 @@ The [mathematical notes](docs/MATHEMATICS.md) explain the shared OPUC engine.
 | Prescribed spectra and circulants | `cycle_shift`, `weighted_shift`, `diagonal_phase`, `phase_circulant`, `cycle_propagator`, `orthogonal_blocks` |
 | OPUC / Szegő / core matrices | `finite_cmv`, `opuc_matrix`, `jacobi_szego`, `bernstein_szego`, `circular_beta`, `circular_jacobi`, `rogers_szego`, `geronimus_cmv`, `periodic_cmv`, `bernstein_szego_finite` |
 | Random and signal-processing | `haar_unitary`, `haar_orthogonal`, `haar_wavelet` |
-| Quantum maps, walks, and algorithms | `split_step_walk`, `dirac_automaton`, `grover_operator`, `quantum_baker`, `kicked_harper`, `kicked_top`, `floquet_ising`, `selfdual_kicked_ising`, `driven_kitaev`, `kicked_rotor`, `dual_unitary_circuit`, `xxz_floquet` |
+| Quantum maps, walks, and algorithms | `split_step_walk`, `dirac_automaton`, `grover_operator`, `quantum_baker`, `kicked_harper`, `kicked_top`, `floquet_ising`, `selfdual_kicked_ising`, `driven_kitaev`, `kicked_rotor`, `dual_unitary_circuit`, `xxz_floquet`, `kicked_bose_hubbard`, `jaynes_cummings`, `chalker_coddington` |
 | Matrix functions and dilations | `cayley_jacobi`, `polar_unitary`, `julia_unitary` |
 
 Generators return **actual finite square matrices**, not matrix-free objects.
 `split_step_walk`, `dirac_automaton`, `driven_kitaev`, and `julia_unitary` return order `2*n`
-for an input physical size `n`. `floquet_ising` and `selfdual_kicked_ising` return order `2^n`, capped at 11 spins for dense assembly. `dual_unitary_circuit` and `xxz_floquet` also return order `2^n`, capped at 10 spins. `driven_kitaev` is a 2n-dimensional BdG operator, not the full Fock-space propagator. `quantum_baker` requires even order;
+for an input physical size `n`. `floquet_ising` and `selfdual_kicked_ising` return order `2^n`, capped at 11 spins for dense assembly. `dual_unitary_circuit` and `xxz_floquet` also return order `2^n`, capped at 10 spins. `driven_kitaev` is a 2n-dimensional BdG operator, not the full Fock-space propagator. `kicked_bose_hubbard` returns order `n+1` for `n` bosons; `jaynes_cummings` returns order `2*(n+1)` for maximum photon number `n`; `chalker_coddington(nx,ny)` returns order `4*nx*ny`. `quantum_baker` requires even order;
 `haar_wavelet` requires power-of-two order. MATLAB R2020b or newer is required.
 
 **Spectral reference data:** exact eigenvalues are provided or described for
@@ -181,6 +181,11 @@ K = driven_kitaev(6,struct('mu1',0,'mu2',2.5));
 R = kicked_rotor(48,5);
 D = dual_unitary_circuit(6,2,.34,[.37,-.61,.29,.83]);
 X = xxz_floquet(6,.6,pi/3);
+
+% Additional quantum dimer, cavity QED, and quantum Hall network matrices.
+BH = kicked_bose_hubbard(12,1,.4,1,1,.17);
+JC = jaynes_cummings(8,.8,.35,1,1);
+CC = chalker_coddington(4,3,pi/4,2*pi*rand(48,1));
 
 % Nonuniform Szego probability measure and a CMV realization.
 mu = szego_bernstein_measure(0.3+0.2i);
