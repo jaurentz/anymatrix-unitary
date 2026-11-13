@@ -1,4 +1,4 @@
-function [U,alpha] = js_measure_to_matrix(mu,n,representation,beta,twists)
+function [U,alpha] = js_measure_to_matrix(mu,n,representation,beta,twists,output)
 %JS_MEASURE_TO_MATRIX Generic measure -> Verblunsky -> finite core matrix.
 %   [U,ALPHA]=JS_MEASURE_TO_MATRIX(MU,N,REP,BETA,TWISTS)
 %   takes an OPUC probability measure descriptor, generates the first
@@ -9,5 +9,6 @@ if nargin<4 || isempty(beta), beta=1; end
 if nargin<5, twists=[]; end
 validateattributes(n,{'numeric'},{'scalar','integer','positive','finite'});
 alpha=js_verblunsky(mu,n-1);
-U=js_core_product(alpha,beta,representation,twists);
+if nargin<6,output='matrix';end
+U=js_core_product(alpha,beta,representation,twists,output);
 end

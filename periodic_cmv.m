@@ -1,4 +1,4 @@
-function [U,properties] = periodic_cmv(n,pattern,representation,beta,twists)
+function [U,properties] = periodic_cmv(n,pattern,representation,beta,twists,output)
 %PERIODIC_CMV Periodic real or complex Verblunsky OPUC CMV generator.
 %   Returns a finite N-by-N unitary multiplication matrix using the
 %   measure -> Verblunsky -> terminal phase -> core factorization pipeline.
@@ -13,5 +13,6 @@ if nargin<3 || isempty(representation),representation='cmv';end
 if nargin<4 || isempty(beta),beta=1;end
 if nargin<5,twists=[];end
 mu=szego_periodic_measure(pattern);
-U=szego_matrix(mu,n,representation,beta,twists);
+if nargin<6,output='matrix';end
+U=szego_matrix(mu,n,representation,beta,twists,output);
 end

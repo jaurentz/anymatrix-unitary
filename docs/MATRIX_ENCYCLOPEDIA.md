@@ -478,6 +478,11 @@ Both factors are unitary. At $p=0$ the eigenvalues are
 $\exp(-i\kappa m^2/(2j))$; at $\kappa=0$ they are $\exp(-ipm)$.
 Otherwise the quasienergies vary with torsion and rotation.
 Applications: quantum chaos and dense small-to-medium spectral tests.
+The spin rotation can also be applied without forming a dense matrix by
+choosing final output `'operator'`; the Hermitian-tridiagonal exponential
+action uses the same shared Chebyshev–Bessel kernel as the Bose–Hubbard
+dimer. This is a truncation-controlled numerical action, not a claim that
+an arbitrary spin-$j$ exponential has a closed-form $O(n)$ action.
 **References:** [28, 29].
 
 ### 29. Integrable kicked Ising chain — [`floquet_ising.m`](../floquet_ising.m)

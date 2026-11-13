@@ -1,4 +1,4 @@
-function [U,properties] = chalker_coddington(nx,ny,theta,phases)
+function [U,properties] = chalker_coddington(nx,ny,theta,phases,output)
 %CHALKER_CODDINGTON Sparse finite Chalker-Coddington network on a torus.
 %   U=CHALKER_CODDINGTON(NX,NY,THETA,PHASES) has order 4*NX*NY.
 %   Directed link coordinates are (x,y) on a 2*NX by 2*NY periodic
@@ -15,6 +15,9 @@ function [U,properties] = chalker_coddington(nx,ny,theta,phases)
 %   For independent random link disorder, supply 2*pi*rand(4*NX*NY,1)
 %   after setting the caller's desired RNG state.
 %
+%   OUTPUT='operator' returns an O(N)-storage function handle using
+%   a shared disjoint two-channel scattering action, including its
+%   conjugate transpose. Default OUTPUT='matrix' remains sparse.
 %   U is sparse with at most two nonzeros per row and column. Each
 %   unitary scattering map sends disjoint input channel pairs to disjoint
 %   output channel pairs, followed by diagonal input-link phases.
@@ -46,39 +49,17 @@ if numel(phases)~=N
           'PHASES must be scalar or have 4*NX*NY entries.');
 end
 phases=phases(:);
-A=[cos(theta(1)),sin(theta(1));-sin(theta(1)),cos(theta(1))];
-B=[sin(theta(2)),cos(theta(2));-cos(theta(2)),sin(theta(2))];
-X=2*nx;Y=2*ny;
-id=@(x,y) 1+mod(x,X)+X*mod(y,Y);
-row=zeros(2*N,1);
-col=zeros(2*N,1);
-val=zeros(2*N,1);
-pos=0;
-for j=0:nx-1
-    for k=0:ny-1
-        % Even node S_(2j,2k): columns (2j,2k),(2j+1,2k-1);
-        % rows (2j+1,2k),(2j,2k-1), in the port order of eq. (3.3).
-        c1=id(2*j,2*k);
-        c2=id(2*j+1,2*k-1);
-        r1=id(2*j+1,2*k);
-        r2=id(2*j,2*k-1);
-        q=pos+(1:4);
-        row(q)=[r1;r2;r1;r2];
-        col(q)=[c1;c1;c2;c2];
-        val(q)=A(:);
-        pos=pos+4;
-        % Odd node S_(2j+1,2k): columns (2j+2,2k+1),(2j+1,2k);
-        % rows (2j+1,2k+1),(2j+2,2k).
-        c1=id(2*j+2,2*k+1);
-        c2=id(2*j+1,2*k);
-        r1=id(2*j+1,2*k+1);
-        r2=id(2*j+2,2*k);
-        q=pos+(1:4);
-        row(q)=[r1;r2;r1;r2];
-        col(q)=[c1;c1;c2;c2];
-        val(q)=B(:);
-        pos=pos+4;
-    end
+if nargin<5,output='matrix';end
+implicit=um_is_operator(output);
+[inputs,outputs,gates]=um_cc_geometry(nx,ny,theta);
+phase=exp(1i*phases);
+if implicit
+    U=@(X,flag)um_scattering_apply(X,flag,inputs,outputs,gates,phase);
+    return
 end
-U=sparse(row,col,val.*exp(1i*phases(col)),N,N);
+% Assemble exactly the same two-channel network as the implicit action.
+rows=[outputs(1,:);outputs(2,:);outputs(1,:);outputs(2,:)];
+cols=[inputs(1,:);inputs(1,:);inputs(2,:);inputs(2,:)];
+values=gates.*phase(cols);
+U=sparse(rows(:),cols(:),values(:),N,N);
 end

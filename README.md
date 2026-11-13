@@ -54,15 +54,33 @@ The [mathematical notes](docs/MATHEMATICS.md) explain the shared OPUC engine.
 | Quantum maps, walks, and algorithms | `split_step_walk`, `dirac_automaton`, `grover_operator`, `quantum_baker`, `kicked_harper`, `kicked_top`, `floquet_ising`, `selfdual_kicked_ising`, `driven_kitaev`, `kicked_rotor`, `dual_unitary_circuit`, `xxz_floquet`, `kicked_bose_hubbard`, `jaynes_cummings`, `chalker_coddington` |
 | Matrix functions and dilations | `cayley_jacobi`, `polar_unitary`, `julia_unitary` |
 
-Generators return **actual finite square matrices**, not matrix-free objects.
+Generators return **actual finite square matrices by default**. Selected
+generators also accept `'operator'` as their final argument and return a
+function handle supporting forward and conjugate-transpose actions, multiple
+right-hand sides, and dimension queries. See [matrix-free documentation](docs/MATRIX_FREE.md).
 `split_step_walk`, `dirac_automaton`, `driven_kitaev`, and `julia_unitary` return order `2*n`
-for an input physical size `n`. `floquet_ising` and `selfdual_kicked_ising` return order `2^n`, capped at 11 spins for dense assembly. `dual_unitary_circuit` and `xxz_floquet` also return order `2^n`, capped at 10 spins. `driven_kitaev` is a 2n-dimensional BdG operator, not the full Fock-space propagator. `kicked_bose_hubbard` returns order `n+1` for `n` bosons; `jaynes_cummings` returns order `2*(n+1)` for maximum photon number `n`; `chalker_coddington(nx,ny)` returns order `4*nx*ny`. `quantum_baker` requires even order;
+for an input physical size `n`. `floquet_ising` and `selfdual_kicked_ising` return order `2^n`, capped at 11 spins for dense assembly. `dual_unitary_circuit` and `xxz_floquet` also return order `2^n`, capped at 10 spins. `driven_kitaev` is a 2n-dimensional BdG operator, not the full Fock-space propagator. `kicked_bose_hubbard(n)` has order `n+1` for n bosons; `jaynes_cummings(n)` has order `2*(n+1)` for a photon cutoff n; `chalker_coddington(nx,ny)` has order `4*nx*ny`. `quantum_baker` requires even order;
 `haar_wavelet` requires power-of-two order. MATLAB R2020b or newer is required.
 
 **Spectral reference data:** exact eigenvalues are provided or described for
 several families; other families have ensemble laws, limiting densities, or
 no universal law. The encyclopedia distinguishes these cases. Do not infer a
 limiting eigenphase distribution from unitarity alone.
+
+## Optional matrix-free operators
+
+```matlab
+U = anymatrix('unitary/phase_circulant',4096,linspace(-2,2,4096),'operator');
+X = randn(4096,2);
+Y = U(X,'notransp');  % U*X
+Z = U(Y,'transp');    % U'*Y (conjugate transpose)
+A = U(eye(4096),'notransp'); % only if the explicit matrix fits memory
+```
+
+The group uses one shared core kernel for the Verblunsky-based models, one
+FFT kernel for Fourier-factor models, and shared local-gate kernels for
+many-body circuits, and the kicked top, Bose-Hubbard dimer, Jaynes-Cummings blocks and Chalker-Coddington network. Default numeric output and legacy argument ordering
+remain unchanged. See [operator convention and coverage](docs/MATRIX_FREE.md).
 
 ## Measure-first Jacobi--Szegő construction
 
@@ -182,9 +200,10 @@ R = kicked_rotor(48,5);
 D = dual_unitary_circuit(6,2,.34,[.37,-.61,.29,.83]);
 X = xxz_floquet(6,.6,pi/3);
 
-% Additional quantum dimer, cavity QED, and quantum Hall network matrices.
+% Kicked bosonic dimer and cavity-QED/quantum-network matrices.
 BH = kicked_bose_hubbard(12,1,.4,1,1,.17);
-JC = jaynes_cummings(8,.8,.35,1,1);
+BHop = kicked_bose_hubbard(100,1,.4,1,1,.17,'operator');
+JC = jaynes_cummings(12,.8,.35,1,1);
 CC = chalker_coddington(4,3,pi/4,2*pi*rand(48,1));
 
 % Nonuniform Szego probability measure and a CMV realization.
