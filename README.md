@@ -54,7 +54,10 @@ The [mathematical notes](docs/MATHEMATICS.md) explain the shared OPUC engine.
 | Quantum maps, walks, and algorithms | `split_step_walk`, `dirac_automaton`, `grover_operator`, `quantum_baker`, `kicked_harper`, `kicked_top`, `floquet_ising`, `selfdual_kicked_ising`, `driven_kitaev`, `kicked_rotor`, `dual_unitary_circuit`, `xxz_floquet` |
 | Matrix functions and dilations | `cayley_jacobi`, `polar_unitary`, `julia_unitary` |
 
-Generators return **actual finite square matrices**, not matrix-free objects.
+Generators return **actual finite square matrices by default**. Selected
+generators also accept `'operator'` as their final argument and return a
+function handle supporting forward and conjugate-transpose actions, multiple
+right-hand sides, and dimension queries. See [matrix-free documentation](docs/MATRIX_FREE.md).
 `split_step_walk`, `dirac_automaton`, `driven_kitaev`, and `julia_unitary` return order `2*n`
 for an input physical size `n`. `floquet_ising` and `selfdual_kicked_ising` return order `2^n`, capped at 11 spins for dense assembly. `dual_unitary_circuit` and `xxz_floquet` also return order `2^n`, capped at 10 spins. `driven_kitaev` is a 2n-dimensional BdG operator, not the full Fock-space propagator. `quantum_baker` requires even order;
 `haar_wavelet` requires power-of-two order. MATLAB R2020b or newer is required.
@@ -63,6 +66,21 @@ for an input physical size `n`. `floquet_ising` and `selfdual_kicked_ising` retu
 several families; other families have ensemble laws, limiting densities, or
 no universal law. The encyclopedia distinguishes these cases. Do not infer a
 limiting eigenphase distribution from unitarity alone.
+
+## Optional matrix-free operators
+
+```matlab
+U = anymatrix('unitary/phase_circulant',4096,linspace(-2,2,4096),'operator');
+X = randn(4096,2);
+Y = U(X,'notransp');  % U*X
+Z = U(Y,'transp');    % U'*Y (conjugate transpose)
+A = U(eye(4096),'notransp'); % only if the explicit matrix fits memory
+```
+
+The group uses one shared core kernel for the Verblunsky-based models, one
+FFT kernel for Fourier-factor models, and shared local-gate kernels for
+many-body circuits. Default numeric output and legacy argument ordering
+remain unchanged. See [operator convention and coverage](docs/MATRIX_FREE.md).
 
 ## Measure-first Jacobi--Szegő construction
 
