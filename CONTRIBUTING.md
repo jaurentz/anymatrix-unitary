@@ -41,7 +41,7 @@ OPUC family, place explicit weights or coefficient formulas in the common
 measure/Verblunsky layer and reuse the multiplication representation code.
 
 Documentation must be self-contained and use GitHub-supported `$...$` for
-inline and `$$...$$` for display mathematics; do not refer to unpublished
+inline mathematics and fenced `math` blocks for display mathematics; do not refer to unpublished
 working notes or external private project files.
 
 GitHub's mathematics renderer restricts some otherwise valid LaTeX macros.
@@ -50,3 +50,15 @@ public Markdown. For named operators, use, for example,
 `\mathop{\mathrm{diag}}` instead of `\operatorname{diag}`. The
 `test_catalog` MATLAB suite checks these restrictions; inspect the rendered
 GitHub preview as well as the Markdown source.
+
+Use fenced GitHub display mathematics, for example:
+
+````markdown
+```math
+\alpha_0=0
+```
+````
+
+Bare `$` or `$$` lines are not supported display delimiters.
+Run `test_math_markup` in the MATLAB test suite and inspect the actual
+rendered GitHub document before merging changes to mathematical notation.

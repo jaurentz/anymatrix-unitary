@@ -19,37 +19,37 @@ For an orthonormal real-line polynomial basis `p_k` on `[-2,2]`, write
 The direct Geronimus formulas, with `alpha_(-1)=-1` and zero contribution from
 any `alpha_(-2)` term in the `k=0` identity, are
 
-$$
+```math
  a_{k+1}^2=(1-\alpha_{2k-1})(1-\alpha_{2k}^2)
            (1+\alpha_{2k+1}),
-$$
-$$
+```
+```math
  b_{k+1}=(1-\alpha_{2k-1})\alpha_{2k}
   -(1+\alpha_{2k-1})\alpha_{2k-2}.
-$$
+```
 
 The inverse endpoint Riccati algorithm sets `u_0=2-b_1`, `v_0=2+b_1` and
 for `k>=1`
 
-$$
+```math
  u_k=2-b_{k+1}-a_k^2/u_{k-1},\quad
  v_k=2+b_{k+1}-a_k^2/v_{k-1}.
-$$
+```
 
 Then
 
-$$
+```math
  \alpha_{2k}=(v_k-u_k)/(v_k+u_k),\qquad
  \alpha_{2k-1}=1-(u_k+v_k)/2 \quad(k\ge1).
-$$
+```
 
 These use the `x=2*cos(theta)` normalization, so factors of 2 must not be
 silently imported from formulas written for Jacobi measures on `[-1,1]`.
 The initial positive Jacobi off-diagonal is
 
-$$
+```math
  a_1^2=\frac{16(a+1)(b+1)}{(a+b+2)^2(a+b+3)}.
-$$
+```
 
 The code treats this term separately to avoid a removable singularity when
 `a+b=-1`. Both recurrence paths are useful for regression but the inverse
@@ -93,11 +93,11 @@ both eigenvalues and the first component of normalized eigenvectors.
 
 For a measure on the unit circle, the design principle is
 
-$$
+```math
 \text{probability measure}\;\longrightarrow\;
 (\alpha_0,\alpha_1,\ldots)\;\longrightarrow\;
 (\alpha_0,\ldots,\alpha_{n-2};\beta)\;\longrightarrow\;U_n.
-$$
+```
 
 The interior coefficients satisfy $|\alpha_j|<1$; the boundary closure
 $\beta\in\mathbb T$ is independent of the infinite measure. With the
@@ -116,26 +116,26 @@ matrix. The historically named matrix generators are thin adapters.
 
 For $a,b>-1$, let the real-line probability measure be
 
-$$
+```math
  d\nu(t)=\frac{(1-t)^a(1+t)^b}{2^{a+b+1}B(a+1,b+1)}\,dt,
  \qquad -1<t<1.
-$$
+```
 
 Under $t=\cos\theta$, its conjugation-symmetric circle lift has density
 (with respect to $d\theta$)
 
-$$
+```math
  \frac{d\mu}{d\theta}=
  \frac{(1-\cos\theta)^{a+1/2}(1+\cos\theta)^{b+1/2}}
  {2^{a+b+2}B(a+1,b+1)}.
-$$
+```
 
 The explicit Verblunsky coefficients are
 
-$$
+```math
  \alpha_{2k}=\frac{b-a}{2k+a+b+2},\qquad
  \alpha_{2k+1}=-\frac{a+b+1}{2k+a+b+3}.
-$$
+```
 
 The Jacobi real-line recurrence uses the rescaled variable
 $x=2t=z+z^{-1}$. This accounts for the factor-of-two differences between
@@ -147,17 +147,17 @@ relations above.
 For a complex parameter $a\in\mathbb D$, the Poisson/Szegő probability
 measure in our convention has density
 
-$$
+```math
  d\mu_a(e^{i\theta})=\frac{1-|a|^2}
- {2\pi|e^{i\theta}-\overline a|^2}\,d\theta.
-$$
+ {2\pi|e^{i\theta}-\overline{a}|^2}\,d\theta.
+```
 
 Its moments and Verblunsky sequence are known explicitly:
 
-$$
- \int z^k\,d\mu_a(z)=\overline a^{\,k}\quad(k\geq0),
+```math
+ \int z^k\,d\mu_a(z)=\overline{a}^{\,k}\quad(k\geq0),
  \qquad \alpha_0=a,\quad \alpha_j=0\;(j\geq1).
-$$
+```
 
 This is the first family added beyond Jacobi to the measure-first dispatcher,
 `js_verblunsky`. Its finite CMV, Hessenberg, inverse Hessenberg and twisted
@@ -170,10 +170,10 @@ measure, rather than starting from one predetermined continuous weight.
 For matrix order $n$ and Dyson parameter $\beta>0$, independent interior
 coefficients have uniform argument and
 
-$$
+```math
  |\alpha_j|^2\sim\mathop{\mathrm{Beta}}\!\left(
- 1,\tfrac{\beta(n-j-1)}2\right),\qquad j=0,\ldots,n-2.
-$$
+ 1,\frac{\beta(n-j-1)}2\right),\qquad j=0,\ldots,n-2.
+```
 
 The terminal $\beta_{\mathrm{terminal}}$ is uniform on $\mathbb T$ (not
 the positive Dyson parameter). A sparse CMV realization then has precisely
@@ -209,17 +209,17 @@ realized as CMV, Hessenberg, inverse Hessenberg, or twisted core products.
 
 For a > -1/2 and eta real, define the positive measure on (0,2*pi) by
 
-$$
+```math
 d\mu(\theta)=Z^{-1} e^{(\pi-\theta)\eta}
  (4\sin^2(\theta/2))^a\,d\theta.
-$$
+```
 
 For b=a+i*eta the complex Verblunsky sequence is
 
-$$
-\alpha_k=-\frac{(b)_{k+1}}{(1+\overline b)_{k+1}},
+```math
+\alpha_k=-\frac{(b)_{k+1}}{(1+\overline{b})_{k+1}},
 \qquad k\geq 0.
-$$
+```
 
 The code evaluates this formula by successive ratios to avoid large
 factorials and normalizes the positive weight by numerical quadrature.
@@ -232,9 +232,9 @@ Nikeghbali, Rouault (2009), doi:10.1093/imrn/rnp092.
 
 For 0<q<1, let s=-log(q) and wrap N(0,s) onto the circle. Then
 
-$$
+```math
 \alpha_k=(-1)^k q^{(k+1)/2},\qquad k\geq 0.
-$$
+```
 
 The density is evaluated as a wrapped normal sum. Its exact moments
 are integral exp(i*k*theta) dmu = q^(k^2/2), for integer k.
@@ -256,11 +256,11 @@ infinite CMV operators. Reference: Simon (2005), Parts 1--2.
 For alpha_0,...,alpha_(m-1) in the disk and alpha_k=0 for k>=m,
 write Phi_m^* for the reversed monic Szego polynomial. Then
 
-$$
+```math
 \frac{d\mu}{d\theta} =
 \frac{\prod_{j=0}^{m-1}(1-|\alpha_j|^2)}
  {2\pi|\Phi_m^*(e^{i\theta})|^2}.
-$$
+```
 
 The code evaluates the reversed polynomial through the Szego recurrence,
 so it accepts arbitrary finite complex coefficients and includes the

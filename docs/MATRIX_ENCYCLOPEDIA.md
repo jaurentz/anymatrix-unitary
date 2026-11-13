@@ -16,16 +16,16 @@ part of the public repository and is intended to stand alone.
 For a unitary $U\in\mathbb C^{n\times n}$, eigenvalues are written
 $z_j=e^{i\theta_j}$. The **empirical spectral measure** and its moments are
 
-$$
+```math
 \mu_U^{\mathrm{trace}}=\frac1n\sum_{j=1}^n\delta_{z_j},\qquad
 m_k(U)=\frac1n\mathop{\mathrm{tr}}(U^k).
-$$
+```
 
 For a unit vector $v$, the different **vector spectral measure** is
 
-$$
+```math
 \mu_{U,v}=\sum_{j=1}^n |q_j^*v|^2\delta_{z_j},
-$$
+```
 
 where $q_j$ are normalized eigenvectors (counting multiplicities with
 appropriate spectral projections). For finite OPUC quadrature matrices,
@@ -48,10 +48,10 @@ $2n$ for a physical system of size $n$; such cases are explicitly marked.
 **Order:** $n$. **Structure:** real, orthogonal, sparse permutation,
 circulant. **Spectrum:** precisely the $n$th roots of unity.
 
-$$
-P_ne_j=e_{j+1\pmod n},\qquad P_n^n=I,\qquad
-\frac1n\mathop{\mathrm{tr}}(P_n^k)=\mathbf1_{n\mid k}.
-$$
+```math
+P_ne_j=e_{j+1}\quad(e_{n+1}=e_1),\qquad P_n^n=I,\qquad
+\frac1n\mathop{\mathrm{tr}}(P_n^k)=\mathbf{1}_{n\mid k}.
+```
 
 Useful as an exact uniform-phase reference and to detect phase aliasing in
 Fourier moment methods. It is a single-cycle permutation rather than a
@@ -62,10 +62,10 @@ generic permutation with multiple cycle lengths. **Reference:** [1].
 **Order:** $n$. **Structure:** sparse monomial unitary; becomes a real signed
 permutation only for phases $0$ or $\pi$. For real weights $\phi_j$,
 
-$$
-Ue_j=e^{i\phi_j}e_{j+1\pmod n},\qquad
+```math
+Ue_j=e^{i\phi_j}e_{j+1}\quad(e_{n+1}=e_1),\qquad
 U^n=e^{i\sum_j\phi_j}I.
-$$
+```
 
 Its spectrum comprises the roots of $z^n=e^{i\sum_j\phi_j}$. A useful
 counterexample to the idea that changing the entries of a sparse unitary
@@ -77,9 +77,9 @@ only rotates the perfectly spaced cycle spectrum. **Reference:** [1].
 **Order:** $n$. **Structure:** sparse diagonal unitary. For real phase inputs
 $\theta_j$,
 
-$$
+```math
 D=\mathop{\mathrm{diag}}(e^{i\theta_1},\ldots,e^{i\theta_n}).
-$$
+```
 
 The spectrum, algebraic multiplicities, and trace moments are known exactly.
 Use clustered phases, open gaps, isolated atoms, or an irregular deterministic
@@ -91,9 +91,9 @@ The default gives equally spaced roots of unity. **Reference:** [1].
 **Order:** $n$. **Structure:** dense circulant with FFT-diagonalization.
 For the normalized DFT $F$ and real phases $\theta_j$,
 
-$$
+```math
 U=F^*\mathop{\mathrm{diag}}(e^{i\theta_j})F.
-$$
+```
 
 It has **the same eigenvalues as the diagonal control**, but generally
 nontrivial eigenvectors and dense entries. This pairs well with entrywise or
@@ -105,10 +105,10 @@ Our implementation uses an inverse FFT of the Fourier eigenvalue samples.
 
 **Order:** $n$. **Structure:** dense circulant. Write $H=P_n+P_n^*$; then
 
-$$
+```math
 U(t)=e^{-itH},\quad
 z_k=e^{-2it\cos(2\pi k/n)},\quad k=0,\ldots,n-1.
-$$
+```
 
 The infinite-chain energy law is arcsine on $[-2,2]$, and its time-scaled
 pushforward onto the circle produces a known nonuniform phase law. Large $|t|$
@@ -121,11 +121,11 @@ The $n=1,2$ cases retain the literal $H=P+P^*$ definition. **Reference:** [2].
 **Order:** $n$. **Structure:** sparse real block diagonal, orthogonal and
 normal. Each $2\times2$ block is
 
-$$
+```math
 R(\theta)=\begin{pmatrix}\cos\theta&-\sin\theta\\
 \sin\theta&\cos\theta\end{pmatrix},\qquad
 \sigma(R)=\{e^{i\theta},e^{-i\theta}\}.
-$$
+```
 
 An odd-dimensional matrix also has a chosen $+1$ or $-1$ terminal block.
 Prescribe clusters, repeated conjugate pairs, determinant parity and eigenvalue
@@ -140,13 +140,13 @@ algorithms and conjugation-symmetric phase density. **References:** [3, 4].
 $\alpha_0,\ldots,\alpha_{n-2}$ in the open unit disk and a terminal
 $\beta\in\mathbb T$, use the local core
 
-$$
+```math
 \Theta(\alpha)=
-\begin{pmatrix}\overline\alpha&\sqrt{1-|\alpha|^2}\\
+\begin{pmatrix}\overline{\alpha}&\sqrt{1-|\alpha|^2}\\
 \sqrt{1-|\alpha|^2}&-\alpha\end{pmatrix}
-$$
+```
 
-and alternating even/odd block-diagonal factors $\mathcal C=\mathcal L\mathcal M$.
+and alternating even/odd block-diagonal factors $\mathcal{C}=\mathcal{L}\mathcal{M}$.
 The finite matrix closes with the terminal boundary phase. Its eigenvalues
 are the zeros of a paraorthogonal polynomial on the circle. Real interior
 coefficients and a real closure produce an orthogonal CMV matrix.
@@ -173,10 +173,10 @@ comparison of sparse and dense representations. **References:** [8–10].
 $(1-t)^a(1+t)^b\,dt$ on $[-1,1]$, $a,b>-1$, lifted by $t=\cos\theta$
 into a conjugation-invariant circle measure. The explicit coefficients are
 
-$$
+```math
 \alpha_{2k}=\frac{b-a}{2k+a+b+2},\qquad
 \alpha_{2k+1}=-\frac{a+b+1}{2k+a+b+3}.
-$$
+```
 
 Take the first $n-1$ and append a unit-modulus closing parameter. The
 same measure can produce Hessenberg, inverse Hessenberg, CMV or twisted
@@ -191,14 +191,14 @@ the original continuous measure. **References:** [5, 7, 11, 12].
 measure on the unit circle, with parameter $|a|<1$ and density (with respect
 to $d\theta$)
 
-$$
+```math
 \frac{d\mu}{d\theta}=
-\frac{1-|a|^2}{2\pi|e^{i\theta}-\overline a|^2}.
-$$
+\frac{1-|a|^2}{2\pi|e^{i\theta}-\overline{a}|^2}.
+```
 
 The coefficients in the stated OPUC convention are $\alpha_0=a$ and
 $\alpha_k=0$ for $k\geq1$, giving the exact moment
-$\int z^k\,d\mu(z)=\overline a^{\,k}$ for $k\geq0$.
+$\int z^k\,d\mu(z)=\overline{a}^{\,k}$ for $k\geq0$.
 This provides an analytically transparent **nonuniform** weight with
 rapidly terminating Verblunsky data, a useful dual check of the measure
 and multiplication matrix. All four existing representation choices work.
@@ -210,10 +210,10 @@ and multiplication matrix. All four existing representation choices work.
 The Killip–Nenciu construction chooses independent interior coefficients
 with uniform angle and
 
-$$
+```math
 |\alpha_{j}|^2\sim\mathop{\mathrm{Beta}}\!\left(
 1,\frac{\beta(n-j-1)}{2}\right),\qquad 0\leq j\leq n-2,
-$$
+```
 
 and an independent uniform terminal phase. The eigenangles have joint
 density proportional to $\prod_{j<k}|e^{i\theta_j}-e^{i\theta_k}|^\beta$.
@@ -258,9 +258,9 @@ matrix are not the wavelet frequencies.** **Reference:** [15].
 **Order:** $2n$ for $n$ sites. **Structure:** sparse, real orthogonal in the
 selected rotation-coin convention. The periodic one-step operator is
 
-$$
+```math
 U=S_-C(\theta_2)S_+C(\theta_1).
-$$
+```
 
 It has a two-state internal coin and periodic conditional shifts; the
 basis alternates coin states site by site. Parameters change the two
@@ -273,21 +273,21 @@ interface construction**. **Reference:** [16].
 **Order:** $2n$ for $n$ sites. **Structure:** sparse complex unitary.
 With mass $m\in[0,1]$, $\nu=\sqrt{1-m^2}$ and periodic cyclic shift $P_n$,
 
-$$
+```math
 U=\begin{pmatrix}\nu P_n&-imI\\-imI&\nu P_n^*\end{pmatrix},\qquad
 \cos\omega_k=\nu\cos(2\pi k/n).
-$$
+```
 
 The exact eigenvalues are $e^{\pm i\omega_k}$. For $0<m<1$, the large-$n$
 phase density has gapped support and integrable band-edge singularities:
 
-$$
+```math
 \rho(\theta)=\begin{cases}
-\dfrac{|\sin\theta|}{2\pi\sqrt{\nu^2-\cos^2\theta}},
+\frac{|\sin\theta|}{2\pi\sqrt{\nu^2-\cos^2\theta}},
   &|\cos\theta|<\nu,\\
 0,&\text{otherwise}.
 \end{cases}
-$$
+```
 
 Thus this is a particularly useful nonuniform, exact-density benchmark.
 At $m=0$ it reduces to two oppositely directed shifts; at $m=1$ its
@@ -299,10 +299,10 @@ spectrum is concentrated at $\pm i$. **References:** [17, 18].
 reflections. Mark the first $M$ basis states, $1\leq M<n$, and let
 $|s\rangle=n^{-1/2}(1,\ldots,1)^T$. Then
 
-$$
+```math
 G=(2|s\rangle\langle s|-I)(I-2\Pi_M),\qquad
 \sin^2\alpha=M/n.
-$$
+```
 
 The exact spectrum is $e^{\pm2i\alpha}$ (one each), $+1$ with multiplicity
 $M-1$, and $-1$ with multiplicity $n-M-1$. Two nontrivial eigenphases
@@ -314,9 +314,9 @@ miss them. **Reference:** [19].
 **Order:** even $n$. **Structure:** dense, product of Fourier transforms.
 The Balazs–Voros quantization is
 
-$$
+```math
 B_n=F_n^*\mathop{\mathrm{diag}}(F_{n/2},F_{n/2}).
-$$
+```
 
 The optional Saraceno variant uses half-integer/antiperiodic Fourier phases
 and a different parity-symmetry convention. Eigenphase statistics are
@@ -329,9 +329,9 @@ four-atom eigenvalue spectrum of $F_n$**. **References:** [20, 21].
 mathematical action. With $D_x(K)$ and $D_p(L)$ defined by diagonal
 phases $e^{-iK\cos(2\pi j/n)}$ and $e^{-iL\cos(2\pi j/n)}$,
 
-$$
+```math
 U=D_p(L)F_n^*D_x(K)F_n.
-$$
+```
 
 This fixed finite-torus convention is exactly unitary. Quasienergy
 statistics, clustering and band structure depend on $K,L,n$ and the torus
@@ -347,10 +347,10 @@ not be transferred indiscriminately to every finite test matrix.
 symmetric tridiagonal Jacobi matrix $J_n$ with Jacobi weight parameters
 $a,b>-1$. For scale $t>0$,
 
-$$
+```math
 U=(J_n-itI)(J_n+itI)^{-1},\qquad
 \lambda_U=\frac{x-it}{x+it}\quad(x\in\sigma(J_n)).
-$$
+```
 
 This is an explicit Möbius pushforward of a classical real-line spectrum,
 providing controlled phase clustering near $+1$ and $-1$ as the scale
@@ -385,7 +385,7 @@ D_T & -T^*
 
 This gives a finite unitary containing the nonnormal contraction $T$ in
 its leading block. **It is not automatically a unitary power dilation**:
-compressing arbitrary powers of $\mathcal U(T)$ need not yield $T^k$.
+compressing arbitrary powers of $\mathcal{U}(T)$ need not yield $T^k$.
 Useful for conservative system matrices, passive control and dilation theory.
 **Reference:** [25].
 
@@ -399,9 +399,9 @@ For real $a>-1/2$ and $\eta\in\mathbb R$, the positive circle weight is
 proportional to $e^{(\pi-\theta)\eta}|1-e^{i\theta}|^{2a}$ for
 $0<\theta<2\pi$. With $b=a+i\eta$, the Verblunsky sequence is
 
-$
-\alpha_k=-\frac{(b)_{k+1}}{(1+\overline b)_{k+1}}.
-$
+```math
+\alpha_k=-\frac{(b)_{k+1}}{(1+\overline{b})_{k+1}}.
+```
 
 At $\eta=0$ all coefficients are real; otherwise they are generally
 complex. Supports an explicitly prescribed nonuniform *vector* measure,
@@ -415,9 +415,9 @@ The finite boundary $\beta$ is independent of the measure.
 real. For $0<q<1$, the circle measure is a wrapped Gaussian with variance
 $-\log q$, and its Verblunsky coefficients satisfy
 
-$
+```math
 \alpha_k=(-1)^k q^{(k+1)/2}.
-$
+```
 
 Its positive circular density is smooth and the $k$th Fourier moment is
 $q^{k^2/2}$. This is a nontrivial parameter-dependent real-coefficient
@@ -450,11 +450,11 @@ strictly inside the disk and set $\alpha_k=0$ for $k\ge m$.
 With the associated reversed polynomial $\Phi_m^*$, the positive
 weight is
 
-$
+```math
 \frac{d\mu}{d\theta}=
 \frac{\prod_{j=0}^{m-1}(1-|a_j|^2)}
 {2\pi|\Phi_m^*(e^{i\theta})|^2}.
-$
+```
 
 The previous one-coefficient Poisson family is a special case.
 These rational weights give arbitrarily chosen real or complex
@@ -469,9 +469,9 @@ Schur parameters with an exact and evaluable cyclic-vector density.
 dense spin rotation times diagonal phase twist. In the $J_z$ basis
 $m=j,j-1,\ldots,-j$, define $J_y=(J_+-J_+^*)/(2i)$ and
 
-$
+```math
 U_F=\exp\left(-\frac{i\kappa}{2j}J_z^2\right)\exp(-ipJ_y).
-$
+```
 
 The nonzero superdiagonal of $J_+$ is $\sqrt{k(n-k)}$ for $1\le k<n$.
 Both factors are unitary. At $p=0$ the eigenvalues are
@@ -485,10 +485,10 @@ Applications: quantum chaos and dense small-to-medium spectral tests.
 **Order:** $2^n$ for $n$ spins. **Structure:** a diagonal Ising layer
 followed by a Kronecker product of single-spin rotations:
 
-$
+```math
 U_F=\exp\left(-iJ\sum_rZ_rZ_{r+1}\right)
     \exp\left(-ih\sum_{r=1}^nX_r\right).
-$
+```
 
 The bond sum includes $(n,1)$ for periodic boundaries and excludes it
 for open boundaries. The second layer is
@@ -506,11 +506,11 @@ capped at $n=11$ sites. **References:** [30, 31].
 **Order:** $2^n$ for $n\ge3$ periodic spins, capped at $n=11$
 for explicit dense storage. With real longitudinal fields $b_r$,
 
-$
+```math
 U_F=\exp\left(-\frac{i\pi}{4}\sum_rX_r\right)
     \exp\left[-\frac{i\pi}{4}
       \left(\sum_rZ_rZ_{r+1}+\sum_rb_rZ_r\right)\right].
-$
+```
 
 The first factor is a tensor product of $2\times2$ unitary kicks;
 the second is diagonal. For zero longitudinal fields, the two layers
@@ -530,13 +530,13 @@ $(c_1,\ldots,c_n,c_1^\dagger,\ldots,c_n^\dagger)$;
 **not** the $2^n$-dimensional Fock-space propagator.
 Let
 
-$
+```math
 H_{\mathrm{BdG}}(\mu)=
 \begin{pmatrix}h(\mu)&\Delta\\ \Delta^T&-h(\mu)^T\end{pmatrix},
 \qquad
 U_F=e^{-i\tau_2H_{\mathrm{BdG}}(\mu_2)}
     e^{-i\tau_1H_{\mathrm{BdG}}(\mu_1)}.
-$
+```
 
 Here $h_{rr}=-\mu$, nearest-neighbor $h_{r,r+1}=-t$,
 $\Delta_{r,r+1}=\delta$ and $\Delta_{r+1,r}=-\delta$;
