@@ -8,7 +8,7 @@ root=fileparts(fileparts(mfilename('fullpath')));
 raw=fileread(fullfile(root,'metadata','catalog.json'));
 meta=jsondecode(raw);
 entries=meta.matrix_families;
-verifyEqual(testCase,numel(entries),37);
+verifyEqual(testCase,numel(entries),50);
 ids={entries.id};
 verifyEqual(testCase,numel(unique(ids)),numel(ids));
 encyclopedia=fileread(fullfile(root,'docs','MATRIX_ENCYCLOPEDIA.md'));
@@ -34,6 +34,18 @@ for k=1:numel(entries)
     verifyTrue(testCase,all(ismember(props,recognized)), ...
         sprintf('Unrecognized Anymatrix property for %s',name));
     verifyTrue(testCase,any(strcmp(props,'unitary')));
+    entry=entries(k);
+    verifyTrue(testCase,islogical(entry.matrix_free_supported));
+    if entry.matrix_free_supported
+        kernels=strsplit(char(entry.operator_kernel),' / ');
+        for ik=1:numel(kernels)
+            kernel=strtrim(kernels{ik});
+            verifyTrue(testCase,startsWith(kernel,'um_'), ...
+                sprintf('Invalid matrix-free kernel %s for %s',kernel,name));
+            verifyTrue(testCase,isfile(fullfile(root,[kernel,'.m'])), ...
+                sprintf('Missing matrix-free kernel %s for %s',kernel,name));
+        end
+    end
 end
 end
 

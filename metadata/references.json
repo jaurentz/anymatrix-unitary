@@ -2,7 +2,7 @@
   "schema_version": "1.0.0",
   "updated": "2026-11-13",
   "bibliography": "docs/MATRIX_ENCYCLOPEDIA.md",
-  "notes": "Publication DOIs were checked against Crossref records where registered; arXiv DOI in entry 14 is DataCite-registered and identifies the preprint, not the Notices article. Non-DOI sources use the publisher, archive, or library identifier. No DOI was invented for books, ETNA papers, DLMF pages or online lecture notes lacking a verified registered DOI.",
+  "notes": "Publication DOIs validated against Crossref metadata, arXiv preprint DOI in reference 14 is DataCite registered (not a journal-article DOI), and non-DOI items use stable publisher/library/archival links. The 2021 AFDM conference paper (reference 50) is distinct from the 2022 arXiv article formerly linked.",
   "references": [
     {
       "number": 1,
@@ -360,6 +360,92 @@
       ],
       "permalink": "https://doi.org/10.1142/S0129055X26500054",
       "alternate_permalink": "https://arxiv.org/abs/2409.08428"
+    },
+    {
+      "number": 47,
+      "dois": [
+        "10.1364/JOSA.73.001832"
+      ],
+      "permalink": "https://doi.org/10.1364/JOSA.73.001832",
+      "alternate_permalink": ""
+    },
+    {
+      "number": 48,
+      "dois": [
+        "10.1109/TIT.1972.1054840"
+      ],
+      "permalink": "https://doi.org/10.1109/TIT.1972.1054840",
+      "alternate_permalink": ""
+    },
+    {
+      "number": 49,
+      "dois": [
+        "10.1109/TCOMM.2016.2594792"
+      ],
+      "permalink": "https://doi.org/10.1109/TCOMM.2016.2594792",
+      "alternate_permalink": "https://arxiv.org/abs/1601.06576"
+    },
+    {
+      "number": 50,
+      "dois": [
+        "10.1109/ICCWorkshops50388.2021.9473655"
+      ],
+      "permalink": "https://doi.org/10.1109/ICCWorkshops50388.2021.9473655",
+      "alternate_permalink": "https://arxiv.org/abs/2104.11331"
+    },
+    {
+      "number": 51,
+      "dois": [
+        "10.1109/78.564174"
+      ],
+      "permalink": "https://doi.org/10.1109/78.564174",
+      "alternate_permalink": ""
+    },
+    {
+      "number": 52,
+      "dois": [
+        "10.1109/TSP.2008.925261"
+      ],
+      "permalink": "https://doi.org/10.1109/TSP.2008.925261",
+      "alternate_permalink": "https://users.ece.cmu.edu/~moura/papers/t-sp-aug08-part1--pueschelmoura-ieeexplore.pdf"
+    },
+    {
+      "number": 53,
+      "dois": [
+        "10.1007/978-1-4612-0003-1"
+      ],
+      "permalink": "https://doi.org/10.1007/978-1-4612-0003-1",
+      "alternate_permalink": ""
+    },
+    {
+      "number": 54,
+      "dois": [
+        "10.1016/b978-0-12-373624-6.x5000-0"
+      ],
+      "permalink": "https://doi.org/10.1016/b978-0-12-373624-6.x5000-0",
+      "alternate_permalink": "https://shop.elsevier.com/books/discrete-cosine-and-sine-transforms/britanak/978-0-12-373624-6"
+    },
+    {
+      "number": 55,
+      "dois": [],
+      "permalink": "https://books.google.com/books?id=BvZSAAAAMAAJ",
+      "alternate_permalink": "https://books.google.com/books?id=BvZSAAAAMAAJ"
+    },
+    {
+      "number": 56,
+      "dois": [
+        "10.1002/j.1538-7305.1978.tb02104.x"
+      ],
+      "permalink": "https://doi.org/10.1002/j.1538-7305.1978.tb02104.x",
+      "alternate_permalink": ""
+    },
+    {
+      "number": 57,
+      "dois": [
+        "10.1109/MSP.2012.2235192"
+      ],
+      "permalink": "https://doi.org/10.1109/MSP.2012.2235192",
+      "alternate_permalink": ""
     }
   ]
 }
