@@ -1,4 +1,4 @@
-function [U,properties] = xxz_floquet(n,u,gamma,boundary)
+function [U,properties] = xxz_floquet(n,u,gamma,boundary,output)
 %XXZ_FLOQUET Brickwork Floquet circuit of unitary trigonometric XXZ gates.
 %   Uses the normalized checked six-vertex R-matrix gate G(u,gamma):
 %       G=diag(a,[...],a), a=sinh(u+i*gamma)/rho,
@@ -17,7 +17,7 @@ function [U,properties] = xxz_floquet(n,u,gamma,boundary)
 %   E. Vernier et al., Phys. Rev. Lett. 133 (2024), 050606.
 properties={'square','unitary','normal','complex','parameter-dependent'};
 if nargin==0,U=[];return;end
-validateattributes(n,{'numeric'},{'scalar','integer','>=',2,'<=',10,'finite'});
+validateattributes(n,{'numeric'},{'scalar','integer','>=',2,'<=',20,'finite'});
 if nargin<2 || isempty(u),u=0.6;end
 if nargin<3 || isempty(gamma),gamma=pi/3;end
 if nargin<4 || isempty(boundary)
@@ -32,18 +32,23 @@ end
 if strcmp(boundary,'periodic') && (n<4 || mod(n,2)~=0)
     error('xxz_floquet:Boundary','Periodic brickwork requires even n>=4.');
 end
+if nargin<5,output='matrix';end
+implicit=um_is_operator(output);
+if ~implicit && n>10
+    error('xxz_floquet:ExplicitOrder','Explicit matrix supports n<=10.');
+end
 gate=xxz_r_gate(u,gamma);
 N=2^n;
-odd=speye(N);
+gates=struct('gate',{},'sites',{});
 for k=1:2:n-1
-    odd=qm_two_site_gate(n,gate,k,k+1)*odd;
+    gates(end+1)=struct('gate',gate,'sites',[k,k+1]); %#ok<AGROW>
 end
-even=speye(N);
 for k=2:2:n-1
-    even=qm_two_site_gate(n,gate,k,k+1)*even;
+    gates(end+1)=struct('gate',gate,'sites',[k,k+1]); %#ok<AGROW>
 end
 if strcmp(boundary,'periodic')
-    even=qm_two_site_gate(n,gate,n,1)*even;
+    gates(end+1)=struct('gate',gate,'sites',[n,1]);
 end
-U=full(even*odd);
+op=@(X,flag)um_circuit_apply(X,flag,n,gates,1);
+if implicit,U=op;else,U=op(eye(N),'notransp');end
 end
