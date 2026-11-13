@@ -615,6 +615,77 @@
       "matrix_free_supported": true,
       "operator_kernel": "um_fft_apply",
       "operator_note": "Cached unit-modulus Fourier multiplier and shared circulant FFT."
+    },
+    {
+      "id": "discrete_fourier",
+      "status": "implemented",
+      "category": "signal_processing",
+      "matrix_order": "n",
+      "representation": "dense DFT / FFT",
+      "spectral_reference": "exact fourth-root spectrum; F^4=I",
+      "encyclopedia_references": [
+        1,
+        45
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_dft_apply",
+      "operator_note": "Shares the existing normalized FFT kernel; O(n) storage."
+    },
+    {
+      "id": "discrete_sine",
+      "status": "implemented",
+      "category": "signal_processing",
+      "matrix_order": "n",
+      "representation": "real orthogonal DST I-IV",
+      "spectral_reference": "I and IV are involutions; III is transpose of II",
+      "encyclopedia_references": [
+        47
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_dst_apply",
+      "operator_note": "DST-I odd extension and DST-II--IV reduce to shared FFT-based DCT; O(n) storage."
+    },
+    {
+      "id": "walsh_hadamard",
+      "status": "implemented",
+      "category": "signal_processing",
+      "matrix_order": "power of two",
+      "representation": "real Sylvester / sequency-ordered Hadamard",
+      "spectral_reference": "natural order exact +/-1 atoms; sequency order depends on row permutation",
+      "encyclopedia_references": [
+        48
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_walsh_apply",
+      "operator_note": "FWHT O(n log n) arithmetic, O(n) storage; sparse butterfly stages."
+    },
+    {
+      "id": "dpss_transform",
+      "status": "implemented",
+      "category": "signal_processing",
+      "matrix_order": "n",
+      "representation": "real dense Slepian eigenbasis",
+      "spectral_reference": "eigenbasis transform spectrum generally non-explicit; concentration eigenvalues belong to a different matrix",
+      "encyclopedia_references": [
+        49
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_basis_apply",
+      "operator_note": "Operator interface caches full dense DPSS eigenbasis, O(n^2) storage and apply; not a fast implicit transform."
+    },
+    {
+      "id": "graph_fourier",
+      "status": "implemented",
+      "category": "signal_processing",
+      "matrix_order": "n",
+      "representation": "real dense graph-Laplacian eigenbasis",
+      "spectral_reference": "Laplacian frequencies are not eigenvalues of the graph Fourier transform; basis depends on weights and multiplicities",
+      "encyclopedia_references": [
+        50
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_basis_apply",
+      "operator_note": "Operator interface caches a dense graph eigensystem, O(n^2) storage; deterministic repeated-eigenspace convention."
     }
   ],
   "probability_measures": [
