@@ -1,5 +1,5 @@
 {
-  "schema_version": "0.2.0",
+  "schema_version": "0.3.0",
   "project": "anymatrix-unitary",
   "description": "Independent MATLAB/Anymatrix collection of unitary and orthogonal test matrices.",
   "encyclopedia": "docs/MATRIX_ENCYCLOPEDIA.md",
@@ -15,7 +15,10 @@
       "spectral_reference": "exact roots of unity",
       "encyclopedia_references": [
         1
-      ]
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_monomial_apply",
+      "operator_note": "O(n) permutation/diagonal action; default sparse already economical."
     },
     {
       "id": "weighted_shift",
@@ -26,7 +29,10 @@
       "spectral_reference": "exact rotated roots of unity",
       "encyclopedia_references": [
         1
-      ]
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_monomial_apply",
+      "operator_note": "O(n) permutation/diagonal action; default sparse already economical."
     },
     {
       "id": "diagonal_phase",
@@ -37,7 +43,10 @@
       "spectral_reference": "exact prescribed eigenphases",
       "encyclopedia_references": [
         1
-      ]
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_monomial_apply",
+      "operator_note": "O(n) permutation/diagonal action; default sparse already economical."
     },
     {
       "id": "phase_circulant",
@@ -48,7 +57,10 @@
       "spectral_reference": "exact prescribed eigenphases",
       "encyclopedia_references": [
         1
-      ]
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_fft_apply",
+      "operator_note": "O(n log n) Fourier-factor actions; operator stores O(n) phases."
     },
     {
       "id": "cycle_propagator",
@@ -59,7 +71,10 @@
       "spectral_reference": "exact exp(-2it cos(2pi k/n)); wrapped arcsine limit",
       "encyclopedia_references": [
         2
-      ]
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_fft_apply",
+      "operator_note": "O(n log n) Fourier-factor actions; operator stores O(n) phases."
     },
     {
       "id": "orthogonal_blocks",
@@ -71,7 +86,10 @@
       "encyclopedia_references": [
         3,
         4
-      ]
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": "builtin-sparse",
+      "operator_note": "Already O(n) sparse; custom action not needed."
     },
     {
       "id": "finite_cmv",
@@ -84,7 +102,10 @@
         5,
         6,
         7
-      ]
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_core_apply",
+      "operator_note": "O(n) adjacent core sequence; sparse CMV still available by default."
     },
     {
       "id": "opuc_matrix",
@@ -97,7 +118,10 @@
         8,
         9,
         10
-      ]
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_core_apply",
+      "operator_note": "O(n) adjacent core sequence; sparse CMV still available by default."
     },
     {
       "id": "jacobi_szego",
@@ -111,7 +135,10 @@
         7,
         11,
         12
-      ]
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_core_apply",
+      "operator_note": "O(n) adjacent core sequence; sparse CMV still available by default."
     },
     {
       "id": "bernstein_szego",
@@ -123,7 +150,10 @@
       "encyclopedia_references": [
         5,
         12
-      ]
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_core_apply",
+      "operator_note": "O(n) adjacent core sequence; sparse CMV still available by default."
     },
     {
       "id": "circular_beta",
@@ -134,7 +164,10 @@
       "spectral_reference": "circular beta eigenangle law",
       "encyclopedia_references": [
         13
-      ]
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_core_apply",
+      "operator_note": "O(n) adjacent core sequence; sparse CMV still available by default."
     },
     {
       "id": "haar_unitary",
@@ -145,7 +178,10 @@
       "spectral_reference": "Haar U(n), CUE eigenvalues",
       "encyclopedia_references": [
         14
-      ]
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": null,
+      "operator_note": "No generally validated faster action for the current family definition."
     },
     {
       "id": "haar_orthogonal",
@@ -156,7 +192,10 @@
       "spectral_reference": "Haar O(n), conjugate phase pairs",
       "encyclopedia_references": [
         14
-      ]
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": null,
+      "operator_note": "No generally validated faster action for the current family definition."
     },
     {
       "id": "haar_wavelet",
@@ -167,7 +206,10 @@
       "spectral_reference": "parameter-dependent; no universal eigenphase law",
       "encyclopedia_references": [
         15
-      ]
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_wavelet_apply",
+      "operator_note": "O(n) multilevel Haar transform; also sparse by default."
     },
     {
       "id": "split_step_walk",
@@ -178,7 +220,10 @@
       "spectral_reference": "two quasienergy branches; periodic finite model",
       "encyclopedia_references": [
         16
-      ]
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": "builtin-sparse",
+      "operator_note": "Already O(n) sparse; custom action not needed."
     },
     {
       "id": "dirac_automaton",
@@ -190,7 +235,10 @@
       "encyclopedia_references": [
         17,
         18
-      ]
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": "builtin-sparse",
+      "operator_note": "Already O(n) sparse; custom action not needed."
     },
     {
       "id": "grover_operator",
@@ -201,7 +249,10 @@
       "spectral_reference": "exact two eigenphases and +/-1 atoms",
       "encyclopedia_references": [
         19
-      ]
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_reflection_apply",
+      "operator_note": "O(n) rank-one reflector and marked diagonal."
     },
     {
       "id": "quantum_baker",
@@ -213,7 +264,10 @@
       "encyclopedia_references": [
         20,
         21
-      ]
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_fft_apply",
+      "operator_note": "O(n log n) Fourier-factor actions; operator stores O(n) phases."
     },
     {
       "id": "kicked_harper",
@@ -224,7 +278,10 @@
       "spectral_reference": "quasienergies depend on K,L",
       "encyclopedia_references": [
         22
-      ]
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_fft_apply",
+      "operator_note": "O(n log n) Fourier-factor actions; operator stores O(n) phases."
     },
     {
       "id": "kicked_top",
@@ -236,7 +293,10 @@
       "encyclopedia_references": [
         28,
         29
-      ]
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": null,
+      "operator_note": "No generally validated faster action for the current family definition."
     },
     {
       "id": "floquet_ising",
@@ -248,7 +308,10 @@
       "encyclopedia_references": [
         30,
         31
-      ]
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_spin_apply",
+      "operator_note": "Local single-spin gates plus stored O(2^n) diagonal phase."
     },
     {
       "id": "selfdual_kicked_ising",
@@ -259,7 +322,10 @@
       "spectral_reference": "self-dual many-body spectral form factors under ensemble and limiting assumptions",
       "encyclopedia_references": [
         32
-      ]
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_spin_apply",
+      "operator_note": "Local single-spin gates plus stored O(2^n) diagonal phase."
     },
     {
       "id": "driven_kitaev",
@@ -271,7 +337,10 @@
       "encyclopedia_references": [
         33,
         34
-      ]
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": null,
+      "operator_note": "No generally validated faster action for the current family definition."
     },
     {
       "id": "kicked_rotor",
@@ -282,7 +351,10 @@
       "spectral_reference": "exact free-rotor eigenphases for zero kick; otherwise quasienergies parameter-dependent",
       "encyclopedia_references": [
         35
-      ]
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_fft_apply",
+      "operator_note": "O(n log n) Fourier-factor actions; operator stores O(n) phases."
     },
     {
       "id": "dual_unitary_circuit",
@@ -294,7 +366,10 @@
       "encyclopedia_references": [
         36,
         37
-      ]
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_circuit_apply",
+      "operator_note": "Local gate sequence; exponential vector size 2^n but no dense 4^n matrix."
     },
     {
       "id": "xxz_floquet",
@@ -306,7 +381,10 @@
       "encyclopedia_references": [
         38,
         39
-      ]
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_circuit_apply",
+      "operator_note": "Local gate sequence; exponential vector size 2^n but no dense 4^n matrix."
     },
     {
       "id": "cayley_jacobi",
@@ -317,7 +395,10 @@
       "spectral_reference": "exact Möbius spectral pushforward",
       "encyclopedia_references": [
         23
-      ]
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_cayley_apply",
+      "operator_note": "O(n) sparse Jacobi solve after caching tridiagonal LU factors."
     },
     {
       "id": "polar_unitary",
@@ -328,7 +409,10 @@
       "spectral_reference": "parameter-dependent spectrum",
       "encyclopedia_references": [
         24
-      ]
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": null,
+      "operator_note": "No generally validated faster action for the current family definition."
     },
     {
       "id": "julia_unitary",
@@ -339,7 +423,10 @@
       "spectral_reference": "unitary dilation with no universal phase law",
       "encyclopedia_references": [
         25
-      ]
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": null,
+      "operator_note": "No generally validated faster action for the current family definition."
     },
     {
       "id": "circular_jacobi",
@@ -352,7 +439,10 @@
         5,
         12,
         27
-      ]
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_core_apply",
+      "operator_note": "O(n) adjacent core sequence; sparse CMV still available by default."
     },
     {
       "id": "rogers_szego",
@@ -364,7 +454,10 @@
       "encyclopedia_references": [
         5,
         12
-      ]
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_core_apply",
+      "operator_note": "O(n) adjacent core sequence; sparse CMV still available by default."
     },
     {
       "id": "geronimus_cmv",
@@ -376,7 +469,10 @@
       "encyclopedia_references": [
         5,
         7
-      ]
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_core_apply",
+      "operator_note": "O(n) adjacent core sequence; sparse CMV still available by default."
     },
     {
       "id": "periodic_cmv",
@@ -388,7 +484,10 @@
       "encyclopedia_references": [
         5,
         7
-      ]
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_core_apply",
+      "operator_note": "O(n) adjacent core sequence; sparse CMV still available by default."
     },
     {
       "id": "bernstein_szego_finite",
@@ -400,7 +499,10 @@
       "encyclopedia_references": [
         5,
         12
-      ]
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_core_apply",
+      "operator_note": "O(n) adjacent core sequence; sparse CMV still available by default."
     },
     {
       "id": "orthogonal_dct",
@@ -411,7 +513,10 @@
       "spectral_reference": "parameter-dependent eigenphases",
       "encyclopedia_references": [
         45
-      ]
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_dct_apply",
+      "operator_note": "FFT even-extension DCT-I through IV, O(n) working storage, supports complex multiple RHS."
     },
     {
       "id": "discrete_hartley",
@@ -422,7 +527,10 @@
       "spectral_reference": "exact eigenvalues +/-1",
       "encyclopedia_references": [
         40
-      ]
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_hartley_apply",
+      "operator_note": "Linear combination of normalized FFT and inverse FFT; no dense Hartley matrix."
     },
     {
       "id": "cazac_circulant",
@@ -433,7 +541,10 @@
       "spectral_reference": "exact DFT of Chu sequence",
       "encyclopedia_references": [
         41
-      ]
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_fft_apply",
+      "operator_note": "First-column Chu chirp FFT diagonalization, O(n) spectral data."
     },
     {
       "id": "fresnel_transform",
@@ -444,7 +555,10 @@
       "spectral_reference": "exact FFT of first chirp column",
       "encyclopedia_references": [
         42
-      ]
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_fft_apply",
+      "operator_note": "Paritied discrete Fresnel chirp FFT diagonalization, O(n) spectral data."
     },
     {
       "id": "affine_fourier",
@@ -455,7 +569,10 @@
       "spectral_reference": "parameter-dependent eigenphases; DFT special case",
       "encyclopedia_references": [
         43
-      ]
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_affine_apply",
+      "operator_note": "Two cached quadratic chirp vectors surrounding shared Fourier FFT."
     },
     {
       "id": "finite_zak",
@@ -466,7 +583,10 @@
       "spectral_reference": "exact DFT eigenvalues, repeated p-fold",
       "encyclopedia_references": [
         44
-      ]
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_zak_apply",
+      "operator_note": "O(n) polyphase reshape and short FFTs; spectrum repeats DFT_q phases."
     },
     {
       "id": "time_frequency_shift",
@@ -477,7 +597,10 @@
       "spectral_reference": "exact phase-weighted permutation cycles",
       "encyclopedia_references": [
         44
-      ]
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_monomial_apply",
+      "operator_note": "Sparse phase-weighted permutation via shared monomial kernel."
     },
     {
       "id": "periodic_hilbert",
@@ -488,7 +611,10 @@
       "spectral_reference": "exact four-atom Fourier multiplier law",
       "encyclopedia_references": [
         45
-      ]
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_fft_apply",
+      "operator_note": "Cached unit-modulus Fourier multiplier and shared circulant FFT."
     }
   ],
   "probability_measures": [
