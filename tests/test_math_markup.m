@@ -32,6 +32,35 @@ for j = 1:numel(paths)
 end
 end
 
+function test_julia_halmos_display_math(testCase)
+% The Julia/Halmos section uses fenced mathematics to avoid raw dollar signs
+% appearing in the rendered GitHub encyclopedia.
+root = fileparts(fileparts(mfilename('fullpath')));
+source = fileread(fullfile(root,'docs','MATRIX_ENCYCLOPEDIA.md'));
+startIndex = strfind(source,'### 22. Julia/Halmos unitary extension');
+endIndex = strfind(source,'## F. Further real and complex OPUC');
+verifyEqual(testCase,numel(startIndex),1);
+verifyEqual(testCase,numel(endIndex),1);
+section = source(startIndex:endIndex-1);
+verifyFalse(testCase,contains(section,char(36)));
+verifyEqual(testCase,numel(regexp(section,'(?m)^```math
+root = fileparts(fileparts(mfilename('fullpath')));
+source = fileread(fullfile(root,'docs','MATRIX_ENCYCLOPEDIA.md'));
+verifyTrue(testCase,contains(source,'e_{n+1}=e_1'));
+verifyTrue(testCase,contains(source,'\mathbf{1}_{n\mid k}'));
+verifyTrue(testCase,contains(source,'\mathcal{U}(T)'));
+readme = fileread(fullfile(root,'README.md'));
+verifyTrue(testCase,contains(readme,'\alpha_{2k}'));
+verifyTrue(testCase,contains(readme,'\alpha_{2k+1}'));
+verifyTrue(testCase,contains(readme,'examples/unit_circle_spectral_bands.m'));
+verifyFalse(testCase,contains(readme,'showcase_new_families'));
+end
+,'match')),4);
+verifyTrue(testCase,contains(section,'\mathcal{U}(T)'));
+verifyTrue(testCase,contains(section,'D_{T^*}'));
+verifyTrue(testCase,contains(section,'P\mathcal{U}(T)^kP^*'));
+end
+
 function test_indexing_and_terminology(testCase)
 root = fileparts(fileparts(mfilename('fullpath')));
 source = fileread(fullfile(root,'docs','MATRIX_ENCYCLOPEDIA.md'));
