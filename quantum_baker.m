@@ -1,4 +1,4 @@
-function [U,properties] = quantum_baker(n,variant)
+function [U,properties] = quantum_baker(n,variant,output)
 %QUANTUM_BAKER Finite quantized baker map (Balazs-Voros or Saraceno).
 %   U=QUANTUM_BAKER(N) is F_N'*diag(F_(N/2),F_(N/2)), N positive even,
 %   where F_N(j,k)=exp(-2*pi*1i*j*k/N)/sqrt(N).
@@ -17,12 +17,7 @@ if ~any(strcmp(variant,{'balazs_voros','saraceno'}))
     error('quantum_baker:Variant','Unknown quantization convention.');
 end
 shift=double(strcmp(variant,'saraceno'))/2;
-F=local_fourier(n,shift);
-G=local_fourier(n/2,shift);
-U=F'*blkdiag(G,G);
-end
-
-function F=local_fourier(n,shift)
-q=(0:n-1)+shift;
-F=exp(-2*pi*1i*(q(:)*q(:).')/n)/sqrt(n);
+if nargin<3,output='matrix';end
+op=@(X,flag)um_fft_apply(X,flag,'baker',n,shift);
+if um_is_operator(output),U=op;else,U=op(eye(n),'notransp');end
 end

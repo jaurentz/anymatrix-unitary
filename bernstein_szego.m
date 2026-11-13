@@ -1,4 +1,4 @@
-function [U,properties] = bernstein_szego(n,a,representation,beta,twists)
+function [U,properties] = bernstein_szego(n,a,representation,beta,twists,output)
 %BERNSTEIN_SZEGO Finite OPUC matrix for the Poisson/Szego circle weight.
 %   U=BERNSTEIN_SZEGO(N,A,REP,BETA,TWISTS) forms a finite multiplication
 %   matrix from the probability measure with density
@@ -15,5 +15,6 @@ if nargin<3 || isempty(representation),representation='cmv';end
 if nargin<4 || isempty(beta),beta=1;end
 if nargin<5,twists=[];end
 mu=js_bernstein_measure(a);
-U=js_measure_to_matrix(mu,n,representation,beta,twists);
+if nargin<6,output='matrix';end
+U=js_measure_to_matrix(mu,n,representation,beta,twists,output);
 end

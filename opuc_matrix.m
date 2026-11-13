@@ -1,4 +1,4 @@
-function [U,properties] = opuc_matrix(n,alpha,beta,representation,twists)
+function [U,properties] = opuc_matrix(n,alpha,beta,representation,twists,output)
 %OPUC_MATRIX General finite unitary matrix from Verblunsky coefficients.
 %   U=OPUC_MATRIX(N,ALPHA,BETA,REPRESENTATION,TWISTS) creates an N-by-N
 %   unitary matrix using N-1 interior Verblunsky coefficients, a terminal
@@ -19,5 +19,6 @@ if nargin<5, twists=[]; end
 if numel(alpha)~=n-1
     error('opuc_matrix:AlphaSize','Need N-1 interior coefficients.');
 end
-U=js_core_product(alpha,beta,representation,twists);
+if nargin<6,output='matrix';end
+U=js_core_product(alpha,beta,representation,twists,output);
 end
