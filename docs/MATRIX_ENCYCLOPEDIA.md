@@ -461,7 +461,96 @@ These rational weights give arbitrarily chosen real or complex
 Schur parameters with an exact and evaluable cyclic-vector density.
 **References:** [5, 12].
 
-## G. Families reserved for future versions (not implemented)
+## G. Floquet spin chains and driven fermionic systems
+
+### 28. Quantum kicked top — [`kicked_top.m`](../kicked_top.m)
+
+**Order:** $n=2j+1$ (integer or half-integer spin $j>0$). **Structure:**
+dense spin rotation times diagonal phase twist. In the $J_z$ basis
+$m=j,j-1,\ldots,-j$, define $J_y=(J_+-J_+^*)/(2i)$ and
+
+$
+U_F=\exp\left(-\frac{i\kappa}{2j}J_z^2\right)\exp(-ipJ_y).
+$
+
+The nonzero superdiagonal of $J_+$ is $\sqrt{k(n-k)}$ for $1\le k<n$.
+Both factors are unitary. At $p=0$ the eigenvalues are
+$\exp(-i\kappa m^2/(2j))$; at $\kappa=0$ they are $\exp(-ipm)$.
+Otherwise the quasienergies vary with torsion and rotation.
+Applications: quantum chaos and dense small-to-medium spectral tests.
+**References:** [28, 29].
+
+### 29. Integrable kicked Ising chain — [`floquet_ising.m`](../floquet_ising.m)
+
+**Order:** $2^n$ for $n$ spins. **Structure:** a diagonal Ising layer
+followed by a Kronecker product of single-spin rotations:
+
+$
+U_F=\exp\left(-iJ\sum_rZ_rZ_{r+1}\right)
+    \exp\left(-ih\sum_{r=1}^nX_r\right).
+$
+
+The bond sum includes $(n,1)$ for periodic boundaries and excludes it
+for open boundaries. The second layer is
+$(\cos h\,I-i\sin h\,X)^{\otimes n}$.
+In the computational basis (spin $r$ corresponds to bit $r-1$),
+the first layer has exact diagonal entries
+$\exp(-iJ\sum_rz_rz_{r+1})$, $z_r=\pm1$.
+With $n=2$, the periodic convention counts both directed bonds.
+The **full many-body eigenphase measure** is not the single-particle
+quasiparticle measure. Dense assembly costs $O(4^n)$ memory and is
+capped at $n=11$ sites. **References:** [30, 31].
+
+### 30. Self-dual kicked Ising chain — [`selfdual_kicked_ising.m`](../selfdual_kicked_ising.m)
+
+**Order:** $2^n$ for $n\ge3$ periodic spins, capped at $n=11$
+for explicit dense storage. With real longitudinal fields $b_r$,
+
+$
+U_F=\exp\left(-\frac{i\pi}{4}\sum_rX_r\right)
+    \exp\left[-\frac{i\pi}{4}
+      \left(\sum_rZ_rZ_{r+1}+\sum_rb_rZ_r\right)\right].
+$
+
+The first factor is a tensor product of $2\times2$ unitary kicks;
+the second is diagonal. For zero longitudinal fields, the two layers
+are reversed relative to the $J=h=\pi/4$ integrable Ising operator,
+so the eigenvalue multiset is the same ($AB$ and $BA$ are similar
+for invertible square matrices). Inhomogeneous longitudinal fields
+provide the interacting model used in quantum-chaos research.
+Random-matrix spectral-form-factor results require explicit
+disorder and limiting assumptions and **do not** imply a universal
+finite-size phase density. Default $b_r=0.3\sin r$ is deterministic.
+**Reference:** [32].
+
+### 31. Driven Kitaev chain, BdG representation — [`driven_kitaev.m`](../driven_kitaev.m)
+
+**Order:** $2n$ for $n$ sites in Nambu basis
+$(c_1,\ldots,c_n,c_1^\dagger,\ldots,c_n^\dagger)$;
+**not** the $2^n$-dimensional Fock-space propagator.
+Let
+
+$
+H_{\mathrm{BdG}}(\mu)=
+\begin{pmatrix}h(\mu)&\Delta\\ \Delta^T&-h(\mu)^T\end{pmatrix},
+\qquad
+U_F=e^{-i\tau_2H_{\mathrm{BdG}}(\mu_2)}
+    e^{-i\tau_1H_{\mathrm{BdG}}(\mu_1)}.
+$
+
+Here $h_{rr}=-\mu$, nearest-neighbor $h_{r,r+1}=-t$,
+$\Delta_{r,r+1}=\delta$ and $\Delta_{r+1,r}=-\delta$;
+optional periodic closure preserves the oriented pairing bonds.
+Parameters are supplied as a scalar MATLAB options struct.
+For real parameters and
+$C=\begin{psmallmatrix}0&I\\I&0\end{psmallmatrix}$,
+$C\overline{U_F}C=U_F$, so phases occur in conjugate pairs.
+Certain open-boundary regimes feature Majorana edge modes at
+quasienergies $0$ or $\pi$; their presence is not universal.
+Periodic $n=2$ is disallowed to avoid double-bond ambiguity.
+**References:** [33, 34].
+
+## H. Families reserved for future versions (not implemented)
 
 - **ETNA core-factor stress tests:** the five experimental constructions in
   Aurentz–Mach–Vandebril–Watkins (2015), including the nearly reducible Type
@@ -510,3 +599,10 @@ Schur parameters with an exact and evaluable cyclic-vector density.
 25. B. Sz.-Nagy, *Unitary Dilations of Hilbert Space Operators and Related Topics*, CBMS 19, AMS, 1974. [DOI](https://doi.org/10.1090/CBMS/019).
 26. M. Szegedy, “Quantum speed-up of Markov chain based algorithms,” *Proc. FOCS* (2004), 32–41. [DOI](https://doi.org/10.1109/FOCS.2004.53).
 27. P. Bourgade, A. Nikeghbali and A. Rouault, “Circular Jacobi ensembles and deformed Verblunsky coefficients,” *Int. Math. Res. Not.* (2009). [DOI](https://doi.org/10.1093/imrn/rnp092).
+28. F. Haake, *Quantum Signatures of Chaos*, 3rd ed., Springer, 2010. [DOI](https://doi.org/10.1007/978-3-642-05428-0).
+29. V. M. Bastidas, P. Pérez-Fernández, M. Vogl and T. Brandes, “Quantum criticality and dynamical instability in the kicked-top model,” *Phys. Rev. Lett.* **112** (2014), 140408. [DOI](https://doi.org/10.1103/PhysRevLett.112.140408).
+30. E. Lieb, T. Schultz and D. Mattis, “Two soluble models of an antiferromagnetic chain,” *Ann. Phys.* **16** (1961), 407–466. [DOI](https://doi.org/10.1016/0003-4916(61)90115-4).
+31. P. Pfeuty, “The one-dimensional Ising model with a transverse field,” *Ann. Phys.* **57** (1970), 79–90. [DOI](https://doi.org/10.1016/0003-4916(70)90270-8).
+32. B. Bertini, P. Kos and T. Prosen, “Exact spectral form factor in a minimal model of many-body quantum chaos,” *Phys. Rev. Lett.* **121** (2018), 264101. [DOI](https://doi.org/10.1103/PhysRevLett.121.264101).
+33. D. J. Yates and A. Mitra, “Entanglement properties of the time-periodic Kitaev chain,” *Phys. Rev. B* **96** (2017), 115108. [DOI](https://doi.org/10.1103/PhysRevB.96.115108).
+34. M. van Caspel, S. E. Tapias Arze and I. Pérez Castillo, “Dynamical signatures of topological order in the driven-dissipative Kitaev chain,” *SciPost Phys.* **6** (2019), 026 (closed-system Floquet discussion in §4). [DOI](https://doi.org/10.21468/SciPostPhys.6.2.026).
