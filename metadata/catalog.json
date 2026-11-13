@@ -274,6 +274,41 @@
       ]
     },
     {
+      "id": "kicked_rotor",
+      "status": "implemented",
+      "category": "quantum",
+      "matrix_order": "n",
+      "representation": "dense diagonal-DFT-diagonal-DFT Floquet product",
+      "spectral_reference": "exact free-rotor eigenphases for zero kick; otherwise quasienergies parameter-dependent",
+      "encyclopedia_references": [
+        35
+      ]
+    },
+    {
+      "id": "dual_unitary_circuit",
+      "status": "implemented",
+      "category": "quantum",
+      "matrix_order": "2^n for n qubits",
+      "representation": "brickwork product of locally dual-unitary 4-by-4 gates",
+      "spectral_reference": "no universal finite-size eigenphase law; exactly dual-unitary local gate",
+      "encyclopedia_references": [
+        36,
+        37
+      ]
+    },
+    {
+      "id": "xxz_floquet",
+      "status": "implemented",
+      "category": "quantum",
+      "matrix_order": "2^n for n spins",
+      "representation": "two-layer six-vertex checked R-matrix brickwork",
+      "spectral_reference": "U(1) magnetization conservation, Yang-Baxter integrable bulk; exact scalar limit at zero rapidity",
+      "encyclopedia_references": [
+        38,
+        39
+      ]
+    },
+    {
       "id": "cayley_jacobi",
       "status": "implemented",
       "category": "matrix_function",
