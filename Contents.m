@@ -26,6 +26,10 @@
 %   grover_operator      Grover reflections with exact degeneracies.
 %   quantum_baker        Balazs-Voros / Saraceno quantum baker map.
 %   kicked_harper        Finite-torus kicked Harper Floquet map.
+%   kicked_top           Spin-j Floquet top, diagonal torsion times Jy rotation.
+%   floquet_ising        Integrable kicked Ising, 2^n-dimensional spin chain.
+%   selfdual_kicked_ising Self-dual disordered kicked Ising Floquet operator.
+%   driven_kitaev        Two-step Kitaev chain in 2n-dimensional BdG form.
 %
 % Matrix functions, polar factors and unitary extensions:
 %   cayley_jacobi        Cayley image of a Jacobi recurrence matrix.
