@@ -131,7 +131,9 @@ for t=[.35 2.6]
         -S.limit.density(theta+2*pi)),1e-10);
     for k=0:4
         verifyLessThan(testCase,abs(S.limit.moments(k) ...
-            -(-1i)^k*besselj(k,2*t)),1e-12);
+            -besselj(0,2*t*k)),1e-12);
+        samples=exp(-2i*t*k*cos(2*pi*(0:4095)'/4096));
+        verifyLessThan(testCase,abs(mean(samples)-S.limit.moments(k)),1e-11);
     end
 end
 S=cycle_propagator(12,0,'spectral');
