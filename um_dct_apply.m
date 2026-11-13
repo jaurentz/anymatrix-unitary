@@ -31,7 +31,7 @@ switch kind
         c=ones(n,1);c(1)=1/sqrt(2);
         k=(0:n-1)';
         W=(sqrt(2*n)*exp(1i*pi*k/(2*n))./c).*X;
-        tail=exp(-1i*pi*k(n:-1:2)/n).*W(n:-1:2,:);
+        tail=exp(-1i*pi*flipud(k(2:end))/n).*flipud(W(2:end,:));
         fullSpectrum=[W;zeros(1,size(X,2),'like',X);tail];
         T=ifft(fullSpectrum,[],1);
         Y=T(1:n,:);
