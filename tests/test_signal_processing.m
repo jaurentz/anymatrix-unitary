@@ -115,3 +115,79 @@ n=size(U,1);
 verifyEqual(testCase,size(U),[n n]);
 verifyLessThan(testCase,norm(full(U'*U-speye(n)),'fro'),tol);
 end
+
+
+function test_matrix_free_operators(testCase)
+% Complex multiple RHS, adjoints, and explicit materialization.
+for n=[1 2 3 4 7 12]
+    for kind=1:4
+        if n==1 && kind==1,continue;end
+        check_operator(testCase,orthogonal_dct(n,kind), ...
+            orthogonal_dct(n,kind,'operator'));
+    end
+    check_operator(testCase,discrete_hartley(n),discrete_hartley(n,'operator'));
+    check_operator(testCase,fresnel_transform(n),fresnel_transform(n,'operator'));
+    check_operator(testCase,affine_fourier(n,.03,-.08), ...
+        affine_fourier(n,.03,-.08,'operator'));
+    check_operator(testCase,periodic_hilbert(n,-1,1), ...
+        periodic_hilbert(n,-1,1,'operator'));
+    for root=1:n
+        if gcd(n,root)==1
+            check_operator(testCase,cazac_circulant(n,root), ...
+                cazac_circulant(n,root,'operator'));
+            break
+        end
+    end
+    for p=1:n
+        if mod(n,p)==0
+            check_operator(testCase,finite_zak(n,p),finite_zak(n,p,'operator'));
+        end
+    end
+    check_operator(testCase,time_frequency_shift(n,-2,3), ...
+        time_frequency_shift(n,-2,3,'operator'));
+end
+end
+
+function test_large_implicit_signal_processing(testCase)
+n=4096;
+X=randn(n,3)+1i*randn(n,3);
+cases={orthogonal_dct(n,4,'operator'), ...
+    discrete_hartley(n,'operator'), ...
+    cazac_circulant(n,1,'operator'), ...
+    fresnel_transform(n,'operator'), ...
+    affine_fourier(n,.005,.012,'operator'), ...
+    finite_zak(n,64,'operator'), ...
+    time_frequency_shift(n,37,-11,'operator'), ...
+    periodic_hilbert(n,-1,-1,'operator')};
+for k=1:numel(cases)
+    F=cases{k};
+    verifyEqual(testCase,F([],'size'),[n n]);
+    verifyLessThan(testCase,norm(F(F(X,'notransp'),'transp')-X,'fro'),3e-9);
+end
+end
+
+function test_operator_errors_and_defaults(testCase)
+O=finite_zak(8,4,'operator');
+verifyError(testCase,@()O(ones(7,1),'notransp'),'um_zak_apply:Dimension');
+verifyError(testCase,@()O(ones(8,1),'bad'),'um_zak_apply:Flag');
+O=orthogonal_dct(8,3,'operator');
+verifyError(testCase,@()O(ones(9,1),'notransp'),'um_dct_apply:Dimension');
+verifyError(testCase,@()O(ones(8,1),'bad'),'um_dct_apply:Flag');
+check_operator(testCase,orthogonal_dct(8,2),orthogonal_dct(8,'operator'));
+check_operator(testCase,cazac_circulant(7,1),cazac_circulant(7,'operator'));
+check_operator(testCase,finite_zak(8,1),finite_zak(8,'operator'));
+end
+
+function check_operator(testCase,A,F)
+n=size(A,1);
+verifyTrue(testCase,isa(F,'function_handle'));
+verifyEqual(testCase,F([],'size'),[n n]);
+X=randn(n,3)+1i*randn(n,3);
+Y=randn(n,3)+1i*randn(n,3);
+tol=5e-11*max(1,n);
+verifyLessThan(testCase,norm(F(X,'notransp')-A*X,'fro'),tol);
+verifyLessThan(testCase,norm(F(Y,'transp')-A'*Y,'fro'),tol);
+verifyLessThan(testCase,norm(F(Y,'ctransp')-A'*Y,'fro'),tol);
+verifyLessThan(testCase,norm(F(eye(n),'notransp')-full(A),'fro'),tol);
+verifyLessThan(testCase,norm(F(F(X,'notransp'),'transp')-X,'fro'),tol);
+end
