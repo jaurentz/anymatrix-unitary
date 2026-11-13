@@ -12,7 +12,7 @@ encyclopedia=fileread(fullfile(root,'docs','MATRIX_ENCYCLOPEDIA.md'));
 verifyEqual(testCase,catalog.reference_registry,'metadata/references.json');
 verifyEqual(testCase,numel(registry.references),46);
 for number=1:46
-    ref=registry.references(number);
+    ref=get_reference(registry,number);
     verifyEqual(testCase,ref.number,number);
     verifyTrue(testCase,contains(encyclopedia,sprintf('%d. ',number)));
     verifyTrue(testCase,startsWith(ref.permalink,'https://'));
@@ -43,7 +43,7 @@ for k=1:numel(catalog.matrix_families)
     for number=ids(:)'
         verifyGreaterThanOrEqual(testCase,number,1);
         verifyLessThanOrEqual(testCase,number,numel(registry.references));
-        ref=registry.references(number);
+        ref=get_reference(registry,number);
         dois=as_cell(ref.dois);
         if isempty(dois)
             urls={ref.permalink};
@@ -70,5 +70,14 @@ elseif ischar(value)
     values={value};
 else
     error('test_reference_registry:Type','Unexpected DOI list representation.');
+end
+end
+
+function ref=get_reference(registry,number)
+% JSON object arrays are structs when homogeneous, cells otherwise.
+if iscell(registry.references)
+    ref=registry.references{number};
+else
+    ref=registry.references(number);
 end
 end
