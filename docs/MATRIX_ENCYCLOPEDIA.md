@@ -1098,7 +1098,164 @@ This is **explicit only**: a generic weighted graph has no
 automatic fast graph-Fourier transform. Applications: graph
 filtering and irregular-domain data analysis. [57]
 
-## K. Families reserved for future versions (not implemented)
+
+## K. Unitary eigenvalue problems and strictly unitary pencils
+
+An eigenvalue problem may possess a circle spectrum without being a unitary
+matrix eigenproblem. We use the **strict Euclidean convention** for the
+regular pencil `A-zB`, with nonsingular `B`:
+
+```math
+U=B^{-1}A\in U(N)
+\quad\Longleftrightarrow\quad AA^*=BB^*.
+```
+
+This is distinct from `A*B=B*A`, `A'*A=B'*B`, or reciprocal eigenvalue
+pairing. All seven entries below are **Anymatrix-compatible numeric unitary
+matrices by default**; optional third/fourth outputs give the actual pencil
+coefficients `A,B`. The extra
+[eigenvalue-problem registry](../metadata/eigenvalue_problems.json) separately
+classifies nonlinear functions and external nonunitary examples.
+
+### Strict unitary Möbius pencil — [`mobius_unitary_pencil.m`](../mobius_unitary_pencil.m)
+
+**Order:** `n`. Let `P=cycle_shift(n)`, `|a|<1`, and set
+
+```math
+A=P-aI,\quad B=I-\overline a P,\quad U=B^{-1}A.
+```
+
+The spectrum is explicitly `(omega-a)/(1-conj(a)*omega)` for the `n`th
+roots of unity `omega`. The limiting **equal-weight trace density** is
+
+```math
+\rho_a(\theta)=\frac{1-|a|^2}
+ {2\pi|1+\overline a e^{i\theta}|^2},
+\qquad m_k=(-a)^k\ \ (k\geq0).
+```
+
+A synthetic benchmark derived from disk automorphisms, with a known
+nonuniform limit and very concentrated phases as `|a|` approaches 1.
+This is not the weighted OPUC Poisson measure of a different finite CMV
+matrix. **Reference:** [5] (background); formula and pencil specialization
+are derived from the displayed construction.
+
+### Lossless integer-delay network pencil — [`unitary_delay_pencil.m`](../unitary_delay_pencil.m)
+
+**Order:** `N=sum(delays)`, not the number `n` of channels.
+For positive integer delays `ell_j` and unitary scattering `S`,
+the polynomial nonlinear secular equation is
+
+```math
+T(z)=I-\mathop{\mathrm{diag}}(z^{\ell_j})S,
+\qquad \det T(z)=0.
+```
+
+Form a state-space lift by cyclically shifting each delay line and
+mixing its terminal coordinates through `S^*`. If `P` is the combined
+delay permutation and `C` the terminal scattering operator, the finite
+unitary lift is `U=PC`; `A=C, B=P^*` form a strict sparse pencil.
+The unitary lift has exactly the polynomial secular zeros including
+multiplicity. Distinguish this **commensurate integer-delay** model from
+transcendental quantum graphs with incommensurate metric lengths.
+**Applications:** quantum-graph scattering; lossless feedback delay
+networks. **References:** [58, 60].
+
+### Scalar CMV factor pencil — [`finite_cmv_pencil.m`](../finite_cmv_pencil.m)
+
+**Order:** `n`; interior Verblunsky coefficients in the open disk, final
+coefficient unimodular. Take the existing finite-CMV factorization
+`C=LM`, with sparse alternating unitary `2-by-2` core blocks and
+terminal closure. The generalized coefficients `A=M`, `B=L^*`
+satisfy `B\\A=C`. Its circle spectrum consists of scalar
+paraorthogonal polynomial zeros, and this generator agrees with
+`finite_cmv` in the same coefficient convention.
+**References:** [6, 7].
+
+### Block CMV / matrix paraorthogonal pencil — [`block_cmv_pencil.m`](../block_cmv_pencil.m)
+
+**Order:** `n*q`. Each interior matrix coefficient `alpha_j` is
+`q-by-q`, strictly contractive in spectral norm; the terminal
+`beta` is unitary. Build alternating sparse block factors from
+
+```math
+\Theta(\alpha)=
+\begin{bmatrix}
+\alpha^*& (I-\alpha^*\alpha)^{1/2}\\
+(I-\alpha\alpha^*)^{1/2}&-\alpha
+\end{bmatrix}.
+```
+
+The `beta^*` terminal block produces a unitary closure `C=LM` and
+a strict pencil `M-zL^*`. It is a source of high-degree **matrix-valued**
+paraorthogonal problems with noncommuting coefficients. `q=1` agrees
+with the scalar implementation. Avoid interpreting the matrix-valued
+orthogonality measure as the finite trace measure. **References:** [59, 67].
+
+### Floquet factor pencil — [`floquet_factor_pencil.m`](../floquet_factor_pencil.m)
+
+**Order:** `2*n`. With periodic two-state partial shifts `Splus,Sminus`
+and real orthogonal on-site coin rotations `C1,C2`,
+
+```math
+U=S_-C_2S_+C_1,\quad
+A=S_+C_1,\quad B=(S_-C_2)^T.
+```
+
+The generalized problem is exactly the previously implemented
+`split_step_walk`, without forming an unstructured linearization.
+The pencil is real orthogonal with sparse factors. **Reference:** [16].
+
+### Hermitian Cayley pencil — [`cayley_hermitian_pencil.m`](../cayley_hermitian_pencil.m)
+
+**Order:** `n`. From the same real symmetric Jacobi recurrence `H`
+used by `cayley_jacobi`, take `A=H-itI`, `B=H+itI`, `t>0`.
+Then `AA^*=BB^*` and the spectrum is the Cayley image of the known
+real Jacobi eigenvalues. The pencil coefficients are sparse tridiagonal
+although the quotient is generally dense. **Reference:** [23].
+
+### Ill-scaled strict unitary pencil — [`left_weighted_unitary_pencil.m`](../left_weighted_unitary_pencil.m)
+
+**Order:** `n`. Given the cyclic permutation `P`, choose a positive
+diagonal `B=diag(d_j)` with endpoint ratio `kappa>=1` and set
+`A=BP`. Then `B^{-1}A=P` is real orthogonal even when `A` and
+`B` are far from orthogonal. The eigenvalues are exactly roots of
+unity; coefficient conditioning is controlled independently.
+This is a **synthetic stress test**, not an application family
+attributed to the background reference [4].
+
+### Nonlinear and reciprocal-only benchmarks (not Anymatrix unitary generators)
+
+The [machine-readable eigenvalue-problem registry](../metadata/eigenvalue_problems.json)
+also tracks seven additional cases:
+
+- **Transcendental quantum graphs:** `I-diag(exp(ik*lengths))*S`
+  is unitary-derived for real `k`; the physical spectral parameters
+  are roots of a secular determinant, not the spectrum of one fixed
+  matrix. For general incommensurate lengths no finite polynomial
+  linearization follows. [58, 68]
+- **Blaschke–Potapov rational inner functions:** unitary on `|z|=1`,
+  but the nonlinear secular function itself is not a fixed unitary
+  matrix. Poles and normalization require a rational NEP interface. [61, 62]
+- **Scalar paraorthogonal companions:** use the explicit finite CMV
+  unitary realization; do not call a generic Frobenius companion
+  unitary merely because its zeros lie on the circle. [5, 66]
+- **NLEVP `gen_tpal2` and `gen_tantipal2`:** prescribed circle
+  roots of real palindromic/antipalindromic quadratic polynomials.
+  Public reference code is in `ftisseur/nlevp`; these are **not**
+  automatically strict unitary pencils. [63]
+- **Surface acoustic waves:** palindromic polynomial formulations
+  include propagating and evanescent modes; reciprocal pairing is
+  weaker than circle confinement. [65]
+- **Rail vibration `railtrack2`:** sparse, low-rank, large
+  palindromic polynomial from the NLEVP collection, with potentially
+  zero/infinite eigenstructure and roots away from the circle. [63, 64]
+
+The library deliberately does **not** return these external nonlinear
+functions as numeric unitary matrices. Their representation and reference
+links remain accessible through the registry.
+
+## L. Families reserved for future versions (not implemented)
 
 - **ETNA core-factor stress tests:** the five experimental constructions in
   Aurentz–Mach–Vandebril–Watkins (2015), including the nearly reducible Type
@@ -1177,3 +1334,15 @@ filtering and irregular-domain data analysis. [57]
 55. K. G. Beauchamp, *Applications of Walsh and Related Functions: With an Introduction to Sequency Theory*, Academic Press, 1984. ISBN 9780120841806. [Library record](https://openlibrary.org/works/OL2903378W/Applications_of_Walsh_and_related_functions_with_an_introduction_to_sequency_theory); [book record](https://books.google.com/books?id=BvZSAAAAMAAJ).
 56. D. Slepian, "Prolate spheroidal wave functions, Fourier analysis, and uncertainty—V: The discrete case," *Bell Syst. Tech. J.* **57** (1978), 1371–1430. [DOI](https://doi.org/10.1002/j.1538-7305.1978.tb02104.x).
 57. D. I. Shuman, S. K. Narang, P. Frossard, A. Ortega and P. Vandergheynst, “The emerging field of signal processing on graphs: Extending high-dimensional data analysis to networks and other irregular domains,” *IEEE Signal Process. Mag.* **30**(3) (2013), 83–98. [DOI](https://doi.org/10.1109/MSP.2012.2235192).
+
+58. T. Kottos and U. Smilansky, “Periodic orbit theory and spectral statistics for quantum graphs,” *Ann. Phys.* **274** (1999), 76–124. [DOI](https://doi.org/10.1006/aphy.1999.5904).
+59. D. Damanik, A. Pushnitski and B. Simon, “The analytic theory of matrix orthogonal polynomials,” *Surveys Approx. Theory* **4** (2008), 1–85. [arXiv](https://arxiv.org/abs/0711.2703).
+60. D. Rocchesso and J. O. Smith, “Circulant and elliptic feedback delay networks for artificial reverberation,” *IEEE Trans. Speech Audio Process.* **5** (1997), 51–63. [DOI](https://doi.org/10.1109/89.554269).
+61. D. Alpay, P. Jorgensen and I. Lewkowicz, “Characterizations of rectangular (para)-unitary rational functions,” *Opuscula Math.* **36** (2016), 695–716. [DOI](https://doi.org/10.7494/OpMath.2016.36.6.695).
+62. A. Bultheel and M.-J. Cantero, “A matricial computation of rational quadrature formulas on the unit circle,” *Numer. Algorithms* **52** (2009), 47–68. [DOI](https://doi.org/10.1007/s11075-008-9257-9).
+63. T. Betcke, N. J. Higham, V. Mehrmann, C. Schröder and F. Tisseur, “NLEVP: A collection of nonlinear eigenvalue problems,” *ACM Trans. Math. Software* **39** (2013), article 7. [DOI](https://doi.org/10.1145/2427023.2427024); [NLEVP MATLAB source](https://github.com/ftisseur/nlevp).
+64. L. Lu, T. Wang, Y.-C. Kuo, R.-C. Li and W.-W. Lin, “A fast algorithm for fast train palindromic quadratic eigenvalue problems,” *SIAM J. Sci. Comput.* **38** (2016), A3410–A3429. [DOI](https://doi.org/10.1137/16M1063563).
+65. T.-M. Huang, T. Li, W.-W. Lin and C.-T. Wu, “Numerical studies on structure-preserving algorithms for surface acoustic wave simulations,” *J. Comput. Appl. Math.* **244** (2013), 140–154. [DOI](https://doi.org/10.1016/j.cam.2012.11.020).
+66. P. Dörfler and G. Schmeisser, “Construction of unitary and normal companion matrices,” *Linear Algebra Appl.* **202** (1994), 193–220. [DOI](https://doi.org/10.1016/0024-3795(94)90190-2).
+67. E. Fuentes and L. E. Garza, “CMV block matrices for symmetric matrix measures on the unit circle,” *Linear Algebra Appl.* **587** (2020), 314–333. [DOI](https://doi.org/10.1016/j.laa.2019.11.015).
+68. B. Gutkin and U. Smilansky, “Can one hear the shape of a graph?” *J. Phys. A* **34** (2001), 6061–6068. [DOI](https://doi.org/10.1088/0305-4470/34/31/301).
