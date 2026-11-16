@@ -979,6 +979,101 @@ critical scattering and sparse unitary operators. No universal
 finite-size one-point eigenphase density is asserted.
 **References:** [44–46].
 
+### Szegedy walks for finite Markov chains — [\`szegedy_walk.m\`](../szegedy_walk.m)
+
+**Order:** \`n^2\` for an \`n-by-n\` row-stochastic matrix \`P\`.
+In the ordered basis \`|i,j>\`, introduce the isometries
+
+\`\`\`math
+A e_i=\sum_j\sqrt{P_{ij}}\,|i,j\rangle,\qquad
+B e_j=\sum_i\sqrt{P_{ji}}\,|i,j\rangle.
+\`\`\`
+
+The Szegedy quantum evolution [26] is the product of reflections
+
+\`\`\`math
+W=(2BB^*-I)(2AA^*-I),\qquad
+D=A^*B,\quad D_{ij}=\sqrt{P_{ij}P_{ji}}.
+\`\`\`
+
+Let \`sigma_j\` be the singular values of the real-symmetric
+discriminant \`D\`. Every \`0<sigma_j<1\` produces
+\`exp(+/-2i*acos(sigma_j))\`; every zero singular value produces two
+\`-1\` eigenvalues. The remaining eigenvalues are \`+1\`. In particular,
+the entire spectrum can be obtained without diagonalizing the generally
+dense \`n^2-by-n^2\` unitary matrix. A lazy exact finite spectral
+reference evaluates the singular values of \`D\` only when needed.
+The \`'operator'\` mode applies the two reflections directly in
+\`O(n^2)\` time and memory for dense data. This is not another
+finite-CMV realization or a Grover search reflection on marked states.
+**Reference:** [26].
+
+### Coined quantum walks on arbitrary finite graphs — [\`coined_graph_walk.m\`](../coined_graph_walk.m)
+
+**Order:** \`2m\`, the number of directed arcs of an undirected graph with
+\`m\` edges. Vertex \`v\` has \`d_v\` outgoing arcs and a local unitary
+coin \`C_v\`. Use the canonical arc ordering sorted by source and
+destination. The shift \`S\` reverses each arc, so \`S^2=I\`. Thus
+
+\`\`\`math
+U=SC,\qquad C=\bigoplus_{v\in V}C_v,\qquad S|v,w\rangle=|w,v\rangle.
+\`\`\`
+
+The default weighted Grover coin is
+
+\`\`\`math
+C_v=2s_vs_v^*-I,\qquad
+(s_v)_w=\sqrt{A_{vw}\big/\sum_u A_{vu}},
+\`\`\`
+
+where \`A\` is a symmetric nonnegative edge-weight matrix with zero
+diagonal and no isolated vertices. \`'fourier'\`, \`'identity'\`, and
+custom vertex-local unitary coins are supported. Uniform Grover coins
+on an unweighted connected graph admit an explicit spectral
+relationship to the normalized adjacency/random-walk matrix; general
+local coins need not. \`'operator'\` applies the block coins and
+arc reversal without assembling the product; \`'pencil'\` exposes
+the strict unitary pair \`A=C\`, \`B=S^*\`. This is genuinely
+different from fixed one-dimensional walk topologies. **Reference:** [73].
+
+### Parameterized metric quantum-graph scattering maps — [\`metric_quantum_graph.m\`](../metric_quantum_graph.m)
+
+**Order:** \`2m\` directed bonds on a finite undirected metric graph.
+\`L\` is a symmetric zero-diagonal matrix whose positive off-diagonal
+entries are physical edge lengths; zeros indicate missing edges. Using
+outgoing directed bonds, the real-wavenumber bond-scattering map is
+
+\`\`\`math
+U(k)=D(k)CR,\qquad
+D(k)=\operatorname{diag}(e^{ik\ell_b}),\quad
+R|v,w\rangle=|w,v\rangle .
+\`\`\`
+
+\`R\` reverses directed bonds; \`C\` is the direct sum of the
+vertex-local unitary scattering matrices. For Neumann--Kirchhoff
+boundary conditions, \`C_v=2J_{d_v}/d_v-I\`. For any real \`k\`,
+\`D(k)\`, \`C\`, and \`R\` are unitary, hence so is \`U(k)\`.
+Arbitrary unitary vertex scatterers may also be supplied.
+
+**Two distinct spectral questions** must be separated:
+
+- At a fixed real \`k\`, \`eig(U(k))\` contains unit-circle eigenvalues
+  of the finite bond-scattering map, giving a valid unitary matrix test.
+- The physical metric-graph wavenumbers are the *real zeros* of
+  \`det(I-U(k))=0\`, in which \`k\` itself is the spectral variable.
+  In general this is a transcendental nonlinear eigenvalue problem.
+
+\`'operator'\` supplies matrix-free unitary action at fixed \`k\`.
+\`'secular'\` supplies analytic function handles \`U(z)\`,
+\`T(z)=I-U(z)\`, and \`det(T(z))\` for complex \`z\`. The analytic
+continuation \`U(z)\` is **not** generally unitary when \`z\` is
+nonreal. Unlike \`unitary_delay_pencil\`, incommensurate real
+lengths have no general finite-dimensional polynomial lift. This
+generator reuses directed-arc and local-coin components, but its
+metric dependence and nonlinear secular problem are new.
+**References:** [58, 68].
+
+
 ## J. Non-quantum signal-processing transforms
 
 This section gives independent finite matrix constructions. They are distinct
@@ -1473,3 +1568,4 @@ links remain accessible through the registry.
 70. D. Damanik, M. Embree and J. Fillman, “Gap labels for zeros of the partition function of the 1D Ising model via the Schwartzman homomorphism,” *Indag. Math.* **35** (2024), 813–836. [DOI](https://doi.org/10.1016/j.indag.2023.05.004); [preprint](https://arxiv.org/abs/2211.01558).
 71. L. Marin and H. Schulz-Baldes, “Scattering zippers and their spectral theory,” *J. Spectr. Theory* **3** (2013), 47–82. [DOI](https://doi.org/10.4171/JST/37); [preprint](https://arxiv.org/abs/1112.4959).
 72. C. Cedzich, J. Fillman and D. C. Ong, “Almost Everything About the Unitary Almost Mathieu Operator,” *Commun. Math. Phys.* **403** (2023), 745–794. [DOI](https://doi.org/10.1007/s00220-023-04808-4); [preprint](https://arxiv.org/abs/2112.03216).
+73. D. Emms, S. Severini, R. C. Wilson and E. R. Hancock, “Coined quantum walks lift the cospectrality of graphs and trees,” *Pattern Recognition* **42** (2009), 1988–2002. [DOI](https://doi.org/10.1016/j.patcog.2008.10.025).
