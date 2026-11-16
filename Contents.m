@@ -9,7 +9,7 @@
 %   orthogonal_blocks    Prescribed real orthogonal rotation blocks.
 %
 % Orthogonal polynomials on the unit circle:
-%   finite_cmv           Five-diagonal CMV with specified coefficients.
+%   finite_cmv           Five-diagonal CMV; terminal 'pencil' mode for factors A,B.
 %   opuc_matrix          General finite unitary twisted-core matrix.
 %   jacobi_szego         Jacobi-Szego/Geronimus family, four representations.
 %   bernstein_szego      Poisson/Bernstein-Szego measure, four representations.
@@ -62,6 +62,15 @@
 %   polar_unitary        Unitary polar factor of nonsingular matrix.
 %   julia_unitary        Finite Julia/Halmos unitary of a contraction.
 %
+% Unitary eigenvalue problems (strict generalized pencils):
+%   mobius_unitary_pencil       Mobius-transformed cyclic unitary pencil.
+%   unitary_delay_pencil        Lossless integer-delay secular polynomial lift.
+%   block_cmv_pencil           Block-CMV with matrix Verblunsky coefficients.
+%   floquet_factor_pencil      Two-layer split-step orthogonal pencil.
+%   cayley_hermitian_pencil    Sparse Cayley pencil of a real Jacobi matrix.
+%   left_weighted_unitary_pencil  Ill-scaled coefficient pair with unitary quotient.
+%
+% External nonlinear/palindromic benchmarks: metadata/eigenvalue_problems.json
 % Public OPUC helpers (not Anymatrix generators):
 %   szego_jacobi_measure     Normalized Jacobi measure and Szego lift.
 %   szego_bernstein_measure  Explicit Poisson/Bernstein-Szego measure.

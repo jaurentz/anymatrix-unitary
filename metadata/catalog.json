@@ -105,7 +105,7 @@
       ],
       "matrix_free_supported": true,
       "operator_kernel": "um_core_apply",
-      "operator_note": "O(n) adjacent core sequence; sparse CMV still available by default."
+      "operator_note": "O(n) adjacent core sequence; sparse CMV still available by default. Terminal 'pencil' mode now exposes the strict unitary CMV pencil A=M,B=L*."
     },
     {
       "id": "opuc_matrix",
@@ -732,6 +732,92 @@
       "matrix_free_supported": false,
       "operator_kernel": null,
       "operator_note": "Explicit dense eigenbasis only. A full cached basis handle gives no computational or storage advantage."
+    },
+    {
+      "id": "mobius_unitary_pencil",
+      "status": "implemented",
+      "category": "eigenvalue_problems",
+      "matrix_order": "n",
+      "representation": "dense Cayley-like rational function of cyclic shift",
+      "spectral_reference": "exact Mobius transformed roots of unity; limiting Poisson density",
+      "encyclopedia_references": [
+        5
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": null,
+      "operator_note": "Standard numeric output is unitary U; terminal pencil mode returns a struct with A, B, U; spectral mode uses the established descriptor contract."
+    },
+    {
+      "id": "unitary_delay_pencil",
+      "status": "implemented",
+      "category": "eigenvalue_problems",
+      "matrix_order": "sum(delays)",
+      "representation": "sparse unitary delay lift / scattering feedback",
+      "spectral_reference": "all roots on circle; secular determinant of positive-integer delays",
+      "encyclopedia_references": [
+        58,
+        60
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": null,
+      "operator_note": "Standard numeric output is unitary U; terminal pencil mode returns a struct with A, B, U; spectral mode uses the established descriptor contract."
+    },
+    {
+      "id": "block_cmv_pencil",
+      "status": "implemented",
+      "category": "eigenvalue_problems",
+      "matrix_order": "n*q",
+      "representation": "sparse block-CMV from matrix Verblunsky coefficients",
+      "spectral_reference": "paraorthogonal matrix polynomial roots on unit circle",
+      "encyclopedia_references": [
+        59,
+        67
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": null,
+      "operator_note": "Standard numeric output is unitary U; terminal pencil mode returns a struct with A, B, U; spectral mode uses the established descriptor contract."
+    },
+    {
+      "id": "floquet_factor_pencil",
+      "status": "implemented",
+      "category": "eigenvalue_problems",
+      "matrix_order": "2n",
+      "representation": "two sparse orthogonal walk layers",
+      "spectral_reference": "same quasienergies as split_step_walk",
+      "encyclopedia_references": [
+        16
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": null,
+      "operator_note": "Standard numeric output is unitary U; terminal pencil mode returns a struct with A, B, U; spectral mode uses the established descriptor contract."
+    },
+    {
+      "id": "cayley_hermitian_pencil",
+      "status": "implemented",
+      "category": "eigenvalue_problems",
+      "matrix_order": "n",
+      "representation": "sparse Hermitian Cayley coefficients; generally dense quotient",
+      "spectral_reference": "Cayley map of Jacobi eigenvalues",
+      "encyclopedia_references": [
+        23
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": null,
+      "operator_note": "Standard numeric output is unitary U; terminal pencil mode returns a struct with A, B, U; spectral mode uses the established descriptor contract."
+    },
+    {
+      "id": "left_weighted_unitary_pencil",
+      "status": "implemented",
+      "category": "eigenvalue_problems",
+      "matrix_order": "n",
+      "representation": "diagonal-scaled sparse cyclic shift coefficient pair",
+      "spectral_reference": "exact roots of unity independent of pencil conditioning",
+      "encyclopedia_references": [
+        4
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": null,
+      "operator_note": "Standard numeric output is unitary U; terminal pencil mode returns a struct with A, B, U; spectral mode uses the established descriptor contract."
     }
   ],
   "probability_measures": [
@@ -865,11 +951,6 @@
       ]
     }
   ],
-  "notes": [
-    "The equal-weight trace spectral measure differs from the cyclic-vector Gauss-Szego spectral measure.",
-    "Finite matrices have atomic spectra.",
-    "A Hilbert-space dimension can differ from a site count.",
-    "Reference numbers are defined in docs/MATRIX_ENCYCLOPEDIA.md."
-  ],
+  "notes": "The equal-weight trace spectral measure differs from the cyclic-vector Gauss-Szego spectral measure.,Finite matrices have atomic spectra.,A Hilbert-space dimension can differ from a site count.,Reference numbers are defined in docs/MATRIX_ENCYCLOPEDIA.md. Eigenvalue-problem subclass adds strict unitary-pencil realizations; external nonunitary NEPs are cataloged separately in metadata/eigenvalue_problems.json.",
   "reference_registry": "metadata/references.json"
 }

@@ -4,6 +4,9 @@ function [U, properties] = finite_cmv(n, alpha,output)
 %   ALPHA is an N-vector of coefficients with |ALPHA(1:N-1)| < 1 and
 %   |ALPHA(N)| = 1. The final coefficient is the finite boundary phase.
 %   ALPHA defaults to [zeros(N-1,1); 1]. For N=1, U=conj(ALPHA(1)).
+%   P=FINITE_CMV(N,ALPHA,'pencil') returns a struct with P.A, P.B,
+%   and P.U. The strict pencil P.A-z*P.B satisfies P.B\P.A=P.U.
+%   This preserves the standard [U,PROPERTIES] Anymatrix interface.
 %   Uses the same shared core-construction machinery as JACOBI_SZEGO
 %   and OPUC_MATRIX, with no duplicated core implementation.
 %
@@ -33,5 +36,10 @@ if numel(alpha) ~= n
     error('finite_cmv:DimensionMismatch', 'ALPHA must contain N coefficients.');
 end
 if nargin<3,output='matrix';end
+if (ischar(output)||isstring(output)) && strcmpi(char(output),'pencil')
+    U=block_cmv_pencil(n,1,reshape(alpha(1:end-1),1,1,[]), ...
+        alpha(end),'pencil');
+    return
+end
 U = js_core_product(alpha(1:end-1), alpha(end), 'cmv', [], output);
 end

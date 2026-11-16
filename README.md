@@ -4,7 +4,7 @@ A MATLAB collection of finite **unitary and orthogonal test matrices**, designed
 an external group for [Anymatrix](https://github.com/north-numerical-computing/anymatrix).
 The repository is organized around reproducible mathematical constructions,
 known spectral information, and executable regression tests. It contains
-50 generators; additional benchmark families are under development.
+56 generators; additional benchmark families are under development.
 
 **Status:** development collection with MATLAB-only tests. Automated MATLAB
 regression and Anymatrix integration tests run on GitHub Actions after every
@@ -47,7 +47,7 @@ assertSuccess(results)
 
 ## Matrix generator interfaces
 
-The collection currently has **50 public generators**. Each has a complete
+The collection currently has **56 public generators**. Each has a complete
 entry with formulas, spectral information, applications, parameter conventions,
 and references in the [matrix encyclopedia](docs/MATRIX_ENCYCLOPEDIA.md).
 The [mathematical notes](docs/MATHEMATICS.md) explain the shared OPUC engine.
@@ -60,6 +60,7 @@ The [mathematical notes](docs/MATHEMATICS.md) explain the shared OPUC engine.
 | Signal-processing transforms | `orthogonal_dct`, `discrete_hartley`, `cazac_circulant`, `fresnel_transform`, `affine_fourier`, `finite_zak`, `time_frequency_shift`, `periodic_hilbert`, `discrete_fourier`, `discrete_sine`, `walsh_hadamard`, `dpss_transform`, `graph_fourier` |
 | Quantum maps, walks, and algorithms | `split_step_walk`, `dirac_automaton`, `grover_operator`, `quantum_baker`, `kicked_harper`, `kicked_top`, `floquet_ising`, `selfdual_kicked_ising`, `driven_kitaev`, `kicked_rotor`, `dual_unitary_circuit`, `xxz_floquet`, `kicked_bose_hubbard`, `jaynes_cummings`, `chalker_coddington` |
 | Matrix functions and dilations | `cayley_jacobi`, `polar_unitary`, `julia_unitary` |
+| Strict unitary eigenvalue pencils | `mobius_unitary_pencil`, `unitary_delay_pencil`, `block_cmv_pencil`, `floquet_factor_pencil`, `cayley_hermitian_pencil`, `left_weighted_unitary_pencil` |
 
 Generators return **actual finite square matrices by default**. Selected
 generators also accept `'operator'` as their final argument and return a
@@ -73,6 +74,32 @@ for an input physical size `n`. `floquet_ising` and `selfdual_kicked_ising` retu
 several families; other families have ensemble laws, limiting densities, or
 no universal law. The encyclopedia distinguishes these cases. Do not infer a
 limiting eigenphase distribution from unitarity alone.
+
+## Eigenvalue-problem subclass
+
+Six new generators, together with the existing `finite_cmv`, represent strict pencils `A-z*B` for
+which `B\\A` is unitary in the ordinary Euclidean inner product.
+Each returns the finite numeric unitary by default, with
+terminal `'pencil'` mode returning a structure `P` with fields `P.U`, `P.A`,
+and `P.B`. The normal two-output `[U,properties]` contract is unchanged.
+The structural
+criterion is `A*A' == B*B'` (up to floating-point error); the
+coefficients need not individually be unitary.
+
+~~~matlab
+U = unitary_delay_pencil(3,[2 3 4]');
+P = unitary_delay_pencil(3,[2 3 4]','pencil');
+assert(norm(full(P.A*P.A'-P.B*P.B'),'fro') < 1e-11);
+assert(norm(full(U-P.B\\P.A),'fro') < 1e-11);
+S = mobius_unitary_pencil(40,.8,'spectral');
+~~~
+
+The separate [eigenvalue-problem registry](metadata/eigenvalue_problems.json)
+also records transcendental quantum-graph equations, rational inner
+functions, matrix paraorthogonal polynomials and NLEVP palindromic
+benchmarks. These are **not** falsely advertised as unitary matrices:
+reciprocal or circle-valued eigenvalues alone do not imply a strict
+unitary pencil. See the [encyclopedia](docs/MATRIX_ENCYCLOPEDIA.md).
 
 ## Analytic spectral references
 
