@@ -80,14 +80,17 @@ limiting eigenphase distribution from unitarity alone.
 Six new generators, together with the existing `finite_cmv`, represent strict pencils `A-z*B` for
 which `B\\A` is unitary in the ordinary Euclidean inner product.
 Each returns the finite numeric unitary by default, with
-`[U,properties,A,B]` exposing both coefficients. The structural
+terminal `'pencil'` mode returning a structure `P` with fields `P.U`, `P.A`,
+and `P.B`. The normal two-output `[U,properties]` contract is unchanged.
+The structural
 criterion is `A*A' == B*B'` (up to floating-point error); the
 coefficients need not individually be unitary.
 
 ~~~matlab
-[U,properties,A,B] = unitary_delay_pencil(3,[2 3 4]');
-assert(norm(full(A*A'-B*B'),'fro') < 1e-11);
-assert(norm(full(U-B\\A),'fro') < 1e-11);
+U = unitary_delay_pencil(3,[2 3 4]');
+P = unitary_delay_pencil(3,[2 3 4]','pencil');
+assert(norm(full(P.A*P.A'-P.B*P.B'),'fro') < 1e-11);
+assert(norm(full(U-P.B\\P.A),'fro') < 1e-11);
 S = mobius_unitary_pencil(40,.8,'spectral');
 ~~~
 
