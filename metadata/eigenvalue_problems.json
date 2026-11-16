@@ -132,7 +132,7 @@
       "id": "scalar_paraorthogonal_companion",
       "classification": "circle_spectrum_only",
       "problem_type": "polynomial",
-      "status": "represented_by_finite_cmv_pencil",
+      "status": "represented_by_finite_cmv",
       "reference_ids": [
         5,
         66
