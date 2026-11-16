@@ -1166,10 +1166,10 @@ networks. **References:** [58, 60].
 **Order:** `n`; interior Verblunsky coefficients in the open disk, final
 coefficient unimodular. Take the existing finite-CMV factorization
 `C=LM`, with sparse alternating unitary `2-by-2` core blocks and
-terminal closure. The generalized coefficients `A=M`, `B=L^*`
-satisfy `B\\A=C`. Its circle spectrum consists of scalar
-paraorthogonal polynomial zeros, and this generator agrees with
-`finite_cmv` in the same coefficient convention.
+terminal closure. The existing `finite_cmv` generator exposes the generalized coefficients
+`A=M`, `B=L^*` as optional third/fourth outputs, satisfying `B\\A=C`.
+Its circle spectrum consists of scalar paraorthogonal polynomial zeros;
+no duplicate generator is registered.
 **References:** [6, 7].
 
 ### Block CMV / matrix paraorthogonal pencil — [`block_cmv_pencil.m`](../block_cmv_pencil.m)
