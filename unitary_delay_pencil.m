@@ -12,6 +12,7 @@ function [U,properties,A,B] = unitary_delay_pencil(n,delays,S,mode)
 %   The integer-delay finite lift is a benchmark realization of
 %   lossless quantum-graph bond scattering/secular equations.
 %   [58] https://doi.org/10.1006/aphy.1999.5904
+%   [60] https://doi.org/10.1109/89.554269
 properties={'square','unitary','normal','sparse','scalable','parameter-dependent'};
 if nargin==0,U=[];A=[];B=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','positive','finite'});
