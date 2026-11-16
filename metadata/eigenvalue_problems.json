@@ -1,0 +1,187 @@
+{
+  "schema_version": "1.0.0",
+  "updated": "2026-11-16",
+  "description": "Eigenvalue-problem subclass. Only implemented strict unitary pencils are public Anymatrix generators. Other NEPs are documented external/specialized benchmarks.",
+  "strict_pencil_criterion": "B nonsingular, AA*=BB*, equivalently inv(B)A unitary in Euclidean inner product",
+  "classifications": [
+    "strict_unitary_pencil",
+    "unitary_on_contour",
+    "circle_spectrum_only",
+    "reciprocal_only"
+  ],
+  "families": [
+    {
+      "id": "mobius_unitary_pencil",
+      "classification": "strict_unitary_pencil",
+      "problem_type": "pencil",
+      "status": "implemented",
+      "reference_ids": [
+        5
+      ],
+      "pencil": "A=P-aI, B=I-conj(a)P",
+      "root_relation": "Mobius images of cyclic-shift eigenvalues",
+      "generator": "mobius_unitary_pencil.m",
+      "source_status": "Derived specialization; OPUC reference is background"
+    },
+    {
+      "id": "unitary_delay_pencil",
+      "classification": "strict_unitary_pencil",
+      "problem_type": "polynomial_nep_and_pencil",
+      "status": "implemented",
+      "reference_ids": [
+        58,
+        60
+      ],
+      "pencil": "A=C, B=P* with C unitary terminal scattering and P delay permutation",
+      "root_relation": "det(I-diag(z.^delays)*S)=0",
+      "generator": "unitary_delay_pencil.m",
+      "source_status": "Explicit finite lift of published lossless network secular models"
+    },
+    {
+      "id": "finite_cmv_pencil",
+      "classification": "strict_unitary_pencil",
+      "problem_type": "pencil",
+      "status": "implemented",
+      "reference_ids": [
+        6,
+        7
+      ],
+      "pencil": "A=M, B=L* for finite scalar CMV C=LM",
+      "root_relation": "scalar paraorthogonal polynomial zeros",
+      "generator": "finite_cmv_pencil.m",
+      "source_status": "Factor pencil from established CMV representation"
+    },
+    {
+      "id": "block_cmv_pencil",
+      "classification": "strict_unitary_pencil",
+      "problem_type": "pencil",
+      "status": "implemented",
+      "reference_ids": [
+        59,
+        67
+      ],
+      "pencil": "A=M, B=L* for block CMV C=LM",
+      "root_relation": "matrix-valued paraorthogonal determinant zeros",
+      "generator": "block_cmv_pencil.m",
+      "source_status": "Block-factor realization from established matrix OPUC"
+    },
+    {
+      "id": "floquet_factor_pencil",
+      "classification": "strict_unitary_pencil",
+      "problem_type": "pencil",
+      "status": "implemented",
+      "reference_ids": [
+        16
+      ],
+      "pencil": "A=Splus*C1, B=(Sminus*C2)*",
+      "root_relation": "quasienergies of the split-step walk",
+      "generator": "floquet_factor_pencil.m",
+      "source_status": "Pencil from published split-step physical model"
+    },
+    {
+      "id": "cayley_hermitian_pencil",
+      "classification": "strict_unitary_pencil",
+      "problem_type": "pencil",
+      "status": "implemented",
+      "reference_ids": [
+        23
+      ],
+      "pencil": "A=H-itI, B=H+itI",
+      "root_relation": "Cayley images of Jacobi real eigenvalues",
+      "generator": "cayley_hermitian_pencil.m",
+      "source_status": "Pencil form of existing Cayley Jacobi model"
+    },
+    {
+      "id": "left_weighted_unitary_pencil",
+      "classification": "strict_unitary_pencil",
+      "problem_type": "pencil",
+      "status": "implemented",
+      "reference_ids": [
+        4
+      ],
+      "pencil": "A=B*P, B=positive diagonal with controlled condition number",
+      "root_relation": "exact cyclic-shift eigenvalues",
+      "generator": "left_weighted_unitary_pencil.m",
+      "source_status": "Synthetic numerical linear algebra benchmark; reference is background"
+    },
+    {
+      "id": "quantum_graph_secular",
+      "classification": "unitary_on_contour",
+      "problem_type": "transcendental_nep",
+      "status": "documented_not_generator",
+      "reference_ids": [
+        58,
+        68
+      ],
+      "function": "T(k)=I-diag(exp(i*k*lengths))*S; k real",
+      "note": "For incommensurate lengths there is no finite polynomial pencil; physical k roots are not phases of one fixed U"
+    },
+    {
+      "id": "blaschke_potapov_secular",
+      "classification": "unitary_on_contour",
+      "problem_type": "rational_nep",
+      "status": "documented_not_generator",
+      "reference_ids": [
+        61,
+        62
+      ],
+      "function": "T(z)=I-Q*prod(I-Pj+b_aj(z)*Pj)",
+      "note": "Only unitary for |z|=1; rational pole handling and realization convention require separate validated API"
+    },
+    {
+      "id": "scalar_paraorthogonal_companion",
+      "classification": "circle_spectrum_only",
+      "problem_type": "polynomial",
+      "status": "represented_by_finite_cmv_pencil",
+      "reference_ids": [
+        5,
+        66
+      ],
+      "note": "Unitary CMV companion exists; ordinary Frobenius companion generally nonunitary"
+    },
+    {
+      "id": "nlevp_gen_tpal2",
+      "classification": "circle_spectrum_only",
+      "problem_type": "quadratic_polynomial",
+      "status": "external_benchmark",
+      "reference_ids": [
+        63
+      ],
+      "source": "https://github.com/ftisseur/nlevp/blob/master/private/gen_tpal2.m",
+      "note": "Prescribed circle roots; T-palindromicity does not make standard companion strictly unitary"
+    },
+    {
+      "id": "nlevp_gen_tantipal2",
+      "classification": "circle_spectrum_only",
+      "problem_type": "quadratic_polynomial",
+      "status": "external_benchmark",
+      "reference_ids": [
+        63
+      ],
+      "source": "https://github.com/ftisseur/nlevp/blob/master/private/gen_tantipal2.m",
+      "note": "Prescribed circle roots; T-antipalindromicity does not prove strict unitary pencil"
+    },
+    {
+      "id": "surface_acoustic_wave_pqep",
+      "classification": "reciprocal_only",
+      "problem_type": "quadratic_polynomial",
+      "status": "external_benchmark",
+      "reference_ids": [
+        65
+      ],
+      "note": "Propagating/evanescent modes; reciprocal pairing not confinement to the circle"
+    },
+    {
+      "id": "railtrack2_pqep",
+      "classification": "reciprocal_only",
+      "problem_type": "quadratic_polynomial",
+      "status": "external_benchmark",
+      "reference_ids": [
+        63,
+        64
+      ],
+      "source": "https://github.com/ftisseur/nlevp/blob/master/private/railtrack2.m",
+      "note": "Sparse low-rank palindromic coefficients; possible zero and infinite eigenvalues"
+    }
+  ]
+}
