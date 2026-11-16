@@ -159,7 +159,7 @@ verifyError(testCase,@()block_cmv_pencil(3,2,a), ...
 verifyError(testCase,@()cayley_hermitian_pencil(4,0,0,0), ...
     'MATLAB:expectedPositive');
 verifyError(testCase,@()left_weighted_unitary_pencil(4,.5), ...
-    'MATLAB:expectedGreaterThanOrEqual');
+    'MATLAB:notGreaterEqual');
 end
 
 function test_eigenproblem_registry_integrity(testCase)
@@ -172,7 +172,8 @@ classes={'strict_unitary_pencil','unitary_on_contour', ...
 ids={catalog.matrix_families.id};
 implemented=0;
 for j=1:numel(reg.families)
-    e=reg.families(j);
+    if iscell(reg.families),e=reg.families{j};
+    else,e=reg.families(j);end
     verifyTrue(testCase,any(strcmp(e.classification,classes)));
     if strcmp(e.status,'implemented') || strcmp(e.status,'existing_generator')
         implemented=implemented+1;
