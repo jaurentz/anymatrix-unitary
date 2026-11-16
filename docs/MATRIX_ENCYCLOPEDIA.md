@@ -1167,8 +1167,7 @@ The matrix is unitary independently of the physical channel. [49]
 
 ```math
 A=D(c_2)F_nD(c_1),\qquad
-D(c)=\mathop{\mathrm{diag}}_{0\leq k<n}
-(e^{-2\pi i c k^2}),
+D(c)_{kk}=e^{-2\pi i c k^2},\quad k=0,\ldots,n-1.
 ```
 
 where $F_n$ is the normalized negative-exponent DFT.
