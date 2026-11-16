@@ -105,7 +105,7 @@
       ],
       "matrix_free_supported": true,
       "operator_kernel": "um_core_apply",
-      "operator_note": "O(n) adjacent core sequence; sparse CMV still available by default. Third/fourth outputs now optionally expose the strict unitary CMV pencil A=M,B=L* in numeric mode."
+      "operator_note": "O(n) adjacent core sequence; sparse CMV still available by default. Terminal 'pencil' mode now exposes the strict unitary CMV pencil A=M,B=L*."
     },
     {
       "id": "opuc_matrix",
@@ -745,7 +745,7 @@
       ],
       "matrix_free_supported": false,
       "operator_kernel": null,
-      "operator_note": "Public numeric U and strict pencil factors A,B via outputs 3 and 4; nonlinear functions indexed in metadata/eigenvalue_problems.json."
+      "operator_note": "Standard numeric output is unitary U; terminal pencil mode returns a struct with A, B, U; spectral mode uses the established descriptor contract."
     },
     {
       "id": "unitary_delay_pencil",
@@ -760,7 +760,7 @@
       ],
       "matrix_free_supported": false,
       "operator_kernel": null,
-      "operator_note": "Public numeric U and strict pencil factors A,B via outputs 3 and 4; nonlinear functions indexed in metadata/eigenvalue_problems.json."
+      "operator_note": "Standard numeric output is unitary U; terminal pencil mode returns a struct with A, B, U; spectral mode uses the established descriptor contract."
     },
     {
       "id": "block_cmv_pencil",
@@ -775,7 +775,7 @@
       ],
       "matrix_free_supported": false,
       "operator_kernel": null,
-      "operator_note": "Public numeric U and strict pencil factors A,B via outputs 3 and 4; nonlinear functions indexed in metadata/eigenvalue_problems.json."
+      "operator_note": "Standard numeric output is unitary U; terminal pencil mode returns a struct with A, B, U; spectral mode uses the established descriptor contract."
     },
     {
       "id": "floquet_factor_pencil",
@@ -789,7 +789,7 @@
       ],
       "matrix_free_supported": false,
       "operator_kernel": null,
-      "operator_note": "Public numeric U and strict pencil factors A,B via outputs 3 and 4; nonlinear functions indexed in metadata/eigenvalue_problems.json."
+      "operator_note": "Standard numeric output is unitary U; terminal pencil mode returns a struct with A, B, U; spectral mode uses the established descriptor contract."
     },
     {
       "id": "cayley_hermitian_pencil",
@@ -803,7 +803,7 @@
       ],
       "matrix_free_supported": false,
       "operator_kernel": null,
-      "operator_note": "Public numeric U and strict pencil factors A,B via outputs 3 and 4; nonlinear functions indexed in metadata/eigenvalue_problems.json."
+      "operator_note": "Standard numeric output is unitary U; terminal pencil mode returns a struct with A, B, U; spectral mode uses the established descriptor contract."
     },
     {
       "id": "left_weighted_unitary_pencil",
@@ -817,7 +817,7 @@
       ],
       "matrix_free_supported": false,
       "operator_kernel": null,
-      "operator_note": "Public numeric U and strict pencil factors A,B via outputs 3 and 4; nonlinear functions indexed in metadata/eigenvalue_problems.json."
+      "operator_note": "Standard numeric output is unitary U; terminal pencil mode returns a struct with A, B, U; spectral mode uses the established descriptor contract."
     }
   ],
   "probability_measures": [
