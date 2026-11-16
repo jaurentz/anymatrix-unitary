@@ -20,6 +20,7 @@
 %   periodic_cmv         Periodic real or complex Verblunsky coefficients.
 %   bernstein_szego_finite  General finite Bernstein-Szego rational circle weight.
 %   lee_yang_ising      Sparse twisted Floquet-CMV for Ising Lee-Yang zeros.
+%   scattering_zipper   General multichannel scattering zipper with boundary mixing.
 %
 % Random and signal-processing:
 %   haar_unitary         Haar random U(n) via phase-corrected complex QR.
@@ -43,6 +44,7 @@
 %
 % Quantum maps, walks and algorithms:
 %   split_step_walk      Periodic real-orthogonal two-state quantum walk.
+%   unitary_almost_mathieu  Magnetic quasiperiodic two-state quantum walk.
 %   dirac_automaton      Periodic 1D Dirac cellular automaton (size 2n).
 %   grover_operator      Grover reflections with exact degeneracies.
 %   quantum_baker        Balazs-Voros / Saraceno quantum baker map.
