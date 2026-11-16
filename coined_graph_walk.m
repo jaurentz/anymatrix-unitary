@@ -27,6 +27,7 @@ if nargin<2 || isempty(adjacency)
     adjacency=sparse(1:n-1,2:n,1,n,n);
     adjacency=adjacency+adjacency';
 end
+validateattributes(adjacency,{'numeric'},{'size',[n n]});
 [src,dst,reverse,~,starts]=um_graph_arc_data(adjacency);
 N=numel(src);
 if nargin<3 || isempty(coins),coins='grover';end
