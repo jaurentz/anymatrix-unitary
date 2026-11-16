@@ -37,6 +37,7 @@ if nargin<2 || isempty(lengths)
     if n>2,lengths(1,n)=1+sqrt(3)/5;end
     lengths=lengths+lengths';
 end
+validateattributes(lengths,{'numeric'},{'size',[n n]});
 [src,dst,reverse,~,starts]=um_graph_arc_data(lengths);
 N=numel(src);
 if nargin<3 || isempty(k),k=1;end
