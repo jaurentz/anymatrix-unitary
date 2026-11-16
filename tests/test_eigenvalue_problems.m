@@ -7,7 +7,7 @@ function test_pencil_invariants_and_property_contract(testCase)
 cases={...
 'mobius_unitary_pencil',{9,.7*exp(.3i)}; ...
 'unitary_delay_pencil',{3,[2;3;4],[]}; ...
-'finite_cmv_pencil',{7,[.2*ones(6,1);exp(.3i)]}; ...
+'finite_cmv',{7,[.2*ones(6,1);exp(.3i)]}; ...
 'block_cmv_pencil',{4,2,[],[]}; ...
 'floquet_factor_pencil',{5,.3,-.7}; ...
 'cayley_hermitian_pencil',{9,.3,.7,2}; ...
@@ -83,7 +83,7 @@ end
 function test_scalar_cmv_factor_equivalence(testCase)
 for n=[1 2 3 4 7 10]
     alpha=[.2*exp(1i*(1:n-1)');exp(.23i)];
-    [U,~,A,B]=finite_cmv_pencil(n,alpha);
+    [U,~,A,B]=finite_cmv(n,alpha);
     C=finite_cmv(n,alpha);
     verifyLessThan(testCase,norm(full(U-C),'fro'),2e-11);
     verifyLessThan(testCase,norm(full(B\A-C),'fro'),2e-11);
@@ -103,8 +103,9 @@ for n=[1 2 3 4]
     verifyLessThan(testCase,norm(full(U'*U-eye(q*n)),'fro'),1e-11);
     verifyLessThan(testCase,norm(full(B\A-U),'fro'),1e-11);
     verifyTrue(testCase,issparse(U));
-    verifyEqual(testCase,block_cmv_pencil(n,q, ...
-        alpha(:,:,1:max(0,n-1)),beta,'spectral').dimension,n*q);
+    spec=block_cmv_pencil(n,q, ...
+        alpha(:,:,1:max(0,n-1)),beta,'spectral');
+    verifyEqual(testCase,spec.dimension,n*q);
 end
 % The scalar specialization agrees with the canonical CMV implementation.
 v=[.2+.1i;-.18;exp(.2i)];
@@ -173,12 +174,16 @@ implemented=0;
 for j=1:numel(reg.families)
     e=reg.families(j);
     verifyTrue(testCase,any(strcmp(e.classification,classes)));
-    if strcmp(e.status,'implemented')
+    if strcmp(e.status,'implemented') || strcmp(e.status,'existing_generator')
         implemented=implemented+1;
         verifyTrue(testCase,any(strcmp(e.id,ids)));
         verifyTrue(testCase,isfile(fullfile(root,[e.id '.m'])));
-        verifyEqual(testCase,catalog.matrix_families( ...
-           strcmp(ids,e.id)).category,'eigenvalue_problems');
+        category=catalog.matrix_families(strcmp(ids,e.id)).category;
+        if strcmp(e.status,'existing_generator')
+            verifyEqual(testCase,category,'opuc');
+        else
+            verifyEqual(testCase,category,'eigenvalue_problems');
+        end
     else
         verifyFalse(testCase,any(strcmp(e.id,ids)), ...
             'External NEPs must not be labeled as unitary matrix generators.');
