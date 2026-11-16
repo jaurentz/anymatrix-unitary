@@ -14,7 +14,9 @@ cases={...
 'left_weighted_unitary_pencil',{9,1e7}};
 for j=1:size(cases,1)
     name=cases{j,1};args=cases{j,2};
-    [U,props,A,B]=feval(name,args{:});
+    [U,props]=feval(name,args{:});
+    P=feval(name,args{:},'pencil'); A=P.A; B=P.B;
+    verifyEqual(testCase,U,P.U,'AbsTol',1e-12);
     N=size(U,1);
     verifyEqual(testCase,size(U),[N,N],name);
     verifyEqual(testCase,size(A),[N,N],name);
@@ -37,7 +39,8 @@ end
 function test_mobius_exact_and_poisson_limit(testCase)
 for n=[1 2 7 18]
     for a=[0 .4 .75*exp(.4i)]
-        [U,~,A,B]=mobius_unitary_pencil(n,a);
+        U=mobius_unitary_pencil(n,a);
+        P=mobius_unitary_pencil(n,a,'pencil');A=P.A;B=P.B;
         omega=exp(2i*pi*(0:n-1)'/n);
         z=(omega-a)./(1-conj(a)*omega);
         verifyLessThan(testCase,abs(trace(U)-sum(z)),5e-11*n);
@@ -59,7 +62,8 @@ function test_delay_secular_polynomial_and_scattering(testCase)
 for lengths={[1;1],[2;3],[1;3;2]}
     ell=lengths{1};m=numel(ell);N=sum(ell);
     S=discrete_fourier(m);
-    [U,~,A,B]=unitary_delay_pencil(m,ell,S);
+    U=unitary_delay_pencil(m,ell,S);
+    P=unitary_delay_pencil(m,ell,S,'pencil');A=P.A;B=P.B;
     verifyEqual(testCase,size(U),[N N]);
     verifyTrue(testCase,issparse(U));
     z0=0; p0=det(z0*eye(N)-full(U));
@@ -83,7 +87,8 @@ end
 function test_scalar_cmv_factor_equivalence(testCase)
 for n=[1 2 3 4 7 10]
     alpha=[.2*exp(1i*(1:n-1)');exp(.23i)];
-    [U,~,A,B]=finite_cmv(n,alpha);
+    U=finite_cmv(n,alpha);
+    P=finite_cmv(n,alpha,'pencil');A=P.A;B=P.B;
     C=finite_cmv(n,alpha);
     verifyLessThan(testCase,norm(full(U-C),'fro'),2e-11);
     verifyLessThan(testCase,norm(full(B\A-C),'fro'),2e-11);
@@ -99,7 +104,9 @@ alpha(:,:,2)=[0,.27;-.11i,.08];
 alpha(:,:,3)=[.18,.01;-.1,.2i];
 beta=[0,1;-1,0];
 for n=[1 2 3 4]
-    [U,~,A,B]=block_cmv_pencil(n,q,alpha(:,:,1:max(0,n-1)),beta);
+    U=block_cmv_pencil(n,q,alpha(:,:,1:max(0,n-1)),beta);
+    P=block_cmv_pencil(n,q,alpha(:,:,1:max(0,n-1)),beta,'pencil');
+    A=P.A;B=P.B;
     verifyLessThan(testCase,norm(full(U'*U-eye(q*n)),'fro'),1e-11);
     verifyLessThan(testCase,norm(full(B\A-U),'fro'),1e-11);
     verifyTrue(testCase,issparse(U));
@@ -115,13 +122,15 @@ end
 
 function test_cayley_and_floquet_compatibility(testCase)
 for n=[1 2 5 9]
-    [U,~,A,B]=cayley_hermitian_pencil(n,.1,.3,.8);
+    U=cayley_hermitian_pencil(n,.1,.3,.8);
+    P=cayley_hermitian_pencil(n,.1,.3,.8,'pencil');A=P.A;B=P.B;
     V=cayley_jacobi(n,.1,.3,.8);
     verifyLessThan(testCase,norm(full(U-V),'fro'),3e-11*n);
     verifyLessThan(testCase,norm(full(A*A'-B*B'),'fro'),3e-11*n);
 end
 for n=[1 2 3 6]
-    [U,~,A,B]=floquet_factor_pencil(n,.43,-.61);
+    U=floquet_factor_pencil(n,.43,-.61);
+    P=floquet_factor_pencil(n,.43,-.61,'pencil');A=P.A;B=P.B;
     V=split_step_walk(n,.43,-.61);
     verifyLessThan(testCase,norm(full(U-V),'fro'),5e-12*n);
     verifyLessThan(testCase,norm(full(B\A-V),'fro'),5e-12*n);
@@ -131,7 +140,8 @@ end
 function test_weighted_ill_scaled_pencil(testCase)
 for n=[1 2 9]
     for kappa=[1,1e4,1e8]
-        [U,~,A,B]=left_weighted_unitary_pencil(n,kappa);
+        U=left_weighted_unitary_pencil(n,kappa);
+        P=left_weighted_unitary_pencil(n,kappa,'pencil');A=P.A;B=P.B;
         verifyEqual(testCase,U,cycle_shift(n));
         verifyLessThan(testCase,norm(full(A*A'-B*B'),'fro')/ ...
             max(1,norm(full(B*B'),'fro')),2e-12);
