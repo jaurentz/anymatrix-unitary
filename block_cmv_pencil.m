@@ -12,6 +12,7 @@ function [U,properties,A,B] = block_cmv_pencil(n,q,alpha,beta,mode)
 %   For Q=1 the result agrees with FINITE_CMV (same closure convention).
 %   Matrix-valued OPUC: Damanik, Pushnitski and Simon (2008).
 %   [59] https://arxiv.org/abs/0711.2703
+%   [67] https://doi.org/10.1016/j.laa.2019.11.015
 properties={'square','unitary','normal','sparse','banded','scalable', ...
     'parameter-dependent'};
 if nargin==0,U=[];A=[];B=[];return;end
