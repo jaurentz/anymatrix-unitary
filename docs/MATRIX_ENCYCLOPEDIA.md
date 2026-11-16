@@ -1111,8 +1111,8 @@ U=B^{-1}A\in U(N)
 ```
 
 This is distinct from `A*B=B*A`, `A'*A=B'*B`, or reciprocal eigenvalue
-pairing. All seven entries below are **Anymatrix-compatible numeric unitary
-matrices by default**; optional third/fourth outputs give the actual pencil
+pairing. All seven formulations below are **Anymatrix-compatible numeric unitary
+matrices by default**, including the existing `finite_cmv`; optional third/fourth outputs give the actual pencil
 coefficients `A,B`. The extra
 [eigenvalue-problem registry](../metadata/eigenvalue_problems.json) separately
 classifies nonlinear functions and external nonunitary examples.
@@ -1161,7 +1161,7 @@ transcendental quantum graphs with incommensurate metric lengths.
 **Applications:** quantum-graph scattering; lossless feedback delay
 networks. **References:** [58, 60].
 
-### Scalar CMV factor pencil — [`finite_cmv_pencil.m`](../finite_cmv_pencil.m)
+### Scalar CMV factor pencil — [`finite_cmv.m`](../finite_cmv.m)
 
 **Order:** `n`; interior Verblunsky coefficients in the open disk, final
 coefficient unimodular. Take the existing finite-CMV factorization
