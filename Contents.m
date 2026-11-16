@@ -53,6 +53,7 @@
 %   quantum_baker        Balazs-Voros / Saraceno quantum baker map.
 %   kicked_harper        Finite-torus kicked Harper Floquet map.
 %   kicked_top           Spin-j quantum kicked top.
+%   extended_lipkin_propagator  Nuclear two-level boson phase-transition evolution.
 %   floquet_ising        Integrable kicked transverse-field Ising chain.
 %   selfdual_kicked_ising Self-dual kicked Ising with longitudinal fields.
 %   driven_kitaev        Two-step driven Kitaev BdG operator.
