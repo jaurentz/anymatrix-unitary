@@ -26,10 +26,6 @@ switch family
         S=unknown_descriptor(n,sum(delays));
         S.notes='Integer-delay network unitary lift; roots of the nonlinear secular determinant.';
         S.reference='Kottos and Smilansky, Ann. Phys. 274 (1999)';
-    case 'finite_cmv_pencil'
-        S=unknown_descriptor(n,n);
-        S.notes='Spectrum matches the scalar paraorthogonal finite CMV closure.';
-        S.reference='Cantero, Moral and Velazquez, Linear Algebra Appl. 362 (2003)';
     case 'block_cmv_pencil'
         q=varargin{1};
         S=unknown_descriptor(n,n*q);
