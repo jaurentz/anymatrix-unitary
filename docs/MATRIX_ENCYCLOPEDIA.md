@@ -1112,8 +1112,9 @@ U=B^{-1}A\in U(N)
 
 This is distinct from `A*B=B*A`, `A'*A=B'*B`, or reciprocal eigenvalue
 pairing. All seven formulations below are **Anymatrix-compatible numeric unitary
-matrices by default**, including the existing `finite_cmv`; optional third/fourth outputs give the actual pencil
-coefficients `A,B`. The extra
+matrices by default**, including the existing `finite_cmv`. Terminal `'pencil'` mode returns
+`P.A`, `P.B`, and `P.U`, without changing the standard two-output
+Anymatrix generator interface. The extra
 [eigenvalue-problem registry](../metadata/eigenvalue_problems.json) separately
 classifies nonlinear functions and external nonunitary examples.
 
@@ -1167,7 +1168,7 @@ networks. **References:** [58, 60].
 coefficient unimodular. Take the existing finite-CMV factorization
 `C=LM`, with sparse alternating unitary `2-by-2` core blocks and
 terminal closure. The existing `finite_cmv` generator exposes the generalized coefficients
-`A=M`, `B=L^*` as optional third/fourth outputs, satisfying `B\\A=C`.
+`A=M`, `B=L^*` via terminal `'pencil'` mode, satisfying `B\\A=C`.
 Its circle spectrum consists of scalar paraorthogonal polynomial zeros;
 no duplicate generator is registered.
 **References:** [6, 7].
