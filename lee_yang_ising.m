@@ -35,6 +35,8 @@ function [U,properties] = lee_yang_ising(n,couplings,pattern,mode)
 %   zeros of the partition function of the 1D Ising model via the
 %   Schwartzman homomorphism, Indag. Math. 35 (2024), 813-836,
 %   DOI 10.1016/j.indag.2023.05.004; Secs. 2-3, Example 5.2.
+%   Background: A. Bunse-Gerstner and L. Elsner, Schur parameter pencils,
+%   DOI 10.1016/0024-3795(91)90402-I.
 %
 %   Standard [U,PROPERTIES] signature preserves Anymatrix discovery.
 properties={'square','unitary','normal','sparse','scalable','parameter-dependent'};

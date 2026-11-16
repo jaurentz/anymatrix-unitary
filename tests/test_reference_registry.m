@@ -10,8 +10,8 @@ catalog=jsondecode(fileread(fullfile(root,'metadata','catalog.json')));
 registry=jsondecode(fileread(fullfile(root,'metadata','references.json')));
 encyclopedia=fileread(fullfile(root,'docs','MATRIX_ENCYCLOPEDIA.md'));
 verifyEqual(testCase,catalog.reference_registry,'metadata/references.json');
-verifyEqual(testCase,numel(registry.references),68);
-for number=1:68
+verifyEqual(testCase,numel(registry.references),70);
+for number=1:numel(registry.references)
     ref=get_reference(registry,number);
     verifyEqual(testCase,ref.number,number);
     verifyTrue(testCase,contains(encyclopedia,sprintf('%d. ',number)));
