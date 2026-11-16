@@ -1,10 +1,10 @@
-function [U,properties,A,B] = block_cmv_pencil(n,q,alpha,beta,mode)
+function [U,properties] = block_cmv_pencil(n,q,alpha,beta,mode)
 %BLOCK_CMV_PENCIL Strict unitary block-CMV pencil, order N*Q.
 %   U=BLOCK_CMV_PENCIL(N,Q,ALPHA,BETA) uses an array ALPHA of shape
 %   Q-by-Q-by-(N-1) of strictly contractive matrix Verblunsky blocks
 %   and a terminal unitary BETA (Q-by-Q). Default ALPHA=0, BETA=I.
 %   L,M are block-diagonal unitaries with C=L*M, and
-%   [U,PROPERTIES,A,B] returns A=M and B=L' so that B\A=C.
+%   P = FEVAL(NAME,...,'pencil') returns A=M and B=L' so that B\A=C.
 %   The 2Q-by-2Q local unitary uses
 %       [alpha',sqrt(I-alpha'*alpha);
 %        sqrt(I-alpha*alpha'),-alpha].
@@ -13,6 +13,8 @@ function [U,properties,A,B] = block_cmv_pencil(n,q,alpha,beta,mode)
 %   Matrix-valued OPUC: Damanik, Pushnitski and Simon (2008).
 %   [59] https://arxiv.org/abs/0711.2703
 %   [67] https://doi.org/10.1016/j.laa.2019.11.015
+%   Terminal 'pencil' mode returns struct P with P.A, P.B, P.U.
+%   Standard [U,PROPERTIES] signature preserves Anymatrix discovery.
 properties={'square','unitary','normal','sparse','banded','scalable', ...
     'parameter-dependent'};
 if nargin==0,U=[];A=[];B=[];return;end
@@ -40,8 +42,8 @@ if strcmpi(char(mode),'spectral')
     U=ep_spectral_reference('block_cmv_pencil',n,q);
     A=[];B=[];return
 end
-if ~strcmpi(char(mode),'matrix')
-    error('block_cmv_pencil:Mode','Supported modes: matrix, spectral.');
+if ~any(strcmpi(char(mode),{'matrix','pencil'}))
+    error('block_cmv_pencil:Mode','Supported modes: matrix, pencil, spectral.');
 end
 N=n*q;L=speye(N);M=speye(N);
 for k=1:n-1
@@ -60,4 +62,7 @@ idx=(n-1)*q+(1:q);
 if mod(n,2)==1,L(idx,idx)=beta';else,M(idx,idx)=beta';end
 A=M;B=L';
 U=L*M;
+if strcmpi(char(mode),'pencil')
+    U=struct('A',A,'B',B,'U',U);
+end
 end
