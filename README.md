@@ -4,7 +4,7 @@ A MATLAB collection of finite **unitary and orthogonal test matrices**, designed
 an external group for [Anymatrix](https://github.com/north-numerical-computing/anymatrix).
 The repository is organized around reproducible mathematical constructions,
 known spectral information, and executable regression tests. It contains
-57 generators; additional benchmark families are under development.
+59 generators; additional benchmark families are under development.
 
 **Status:** development collection with MATLAB-only tests. Automated MATLAB
 regression and Anymatrix integration tests run on GitHub Actions after every
@@ -47,7 +47,7 @@ assertSuccess(results)
 
 ## Matrix generator interfaces
 
-The collection currently has **57 public generators**. Each has a complete
+The collection currently has **59 public generators**. Each has a complete
 entry with formulas, spectral information, applications, parameter conventions,
 and references in the [matrix encyclopedia](docs/MATRIX_ENCYCLOPEDIA.md).
 The [mathematical notes](docs/MATHEMATICS.md) explain the shared OPUC engine.
@@ -55,10 +55,10 @@ The [mathematical notes](docs/MATHEMATICS.md) explain the shared OPUC engine.
 | Category | Generators |
 |---|---|
 | Prescribed spectra and circulants | `cycle_shift`, `weighted_shift`, `diagonal_phase`, `phase_circulant`, `cycle_propagator`, `orthogonal_blocks` |
-| OPUC / Szegő / core matrices | `finite_cmv`, `opuc_matrix`, `jacobi_szego`, `bernstein_szego`, `circular_beta`, `circular_jacobi`, `rogers_szego`, `geronimus_cmv`, `periodic_cmv`, `bernstein_szego_finite`, `lee_yang_ising` |
+| OPUC / Szegő / core matrices | `finite_cmv`, `opuc_matrix`, `jacobi_szego`, `bernstein_szego`, `circular_beta`, `circular_jacobi`, `rogers_szego`, `geronimus_cmv`, `periodic_cmv`, `bernstein_szego_finite`, `lee_yang_ising`, `scattering_zipper` |
 | Random and signal-processing | `haar_unitary`, `haar_orthogonal`, `haar_wavelet` |
 | Signal-processing transforms | `orthogonal_dct`, `discrete_hartley`, `cazac_circulant`, `fresnel_transform`, `affine_fourier`, `finite_zak`, `time_frequency_shift`, `periodic_hilbert`, `discrete_fourier`, `discrete_sine`, `walsh_hadamard`, `dpss_transform`, `graph_fourier` |
-| Quantum maps, walks, and algorithms | `split_step_walk`, `dirac_automaton`, `grover_operator`, `quantum_baker`, `kicked_harper`, `kicked_top`, `floquet_ising`, `selfdual_kicked_ising`, `driven_kitaev`, `kicked_rotor`, `dual_unitary_circuit`, `xxz_floquet`, `kicked_bose_hubbard`, `jaynes_cummings`, `chalker_coddington` |
+| Quantum maps, walks, and algorithms | `split_step_walk`, `dirac_automaton`, `grover_operator`, `quantum_baker`, `kicked_harper`, `kicked_top`, `floquet_ising`, `selfdual_kicked_ising`, `driven_kitaev`, `kicked_rotor`, `dual_unitary_circuit`, `xxz_floquet`, `kicked_bose_hubbard`, `jaynes_cummings`, `chalker_coddington`, `unitary_almost_mathieu` |
 | Matrix functions and dilations | `cayley_jacobi`, `polar_unitary`, `julia_unitary` |
 | Strict unitary eigenvalue pencils | `mobius_unitary_pencil`, `unitary_delay_pencil`, `block_cmv_pencil`, `floquet_factor_pencil`, `cayley_hermitian_pencil`, `left_weighted_unitary_pencil` |
 
@@ -67,7 +67,7 @@ generators also accept `'operator'` as their final argument and return a
 function handle supporting forward and conjugate-transpose actions, multiple
 right-hand sides, and dimension queries. See [matrix-free documentation](docs/MATRIX_FREE.md).
 `split_step_walk`, `dirac_automaton`, `driven_kitaev`, and `julia_unitary` return order `2*n`
-for an input physical size `n`. `floquet_ising` and `selfdual_kicked_ising` return order `2^n`, capped at 11 spins for dense assembly. `dual_unitary_circuit` and `xxz_floquet` also return order `2^n`, capped at 10 spins. `driven_kitaev` is a 2n-dimensional BdG operator, not the full Fock-space propagator. `kicked_bose_hubbard(n)` has order `n+1` for n bosons; `jaynes_cummings(n)` has order `2*(n+1)` for a photon cutoff n; `chalker_coddington(nx,ny)` has order `4*nx*ny`. `lee_yang_ising(n)` has order `2*n` and represents the zeros of a classical Ising partition function through a twisted Floquet-CMV matrix. `quantum_baker` requires even order;
+for an input physical size `n`. `floquet_ising` and `selfdual_kicked_ising` return order `2^n`, capped at 11 spins for dense assembly. `dual_unitary_circuit` and `xxz_floquet` also return order `2^n`, capped at 10 spins. `driven_kitaev` is a 2n-dimensional BdG operator, not the full Fock-space propagator. `kicked_bose_hubbard(n)` has order `n+1` for n bosons; `jaynes_cummings(n)` has order `2*(n+1)` for a photon cutoff n; `chalker_coddington(nx,ny)` has order `4*nx*ny`. `lee_yang_ising(n)` has order `2*n` and represents the zeros of a classical Ising partition function through a twisted Floquet-CMV matrix. `scattering_zipper(n,q)` has order `n*q` (n even) and `unitary_almost_mathieu(n)` has order `2*n`; irrational flux in the latter produces a finite periodically closed window, not a literally periodic irrational lattice. `quantum_baker` requires even order;
 `haar_wavelet` requires power-of-two order. MATLAB R2020b or newer is required.
 
 **Spectral reference data:** exact eigenvalues are provided or described for
