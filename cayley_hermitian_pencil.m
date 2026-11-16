@@ -1,4 +1,4 @@
-function [U,properties,A,B] = cayley_hermitian_pencil(n,a,b,t,mode)
+function [U,properties] = cayley_hermitian_pencil(n,a,b,t,mode)
 %CAYLEY_HERMITIAN_PENCIL Strict unitary Cayley pencil from a Jacobi matrix.
 %   For real symmetric Jacobi H on [-2,2], A=H-1i*T*I and
 %   B=H+1i*T*I, T>0. Then B\A is unitary and AA'=BB'.
@@ -7,6 +7,8 @@ function [U,properties,A,B] = cayley_hermitian_pencil(n,a,b,t,mode)
 %   Default Jacobi exponents a=b=0, T=1.
 %   Aurentz et al., ETNA 46 (2017), 447-459.
 %   [23] https://www.maths.tcd.ie/EMIS/journals/ETNA/volumes/2011-2020/vol46/abstract_vol46_pp447-459.html?pages=447-459&vol=46
+%   Terminal 'pencil' mode returns struct P with P.A, P.B, P.U.
+%   Standard [U,PROPERTIES] signature preserves Anymatrix discovery.
 properties={'square','unitary','normal','complex','scalable', ...
     'eigenvalues','parameter-dependent'};
 if nargin==0,U=[];A=[];B=[];return;end
@@ -22,8 +24,8 @@ if strcmpi(char(mode),'spectral')
     U=ep_spectral_reference('cayley_hermitian_pencil',n,a,b,t);
     A=[];B=[];return
 end
-if ~strcmpi(char(mode),'matrix')
-    error('cayley_hermitian_pencil:Mode','Supported modes: matrix, spectral.');
+if ~any(strcmpi(char(mode),{'matrix','pencil'}))
+    error('cayley_hermitian_pencil:Mode','Supported modes: matrix, pencil, spectral.');
 end
 [d,s]=js_jacobi_recurrence(a,b,n);
 H=spdiags(d(:),0,n,n);
@@ -33,4 +35,7 @@ end
 A=H-1i*t*speye(n);
 B=H+1i*t*speye(n);
 U=B\A;
+if strcmpi(char(mode),'pencil')
+    U=struct('A',A,'B',B,'U',U);
+end
 end
