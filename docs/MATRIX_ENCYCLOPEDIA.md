@@ -482,6 +482,48 @@ These rational weights give arbitrarily chosen real or complex
 Schur parameters with an exact and evaluable cyclic-vector density.
 **References:** [5, 12].
 
+### Lee-Yang Ising zeros via twisted Floquet-CMV — [`lee_yang_ising.m`](../lee_yang_ising.m)
+
+**Order:** `2*n` for `n` Ising spins. **Application:** zeros of the partition
+function of a one-dimensional ferromagnetic Ising model with periodic spin
+boundary conditions. Given positive dimensionless magnetic couplings
+`p_j=J_j/(k_B*T)`, set the `2*n` Verblunsky parameters
+
+```math
+\alpha_{2j}=\exp(-2p_{j+1}),\qquad \alpha_{2j+1}=0,
+\quad 0\leq j<n.
+```
+
+They define an **extended periodic** CMV operator, whose finite Floquet
+restriction at the *twisted* boundary phase `theta=pi/2` is a sparse
+unitary `U=F_{2n}(pi/2)=L*M`. This is **not** the standard finite-CMV
+paraorthogonal truncation: the cyclic boundary core uses the nonterminal
+coefficient `alpha_{2n-1}=0` and a nontrivial complex twist. The
+strict pencil `M-z*L'` is returned by terminal `'pencil'` mode.
+
+The exact finite spectrum is the set of zeros, counted with multiplicity,
+of the Laurent polynomial
+
+```math
+Z_n(z)=\sum_{s\in\{-1,+1\}^n}
+\exp\!\left(\sum_{j=1}^n p_j s_j s_{j+1}\right)
+z^{\sum_{j=1}^n s_j},\qquad s_{n+1}=s_1.
+```
+
+Thus `z^n Z_n(z)` has degree `2n` and contains only even powers.
+Unlike the Floquet spin-chain propagators elsewhere in this collection,
+this is a **classical statistical-mechanics partition-function** problem
+whose complex-field zeros are realized as eigenvalues of a unitary matrix.
+
+**Presets:** Fibonacci couplings `a->ab, b->a`, with
+`(p_a,p_b)=(2/3,1/100)` as in Example 5.2 of [70]; uniform,
+alternating, and explicitly supplied positive coupling vectors. The
+Fibonacci limit can exhibit Cantor-type gaps and gap labels. The
+`'spectral'` metadata does not claim a universal analytic trace density.
+The construction uses the periodic Floquet boundary formulas and
+propositions 2.5/3.2 of [70], with their connection to Schur parameter
+pencils discussed in [69]. **References:** [69, 70].
+
 ## G. Floquet spin chains and driven fermionic systems
 
 ### 28. Quantum kicked top — [`kicked_top.m`](../kicked_top.m)
@@ -1347,3 +1389,5 @@ links remain accessible through the registry.
 66. P. Dörfler and G. Schmeisser, “Construction of unitary and normal companion matrices,” *Linear Algebra Appl.* **202** (1994), 193–220. [DOI](https://doi.org/10.1016/0024-3795(94)90190-2).
 67. E. Fuentes and L. E. Garza, “CMV block matrices for symmetric matrix measures on the unit circle,” *Linear Algebra Appl.* **587** (2020), 314–333. [DOI](https://doi.org/10.1016/j.laa.2019.11.015).
 68. B. Gutkin and U. Smilansky, “Can one hear the shape of a graph?” *J. Phys. A* **34** (2001), 6061–6068. [DOI](https://doi.org/10.1088/0305-4470/34/31/301).
+69. A. Bunse-Gerstner and L. Elsner, “Schur parameter pencils for the solution of the unitary eigenproblem,” *Linear Algebra Appl.* **154–156** (1991), 741–778. [DOI](https://doi.org/10.1016/0024-3795(91)90402-I).
+70. D. Damanik, M. Embree and J. Fillman, “Gap labels for zeros of the partition function of the 1D Ising model via the Schwartzman homomorphism,” *Indag. Math.* **35** (2024), 813–836. [DOI](https://doi.org/10.1016/j.indag.2023.05.004); [preprint](https://arxiv.org/abs/2211.01558).

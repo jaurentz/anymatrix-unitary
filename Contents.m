@@ -19,6 +19,7 @@
 %   geronimus_cmv        Constant real or complex Verblunsky coefficients.
 %   periodic_cmv         Periodic real or complex Verblunsky coefficients.
 %   bernstein_szego_finite  General finite Bernstein-Szego rational circle weight.
+%   lee_yang_ising      Sparse twisted Floquet-CMV for Ising Lee-Yang zeros.
 %
 % Random and signal-processing:
 %   haar_unitary         Haar random U(n) via phase-corrected complex QR.

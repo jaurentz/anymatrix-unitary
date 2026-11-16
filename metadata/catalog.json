@@ -818,6 +818,21 @@
       "matrix_free_supported": false,
       "operator_kernel": null,
       "operator_note": "Standard numeric output is unitary U; terminal pencil mode returns a struct with A, B, U; spectral mode uses the established descriptor contract."
+    },
+    {
+      "id": "lee_yang_ising",
+      "status": "implemented",
+      "category": "opuc",
+      "matrix_order": "2n for n Ising spins",
+      "representation": "sparse periodic Floquet-CMV with pi/2 twist",
+      "spectral_reference": "exact Lee-Yang partition-function zeros; Fibonacci gap labels (no general closed-form density)",
+      "encyclopedia_references": [
+        69,
+        70
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": null,
+      "operator_note": "Sparse O(n) nonzeros; source-specific physical coupling patterns and periodic twist distinguish it from finite paraorthogonal CMV closure."
     }
   ],
   "probability_measures": [
