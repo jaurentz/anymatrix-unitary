@@ -105,7 +105,7 @@
       ],
       "matrix_free_supported": true,
       "operator_kernel": "um_core_apply",
-      "operator_note": "O(n) adjacent core sequence; sparse CMV still available by default."
+      "operator_note": "O(n) adjacent core sequence; sparse CMV still available by default. Third/fourth outputs now optionally expose the strict unitary CMV pencil A=M,B=L* in numeric mode."
     },
     {
       "id": "opuc_matrix",
@@ -757,21 +757,6 @@
       "encyclopedia_references": [
         58,
         60
-      ],
-      "matrix_free_supported": false,
-      "operator_kernel": null,
-      "operator_note": "Public numeric U and strict pencil factors A,B via outputs 3 and 4; nonlinear functions indexed in metadata/eigenvalue_problems.json."
-    },
-    {
-      "id": "finite_cmv_pencil",
-      "status": "implemented",
-      "category": "eigenvalue_problems",
-      "matrix_order": "n",
-      "representation": "sparse block-diagonal factor pencil of scalar CMV",
-      "spectral_reference": "paraorthogonal circle zeros; equals existing finite_cmv",
-      "encyclopedia_references": [
-        6,
-        7
       ],
       "matrix_free_supported": false,
       "operator_kernel": null,
