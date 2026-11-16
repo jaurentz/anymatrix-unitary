@@ -1,4 +1,4 @@
-function [U,properties,A,B] = unitary_delay_pencil(n,delays,S,mode)
+function [U,properties] = unitary_delay_pencil(n,delays,S,mode)
 %UNITARY_DELAY_PENCIL Unitary lift of a lossless multichannel delay NEP.
 %   U=UNITARY_DELAY_PENCIL(N,DELAYS,S) returns a unitary matrix of order
 %   sum(DELAYS), for positive integer delay lengths DELAYS (N entries)
@@ -6,13 +6,15 @@ function [U,properties,A,B] = unitary_delay_pencil(n,delays,S,mode)
 %   The nonlinear secular equation is
 %       det(I-diag(z.^DELAYS)*S)=0.
 %   These are exactly the eigenvalues of U (including multiplicity).
-%   [U,PROPERTIES,A,B] returns a strict pencil A-z*B with
+%   P = FEVAL(NAME,...,'pencil') returns a strict pencil A-z*B with
 %   B\A=U and A*A'=B*B'. A,B are independently unitary.
 %   Defaults: DELAYS=(1:N)', S=DISCRETE_FOURIER(N).
 %   The integer-delay finite lift is a benchmark realization of
 %   lossless quantum-graph bond scattering/secular equations.
 %   [58] https://doi.org/10.1006/aphy.1999.5904
 %   [60] https://doi.org/10.1109/89.554269
+%   Terminal 'pencil' mode returns struct P with P.A, P.B, P.U.
+%   Standard [U,PROPERTIES] signature preserves Anymatrix discovery.
 properties={'square','unitary','normal','sparse','scalable','parameter-dependent'};
 if nargin==0,U=[];A=[];B=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','positive','finite'});
@@ -38,8 +40,8 @@ if strcmpi(char(mode),'spectral')
     U=ep_spectral_reference('unitary_delay_pencil',n,delays);
     A=[];B=[];return
 end
-if ~strcmpi(char(mode),'matrix')
-    error('unitary_delay_pencil:Mode','Supported modes: matrix, spectral.');
+if ~any(strcmpi(char(mode),{'matrix','pencil'}))
+    error('unitary_delay_pencil:Mode','Supported modes: matrix, pencil, spectral.');
 end
 if isempty(S),S=discrete_fourier(n);end
 cuts=[0;cumsum(delays)];
@@ -54,4 +56,7 @@ C=speye(N);
 C(terminal,terminal)=S';
 A=C;B=P';
 U=P*C;
+if strcmpi(char(mode),'pencil')
+    U=struct('A',A,'B',B,'U',U);
+end
 end
