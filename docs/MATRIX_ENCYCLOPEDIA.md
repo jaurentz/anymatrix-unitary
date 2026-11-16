@@ -811,6 +811,58 @@ existing real constant-coin `split_step_walk`, this benchmark
 has complex magnetic quasiperiodic coins and two independent
 couplings. **Reference:** [72].
 
+### Agassi nuclear pairing and particle-hole propagator — [`agassi_propagator.m`](../agassi_propagator.m)
+
+**Order:** `2^(4j)` in the full Fock space of `4j` fermionic orbitals,
+or `nchoosek(4j,N)` in a selected invariant `N`-particle sector.
+The original Agassi model combines two levels (upper/lower), each with
+`2j` degenerate magnetic substates, in a genuine **fermionic** model.
+The Hamiltonian of Pérez-Fernández et al. [75], Eqs. (1)-(6), is
+
+```math
+H=\varepsilon J_0-g\sum_{\sigma,\sigma'=\pm1}
+A_\sigma^*A_{\sigma'}
+-\frac{V}{2}(J_+^2+J_-^2),
+```
+
+with `J_+=sum_m c_(+,m)^* c_(-,m)`,
+`J_-=J_+^*`, `J_0=(N_+-N_-)/2` and
+`A_sigma^*=sum_(m>0)c_(sigma,m)^*c_(sigma,-m)^*`.
+All fermionic creation/annihilation operators use the
+Jordan--Wigner sign convention in an occupation-number basis.
+The Hamiltonian is sparse Hermitian and commutes with total
+fermion number `N_++N_-`. Its propagator
+
+```math
+U(t)=\exp(-itH)
+```
+
+is unitary and generally dense. Parameter-dependent pairing `g`
+and particle-hole interactions `V` generate competing superconducting
+and deformed nuclear phases. These are structurally distinct from
+the bosonic extended-Lipkin model and the quantum spin-chain
+Floquet propagators already implemented.
+
+**Finite benchmarks:** `j=1` gives `4` orbitals and `16` full Fock
+states, matching the four-qubit simulation in [75]. That paper also
+gives an explicit Pauli representation (Eqs. (14)-(17)).
+The implemented fermionic and Pauli Hamiltonians are isospectral
+up to an unimportant constant energy shift in the respective
+occupation conventions, checked independently in the regression tests.
+Specifying `particles=2` for `j=1` restricts to a `6`-state invariant
+subspace. `j=2` gives up to `256` full Fock states or `70` states
+at half filling.
+
+When `g=V=0`, the eigenvalues are known exactly from diagonal
+occupations: `exp(-it*epsilon*(Nplus-Nminus)/2)`. For `t=0`,
+all eigenvalues equal one. Generic finite spectral data are otherwise
+marked unknown. The `'hamiltonian'` mode returns sparse `H`,
+and `'spectral'` provides the exact solvable limits without calling
+`eig` on the full propagator. The initial implementation restricts
+explicit unitary materialization to `j<=2` to avoid dense memory
+costs. **Reference:** [75].
+
+
 ### Extended Lipkin model: collective two-level nuclear dynamics — [`extended_lipkin_propagator.m`](../extended_lipkin_propagator.m)
 
 **Order:** `N+1` for a fixed population of `N>=1` identical two-level bosons,
@@ -1621,3 +1673,4 @@ links remain accessible through the registry.
 72. C. Cedzich, J. Fillman and D. C. Ong, “Almost Everything About the Unitary Almost Mathieu Operator,” *Commun. Math. Phys.* **403** (2023), 745–794. [DOI](https://doi.org/10.1007/s00220-023-04808-4); [preprint](https://arxiv.org/abs/2112.03216).
 73. D. Emms, S. Severini, R. C. Wilson and E. R. Hancock, “Coined quantum walks lift the cospectrality of graphs and trees,” *Pattern Recognition* **42** (2009), 1988–2002. [DOI](https://doi.org/10.1016/j.patcog.2008.10.025).
 74. S. Baid, Á. Sáiz, L. Lamata, P. Pérez-Fernández, A. M. Romero, A. Rios, J. M. Arias and J. E. García-Ramos, “Extended Lipkin model: Proposal for implementation in a quantum platform and machine learning analysis of its phase diagram,” *Phys. Rev. C* **110** (2024), 044318. [DOI](https://doi.org/10.1103/PhysRevC.110.044318); [preprint](https://arxiv.org/abs/2404.15558).
+75. P. Pérez-Fernández, J.-M. Arias, J.-E. García-Ramos and L. Lamata, “A digital quantum simulation of the Agassi model,” *Phys. Lett. B* **829** (2022), 137133. [DOI](https://doi.org/10.1016/j.physletb.2022.137133); [preprint](https://arxiv.org/abs/2105.02834).
