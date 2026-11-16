@@ -915,6 +915,74 @@ dynamics is governed by a time-independent nuclear shape-transition
 Hamiltonian with first- and second-neighbor couplings. **Reference:** [74].
 
 
+### Two-dimensional U(3) vibron ESQPT and symmetry-sector clustering — [`vibron_2d_esqpt.m`](../vibron_2d_esqpt.m)
+
+**Order:** `(N+1)(N+2)/2` in the fixed-total-boson-number `N`
+Hilbert space with one scalar boson `sigma` and two circular bosons
+`tau_+`, `tau_-`. Alternatively, specify conserved angular momentum
+`ell=n_+-n_-` for an individual `floor((N-|ell|)/2)+1` dimensional
+sector. The physical model describes bending vibrations and an
+excited-state quantum phase transition (ESQPT). It is a **U(3) model**,
+not another U(2) Lipkin parameterization.
+
+The model in [76], Eqs. (5)-(7), is
+
+```math
+H_N(\xi)=(1-\xi)n_\tau+\frac{\xi}{N}
+\left[N(N+1)I-W^2\right],\qquad
+n_\tau=n_++n_-,\quad 0\leq\xi\leq 1,
+```
+
+where `W^2=(D_+D_-+D_-D_+)/2+ell^2`,
+`D_+=sqrt(2)*(tau_+^* sigma-sigma^* tau_-)` and
+`D_-=D_+^*`. In a fixed `ell` sector use
+`t=n_tau=|ell|,|ell|+2,...,N` and
+`s=N-t`, `p=(t+ell)/2`, `m=(t-ell)/2`:
+
+```math
+(W^2)_{tt}=2st+2s+t+\ell^2,\qquad
+(W^2)_{t,t+2}=-2\sqrt{s(s-1)(p+1)(m+1)}.
+```
+
+Thus the sector Hamiltonian `H_(N,ell)` is **real symmetric
+tridiagonal**; the full Hamiltonian is block diagonal in
+`ell=-N,...,N`. We supply its unitary evolution
+`U(t)=exp(-itH)` in the same sector order. Its full matrix
+is sparse block diagonal, although each nontrivial exponential block
+is typically dense. `'hamiltonian'` exposes the sparse structured
+matrix without computing the exponential.
+
+**Exact finite limits:** At `xi=0`, the energies are `t=n_tau`.
+At `xi=1`, the SO(3) dynamical-symmetry label
+`omega=N,N-2,...,|ell|` gives
+
+```math
+E_{N,\ell,\omega}=\frac{N(N+1)-\omega(\omega+1)}{N},
+\qquad z_{N,\ell,\omega}(t)=e^{-itE_{N,\ell,\omega}}.
+```
+
+These formulas provide exact eigenphases and trace moments in
+`'spectral'` mode; `t=0` gives the identity for any `xi`.
+The generic finite eigenphase law is not claimed analytically known.
+
+**Clustered eigenphases:** For `xi>1/5` the broken-symmetry regime
+has an excited-state separatrix. Pairs of low-lying energies from
+`ell=0` and `ell=1` sectors approach one another **algebraically**
+as `N` increases. The comparable even/odd parity splittings of the
+U(2) Lipkin model can decrease **exponentially** (ultimately below
+floating-point resolution); see Fig. 2 of [76]. The `ell=+q`
+and `ell=-q` sector matrices themselves are exactly identical in
+this simplified Hamiltonian, a distinct symmetry degeneracy from the
+near-degeneracy of the `ell=0,1` sectors. Those distinctions matter
+for structured eigensolvers and spectral-density estimators.
+
+The example [`examples/vibron_esqpt_sector_gaps.m`](../examples/vibron_esqpt_sector_gaps.m)
+compares the sector spectra, unit-circle eigenphases, and finite-size
+cross-sector gaps without presupposing an asymptotic density.
+Independent tests construct `D_+` in the three-boson occupation
+basis and verify the tridiagonal blocks and solvable SO(3) limits.
+**Reference:** [76].
+
 ## I. Bosonic, cavity-QED, and quantum Hall network operators
 
 ### 35. Kicked Bose–Hubbard dimer — [`kicked_bose_hubbard.m`](../kicked_bose_hubbard.m)
@@ -1674,3 +1742,4 @@ links remain accessible through the registry.
 73. D. Emms, S. Severini, R. C. Wilson and E. R. Hancock, “Coined quantum walks lift the cospectrality of graphs and trees,” *Pattern Recognition* **42** (2009), 1988–2002. [DOI](https://doi.org/10.1016/j.patcog.2008.10.025).
 74. S. Baid, Á. Sáiz, L. Lamata, P. Pérez-Fernández, A. M. Romero, A. Rios, J. M. Arias and J. E. García-Ramos, “Extended Lipkin model: Proposal for implementation in a quantum platform and machine learning analysis of its phase diagram,” *Phys. Rev. C* **110** (2024), 044318. [DOI](https://doi.org/10.1103/PhysRevC.110.044318); [preprint](https://arxiv.org/abs/2404.15558).
 75. P. Pérez-Fernández, J.-M. Arias, J.-E. García-Ramos and L. Lamata, “A digital quantum simulation of the Agassi model,” *Phys. Lett. B* **829** (2022), 137133. [DOI](https://doi.org/10.1016/j.physletb.2022.137133); [preprint](https://arxiv.org/abs/2105.02834).
+76. J. Khalouf-Rivera, Q. Wang, L. F. Santos, J.-E. García-Ramos, M. Carvajal and F. Pérez-Bernal, “Degeneracy in excited-state quantum phase transitions of two-level bosonic models and its influence on system dynamics,” *Phys. Rev. A* **109** (2024), 062219. [DOI](https://doi.org/10.1103/PhysRevA.109.062219); [preprint](https://arxiv.org/abs/2303.16551).
