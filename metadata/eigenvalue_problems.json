@@ -108,13 +108,14 @@
       "id": "quantum_graph_secular",
       "classification": "unitary_on_contour",
       "problem_type": "transcendental_nep",
-      "status": "documented_not_generator",
+      "status": "represented_by_metric_quantum_graph",
       "reference_ids": [
         58,
         68
       ],
-      "function": "T(k)=I-diag(exp(i*k*lengths))*S; k real",
-      "note": "For incommensurate lengths there is no finite polynomial pencil; physical k roots are not phases of one fixed U"
+      "function": "T(k)=I-D(k)S, D(k)=diag(exp(i*k*edge_lengths)), S local vertex-unitary bond scattering",
+      "note": "Implemented metric_quantum_graph.m yields U(k) unitary for each real k, plus analytic T(z) and det(T(z)) in 'secular' mode. Incommensurate lengths have no general finite polynomial lift; the physical k roots are not eigenphases of a fixed U(k).",
+      "generator": "metric_quantum_graph.m"
     },
     {
       "id": "blaschke_potapov_secular",
