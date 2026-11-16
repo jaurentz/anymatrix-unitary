@@ -49,7 +49,7 @@ verifyTrue(tc,contains(section,'P\mathcal{U}(T)^kP^*'));
 end
 
 function test_affine_fourier_equation_renders(tc)
-% A componentwise chirp definition avoids unsupported nested math operators.
+% Componentwise chirp notation should stay compatible with GitHub math.
 root=fileparts(fileparts(mfilename('fullpath')));
 s=fileread(fullfile(root,'docs','MATRIX_ENCYCLOPEDIA.md'));
 a=strfind(s,'### Affine Fourier / AFDM modulation');
@@ -57,20 +57,9 @@ b=strfind(s,'### Finite Zak transforms');
 verifyEqual(tc,numel(a),1);
 verifyEqual(tc,numel(b),1);
 section=s(a:b-1);
-verifyEqual(tc,numel(regexp(section,'(?m)^```math\r?
-root=fileparts(fileparts(mfilename('fullpath')));
-s=fileread(fullfile(root,'docs','MATRIX_ENCYCLOPEDIA.md'));
-verifyTrue(tc,contains(s,'e_{n+1}=e_1'));
-verifyTrue(tc,contains(s,'\mathbf{1}_{n\mid k}'));
-verifyTrue(tc,contains(s,'\mathcal{U}(T)'));
-readme=fileread(fullfile(root,'README.md'));
-verifyTrue(tc,contains(readme,'\alpha_{2k}'));
-verifyTrue(tc,contains(readme,'\alpha_{2k+1}'));
-verifyTrue(tc,contains(readme,'examples/unit_circle_spectral_bands.m'));
-end
-,'match')),1);
+verifyEqual(tc,numel(strfind(section,'```math')),1);
 verifyTrue(tc,contains(section,'D(c)_{kk}=e^{-2'));
-verifyFalse(tc,contains(section,'\\mathop'));
+verifyFalse(tc,contains(section,'\mathop'));
 end
 
 function test_indexing_and_terminology(tc)
