@@ -918,6 +918,20 @@
       "matrix_free_supported": false,
       "operator_kernel": null,
       "operator_note": "Sparse symmetric pentadiagonal Hamiltonian exposed by 'hamiltonian'; explicit exponential generally dense; physical alpha and lambda control phase coexistence."
+    },
+    {
+      "id": "agassi_propagator",
+      "status": "implemented",
+      "category": "quantum",
+      "matrix_order": "2^(4j) full Fock space or nchoosek(4j,N) for fixed fermion number N",
+      "representation": "fermionic pairing plus particle-hole interactions; sparse Hermitian Jordan-Wigner Hamiltonian and dense unitary evolution",
+      "spectral_reference": "exact finite phase set for noninteracting g=V=0 or t=0; generic interacting spectrum unknown",
+      "encyclopedia_references": [
+        75
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": null,
+      "operator_note": "Full four-orbital model reproduces the published four-qubit Pauli spectrum up to a scalar energy shift. Particle number conserved, optional fixed-N sector reduces matrix order. H mode for j<=3, explicit unitary for j<=2."
     }
   ],
   "probability_measures": [
