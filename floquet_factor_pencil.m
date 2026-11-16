@@ -1,4 +1,4 @@
-function [U,properties,A,B] = floquet_factor_pencil(n,theta1,theta2,mode)
+function [U,properties] = floquet_factor_pencil(n,theta1,theta2,mode)
 %FLOQUET_FACTOR_PENCIL Strict orthogonal pencil for a split-step quantum walk.
 %   The periodic two-state walk is U=Sminus*C2*Splus*C1;
 %   A=Splus*C1 and B=(Sminus*C2)' yield B\A=U.
@@ -6,6 +6,8 @@ function [U,properties,A,B] = floquet_factor_pencil(n,theta1,theta2,mode)
 %   SPLIT_STEP_WALK. Both pencil coefficients are sparse orthogonal.
 %   Kitagawa et al., Phys. Rev. A 82 (2010), 033429.
 %   [16] https://doi.org/10.1103/PhysRevA.82.033429
+%   Terminal 'pencil' mode returns struct P with P.A, P.B, P.U.
+%   Standard [U,PROPERTIES] signature preserves Anymatrix discovery.
 properties={'square','unitary','normal','orthogonal','real','sparse', ...
     'scalable','parameter-dependent'};
 if nargin==0,U=[];A=[];B=[];return;end
@@ -19,8 +21,8 @@ if strcmpi(char(mode),'spectral')
     U=ep_spectral_reference('floquet_factor_pencil',n,theta1,theta2);
     A=[];B=[];return
 end
-if ~strcmpi(char(mode),'matrix')
-    error('floquet_factor_pencil:Mode','Supported modes: matrix, spectral.');
+if ~any(strcmpi(char(mode),{'matrix','pencil'}))
+    error('floquet_factor_pencil:Mode','Supported modes: matrix, pencil, spectral.');
 end
 cols=1:2*n;rowplus=cols;rowminus=cols;
 rowplus(1:2:end)=2*mod((0:n-1)+1,n)+1;
@@ -33,4 +35,7 @@ C1=kron(speye(n),sparse(R1));
 C2=kron(speye(n),sparse(R2));
 A=Splus*C1;F=Sminus*C2;B=F';
 U=F*A;
+if strcmpi(char(mode),'pencil')
+    U=struct('A',A,'B',B,'U',U);
+end
 end
