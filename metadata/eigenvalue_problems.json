@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0.0",
   "updated": "2026-11-16",
-  "description": "Eigenvalue-problem subclass. Only implemented strict unitary pencils are public Anymatrix generators. Other NEPs are documented external/specialized benchmarks.",
+  "description": "Eigenvalue-problem subclass. Six additional strict unitary pencil generators and the existing finite_cmv family with pencil coefficient outputs. Non-strict nonlinear problems remain documented separately.",
   "strict_pencil_criterion": "B nonsingular, AA*=BB*, equivalently inv(B)A unitary in Euclidean inner product",
   "classifications": [
     "strict_unitary_pencil",
@@ -38,18 +38,18 @@
       "source_status": "Explicit finite lift of published lossless network secular models"
     },
     {
-      "id": "finite_cmv_pencil",
+      "id": "finite_cmv",
       "classification": "strict_unitary_pencil",
       "problem_type": "pencil",
-      "status": "implemented",
+      "status": "existing_generator",
       "reference_ids": [
         6,
         7
       ],
       "pencil": "A=M, B=L* for finite scalar CMV C=LM",
       "root_relation": "scalar paraorthogonal polynomial zeros",
-      "generator": "finite_cmv_pencil.m",
-      "source_status": "Factor pencil from established CMV representation"
+      "generator": "finite_cmv.m",
+      "source_status": "Existing OPUC matrix generator with optional A,B strict-pencil outputs; no duplicate CMV inventory item"
     },
     {
       "id": "block_cmv_pencil",
