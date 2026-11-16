@@ -811,6 +811,58 @@ existing real constant-coin `split_step_walk`, this benchmark
 has complex magnetic quasiperiodic coins and two independent
 couplings. **Reference:** [72].
 
+### Extended Lipkin model: collective two-level nuclear dynamics — [`extended_lipkin_propagator.m`](../extended_lipkin_propagator.m)
+
+**Order:** `N+1` for a fixed population of `N>=1` identical two-level bosons,
+with basis indexed by `k=0,...,N` occupied `t` bosons.
+The extended Lipkin Hamiltonian of Baid et al. [74], Eqs. (4)-(5), is
+
+```math
+H_{N,\lambda,\alpha}=(1-\lambda)n_t-\frac{\lambda}{N}Q_\alpha^2,
+\qquad
+Q_\alpha=s^*t+t^*s+\alpha\,t^*t .
+```
+
+The operators are the two bosonic modes `s` and `t` restricted to the
+fixed-total-occupation sector. In the stated basis,
+
+```math
+(n_t)_{kk}=k,\qquad
+(Q_\alpha)_{kk}=\alpha k,\qquad
+(Q_\alpha)_{k,k+1}=(Q_\alpha)_{k+1,k}
+=\sqrt{(k+1)(N-k)}.
+```
+
+Consequently `H` is **real symmetric pentadiagonal**, with only
+`|i-j|<=2` nonzero. The generator returns the **unitary**
+`U(t)=exp(-itH)`, which is generally dense. The optional terminal
+`'hamiltonian'` mode returns the sparse symmetric matrix `H` without
+forming the exponential.
+
+The dimensionless parameters `0<=lambda<=1` and `alpha` determine
+the nuclear shape-transition phase diagram. The large-`N` mean-field
+critical line of [74] is `lambda_c=1/(5+alpha^2)`.
+At `alpha=0` the symmetric-to-deformed transition is second-order;
+for nonzero `alpha` it is generically first-order. These transitions
+do **not** imply a genuine nonanalytic phase change in any fixed finite
+matrix, though finite-size spectral precursors are numerically relevant.
+
+Two exactly solvable finite benchmarks are explicitly available:
+
+- `lambda=0`: `H=n_t`, so the phases are
+  `exp(-it*k)`, `k=0,...,N`.
+- `lambda=1, alpha=0`: `H=-4*S_x^2/N`, so
+  `exp(4it*m^2/N)`, `m=-N/2,...,N/2`.
+- `t=0`: `U=I` with all eigenvalues one.
+
+These eigenphase formulas are returned lazily by `'spectral'` mode;
+the generic trace spectrum is deliberately marked unknown.
+The model is **not** a duplicate of `kicked_top` (kicked spin rotations)
+or `kicked_bose_hubbard` (two-step Floquet dimer): here the physical
+dynamics is governed by a time-independent nuclear shape-transition
+Hamiltonian with first- and second-neighbor couplings. **Reference:** [74].
+
+
 ## I. Bosonic, cavity-QED, and quantum Hall network operators
 
 ### 35. Kicked Bose–Hubbard dimer — [`kicked_bose_hubbard.m`](../kicked_bose_hubbard.m)
@@ -1568,3 +1620,4 @@ links remain accessible through the registry.
 71. L. Marin and H. Schulz-Baldes, “Scattering zippers and their spectral theory,” *J. Spectr. Theory* **3** (2013), 47–82. [DOI](https://doi.org/10.4171/JST/37); [preprint](https://arxiv.org/abs/1112.4959).
 72. C. Cedzich, J. Fillman and D. C. Ong, “Almost Everything About the Unitary Almost Mathieu Operator,” *Commun. Math. Phys.* **403** (2023), 745–794. [DOI](https://doi.org/10.1007/s00220-023-04808-4); [preprint](https://arxiv.org/abs/2112.03216).
 73. D. Emms, S. Severini, R. C. Wilson and E. R. Hancock, “Coined quantum walks lift the cospectrality of graphs and trees,” *Pattern Recognition* **42** (2009), 1988–2002. [DOI](https://doi.org/10.1016/j.patcog.2008.10.025).
+74. S. Baid, Á. Sáiz, L. Lamata, P. Pérez-Fernández, A. M. Romero, A. Rios, J. M. Arias and J. E. García-Ramos, “Extended Lipkin model: Proposal for implementation in a quantum platform and machine learning analysis of its phase diagram,” *Phys. Rev. C* **110** (2024), 044318. [DOI](https://doi.org/10.1103/PhysRevC.110.044318); [preprint](https://arxiv.org/abs/2404.15558).
