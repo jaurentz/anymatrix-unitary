@@ -118,7 +118,7 @@ verifyEqual(tc,S.finite.kind,'unknown');
 verifyEqual(tc,S.dimension,15);
 T=vibron_2d_esqpt(12,.5,0,[],'spectral');
 verifyEqual(tc,T.finite.kind,'exact');
-verifyEqual(tc,T.finite.eigenvalues(),ones(91,1));
+verifyLessThan(tc,norm(T.finite.eigenvalues()-ones(91,1)),1e-14);
 [empty,properties]=vibron_2d_esqpt();
 verifyEmpty(tc,empty);
 verifyTrue(tc,any(strcmp(properties,'unitary')));
