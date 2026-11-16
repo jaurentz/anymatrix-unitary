@@ -44,7 +44,9 @@ end
 function test_full_and_half_filling_sector(tc)
 epsilon=1.2;g=.21;V=.37;t=.4;
 H=full(agassi_propagator(1,epsilon,g,V,t,[],'hamiltonian'));
-take=find(sum(double(bitget(uint32((0:15)'),[1 2 3 4])),2)==2);
+states=uint32((0:15)');counts=zeros(16,1);
+for p=1:4,counts=counts+double(bitget(states,p));end
+take=find(counts==2);
 R=full(agassi_propagator(1,epsilon,g,V,t,2,'hamiltonian'));
 verifyEqual(tc,size(R),[6 6]);
 verifyLessThan(tc,norm(R-H(take,take),'fro'),5e-13);
