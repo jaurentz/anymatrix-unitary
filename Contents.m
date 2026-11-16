@@ -9,7 +9,7 @@
 %   orthogonal_blocks    Prescribed real orthogonal rotation blocks.
 %
 % Orthogonal polynomials on the unit circle:
-%   finite_cmv           Five-diagonal CMV; optional strict pencil A,B outputs.
+%   finite_cmv           Five-diagonal CMV; terminal 'pencil' mode for factors A,B.
 %   opuc_matrix          General finite unitary twisted-core matrix.
 %   jacobi_szego         Jacobi-Szego/Geronimus family, four representations.
 %   bernstein_szego      Poisson/Bernstein-Szego measure, four representations.
