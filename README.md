@@ -4,7 +4,7 @@ A MATLAB collection of finite **unitary and orthogonal test matrices**, designed
 an external group for [Anymatrix](https://github.com/north-numerical-computing/anymatrix).
 The repository is organized around reproducible mathematical constructions,
 known spectral information, and executable regression tests. It contains
-57 generators; additional benchmark families are under development.
+56 generators; additional benchmark families are under development.
 
 **Status:** development collection with MATLAB-only tests. Automated MATLAB
 regression and Anymatrix integration tests run on GitHub Actions after every
@@ -47,7 +47,7 @@ assertSuccess(results)
 
 ## Matrix generator interfaces
 
-The collection currently has **57 public generators**. Each has a complete
+The collection currently has **56 public generators**. Each has a complete
 entry with formulas, spectral information, applications, parameter conventions,
 and references in the [matrix encyclopedia](docs/MATRIX_ENCYCLOPEDIA.md).
 The [mathematical notes](docs/MATHEMATICS.md) explain the shared OPUC engine.
@@ -60,7 +60,7 @@ The [mathematical notes](docs/MATHEMATICS.md) explain the shared OPUC engine.
 | Signal-processing transforms | `orthogonal_dct`, `discrete_hartley`, `cazac_circulant`, `fresnel_transform`, `affine_fourier`, `finite_zak`, `time_frequency_shift`, `periodic_hilbert`, `discrete_fourier`, `discrete_sine`, `walsh_hadamard`, `dpss_transform`, `graph_fourier` |
 | Quantum maps, walks, and algorithms | `split_step_walk`, `dirac_automaton`, `grover_operator`, `quantum_baker`, `kicked_harper`, `kicked_top`, `floquet_ising`, `selfdual_kicked_ising`, `driven_kitaev`, `kicked_rotor`, `dual_unitary_circuit`, `xxz_floquet`, `kicked_bose_hubbard`, `jaynes_cummings`, `chalker_coddington` |
 | Matrix functions and dilations | `cayley_jacobi`, `polar_unitary`, `julia_unitary` |
-| Strict unitary eigenvalue pencils | `mobius_unitary_pencil`, `unitary_delay_pencil`, `finite_cmv_pencil`, `block_cmv_pencil`, `floquet_factor_pencil`, `cayley_hermitian_pencil`, `left_weighted_unitary_pencil` |
+| Strict unitary eigenvalue pencils | `mobius_unitary_pencil`, `unitary_delay_pencil`, `block_cmv_pencil`, `floquet_factor_pencil`, `cayley_hermitian_pencil`, `left_weighted_unitary_pencil` |
 
 Generators return **actual finite square matrices by default**. Selected
 generators also accept `'operator'` as their final argument and return a
@@ -77,7 +77,7 @@ limiting eigenphase distribution from unitarity alone.
 
 ## Eigenvalue-problem subclass
 
-Seven Anymatrix-compatible generators represent strict pencils `A-z*B` for
+Six new generators, together with the existing `finite_cmv`, represent strict pencils `A-z*B` for
 which `B\\A` is unitary in the ordinary Euclidean inner product.
 Each returns the finite numeric unitary by default, with
 `[U,properties,A,B]` exposing both coefficients. The structural
