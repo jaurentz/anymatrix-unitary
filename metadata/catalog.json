@@ -932,6 +932,20 @@
       "matrix_free_supported": false,
       "operator_kernel": null,
       "operator_note": "Full four-orbital model reproduces the published four-qubit Pauli spectrum up to a scalar energy shift. Particle number conserved, optional fixed-N sector reduces matrix order. H mode for j<=3, explicit unitary for j<=2."
+    },
+    {
+      "id": "vibron_2d_esqpt",
+      "status": "implemented",
+      "category": "quantum",
+      "matrix_order": "(N+1)*(N+2)/2 full three-boson Fock sector, or floor((N-|ell|)/2)+1 at fixed angular momentum ell",
+      "representation": "SO(2) angular-momentum block diagonal unitary; each symmetry-sector Hamiltonian is sparse real symmetric tridiagonal, then exp(-i*t*H)",
+      "spectral_reference": "exact finite eigenphases in u(2) (xi=0) and so(3) (xi=1) limits; algebraically shrinking cross-sector gaps for xi>1/5; generic spectrum unknown",
+      "encyclopedia_references": [
+        76
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": null,
+      "operator_note": "U(3) molecular-bending two-dimensional vibron model; sectors ell=-N..N. Distinct from U(2) Lipkin parity sectors and Agassi fermionic model. Sparse sector Hamiltonians, full propagator block diagonal. Explicit N capped to manage memory."
     }
   ],
   "probability_measures": [
