@@ -1,12 +1,12 @@
-function [U, properties, A, B] = finite_cmv(n, alpha,output)
+function [U, properties] = finite_cmv(n, alpha,output)
 %FINITE_CMV Finite CMV multiplication matrix from Verblunsky coefficients.
 %   U = FINITE_CMV(N, ALPHA) constructs an N-by-N CMV matrix, where
 %   ALPHA is an N-vector of coefficients with |ALPHA(1:N-1)| < 1 and
 %   |ALPHA(N)| = 1. The final coefficient is the finite boundary phase.
 %   ALPHA defaults to [zeros(N-1,1); 1]. For N=1, U=conj(ALPHA(1)).
-%   [U,PROPERTIES,A,B] additionally exposes the strict unitary pencil
-%   A-z*B, with A=M and B=L' from the finite CMV factorization
-%   U=L*M. Hence B\A=U and A*A'=B*B'.
+%   P=FINITE_CMV(N,ALPHA,'pencil') returns a struct with P.A, P.B,
+%   and P.U. The strict pencil P.A-z*P.B satisfies P.B\P.A=P.U.
+%   This preserves the standard [U,PROPERTIES] Anymatrix interface.
 %   Uses the same shared core-construction machinery as JACOBI_SZEGO
 %   and OPUC_MATRIX, with no duplicated core implementation.
 %
@@ -21,12 +21,10 @@ properties = {'square','unitary','normal','sparse','banded','scalable', ...
 % Optional spectral-reference mode; preserve legacy output properties.
 if nargin>=3 && (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
     U=unitary_spectral_reference('finite_cmv',n,alpha);
-    A=[];B=[];
     return
 end
 if nargin == 0
     U = [];
-    A=[];B=[];
     return;
 end
 validateattributes(n, {'numeric'}, {'scalar','integer','positive','finite'});
@@ -38,17 +36,10 @@ if numel(alpha) ~= n
     error('finite_cmv:DimensionMismatch', 'ALPHA must contain N coefficients.');
 end
 if nargin<3,output='matrix';end
-U = js_core_product(alpha(1:end-1), alpha(end), 'cmv', [], output);
-if nargout>2
-    if um_is_operator(output)
-        error('finite_cmv:PencilMode', ...
-             'Pencil outputs A,B require numeric matrix mode.');
-    end
-    [V,~,A,B]=block_cmv_pencil(n,1, ...
-        reshape(alpha(1:end-1),1,1,[]),alpha(end));
-    if norm(full(U-V),'fro')>1e-10*max(1,n)
-        error('finite_cmv:PencilConsistency', ...
-              'Scalar CMV factor pencil disagrees with shared core product.');
-    end
+if (ischar(output)||isstring(output)) && strcmpi(char(output),'pencil')
+    U=block_cmv_pencil(n,1,reshape(alpha(1:end-1),1,1,[]), ...
+        alpha(end),'pencil');
+    return
 end
+U = js_core_product(alpha(1:end-1), alpha(end), 'cmv', [], output);
 end
