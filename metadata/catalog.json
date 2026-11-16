@@ -833,6 +833,34 @@
       "matrix_free_supported": false,
       "operator_kernel": null,
       "operator_note": "Sparse O(n) nonzeros; source-specific physical coupling patterns and periodic twist distinguish it from finite paraorthogonal CMV closure."
+    },
+    {
+      "id": "scattering_zipper",
+      "status": "implemented",
+      "category": "opuc",
+      "matrix_order": "n*q for even n sites and q channels",
+      "representation": "sparse staggered 2q-by-2q scattering blocks with independent endpoint unitaries",
+      "spectral_reference": "parameter-dependent eigenphases; no universal trace density",
+      "encyclopedia_references": [
+        71
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": null,
+      "operator_note": "General U(2q) scattering with invertible upper-right local block; q=1 and special mixers overlap existing CMV."
+    },
+    {
+      "id": "unitary_almost_mathieu",
+      "status": "implemented",
+      "category": "quantum",
+      "matrix_order": "2n for n positions",
+      "representation": "complex sparse quasiperiodic magnetic coin and shift",
+      "spectral_reference": "infinite-volume subcritical/critical/supercritical transitions; finite trace spectrum unknown",
+      "encyclopedia_references": [
+        72
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": null,
+      "operator_note": "Periodic finite-window closure is exactly unitary; irrational-frequency infinite spectral-type results must not be ascribed to finite matrices."
     }
   ],
   "probability_measures": [
