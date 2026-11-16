@@ -861,6 +861,49 @@
       "matrix_free_supported": false,
       "operator_kernel": null,
       "operator_note": "Periodic finite-window closure is exactly unitary; irrational-frequency infinite spectral-type results must not be ascribed to finite matrices."
+    },
+    {
+      "id": "szegedy_walk",
+      "status": "implemented",
+      "category": "quantum",
+      "matrix_order": "n^2 Markov-chain pair states",
+      "representation": "two isometric Markov embeddings; product of two reflections",
+      "spectral_reference": "exact finite eigenphases from singular values of D_ij=sqrt(P_ij P_ji), including +/-1 multiplicities",
+      "encyclopedia_references": [
+        26
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_szegedy_apply",
+      "operator_note": "O(n^2) memory and arithmetic per vector with row-stochastic P; dense explicit unitary is only feasible for moderate n."
+    },
+    {
+      "id": "coined_graph_walk",
+      "status": "implemented",
+      "category": "quantum",
+      "matrix_order": "2m directed arcs of a finite graph",
+      "representation": "arbitrary undirected graph; vertex-local unitary coins; flip-flop directed-arc shift",
+      "spectral_reference": "Grover coin spectrum maps normalized graph adjacency; general local-coin spectrum parameter-dependent",
+      "encyclopedia_references": [
+        73
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_graph_walk_apply",
+      "operator_note": "Sparse O(sum deg(v)^2) local coin structure and reversible arc permutation; weighted Grover, Fourier and custom coins."
+    },
+    {
+      "id": "metric_quantum_graph",
+      "status": "implemented",
+      "category": "quantum",
+      "matrix_order": "2m directed bonds of a finite metric graph",
+      "representation": "k-dependent unitary bond scattering D(k)*C*R with real bond lengths",
+      "spectral_reference": "fixed-k unitary eigenphases distinguished from secular roots det(I-U(k))=0; incommensurate lengths yield transcendental NEP",
+      "encyclopedia_references": [
+        58,
+        68
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_graph_walk_apply",
+      "operator_note": "Sparse bond-scattering map for real k; analytic nonlinear secular T(z) exposed by 'secular' mode, allowing complex z where U(z) is not unitary."
     }
   ],
   "probability_measures": [
