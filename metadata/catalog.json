@@ -904,6 +904,20 @@
       "matrix_free_supported": true,
       "operator_kernel": "um_graph_walk_apply",
       "operator_note": "Sparse bond-scattering map for real k; analytic nonlinear secular T(z) exposed by 'secular' mode, allowing complex z where U(z) is not unitary."
+    },
+    {
+      "id": "extended_lipkin_propagator",
+      "status": "implemented",
+      "category": "quantum",
+      "matrix_order": "n+1 fixed-n two-level boson sector",
+      "representation": "exponential of real-symmetric pentadiagonal extended Lipkin nuclear Hamiltonian",
+      "spectral_reference": "exact finite phases for lambda=0, lambda=1 alpha=0, or t=0; otherwise unknown; mean-field phase transition lambda_c=1/(5+alpha^2)",
+      "encyclopedia_references": [
+        74
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": null,
+      "operator_note": "Sparse symmetric pentadiagonal Hamiltonian exposed by 'hamiltonian'; explicit exponential generally dense; physical alpha and lambda control phase coexistence."
     }
   ],
   "probability_measures": [
