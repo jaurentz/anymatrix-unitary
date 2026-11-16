@@ -524,6 +524,45 @@ The construction uses the periodic Floquet boundary formulas and
 propositions 2.5/3.2 of [70], with their connection to Schur parameter
 pencils discussed in [69]. **References:** [69, 70].
 
+### General multichannel scattering zippers — [`scattering_zipper.m`](../scattering_zipper.m)
+
+**Order:** `n*q`, with even `n>=2` sites and `q>=1` channels per
+site. Marin and Schulz-Baldes [71] specify arbitrary local
+`2q-by-2q` unitary scattering matrices `S_2,...,S_n` whose
+upper-right `q-by-q` blocks are nonsingular, together with
+independent `q-by-q` endpoint unitaries. The assembled operator is
+
+```math
+Z_n=V_n W_n,\quad
+V_n=\mathrm{diag}(S_2,S_4,\ldots,S_n),\quad
+W_n=\mathrm{diag}(U_{\mathrm L},S_3,S_5,\ldots,S_{n-1},U_{\mathrm R}).
+```
+
+Every allowed local scattering matrix has the representation
+(Proposition 1 of [71])
+
+```math
+S(a,X,Y)=\begin{bmatrix}
+a&(I-aa^*)^{1/2}X\\
+Y(I-a^*a)^{1/2}&-Ya^*X
+\end{bmatrix},
+\quad \|a\|_2<1,\quad X,Y\in U(q).
+```
+
+The independent mixing factors `X,Y` and boundary scatterers make this
+a strictly more general **parameterized finite model** than the
+previously implemented canonical block-CMV factors. Its `q=1`
+specializations can be gauge-equivalent to CMV models and are not
+counted separately. The default generator has nontrivial deterministic
+channel mixing; callers may pass arbitrary admissible local matrices.
+
+`'pencil'` mode returns `A=W_n`, `B=V_n^*`, so that
+`B^{-1}A=Z_n`. The construction has a sparse `O(nq^2)` description.
+Finite eigenvalues lie on the circle; no universal analytic trace
+density is asserted. The source develops transfer-matrix methods,
+matrix-valued spectral measures, and finite/periodic Prüfer-phase
+eigenvalue counting. **Reference:** [71].
+
 ## G. Floquet spin chains and driven fermionic systems
 
 ### 28. Quantum kicked top — [`kicked_top.m`](../kicked_top.m)
@@ -730,6 +769,47 @@ for even $n\ge4$ and open otherwise.
 Applications: Yang–Baxter-integrable interacting Floquet operators,
 conservation-law sectors, and test cases contrasting integrable and
 chaotic many-body spectral statistics. **References:** [38, 39].
+
+### Magnetic unitary almost-Mathieu walk — [`unitary_almost_mathieu.m`](../unitary_almost_mathieu.m)
+
+**Order:** `2n`, for `n` cyclic positions with two spin states per
+position. From [72], equations (2.3)–(2.6), with `lambda1,lambda2`
+in `[0,1]`, magnetic flux frequency `phi` and phase `theta`
+(in cycles), define `W=S_lambda1 Q` where
+
+```math
+Q_j=\begin{bmatrix}
+\lambda_2\cos(t_j)+i\sqrt{1-\lambda_2^2}&-\lambda_2\sin(t_j)\\
+\lambda_2\sin(t_j)&\lambda_2\cos(t_j)-i\sqrt{1-\lambda_2^2}
+\end{bmatrix},
+\qquad t_j=2\pi(j\phi+\theta).
+```
+
+The shift/reflection `S_lambda1` maps a `+` spin at site `j`
+to `lambda1` times the forward `+` spin plus
+`sqrt(1-lambda1^2)` times the on-site `-` spin, and maps a
+`-` spin to `lambda1` times the backward `-` spin minus
+`sqrt(1-lambda1^2)` times the on-site `+` spin.
+Both factors are exactly unitary.
+
+**Infinite-volume regimes:** subcritical `lambda1>lambda2`,
+critical `lambda1=lambda2>0`, and supercritical
+`lambda1<lambda2`, with the absolutely continuous / singular
+continuous / pure-point spectral classifications subject to
+the frequency/phase hypotheses in [72]. Critical infinite
+irrational-frequency spectra can have zero-measure Cantor structure.
+A finite matrix has only discrete eigenvalues, so these claims
+must not be applied literally to finite eigenphase histograms.
+
+The implemented finite matrix closes a window of `n` sites
+periodically, preserving exact unitarity. For rational `phi=p/q`
+with `q` dividing `n`, the result is a periodic-cell model.
+For irrational flux it is a **periodically closed finite window**,
+not a translationally periodic infinite operator.
+`'pencil'` returns factors `A=Q,B=S^*`. Compared with the
+existing real constant-coin `split_step_walk`, this benchmark
+has complex magnetic quasiperiodic coins and two independent
+couplings. **Reference:** [72].
 
 ## I. Bosonic, cavity-QED, and quantum Hall network operators
 
@@ -1391,3 +1471,5 @@ links remain accessible through the registry.
 68. B. Gutkin and U. Smilansky, “Can one hear the shape of a graph?” *J. Phys. A* **34** (2001), 6061–6068. [DOI](https://doi.org/10.1088/0305-4470/34/31/301).
 69. A. Bunse-Gerstner and L. Elsner, “Schur parameter pencils for the solution of the unitary eigenproblem,” *Linear Algebra Appl.* **154–156** (1991), 741–778. [DOI](https://doi.org/10.1016/0024-3795(91)90402-I).
 70. D. Damanik, M. Embree and J. Fillman, “Gap labels for zeros of the partition function of the 1D Ising model via the Schwartzman homomorphism,” *Indag. Math.* **35** (2024), 813–836. [DOI](https://doi.org/10.1016/j.indag.2023.05.004); [preprint](https://arxiv.org/abs/2211.01558).
+71. L. Marin and H. Schulz-Baldes, “Scattering zippers and their spectral theory,” *J. Spectr. Theory* **3** (2013), 47–82. [DOI](https://doi.org/10.4171/JST/37); [preprint](https://arxiv.org/abs/1112.4959).
+72. C. Cedzich, J. Fillman and D. C. Ong, “Almost Everything About the Unitary Almost Mathieu Operator,” *Commun. Math. Phys.* **403** (2023), 745–794. [DOI](https://doi.org/10.1007/s00220-023-04808-4); [preprint](https://arxiv.org/abs/2112.03216).
