@@ -9,7 +9,7 @@
 %   orthogonal_blocks    Prescribed real orthogonal rotation blocks.
 %
 % Orthogonal polynomials on the unit circle:
-%   finite_cmv           Five-diagonal CMV with specified coefficients.
+%   finite_cmv           Five-diagonal CMV; optional strict pencil A,B outputs.
 %   opuc_matrix          General finite unitary twisted-core matrix.
 %   jacobi_szego         Jacobi-Szego/Geronimus family, four representations.
 %   bernstein_szego      Poisson/Bernstein-Szego measure, four representations.
@@ -65,7 +65,6 @@
 % Unitary eigenvalue problems (strict generalized pencils):
 %   mobius_unitary_pencil       Mobius-transformed cyclic unitary pencil.
 %   unitary_delay_pencil        Lossless integer-delay secular polynomial lift.
-%   finite_cmv_pencil          Sparse factorized scalar CMV pencil.
 %   block_cmv_pencil           Block-CMV with matrix Verblunsky coefficients.
 %   floquet_factor_pencil      Two-layer split-step orthogonal pencil.
 %   cayley_hermitian_pencil    Sparse Cayley pencil of a real Jacobi matrix.
