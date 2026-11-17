@@ -1,8 +1,8 @@
 {
   "schema_version": "1.0.0",
-  "updated": "2026-11-16",
+  "updated": "2026-11-17",
   "bibliography": "docs/MATRIX_ENCYCLOPEDIA.md",
-  "notes": "Publication DOIs validated against Crossref metadata, arXiv preprint DOI in reference 14 is DataCite registered (not a journal-article DOI), and non-DOI items use stable publisher/library/archival links. The 2021 AFDM conference paper (reference 50) is distinct from the 2022 arXiv article formerly linked. References 58-68 add eigenvalue-problem literature; external nonlinear benchmarks are categorized separately from public unitary matrix generators.",
+  "notes": "Publication DOIs validated against Crossref metadata, arXiv preprint DOI in reference 14 is DataCite registered (not a journal-article DOI), and non-DOI items use stable publisher/library/archival links. The 2021 AFDM conference paper (reference 50) is distinct from the 2022 arXiv article formerly linked. References 58-68 add eigenvalue-problem literature; external nonlinear benchmarks are categorized separately from public unitary matrix generators. References 77-83 review the seven quantum-information publications, including two references retained as context-only; 84-85 support unimodular circular ensembles and efficient Haar eigenvalue sampling.",
   "references": [
     {
       "number": 1,
@@ -596,6 +596,72 @@
       ],
       "permalink": "https://doi.org/10.1103/PhysRevA.109.062219",
       "alternate_permalink": "https://arxiv.org/abs/2303.16551"
+    },
+    {
+      "number": 77,
+      "dois": [
+        "10.1038/s41598-024-75148-z"
+      ],
+      "permalink": "https://doi.org/10.1038/s41598-024-75148-z",
+      "alternate_permalink": ""
+    },
+    {
+      "number": 78,
+      "dois": [
+        "10.1038/s41598-026-70695-z"
+      ],
+      "permalink": "https://doi.org/10.1038/s41598-026-70695-z",
+      "alternate_permalink": "https://arxiv.org/abs/2501.17317"
+    },
+    {
+      "number": 79,
+      "dois": [
+        "10.1088/1751-8121/ae965b"
+      ],
+      "permalink": "https://doi.org/10.1088/1751-8121/ae965b",
+      "alternate_permalink": ""
+    },
+    {
+      "number": 80,
+      "dois": [],
+      "permalink": "https://arxiv.org/abs/2605.23830",
+      "alternate_permalink": ""
+    },
+    {
+      "number": 81,
+      "dois": [],
+      "permalink": "https://arxiv.org/abs/2605.31168",
+      "alternate_permalink": ""
+    },
+    {
+      "number": 82,
+      "dois": [],
+      "permalink": "https://arxiv.org/abs/2607.11857",
+      "alternate_permalink": ""
+    },
+    {
+      "number": 83,
+      "dois": [
+        "10.1038/s41598-024-72101-y"
+      ],
+      "permalink": "https://doi.org/10.1038/s41598-024-72101-y",
+      "alternate_permalink": ""
+    },
+    {
+      "number": 84,
+      "dois": [
+        "10.1093/ptep/ptae018"
+      ],
+      "permalink": "https://doi.org/10.1093/ptep/ptae018",
+      "alternate_permalink": "https://arxiv.org/abs/2401.09045"
+    },
+    {
+      "number": 85,
+      "dois": [
+        "10.1016/j.laa.2021.02.031"
+      ],
+      "permalink": "https://doi.org/10.1016/j.laa.2021.02.031",
+      "alternate_permalink": "https://arxiv.org/abs/2009.11515"
     }
   ]
 }
