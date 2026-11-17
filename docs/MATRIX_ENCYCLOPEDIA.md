@@ -1644,7 +1644,112 @@ The library deliberately does **not** return these external nonlinear
 functions as numeric unitary matrices. Their representation and reference
 links remain accessible through the registry.
 
-## L. Families reserved for future versions (not implemented)
+## L. Unimodular random matrices and quantum-information test families (November 2026)
+
+The seven functions in this section are explicit *square unitary* test generators.
+A Choi matrix of a quantum channel is positive semidefinite, not usually
+unitary; a Stinespring isometry is rectangular unless the environment is
+trivial. Such objects provide context but are not added to this matrix catalog.
+The cited application papers motivate or explicitly contain the constructions;
+do not attribute the proposed benchmark parameterizations to them without
+checking their exact definitions.
+
+### Haar special-unitary ensemble — [`haar_special_unitary.m`](../haar_special_unitary.m)
+
+**Construction.** Draw a Haar matrix `Q` from U(n) by phase-corrected complex
+Gaussian QR; set `U=diag(conj(det(Q)),1,...,1)*Q`. Haar measure pushes forward to
+SU(n). The matrix is dense, of order n, and has determinant one. A seed is
+optional; its use does not alter the caller's RNG state. For n=1, U=1.
+
+**Exact statistical reference.** For n>=2, the normalized *ensemble-mean*
+one-point eigenphase density is
+`rho_n(theta)=[1-(-1)^n*(2/n)*cos(n*theta)]/(2*pi)`. This is not the empirical
+density of one draw. For n=2, it is `sin(theta)^2/pi`. Compare a large sample
+average with this function; a single matrix has atomic eigenphases. [84,85]
+
+### Unimodular circular orthogonal ensemble — [`haar_unimodular_coe.m`](../haar_unimodular_coe.m)
+
+**Construction.** With `Q` Haar in SU(n), return `U=Q*Q.'` (*ordinary
+transpose*, not conjugate transpose). It is symmetric, complex unitary,
+determinant one, and distributed on the compact symmetric space SU(n)/SO(n).
+This is **not** a real-orthogonal Haar sample.
+
+**Reference density.** For n>=2, write
+`a_n=sqrt(pi)*factorial(n-1)/(2^(n-1)*gamma(n/2+3/2)*gamma(n/2+1))`.
+The normalized ensemble-mean density is
+`rho(theta)=[1-(-1)^n*a_n*cos(n*theta)]/(2*pi)`.
+Compute `a_n` via log-gamma to avoid overflow for large n. [84]
+
+### Unimodular circular symplectic ensemble — [`haar_unimodular_cse.m`](../haar_unimodular_cse.m)
+
+**Construction.** Draw Haar `Q` in SU(2n), set
+`J=[0 I;-I 0]`, and return `U=Q*J*Q.'*J'`.
+The order is **2n**, the matrix is unitary, determinant one, and self-dual under
+`A^D=J*A.'*J'`. Each eigenphase occurs twice (Kramers degeneracy);
+this is the quotient SU(2n)/Sp(2n), not Haar sampling of Sp(n).
+
+**Reference density.** For n>=2 the normalized ensemble-mean density of its
+n distinct doubly repeated phases is
+`[1-(-1)^n*b_n*cos(n*theta)+c_n*cos(2*n*theta)]/(2*pi)`, where
+`b_n=(2n)!!/((2n-1)!!*n)`, `c_n=2/((2n-1)*n)`.
+For n=1 this ensemble is the deterministic identity of order 2; use its point
+mass at phase zero rather than the generic continuous formula. [84]
+
+### Maximally entangled rank-one phase reflection — [`entangled_reflection.m`](../entangled_reflection.m)
+
+**Construction.** For physical local dimension d, let
+`v=vec(I_d)/sqrt(d)` and
+`U=I_(d^2)+(exp(i*phi)-1)*v*v'`. At the default phase `phi=pi`,
+`U=I-2vv'` is the explicit local-certification counterexample of [77],
+Eq. (15). Order d^2; sparse identity plus an O(d^2)-nonzero rank-one term.
+The `operator` mode applies the rank-one update in O(d^2) per RHS.
+
+**Exact spectrum.** The exceptional eigenvalue is `exp(i*phi)` once, and 1
+occurs d^2-1 times. At phi=pi and d>=2 the ordinary numerical range contains
+zero, whereas the product-state numerical range is the real interval
+`[1-2/d,1]`. This separation is informative for quantum certification but
+does not change the empirical trace spectral measure.
+
+### Repeated Haar tensor power — [`haar_tensor_power.m`](../haar_tensor_power.m)
+
+Given a Haar V in U(d), form `U=kron(V,...,V)` with t identical factors on
+the full tensor-product space of order d^t. The exact eigenvalues are products
+of t eigenvalues of V (with repetitions), and
+`tr(U^k)/d^t=(tr(V^k)/d)^t`. The repeated base unitary induces special
+algebraic degeneracies. This is **not** `Sym^t(V)` or an exterior power.
+The current function explicitly materializes matrices only through order 4096.
+The repeated-unitary setting is present in [81].
+
+### Independent-block Haar tensor power — [`haar_block_tensor_power.m`](../haar_block_tensor_power.m)
+
+Use independent Haar V1,V2 in U(d) to form
+`V1^(tensor t1) kron V2^(tensor t2)`. Its order is d^(t1+t2), with exact
+normalized moments `[tr(V1^k)/d]^t1*[tr(V2^k)/d]^t2`. Same-seed output is
+reproducible with independent sequential draws. Contrast the *same* U on
+both blocks in `haar_tensor_power`, as in the comparison of Haar-averaged
+measurement models [81]. Explicit materialization is capped at order 4096.
+
+### Tensor-factor permutation — [`tensor_permutation.m`](../tensor_permutation.m)
+
+For a permutation pi of t factors, `P_pi` maps
+`e_(j1) kron ... kron e_(jt)` to
+`e_(j_pi(1)) kron ... kron e_(j_pi(t))` on order d^t.
+It is a sparse **real orthogonal** matrix. Write c(pi^k) for the number of
+cycles of pi^k. Then `tr(P_pi^k)=d^c(pi^k)` exactly. At t=2 with pi=[2 1],
+the swap operator has +1 multiplicity d(d+1)/2 and -1 multiplicity
+d(d-1)/2. This is a concrete representation-theoretic specialization of
+generic permutations relevant to twirling and Schur--Weyl duality. [79,81]
+
+### Finite Weyl--Heisenberg 1-design (already implemented)
+
+No duplicate generator is introduced. Existing
+[`time_frequency_shift.m`](../time_frequency_shift.m) yields
+`W_(a,b)=Z^a X^b`; enumerate a,b=0,...,d-1 to obtain an exact unitary
+1-design (global phases are immaterial for the twirl):
+`(1/d^2)*sum_(a,b) W_(a,b)*A*W_(a,b)' = tr(A)/d*I`.
+This is a useful exact averaging test, not a new family [79,80].
+
+## M. Families reserved for future versions (not implemented)
 
 - **ETNA core-factor stress tests:** the five experimental constructions in
   Aurentz–Mach–Vandebril–Watkins (2015), including the nearly reducible Type
@@ -1743,3 +1848,14 @@ links remain accessible through the registry.
 74. S. Baid, Á. Sáiz, L. Lamata, P. Pérez-Fernández, A. M. Romero, A. Rios, J. M. Arias and J. E. García-Ramos, “Extended Lipkin model: Proposal for implementation in a quantum platform and machine learning analysis of its phase diagram,” *Phys. Rev. C* **110** (2024), 044318. [DOI](https://doi.org/10.1103/PhysRevC.110.044318); [preprint](https://arxiv.org/abs/2404.15558).
 75. P. Pérez-Fernández, J.-M. Arias, J.-E. García-Ramos and L. Lamata, “A digital quantum simulation of the Agassi model,” *Phys. Lett. B* **829** (2022), 137133. [DOI](https://doi.org/10.1016/j.physletb.2022.137133); [preprint](https://arxiv.org/abs/2105.02834).
 76. J. Khalouf-Rivera, Q. Wang, L. F. Santos, J.-E. García-Ramos, M. Carvajal and F. Pérez-Bernal, “Degeneracy in excited-state quantum phase transitions of two-level bosonic models and its influence on system dynamics,” *Phys. Rev. A* **109** (2024), 062219. [DOI](https://doi.org/10.1103/PhysRevA.109.062219); [preprint](https://arxiv.org/abs/2303.16551).
+
+
+77. R. Kukulski, M. Stępniak, K. Hendzel, Ł. Pawela, B. Gardas and Z. Puchała, “Local certification of unitary operations,” *Scientific Reports* **14** (2024), 26588. [DOI](https://doi.org/10.1038/s41598-024-75148-z).
+78. M. Markiewicz, Ł. Pawela and Z. Puchała, “Single-shot comparison of random quantum channels and measurements,” *Scientific Reports* (2026). [DOI](https://doi.org/10.1038/s41598-026-70695-z); [preprint](https://arxiv.org/abs/2501.17317).
+79. M. Markiewicz, Ł. Pawela and Z. Puchała, “Choi-level twirling of quantum channels: finite constructions and non-compact transformations,” *Journal of Physics A* (2026). [DOI](https://doi.org/10.1088/1751-8121/ae965b); [preprint](https://arxiv.org/abs/2512.23586).
+80. Ł. Pawela and Z. Puchała, “IntegrateUnitary.jl: A Julia package for symbolic integration over Haar measures,” arXiv:2605.23830 (2026). [Preprint](https://arxiv.org/abs/2605.23830).
+81. L. Marcinkowska, Ł. Pawela, M. Markiewicz and Z. Puchała, “Asymptotic distinguishability of Haar-averaged measurement models,” arXiv:2605.31168 (2026). [Preprint](https://arxiv.org/abs/2605.31168).
+82. A. Bílek, R. Kukulski, P. Lewandowska, Ł. Pawela and Z. Puchała, “Noise Resilience of Quantum Key Distribution Protocols Secured Against Independent Attacks With One-Way Communication,” arXiv:2607.11857 (2026). [Preprint](https://arxiv.org/abs/2607.11857). Context only: no new generator.
+83. T. Śmierzchalski and collaborators, “Hybrid quantum-classical computation for automatic guided vehicles scheduling,” *Scientific Reports* **14** (2024), 21809. [DOI](https://doi.org/10.1038/s41598-024-72101-y). Not a unitary-matrix source.
+84. S. Nishigaki, “Eigenphase distributions of unimodular circular ensembles,” *Progress of Theoretical and Experimental Physics* **2024** (2024), 021A02. [DOI](https://doi.org/10.1093/ptep/ptae018); [preprint](https://arxiv.org/abs/2401.09045).
+85. M. Fasi and L. Robol, “Sampling the eigenvalues of random orthogonal and unitary matrices,” *Linear Algebra and its Applications* **620** (2021), 297–321. [DOI](https://doi.org/10.1016/j.laa.2021.02.031); [preprint](https://arxiv.org/abs/2009.11515).
