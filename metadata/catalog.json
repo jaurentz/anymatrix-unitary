@@ -948,8 +948,8 @@
       "operator_note": "U(3) molecular-bending two-dimensional vibron model; sectors ell=-N..N. Distinct from U(2) Lipkin parity sectors and Agassi fermionic model. Sparse sector Hamiltonians, full propagator block diagonal. Explicit N capped to manage memory."
     },
     {
-      "status": "implemented",
       "id": "haar_special_unitary",
+      "status": "implemented",
       "category": "random_signal",
       "matrix_order": "n",
       "representation": "dense complex QR with determinant normalization",
@@ -963,8 +963,8 @@
       "operator_note": "Explicit SU(n) Haar sample; seeded with caller RNG restoration."
     },
     {
-      "status": "implemented",
       "id": "haar_unimodular_coe",
+      "status": "implemented",
       "category": "random_signal",
       "matrix_order": "n",
       "representation": "dense complex symmetric unitary SU(n)/SO(n)",
@@ -977,8 +977,8 @@
       "operator_note": "Q*transpose(Q) with Q Haar SU(n); not real orthogonal."
     },
     {
-      "status": "implemented",
       "id": "haar_unimodular_cse",
+      "status": "implemented",
       "category": "random_signal",
       "matrix_order": "2*n",
       "representation": "dense complex self-dual unitary SU(2n)/Sp(2n)",
@@ -991,8 +991,8 @@
       "operator_note": "Q*J*transpose(Q)*J' with Q Haar SU(2n); not Haar on compact Sp(n)."
     },
     {
-      "status": "implemented",
       "id": "entangled_reflection",
+      "status": "implemented",
       "category": "quantum",
       "matrix_order": "d^2",
       "representation": "sparse identity plus maximally entangled rank-one projector",
@@ -1001,12 +1001,12 @@
         77
       ],
       "matrix_free_supported": true,
-      "operator_kernel": "local rank-one action",
+      "operator_kernel": "um_entangled_reflection_apply",
       "operator_note": "O(d^2) nonzeros; optional operator supports adjoints and multiple right-hand sides."
     },
     {
-      "status": "implemented",
       "id": "haar_tensor_power",
+      "status": "implemented",
       "category": "quantum",
       "matrix_order": "d^t",
       "representation": "dense Kronecker power of one Haar unitary",
@@ -1019,8 +1019,8 @@
       "operator_note": "Explicit cap d^t<=4096; dimension can grow rapidly."
     },
     {
-      "status": "implemented",
       "id": "haar_block_tensor_power",
+      "status": "implemented",
       "category": "quantum",
       "matrix_order": "d^(t1+t2)",
       "representation": "dense Kronecker powers of two independently sampled Haar unitaries",
@@ -1033,8 +1033,8 @@
       "operator_note": "Explicit cap <=4096; two independent draws from a reproducible stream."
     },
     {
-      "status": "implemented",
       "id": "tensor_permutation",
+      "status": "implemented",
       "category": "quantum",
       "matrix_order": "d^length(pi)",
       "representation": "sparse real tensor-factor permutation",
