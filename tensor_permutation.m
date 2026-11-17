@@ -1,11 +1,11 @@
-function [U,properties] = tensor_permutation(d,pi)
-%TENSOR_PERMUTATION Permute factors of a d^t-dimensional tensor product.
-%   PI is a permutation of 1:t. Basis column (i1,...,it) maps to
-%   (i_PI(1),...,i_PI(t)), in MATLAB kron/big-endian ordering.
-%   U is a REAL permutation matrix, hence orthogonal and unitary.
-%   For any k, tr(U^k)=d^(number of cycles of PI^k), an exact formula.
-%   Special case PI=[2 1] is the swap matrix with known +/-1 counts.
-%   Schur-Weyl duality and quantum channel twirling motivate this family.
+function [U,properties] = tensor_permutation(d,pi,output)
+%TENSOR_PERMUTATION Orthogonal representation of a tensor-factor permutation.
+%   PI is a permutation of 1:t. U maps basis (i1,...,it) to
+%   (i_PI(1),...,i_PI(t)) in Kronecker (big-endian) order.
+%   OUTPUT='operator' permutes reshaped tensors with no sparse matrix.
+%   OUTPUT='spectral' provides exact trace moments from permutation cycles,
+%   with eigenphases obtainable from basis orbits for moderate dimensions.
+%   Trace(U^k)=d^cycles(PI^k); swap PI=[2 1] has only +/-1 eigenvalues.
 %   Ref: https://doi.org/10.1088/1751-8121/ae965b
 %   https://arxiv.org/abs/2605.31168
 properties={'square','unitary','normal','real','orthogonal','sparse', ...
@@ -19,18 +19,19 @@ t=numel(pi);
 if ~isequal(sort(pi),1:t)
     error('tensor_permutation:Permutation','PI must permute 1:t.');
 end
+if nargin<3||isempty(output),output='matrix';end
 n=d^t;
-if ~isfinite(n)||n>2e6
-    error('tensor_permutation:Order','Explicit order exceeds 2e6.');
+if ~isfinite(n)||n>flintmax
+    error('tensor_permutation:Order','d^t exceeds exact index range.');
 end
-cols=(0:n-1)';
-digits=zeros(n,t);
-for j=1:t
-    digits(:,j)=mod(floor(cols/d^(t-j)),d);
+if (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
+    U=unitary_spectral_reference('tensor_permutation',d,pi);
+    return
 end
-row=zeros(n,1);
-for j=1:t
-    row=row+digits(:,pi(j))*d^(t-j);
+if um_is_operator(output)
+    U=@(X,flag)um_tensor_permute_apply(X,flag,d,pi);
+else
+    row=um_tensor_permutation_map(d,pi);
+    U=sparse(row,1:n,1,n,n);
 end
-U=sparse(row+1,cols+1,1,n,n);
 end

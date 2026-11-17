@@ -953,7 +953,7 @@
       "category": "random_signal",
       "matrix_order": "n",
       "representation": "dense complex QR with determinant normalization",
-      "spectral_reference": "Haar SU(n); exact nonuniform expected density [1-(-1)^n(2/n)cos(n theta)]/(2pi) (n>=2)",
+      "spectral_reference": "Haar SU(n), exact finite-n nonuniform expected eigenphase density and moments (n>=2); degenerate n=1.",
       "encyclopedia_references": [
         84,
         85
@@ -968,7 +968,7 @@
       "category": "random_signal",
       "matrix_order": "n",
       "representation": "dense complex symmetric unitary SU(n)/SO(n)",
-      "spectral_reference": "Unimodular beta=1 circular ensemble; finite-n exact ensemble density (Nishigaki)",
+      "spectral_reference": "Exact normalized unimodular COE mean density and moments; n=2 exceptional |sin(theta)|/4; n=1 atomic.",
       "encyclopedia_references": [
         84
       ],
@@ -982,7 +982,7 @@
       "category": "random_signal",
       "matrix_order": "2*n",
       "representation": "dense complex self-dual unitary SU(2n)/Sp(2n)",
-      "spectral_reference": "Unimodular beta=4 circular ensemble; n distinct Kramers-paired eigenphases",
+      "spectral_reference": "Exact normalized unimodular CSE mean density/moments, n>=2; n=1 identity; double eigenphase multiplicities.",
       "encyclopedia_references": [
         84
       ],
@@ -1002,7 +1002,7 @@
       ],
       "matrix_free_supported": true,
       "operator_kernel": "um_entangled_reflection_apply",
-      "operator_note": "O(d^2) nonzeros; optional operator supports adjoints and multiple right-hand sides."
+      "operator_note": "Exact finite atomic spectral descriptor and O(d^2) rank-one operator kernel."
     },
     {
       "id": "haar_tensor_power",
@@ -1014,9 +1014,9 @@
       "encyclopedia_references": [
         81
       ],
-      "matrix_free_supported": false,
-      "operator_kernel": null,
-      "operator_note": "Explicit cap d^t<=4096; dimension can grow rapidly."
+      "matrix_free_supported": true,
+      "operator_kernel": "um_tensor_apply",
+      "operator_note": "Explicit order <=4096; optional O(d^t) workspace tensor-mode action and seeded finite sample spectral moments/eigenvalues from d-by-d base matrix."
     },
     {
       "id": "haar_block_tensor_power",
@@ -1028,9 +1028,9 @@
       "encyclopedia_references": [
         81
       ],
-      "matrix_free_supported": false,
-      "operator_kernel": null,
-      "operator_note": "Explicit cap <=4096; two independent draws from a reproducible stream."
+      "matrix_free_supported": true,
+      "operator_kernel": "um_tensor_apply",
+      "operator_note": "Explicit order <=4096; implicit O(d^t) workspace with two independent factors; seeded exact full-space spectral reference from the small bases."
     },
     {
       "id": "tensor_permutation",
@@ -1043,9 +1043,9 @@
         79,
         81
       ],
-      "matrix_free_supported": false,
-      "operator_kernel": "builtin-sparse",
-      "operator_note": "Explicit cap 2e6; sparse permutation with O(d^t) nonzeros."
+      "matrix_free_supported": true,
+      "operator_kernel": "um_tensor_permute_apply",
+      "operator_note": "Default sparse O(d^t) representation capped at order 2e6; implicit reshape-permute action scalable with state-vector length and analytic cycle moments."
     }
   ],
   "probability_measures": [

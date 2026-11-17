@@ -72,6 +72,16 @@ right-hand sides, and dimension queries. See [matrix-free documentation](docs/MA
 for an input physical size `n`. `floquet_ising` and `selfdual_kicked_ising` return order `2^n`, capped at 11 spins for dense assembly. `dual_unitary_circuit` and `xxz_floquet` also return order `2^n`, capped at 10 spins. `driven_kitaev` is a 2n-dimensional BdG operator, not the full Fock-space propagator. `kicked_bose_hubbard(n)` has order `n+1` for n bosons; `jaynes_cummings(n)` has order `2*(n+1)` for a photon cutoff n; `chalker_coddington(nx,ny)` has order `4*nx*ny`. `lee_yang_ising(n)` has order `2*n` and represents the zeros of a classical Ising partition function through a twisted Floquet-CMV matrix. `scattering_zipper(n,q)` has order `n*q` (n even) and `unitary_almost_mathieu(n)` has order `2*n`; irrational flux in the latter produces a finite periodically closed window, not a literally periodic irrational lattice. `szegedy_walk(n,P)` has order `n^2` (use `operator` for large n). `coined_graph_walk(n,A)` and `metric_quantum_graph(n,L,k)` have order twice the number of undirected edges. The latter exposes analytic `T(k)=I-U(k)` through `secular` mode; its metric wavenumbers are not eigenphases of one fixed matrix. `agassi_propagator(j,epsilon,g,V,t,particles)` evolves a fermionic Agassi model in full Fock space (order `2^(4*j)`) or a fixed-particle-number sector; `j=1` reproduces the paper's four-orbital simulation. `vibron_2d_esqpt(N,xi,t)` has order `(N+1)*(N+2)/2`, with real-symmetric tridiagonal Hamiltonian sectors indexed by angular momentum `ell=-N:N`; a selected sector is available as `vibron_2d_esqpt(N,xi,t,ell)`. The `hamiltonian` mode scales to larger N and the solvable `xi=0,1` limits have exact finite eigenphases. `extended_lipkin_propagator(n,lambda,alpha,t)` has order `n+1`, with a sparse symmetric pentadiagonal Hamiltonian exposed by terminal `hamiltonian` mode and a generally dense unitary propagator. `quantum_baker` requires even order;
 `haar_wavelet` requires power-of-two order. MATLAB R2020b or newer is required.
 
+**2026 spectral and implicit tensor modes:** Try
+`S=haar_special_unitary(6,[],'spectral')` for the exact finite-order
+ensemble-mean density, `S=haar_unimodular_coe(2,[],'spectral')` for the
+exceptional |sin(theta)|/4 law, or
+`O=haar_tensor_power(2,13,19,'operator')` to apply an order-8192 unitary
+without building its dense matrix. Seeded tensor-product `'spectral'` mode
+returns exact eigenvalue products and normalized moments for the chosen
+sample. The `tensor_permutation` generator also supports implicit tensor
+index reordering. See [matrix-free documentation](docs/MATRIX_FREE.md).
+
 **2026 quantum-information additions:** Haar SU(n) and the unimodular COE/CSE ensembles have finite-order analytic expected eigenphase laws, in contrast to ordinary CUE's uniform mean density. Tensor powers, tensor permutations and the entangled reflection have analytic sample spectra or moments. The existing `time_frequency_shift(n,p,q)` already provides Weyl--Heisenberg 1-design members; it has not been duplicated. See [the encyclopedia](docs/MATRIX_ENCYCLOPEDIA.md).
 
 **Spectral reference data:** exact eigenvalues are provided or described for

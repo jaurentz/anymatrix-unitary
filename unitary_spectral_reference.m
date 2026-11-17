@@ -1,7 +1,9 @@
 function S = unitary_spectral_reference(family,varargin)
 %UNITARY_SPECTRAL_REFERENCE Analytic spectral reference data for unitary generators.
 %   S=UNITARY_SPECTRAL_REFERENCE(FAMILY,PARAMETERS...) returns a standardized
-%   descriptor, without constructing a matrix or consuming random numbers.
+%   descriptor, without constructing the full matrix or advancing the caller's RNG state.
+%   Seeded Haar tensor families generate only small base-factor matrices
+%   and compute their eigenvalues, then derive large-matrix spectra analytically.
 %   Public generators expose this through their terminal 'spectral' mode:
 %      S=anymatrix('unitary/dirac_automaton',N,M,'spectral');
 %
@@ -44,6 +46,20 @@ switch family
         S.dimension=2*double(n);
     case {'floquet_ising','selfdual_kicked_ising','dual_unitary_circuit','xxz_floquet'}
         S.dimension=2^double(n);
+    case {'haar_unimodular_cse'}
+        S.dimension=2*double(n);
+    case 'entangled_reflection'
+        S.dimension=double(n)^2;
+    case 'haar_tensor_power'
+        t=param(varargin,2,2);
+        S.dimension=double(n)^double(t);
+    case 'haar_block_tensor_power'
+        t1=param(varargin,2,1);
+        t2=param(varargin,3,1);
+        S.dimension=double(n)^(double(t1)+double(t2));
+    case 'tensor_permutation'
+        permutation=param(varargin,2,[2 1]);
+        S.dimension=double(n)^numel(permutation);
     case 'kicked_bose_hubbard'
         S.dimension=double(n)+1;
     case 'jaynes_cummings'
@@ -177,6 +193,109 @@ switch family
         S=exact_finite(S,@() jaynes_eigs(n,g,delta,t,wc));
         S.notes='Complete truncated Hamiltonian: n excitation doublets and two boundary states.';
         S.reference='Jaynes and Cummings, Proc. IEEE 51 (1963)';
+
+    case {'haar_special_unitary','haar_unimodular_coe','haar_unimodular_cse'}
+        % Nishigaki (2024) gives exact finite-size mean spectral laws.
+        % In beta=1, N=2 the special density |sin(theta)|/4 replaces
+        % the generic cos(N*theta) expression; see author's footnote 1.
+        S.reference='Nishigaki, PTEP 2024, 021A02, doi:10.1093/ptep/ptae018';
+        S.limit=uniform_limit(S.limit);
+        if n==1
+            S.ensemble.kind='atomic';
+            S.ensemble.atoms=atoms(0,1);
+            if strcmp(family,'haar_unimodular_cse')
+                S=exact_finite(S,@()ones(2,1));
+            else
+                S=exact_finite(S,@()1);
+            end
+            S.notes='The order-one unimodular ensemble is deterministic; no continuous finite-size density.';
+        elseif strcmp(family,'haar_unimodular_coe') && n==2
+            S.ensemble.kind='exact_expectation';
+            S.ensemble.density=@(theta) abs(sin(theta))/4;
+            S.ensemble.support=[-pi pi];
+            S.ensemble.moments=@(k) coe_two_moments(k);
+            S.notes='Exceptional unimodular COE of order two: |sin(theta)|/4 normalized density; NOT the generic beta=1 formula.';
+        else
+            [a,b]=unimodular_coefficients(family,n);
+            S.ensemble.kind='exact_expectation';
+            S.ensemble.density=@(theta) (1+a*cos(n*theta)+b*cos(2*n*theta))/(2*pi);
+            S.ensemble.support=[-pi pi];
+            S.ensemble.moments=@(k) unimodular_moments(k,n,a,b);
+            S.notes='Exact FINITE-N ensemble mean; one random realization still has an atomic trace measure.';
+        end
+
+    case 'entangled_reflection'
+        phi=param(varargin,2,pi);
+        validateattributes(phi,{'numeric'},{'scalar','real','finite'});
+        D=double(n)^2;
+        lam=exp(1i*phi);
+        if phi==pi,lam=-1;end
+        if D<=2e6
+            S=exact_finite(S,@() [lam;ones(D-1,1)]);
+        else
+            S.finite.kind='exact';
+            S.finite.eigenvalues=@() entangled_eigenvalues(D,lam);
+        end
+        S.dimension=D;
+        S.finite.moments=@(k) entangled_moments(k,D,lam);
+        if abs(lam-1)<1e-14
+            S.finite.atoms=atoms(0,1);
+        else
+            S.finite.atoms=atoms([angle(lam);0],[1/D;(D-1)/D]);
+        end
+        S.reference='Local certification of unitary operations, Sci. Rep. (2024)';
+        S.notes='Known rank-one exceptional phase; finite atomic trace measure, not a density.';
+
+    case 'tensor_permutation'
+        perm=param(varargin,2,[2 1]);
+        validateattributes(perm,{'numeric'},{'vector','integer','positive','finite'});
+        perm=perm(:)';
+        if ~isequal(sort(perm),1:numel(perm))
+            error('unitary_spectral_reference:Permutation','Invalid tensor permutation.');
+        end
+        S.dimension=double(n)^numel(perm);
+        S.finite.kind='exact';
+        S.finite.eigenvalues=@() tensor_permutation_eigs(n,perm);
+        S.finite.moments=@(k) tensor_permutation_moments(k,n,perm);
+        if numel(perm)==2 && isequal(perm,[2 1])
+            d=double(n);
+            S.finite.atoms=atoms([0;pi],[(d+1)/(2*d);(d-1)/(2*d)]);
+        end
+        S.notes='Exact finite spectral moments from tensor index-cycle counts; no numerical eig() is needed.';
+
+    case 'haar_tensor_power'
+        t=param(varargin,2,2);
+        seed=param(varargin,3,[]);
+        validateattributes(t,{'numeric'},{'scalar','integer','positive','finite'});
+        validate_tensor_seed(seed);
+        V=haar_unitary(n,seed);
+        z=eig(V);
+        z=z./abs(z);
+        S.dimension=double(n)^t;
+        S.finite.kind='exact';
+        S.finite.eigenvalues=@() tensor_sample_eigs(z,[],t,0);
+        S.finite.moments=@(k) tensor_sample_moments(k,z,[],t,0);
+        S.notes='Seeded finite Haar sample. Eigenvalues of the small base factor are computed numerically; the full tensor-product eigenvalues/moments follow exactly as products. No ensemble mean density is asserted.';
+
+    case 'haar_block_tensor_power'
+        t1=param(varargin,2,1);
+        t2=param(varargin,3,1);
+        seed=param(varargin,4,[]);
+        validateattributes(t1,{'numeric'},{'scalar','integer','positive','finite'});
+        validateattributes(t2,{'numeric'},{'scalar','integer','positive','finite'});
+        validate_tensor_seed(seed);
+        previous_rng=rng;
+        restore=onCleanup(@()rng(previous_rng)); %#ok<NASGU>
+        rng(seed,'twister');
+        V1=haar_unitary(n);
+        V2=haar_unitary(n);
+        z1=eig(V1); z2=eig(V2);
+        z1=z1./abs(z1);z2=z2./abs(z2);
+        S.dimension=double(n)^(t1+t2);
+        S.finite.kind='exact';
+        S.finite.eigenvalues=@() tensor_sample_eigs(z1,z2,t1,t2);
+        S.finite.moments=@(k) tensor_sample_moments(k,z1,z2,t1,t2);
+        S.notes='Seeded independent two-base Haar sample. Only small base-factor eigenvalues require numerical eig(); full-space product reference exact.';
 
     case {'haar_unitary','circular_beta'}
         S.ensemble.kind='exact_expectation';
@@ -394,4 +513,128 @@ center=wc*(k+.5);
 splitting=hypot(delta/2,g*sqrt(k+1));
 energy=[-wa/2;center+splitting;center-splitting;wc*n+wa/2];
 z=exp(-1i*t*energy);
+end
+
+
+function [a,b]=unimodular_coefficients(family,n)
+% Fourier coefficients relative to 1/(2*pi) in Nishigaki theorem (1).
+a=0;b=0;
+switch family
+    case 'haar_special_unitary'
+        a=-(-1)^n*(2/n);
+    case 'haar_unimodular_coe'
+        loga=0.5*log(pi)+gammaln(n)-(n-1)*log(2) ...
+             -gammaln(n/2+1.5)-gammaln(n/2+1);
+        a=-(-1)^n*exp(loga);
+    case 'haar_unimodular_cse'
+        loga=2*n*log(2)+2*gammaln(n+1) ...
+             -gammaln(2*n+1)-log(n);
+        a=-(-1)^n*exp(loga);
+        b=2/((2*n-1)*n);
+end
+end
+
+function m=unimodular_moments(k,n,a,b)
+validateattributes(k,{'numeric'},{'integer','finite','real'});
+m=double(k==0)+(a/2)*double(abs(k)==n)+(b/2)*double(abs(k)==2*n);
+end
+
+function m=coe_two_moments(k)
+validateattributes(k,{'numeric'},{'integer','finite','real'});
+m=zeros(size(k));
+m(k==0)=1;
+mask=(k~=0 & mod(k,2)==0);
+m(mask)=-1./(k(mask).^2-1);
+end
+
+function validate_tensor_seed(seed)
+if isempty(seed)
+    error('unitary_spectral_reference:Seed', ...
+        'Seeded Haar tensor samples require an explicit nonnegative SEED.');
+end
+validateattributes(seed,{'numeric'}, ...
+    {'scalar','integer','nonnegative','finite'});
+end
+
+function z=entangled_eigenvalues(D,lambda)
+if D>2e6
+    error('unitary_spectral_reference:Materialization', ...
+          'Exact eigenvalue enumeration limited to 2e6; use finite.moments.');
+end
+z=[lambda;ones(D-1,1)];
+end
+
+function m=entangled_moments(k,D,lambda)
+validateattributes(k,{'numeric'},{'integer','finite','real'});
+m=((D-1)+lambda.^k)/D;
+end
+
+function m=tensor_permutation_moments(k,d,perm)
+validateattributes(k,{'numeric'},{'integer','finite','real'});
+nFactors=numel(perm);
+cycleLengths=permutation_cycle_lengths(perm);
+m=zeros(size(k));
+for j=1:numel(k)
+    ncycles=sum(gcd(cycleLengths,abs(k(j))));
+    m(j)=d^(ncycles-nFactors);
+end
+end
+
+function lens=permutation_cycle_lengths(perm)
+t=numel(perm);
+seen=false(1,t);
+lens=[];
+for i=1:t
+    if seen(i),continue;end
+    j=i;ell=0;
+    while ~seen(j)
+        seen(j)=true;
+        ell=ell+1;
+        j=perm(j);
+    end
+    lens(end+1)=ell; %#ok<AGROW>
+end
+end
+
+function z=tensor_permutation_eigs(d,perm)
+row=um_tensor_permutation_map(d,perm);
+n=numel(row);
+seen=false(n,1);
+z=complex(zeros(n,1));
+used=0;
+for i=1:n
+    if seen(i),continue;end
+    j=i;ell=0;
+    while ~seen(j)
+        seen(j)=true;
+        ell=ell+1;
+        j=row(j);
+    end
+    z(used+(1:ell))=exp(2i*pi*(0:ell-1)'/ell);
+    used=used+ell;
+end
+end
+
+function z=tensor_sample_eigs(z1,z2,t1,t2)
+n=numel(z1)^t1;
+if t2>0,n=n*numel(z2)^t2;end
+if n>2e6
+    error('unitary_spectral_reference:Materialization', ...
+        'Exact eigenvalue enumeration limited to 2e6; use finite.moments.');
+end
+z=1;
+for j=1:t1,z=kron(z,z1);end
+for j=1:t2,z=kron(z,z2);end
+z=z(:);
+end
+
+function m=tensor_sample_moments(k,z1,z2,t1,t2)
+validateattributes(k,{'numeric'},{'integer','finite','real'});
+shape=size(k);
+kk=reshape(k,1,[]);
+m=mean(bsxfun(@power,z1(:),kk),1).^t1;
+if t2>0
+    m=m.*mean(bsxfun(@power,z2(:),kk),1).^t2;
+end
+m=reshape(m,shape);
 end
