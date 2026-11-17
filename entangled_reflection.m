@@ -24,23 +24,9 @@ ii=1+(0:d-1)'*(d+1);
 v=sparse(ii,ones(d,1),ones(d,1)/sqrt(d),n,1);
 if phi==pi,lambda=-1;else,lambda=exp(1i*phi);end
 if um_is_operator(output)
-    U=@(X,flag)apply_action(X,flag,v,lambda,n);
+    U=@(X,flag)um_entangled_reflection_apply(X,flag,v,lambda,n);
 else
     U=speye(n)+(lambda-1)*(v*v');
 end
 end
 
-function Y=apply_action(X,flag,v,lambda,n)
-if strcmpi(flag,'size'),Y=[n n];return;end
-if any(strcmpi(flag,{'transp','ctransp'}))
-    c=conj(lambda)-1;
-elseif strcmpi(flag,'notransp')
-    c=lambda-1;
-else
-    error('entangled_reflection:Flag','Invalid operator action.');
-end
-if ~isnumeric(X)||ndims(X)>2||size(X,1)~=n
-    error('entangled_reflection:Dimension','Input must have d^2 rows.');
-end
-Y=X+c*v*(v'*X);
-end
