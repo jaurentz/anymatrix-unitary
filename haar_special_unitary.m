@@ -7,6 +7,8 @@ function [U,properties] = haar_special_unitary(n,seed)
 %   [1-(-1)^n*(2/n)*cos(n*theta)]/(2*pi).
 %   Ref: S. Nishigaki, PTEP 2024 (2024), 021A02.
 %   https://doi.org/10.1093/ptep/ptae018
+%   M. Fasi and L. Robol, sampling Haar eigenvalues, LAA (2021).
+%   https://doi.org/10.1016/j.laa.2021.02.031
 properties={'square','unitary','normal','complex','scalable','random'};
 if nargin==0,U=[];return;end
 if nargin<2,seed=[];end
