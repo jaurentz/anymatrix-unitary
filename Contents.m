@@ -25,6 +25,13 @@
 % Random and signal-processing:
 %   haar_unitary         Haar random U(n) via phase-corrected complex QR.
 %   haar_orthogonal      Haar random O(n) via sign-corrected real QR.
+%   haar_special_unitary Haar random determinant-one SU(n) ensemble.
+%   haar_unimodular_coe Haar symmetric SU(n)/SO(n) circular ensemble.
+%   haar_unimodular_cse Haar self-dual SU(2n)/Sp(2n) circular ensemble.
+%   haar_tensor_power    Correlated repeated Haar tensor factors.
+%   haar_block_tensor_power Two independent Haar factors in tensor blocks.
+%   tensor_permutation  Orthogonal tensor-factor permutation matrix.
+%   entangled_reflection Maximally entangled rank-one unitary phase reflector.
 %   haar_wavelet         Orthogonal finite Haar wavelet analysis transform.
 %
 % Non-quantum signal-processing transforms:
