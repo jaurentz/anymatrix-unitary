@@ -105,6 +105,7 @@ d=2;t=4;seed=31;
 A=haar_tensor_power(d,t,seed);
 O=haar_tensor_power(d,t,seed,'operator');
 S=haar_tensor_power(d,t,seed,'spectral');
+verifyEqual(testCase,rng,state);
 verifyEqual(testCase,O([],'size'),[16 16]);
 checkactions(testCase,A,O);
 verifyEqual(testCase,S.finite.kind,'exact');
@@ -113,7 +114,6 @@ for k=-3:4
 end
 z=S.finite.eigenvalues();
 verifyLessThan(testCase,max(arrayfun(@(q)min(abs(q-z)),eig(A))),3e-12);
-verifyEqual(testCase,rng,state);
 verifyError(testCase,@()haar_tensor_power(2,3,[],'spectral'), ...
     'unitary_spectral_reference:Seed');
 % The prior dense cap is intentionally bypassed in operator mode.
@@ -128,6 +128,7 @@ state=rng;
 A=haar_block_tensor_power(2,2,1,47);
 O=haar_block_tensor_power(2,2,1,47,'operator');
 S=haar_block_tensor_power(2,2,1,47,'spectral');
+verifyEqual(testCase,rng,state);
 checkactions(testCase,A,O);
 verifyEqual(testCase,S.dimension,8);
 for k=-3:4
@@ -135,7 +136,6 @@ for k=-3:4
 end
 z=S.finite.eigenvalues();
 verifyLessThan(testCase,max(arrayfun(@(q)min(abs(q-z)),eig(A))),3e-12);
-verifyEqual(testCase,rng,state);
 verifyError(testCase,@()haar_block_tensor_power(2,2,1,[],'spectral'), ...
     'unitary_spectral_reference:Seed');
 H=haar_block_tensor_power(2,7,6,47,'operator');
