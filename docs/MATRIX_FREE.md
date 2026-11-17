@@ -30,6 +30,9 @@ factor order under adjoints. No custom MATLAB matrix class is required.
 | `um_gate_apply`, `um_circuit_apply` | Two-site qubit gates, XXZ and dual-unitary Floquet circuits | O(1) per local gate |
 | `um_spin_apply` | Floquet Ising chains | O(2^n) phase vector |
 | `um_reflection_apply` | Grover rank-one reflection | O(n) temporary memory |
+| `um_entangled_reflection_apply` | Maximally entangled rank-one phase update | O(d^2) state |
+| `um_tensor_apply` | Repeated or independent-block Haar Kronecker products | O(d^t) state; O(t*d^(t+1)) arithmetic per RHS |
+| `um_tensor_permute_apply` | Schur--Weyl tensor factor permutations by reshape/permute | O(d^t) state |
 | `um_dirac_apply` | Two-component periodic Dirac automaton, shift and local mass mixing | O(n) for multiple RHS |
 | `um_wavelet_apply` | Haar wavelet multilevel transform | O(n) |
 | `um_dct_apply` | DCT I–IV using FFT even extensions | O(n) |
@@ -104,3 +107,22 @@ provides independent structural and spectral checks for the same matrices.
 `tests/test_quantum_matrix_free.m` checks the shared tridiagonal exponential
 against independent dense EXPM, as well as multi-RHS forward/adjoint equivalence
 for the three added families and the kicked top.
+
+## Haar tensor products and exact ensemble spectral references
+
+The new `haar_tensor_power(d,t,seed,'operator')` and
+`haar_block_tensor_power(d,t1,t2,seed,'operator')` preserve the seed and
+allow dimensions larger than the explicit order-4096 cap. Their forward and
+conjugate-transpose actions apply the small Haar factors along tensor axes.
+They require the full *state vector* of length d^t, but no dense d^t-by-d^t
+Kronecker matrix. The `tensor_permutation(d,pi,'operator')` mode similarly
+reshapes and permutes tensor dimensions, without assembling a sparse matrix.
+
+The terminal `'spectral'` output for Haar SU(n), unimodular COE and CSE
+returns the exact *ensemble expectation*, including finite-size deviations
+from the uniform phase law. The COE n=2 exceptional case has normalized
+density |sin(theta)|/4. Tensor-power `'spectral'` output instead needs a
+fixed SEED and returns exact eigenphase products and moments of that
+*particular sample*, computed from only its d-by-d base factors. These are
+not ensemble means. No nonuniform finite-n ensemble density is asserted
+for the tensor-power constructions.
