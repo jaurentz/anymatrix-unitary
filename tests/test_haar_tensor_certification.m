@@ -104,6 +104,23 @@ verifyError(testCase,@()tensor_permutation(2,[1 1]), ...
     'tensor_permutation:Permutation');
 end
 
+function test_weyl_heisenberg_one_design(testCase)
+% Existing time_frequency_shift supplies all d^2 unitary design members.
+for d=[2 3 5]
+    A=reshape((1:d*d)+1i*(d*d:-1:1),d,d)/d;
+    average=zeros(d);
+    for a=0:d-1
+        for b=0:d-1
+            W=time_frequency_shift(d,a,b);
+            average=average+W*A*W';
+        end
+    end
+    average=average/d^2;
+    verifyLessThan(testCase,norm(average-trace(A)/d*eye(d),'fro'), ...
+        2e-12);
+end
+end
+
 function checkunitary(testCase,A)
 n=size(A,1);
 verifyEqual(testCase,size(A),[n n]);
