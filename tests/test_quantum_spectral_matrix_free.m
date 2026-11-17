@@ -22,7 +22,12 @@ for j=1:numel(names)
             % Test Fourier moments against independent phase quadrature.
             theta=linspace(-pi,pi,4097);
             theta=theta(1:end-1);
-            mk=2*pi/numel(theta)*sum(rho(theta).*exp(1i*k*theta));
+            if strcmp(f,'haar_unimodular_coe') && n==2
+                integrand=@(q)rho(q).*exp(1i*k*q);
+                mk=integral(integrand,-pi,0)+integral(integrand,0,pi);
+            else
+                mk=2*pi/numel(theta)*sum(rho(theta).*exp(1i*k*theta));
+            end
             verifyLessThan(testCase,abs(m-mk),4e-10);
             verifyLessThan(testCase, ...
                 abs(S.ensemble.moments(-k)-conj(m)),2e-13);
