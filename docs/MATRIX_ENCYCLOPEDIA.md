@@ -1665,7 +1665,9 @@ optional; its use does not alter the caller's RNG state. For n=1, U=1.
 one-point eigenphase density is
 `rho_n(theta)=[1-(-1)^n*(2/n)*cos(n*theta)]/(2*pi)`. This is not the empirical
 density of one draw. For n=2, it is `sin(theta)^2/pi`. Compare a large sample
-average with this function; a single matrix has atomic eigenphases. [84,85]
+average with this function; a single matrix has atomic eigenphases. The
+terminal `'spectral'` mode returns this normalized mean density and its
+exact Fourier moments, without drawing a random matrix. [84,85]
 
 ### Unimodular circular orthogonal ensemble — [`haar_unimodular_coe.m`](../haar_unimodular_coe.m)
 
@@ -1674,11 +1676,15 @@ transpose*, not conjugate transpose). It is symmetric, complex unitary,
 determinant one, and distributed on the compact symmetric space SU(n)/SO(n).
 This is **not** a real-orthogonal Haar sample.
 
-**Reference density.** For n>=2, write
+**Reference density.** For n>=3, write
 `a_n=sqrt(pi)*factorial(n-1)/(2^(n-1)*gamma(n/2+3/2)*gamma(n/2+1))`.
 The normalized ensemble-mean density is
 `rho(theta)=[1-(-1)^n*a_n*cos(n*theta)]/(2*pi)`.
-Compute `a_n` via log-gamma to avoid overflow for large n. [84]
+Compute `a_n` via log-gamma to avoid overflow for large n. **Important exception:**
+for n=2, the normalized density is exactly `abs(sin(theta))/4`, *not* the
+preceding cosine expression (Nishigaki, footnote 1). For n=1 the single
+eigenphase is the atom at zero. These cases are handled explicitly by the
+`'spectral'` interface. [84]
 
 ### Unimodular circular symplectic ensemble — [`haar_unimodular_cse.m`](../haar_unimodular_cse.m)
 
@@ -1693,7 +1699,9 @@ n distinct doubly repeated phases is
 `[1-(-1)^n*b_n*cos(n*theta)+c_n*cos(2*n*theta)]/(2*pi)`, where
 `b_n=(2n)!!/((2n-1)!!*n)`, `c_n=2/((2n-1)*n)`.
 For n=1 this ensemble is the deterministic identity of order 2; use its point
-mass at phase zero rather than the generic continuous formula. [84]
+mass at phase zero rather than the generic continuous formula. All three
+unimodular generators provide these laws in the `'spectral'` output; the
+`'ensemble'` field is never confused with one random matrix's finite atoms. [84]
 
 ### Maximally entangled rank-one phase reflection — [`entangled_reflection.m`](../entangled_reflection.m)
 
@@ -1703,6 +1711,8 @@ mass at phase zero rather than the generic continuous formula. [84]
 `U=I-2vv'` is the explicit local-certification counterexample of [77],
 Eq. (15). Order d^2; sparse identity plus an O(d^2)-nonzero rank-one term.
 The `operator` mode applies the rank-one update in O(d^2) per RHS.
+The `'spectral'` output includes exact finite eigenvalues, moments, and
+atomic weights (including the degenerate phase-zero case).
 
 **Exact spectrum.** The exceptional eigenvalue is `exp(i*phi)` once, and 1
 occurs d^2-1 times. At phi=pi and d>=2 the ordinary numerical range contains
@@ -1717,8 +1727,13 @@ the full tensor-product space of order d^t. The exact eigenvalues are products
 of t eigenvalues of V (with repetitions), and
 `tr(U^k)/d^t=(tr(V^k)/d)^t`. The repeated base unitary induces special
 algebraic degeneracies. This is **not** `Sym^t(V)` or an exterior power.
-The current function explicitly materializes matrices only through order 4096.
-The repeated-unitary setting is present in [81].
+The default function explicitly materializes matrices only through order 4096.
+The optional `'operator'` output uses O(d^t) state-vector memory and repeated
+small-factor actions, allowing larger dimensions without a dense Kronecker
+matrix. With a fixed random seed, `'spectral'` computes eigenvalues of the
+small d-by-d base matrix and returns exact full-space phase products/moments;
+it does not claim a nonuniform ensemble-mean density. The repeated-unitary
+setting is present in [81].
 
 ### Independent-block Haar tensor power — [`haar_block_tensor_power.m`](../haar_block_tensor_power.m)
 
@@ -1727,7 +1742,9 @@ Use independent Haar V1,V2 in U(d) to form
 normalized moments `[tr(V1^k)/d]^t1*[tr(V2^k)/d]^t2`. Same-seed output is
 reproducible with independent sequential draws. Contrast the *same* U on
 both blocks in `haar_tensor_power`, as in the comparison of Haar-averaged
-measurement models [81]. Explicit materialization is capped at order 4096.
+measurement models [81]. Explicit materialization is capped at order 4096. The
+`'operator'` mode applies only small factors, while `'spectral'` (requiring
+a seed) computes full-space spectral data from the two small matrices.
 
 ### Tensor-factor permutation — [`tensor_permutation.m`](../tensor_permutation.m)
 
@@ -1738,7 +1755,11 @@ It is a sparse **real orthogonal** matrix. Write c(pi^k) for the number of
 cycles of pi^k. Then `tr(P_pi^k)=d^c(pi^k)` exactly. At t=2 with pi=[2 1],
 the swap operator has +1 multiplicity d(d+1)/2 and -1 multiplicity
 d(d-1)/2. This is a concrete representation-theoretic specialization of
-generic permutations relevant to twirling and Schur--Weyl duality. [79,81]
+generic permutations relevant to twirling and Schur--Weyl duality. The
+`'operator'` mode reshapes and permutes each RHS with no sparse matrix;
+`'spectral'` provides exact normalized moments `d^(c(pi^k)-t)` at large
+orders, as well as an optional finite eigenvalue list derived from basis
+orbits rather than a numerical eigensolver. [79,81]
 
 ### Finite Weyl--Heisenberg 1-design (already implemented)
 
