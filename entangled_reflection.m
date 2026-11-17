@@ -1,13 +1,11 @@
 function [U,properties] = entangled_reflection(d,phi,output)
-%ENTANGLED_REFLECTION Bipartite maximally entangled phase reflection.
-%   v=vec(I_d)/sqrt(d), U=I+(exp(1i*phi)-1)*v*v' has order d^2.
-%   Default PHI=pi gives the reflection from Kukulski et al. (2024).
-%   Spectrum: exp(1i*phi) once, 1 with multiplicity d^2-1.
-%   At PHI=pi and d>=2, the product numerical range is [1-2/d,1].
-%   For d>=2, ordinary numerical range contains zero at PHI=pi.
-%   OUTPUT='operator' returns a function supporting ('size'),
-%   ('notransp'), and ('transp' or 'ctransp') with multiple RHS.
-%   Ref: R. Kukulski et al., Sci. Rep. 14 (2024), 26588, Eq. (15).
+%ENTANGLED_REFLECTION Maximally entangled bipartite phase reflection.
+%   v=vec(I_d)/sqrt(d); U=I+(exp(1i*phi)-1)*v*v' has order d^2.
+%   The default phi=pi yields I-2vv' with a product-range gap.
+%   Spectrum exp(i*phi) once, 1 with multiplicity d^2-1.
+%   OUTPUT='operator' supports forward/adjoint multi-RHS actions;
+%   OUTPUT='spectral' returns exact finite eigenphase data.
+%   Ref: R. Kukulski et al., Scientific Reports 14 (2024).
 %   https://doi.org/10.1038/s41598-024-75148-z
 properties={'square','unitary','normal','sparse','scalable', ...
     'eigenvalues','parameter-dependent'};
@@ -20,6 +18,10 @@ n=d*d;
 if ~isfinite(n)||n>flintmax
     error('entangled_reflection:Order','d^2 exceeds the exact index range.');
 end
+if (ischar(output)||isstring(output)) && strcmpi(char(output),'spectral')
+    U=unitary_spectral_reference('entangled_reflection',d,phi);
+    return
+end
 ii=1+(0:d-1)'*(d+1);
 v=sparse(ii,ones(d,1),ones(d,1)/sqrt(d),n,1);
 if phi==pi,lambda=-1;else,lambda=exp(1i*phi);end
@@ -29,4 +31,3 @@ else
     U=speye(n)+(lambda-1)*(v*v');
 end
 end
-
