@@ -7,6 +7,7 @@ function [U,properties] = tensor_permutation(d,pi)
 %   Special case PI=[2 1] is the swap matrix with known +/-1 counts.
 %   Schur-Weyl duality and quantum channel twirling motivate this family.
 %   Ref: https://doi.org/10.1088/1751-8121/ae965b
+%   https://arxiv.org/abs/2605.31168
 properties={'square','unitary','normal','real','orthogonal','sparse', ...
     'scalable','eigenvalues','parameter-dependent'};
 if nargin==0,U=[];return;end
