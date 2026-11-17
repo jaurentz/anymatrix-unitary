@@ -946,6 +946,106 @@
       "matrix_free_supported": false,
       "operator_kernel": null,
       "operator_note": "U(3) molecular-bending two-dimensional vibron model; sectors ell=-N..N. Distinct from U(2) Lipkin parity sectors and Agassi fermionic model. Sparse sector Hamiltonians, full propagator block diagonal. Explicit N capped to manage memory."
+    },
+    {
+      "status": "implemented",
+      "id": "haar_special_unitary",
+      "category": "random_signal",
+      "matrix_order": "n",
+      "representation": "dense complex QR with determinant normalization",
+      "spectral_reference": "Haar SU(n); exact nonuniform expected density [1-(-1)^n(2/n)cos(n theta)]/(2pi) (n>=2)",
+      "encyclopedia_references": [
+        84,
+        85
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": null,
+      "operator_note": "Explicit SU(n) Haar sample; seeded with caller RNG restoration."
+    },
+    {
+      "status": "implemented",
+      "id": "haar_unimodular_coe",
+      "category": "random_signal",
+      "matrix_order": "n",
+      "representation": "dense complex symmetric unitary SU(n)/SO(n)",
+      "spectral_reference": "Unimodular beta=1 circular ensemble; finite-n exact ensemble density (Nishigaki)",
+      "encyclopedia_references": [
+        84
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": null,
+      "operator_note": "Q*transpose(Q) with Q Haar SU(n); not real orthogonal."
+    },
+    {
+      "status": "implemented",
+      "id": "haar_unimodular_cse",
+      "category": "random_signal",
+      "matrix_order": "2*n",
+      "representation": "dense complex self-dual unitary SU(2n)/Sp(2n)",
+      "spectral_reference": "Unimodular beta=4 circular ensemble; n distinct Kramers-paired eigenphases",
+      "encyclopedia_references": [
+        84
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": null,
+      "operator_note": "Q*J*transpose(Q)*J' with Q Haar SU(2n); not Haar on compact Sp(n)."
+    },
+    {
+      "status": "implemented",
+      "id": "entangled_reflection",
+      "category": "quantum",
+      "matrix_order": "d^2",
+      "representation": "sparse identity plus maximally entangled rank-one projector",
+      "spectral_reference": "exact eigenphase exp(i phi) once, 1 multiplicity d^2-1; phi=pi yields product numerical range [1-2/d,1] for d>=2",
+      "encyclopedia_references": [
+        77
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "local rank-one action",
+      "operator_note": "O(d^2) nonzeros; optional operator supports adjoints and multiple right-hand sides."
+    },
+    {
+      "status": "implemented",
+      "id": "haar_tensor_power",
+      "category": "quantum",
+      "matrix_order": "d^t",
+      "representation": "dense Kronecker power of one Haar unitary",
+      "spectral_reference": "exact sample eigenvalue products and normalized moments m_k=(tr(V^k)/d)^t",
+      "encyclopedia_references": [
+        81
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": null,
+      "operator_note": "Explicit cap d^t<=4096; dimension can grow rapidly."
+    },
+    {
+      "status": "implemented",
+      "id": "haar_block_tensor_power",
+      "category": "quantum",
+      "matrix_order": "d^(t1+t2)",
+      "representation": "dense Kronecker powers of two independently sampled Haar unitaries",
+      "spectral_reference": "exact sample eigenvalue products, normalized moment factorization",
+      "encyclopedia_references": [
+        81
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": null,
+      "operator_note": "Explicit cap <=4096; two independent draws from a reproducible stream."
+    },
+    {
+      "status": "implemented",
+      "id": "tensor_permutation",
+      "category": "quantum",
+      "matrix_order": "d^length(pi)",
+      "representation": "sparse real tensor-factor permutation",
+      "spectral_reference": "exact trace(P_pi^k)=d^cycles(pi^k); all eigenvalues roots of unity",
+      "encyclopedia_references": [
+        79,
+        81
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": "builtin-sparse",
+      "operator_note": "Explicit cap 2e6; sparse permutation with O(d^t) nonzeros."
     }
   ],
   "probability_measures": [
