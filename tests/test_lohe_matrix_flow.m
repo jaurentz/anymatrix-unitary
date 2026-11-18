@@ -8,9 +8,11 @@ function test_inventory_and_default_rng_reproducibility(testCase)
 verifyEmpty(testCase,empty);
 verifyTrue(testCase,any(strcmp(props,'unitary')));
 state=rng;
-[A,~,All]=lohe_matrix_flow(3);
+A=lohe_matrix_flow(3);
+All=lohe_matrix_flow(3,[],[],[],[],[],[],[],'ensemble');
 verifyEqual(testCase,rng,state);
-[B,~,AllB]=lohe_matrix_flow(3);
+B=lohe_matrix_flow(3);
+AllB=lohe_matrix_flow(3,[],[],[],[],[],[],[],'ensemble');
 verifyEqual(testCase,A,B,'AbsTol',0);
 verifyEqual(testCase,All,AllB,'AbsTol',0);
 verifyEqual(testCase,size(All),[3 3 3]);
@@ -31,7 +33,8 @@ for j=1:n
 end
 time=.7;
 for steps=[1 2 11]
-    [A,~,ensemble]=lohe_matrix_flow(d,n,0,time,H,U0,2,steps);
+    A=lohe_matrix_flow(d,n,0,time,H,U0,2,steps);
+    ensemble=lohe_matrix_flow(d,n,0,time,H,U0,2,steps,'ensemble');
     verifyEqual(testCase,A,ensemble(:,:,2),'AbsTol',5e-14);
     for j=1:n
         expected=expm(-1i*time*H(:,:,j))*U0(:,:,j);
@@ -50,7 +53,8 @@ H1=[1 .2+.1i 0;.2-.1i 0 -.4i;0 .4i -1];
 V=haar_unitary(d,57);
 H=repmat(H1,1,1,n);
 U0=repmat(V,1,1,n);
-[U,~,All]=lohe_matrix_flow(d,n,3,0.8,H,U0,3,8);
+U=lohe_matrix_flow(d,n,3,0.8,H,U0,3,8);
+All=lohe_matrix_flow(d,n,3,0.8,H,U0,3,8,'ensemble');
 exact=expm(-.8i*H1)*V;
 verifyLessThan(testCase,norm(U-exact,'fro'),5e-13);
 for j=1:n
