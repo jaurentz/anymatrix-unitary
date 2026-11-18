@@ -35,7 +35,7 @@ function [U,properties,ensemble] = lohe_matrix_flow(d,nosc,kappa,t,H,U0,which,st
 %   M. A. Lohe, Non-Abelian Kuramoto models and synchronization,
 %   J. Phys. A 42 (2009), 395101.
 %   https://doi.org/10.1088/1751-8113/42/39/395101
-%   S.-Y. Ha et al., Emergent behaviors of discrete Lohe aggregation
+%   H. Choi, S.-Y. Ha and H. Park, Emergent behaviors of discrete Lohe aggregation
 %   flows, Discrete Contin. Dyn. Syst. B (2022).
 %   https://doi.org/10.3934/dcdsb.2021308
 properties={'square','unitary','normal','complex','scalable', ...
