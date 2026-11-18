@@ -1046,6 +1046,21 @@
       "matrix_free_supported": true,
       "operator_kernel": "um_tensor_permute_apply",
       "operator_note": "Default sparse O(d^t) representation capped at order 2e6; implicit reshape-permute action scalable with state-vector length and analytic cycle moments."
+    },
+    {
+      "id": "lohe_matrix_flow",
+      "status": "implemented",
+      "category": "dynamical",
+      "matrix_order": "d (each of NOSC coupled unitary oscillators)",
+      "representation": "dense unitary matrix sampled at specified time from a coupled nonlinear U(d)^N flow; exponential midpoint Lie-group integration",
+      "spectral_reference": "unknown in general; time-dependent discrete eigenphases, exact decoupled and scalar Kuramoto special cases",
+      "encyclopedia_references": [
+        86,
+        87
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": null,
+      "operator_note": "Implicit dynamical system but each sample is an explicit dense d-by-d unitary. Optional full D-by-D-by-NOSC ensemble output. Second-order exponential midpoint; preserves unitarity, not necessarily determinant one."
     }
   ],
   "probability_measures": [
