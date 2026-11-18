@@ -1806,8 +1806,8 @@ seeded Haar draws and do not consume caller random state.
 **Parameters and outputs.** `lohe_matrix_flow(d,NOSC,kappa,t,H,U0,which,steps)`
 returns oscillator `which` at time `t`. Custom `H` and `U0` are
 `d`-by-`d`-by-`NOSC` arrays of Hermitian and unitary matrices,
-respectively. A third MATLAB output contains all evolved oscillator states;
-terminal `'ensemble'` returns the whole 3-D array as the first output.
+respectively. Terminal `'ensemble'` returns all evolved oscillator states
+as a single 3-D array instead of a single selected matrix.
 Terminal `'spectral'` returns an **unknown** general finite counting
 measure, not a fabricated analytic spectral density.
 
