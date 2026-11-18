@@ -49,6 +49,9 @@
 %   dpss_transform       Explicit Slepian concentration eigenbasis.
 %   graph_fourier        Explicit weighted-graph Laplacian eigenbasis.
 %
+% Nonlinear unitary dynamics:
+%   lohe_matrix_flow     Coupled Lohe oscillators on U(d), geometric midpoint integration.
+%
 % Quantum maps, walks and algorithms:
 %   split_step_walk      Periodic real-orthogonal two-state quantum walk.
 %   szegedy_walk        Markov-chain product-of-reflections walk, exact spectrum.

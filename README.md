@@ -4,7 +4,7 @@ A MATLAB collection of finite **unitary and orthogonal test matrices**, designed
 an external group for [Anymatrix](https://github.com/north-numerical-computing/anymatrix).
 The repository is organized around reproducible mathematical constructions,
 known spectral information, and executable regression tests. It contains
-72 generators; additional benchmark families are under development.
+73 generators; additional benchmark families are under development.
 
 **Status:** development collection with MATLAB-only tests. Automated MATLAB
 regression and Anymatrix integration tests run on GitHub Actions after every
@@ -47,7 +47,7 @@ assertSuccess(results)
 
 ## Matrix generator interfaces
 
-The collection currently has **72 public generators**. Each has a complete
+The collection currently has **73 public generators**. Each has a complete
 entry with formulas, spectral information, applications, parameter conventions,
 and references in the [matrix encyclopedia](docs/MATRIX_ENCYCLOPEDIA.md).
 The [mathematical notes](docs/MATHEMATICS.md) explain the shared OPUC engine.
@@ -62,6 +62,7 @@ The [vibron ESQPT example](examples/vibron_esqpt_sector_gaps.m) compares U(3) an
 | Quantum maps, walks, and algorithms | `split_step_walk`, `dirac_automaton`, `grover_operator`, `quantum_baker`, `kicked_harper`, `kicked_top`, `extended_lipkin_propagator`, `vibron_2d_esqpt`, `agassi_propagator`, `floquet_ising`, `selfdual_kicked_ising`, `driven_kitaev`, `kicked_rotor`, `dual_unitary_circuit`, `xxz_floquet`, `kicked_bose_hubbard`, `jaynes_cummings`, `chalker_coddington`, `unitary_almost_mathieu`, `szegedy_walk`, `coined_graph_walk`, `metric_quantum_graph` |
 | Matrix functions and dilations | `cayley_jacobi`, `polar_unitary`, `julia_unitary`, `entangled_reflection` |
 | Quantum group actions | `tensor_permutation` |
+| Nonlinear unitary dynamical systems | `lohe_matrix_flow` |
 | Strict unitary eigenvalue pencils | `mobius_unitary_pencil`, `unitary_delay_pencil`, `block_cmv_pencil`, `floquet_factor_pencil`, `cayley_hermitian_pencil`, `left_weighted_unitary_pencil` |
 
 Generators return **actual finite square matrices by default**. Selected
@@ -353,6 +354,31 @@ and general graph Fourier do not**: they return explicit orthogonal matrices,
 because caching dense eigenvectors in a function handle is not a meaningful
 matrix-free implementation. Laplacian or concentration eigenvalues are
 different from the eigenvalues of the resulting transform matrix.
+
+
+### Nonlinear unitary dynamics (Lohe matrix oscillators)
+
+The `lohe_matrix_flow` family returns a **unitary matrix on a nonlinear
+coupled trajectory**, rather than an eigenbasis or a fixed unitary
+propagator. The numerical method evolves all oscillators together using
+synchronous second-order exponential midpoint steps; every step preserves
+unitarity up to floating-point roundoff. Use a smaller step size for
+convergence studies. The terminal `'ensemble'` mode returns all evolved
+oscillator matrices in a 3-D array.
+
+```matlab
+U = lohe_matrix_flow(4,3,1,1);      % order 4; three oscillators
+All = lohe_matrix_flow(4,3,1,1,[],[],1,32,'ensemble');
+err = norm(U'*U-eye(4),'fro');       % near machine precision
+W = lohe_matrix_flow(4,3,1,1,[],[],2,64); % oscillator 2, 64 steps
+S = lohe_matrix_flow(4,[],[],[],[],[],[],[],'spectral');
+% S.finite.kind = 'unknown': no generic analytical eigenphase law.
+```
+
+Unlike the ordinary matrix exponential with a fixed Hermitian generator,
+these systems are coupled and nonlinear; they are not intrinsically a
+structured unitary eigenvalue problem. For source models and discretization
+see [the matrix encyclopedia](docs/MATRIX_ENCYCLOPEDIA.md).
 
 ## Automatic tests
 

@@ -1770,7 +1770,67 @@ No duplicate generator is introduced. Existing
 `(1/d^2)*sum_(a,b) W_(a,b)*A*W_(a,b)' = tr(A)/d*I`.
 This is a useful exact averaging test, not a new family [79,80].
 
-## M. Families reserved for future versions (not implemented)
+## M. Nonlinear unitary matrix flows
+
+### Lohe coupled matrix oscillators — [`lohe_matrix_flow.m`](../lohe_matrix_flow.m)
+
+**Definition and construction.** For `NOSC=N` coupled oscillators of matrix
+order `d`, evolve `U_j(t)` on `U(d)` according to
+
+```math
+\dot U_j=\left[-iH_j+\frac{\kappa}{2}
+\left(\bar U U_j^*-U_j\bar U^*\right)\right]U_j,
+\qquad \bar U=\frac1N\sum_{\ell=1}^N U_\ell,
+\qquad H_j=H_j^*.
+```
+
+The bracketed generator is skew-Hermitian, so each exact trajectory remains
+unitary. The sample matrices are generally dense, with time-dependent
+eigenphases. Coupling makes the evolution **nonlinear**; there is no single
+fixed unitary propagator that simultaneously represents all initial conditions.
+The family is a matrix-valued, non-Abelian generalization of the Kuramoto
+synchronization model [86,87].
+
+**Numerical implementation.** We use a *synchronous exponential midpoint*
+method: from all current `U_j` compute all skew-Hermitian generators,
+predict each half-step using `expm(h*A_j/2)*U_j`, then recompute the common
+mean and apply `expm(h*A_j_half)*U_j` from the original states. This is
+second-order accurate for smooth trajectories and keeps each step on the
+unitary group up to floating-point roundoff. It is **not** an exact
+closed-form solution. Distinct geometric integrators for Lohe systems have
+also been studied [87]. Complexity is O(`STEPS*NOSC*d^3`), and the
+implementation caps `d<=128`, `NOSC<=64`. Default Hermitian frequencies
+are deterministic; default initial unitary matrices are independently
+seeded Haar draws and do not consume caller random state.
+
+**Parameters and outputs.** `lohe_matrix_flow(d,NOSC,kappa,t,H,U0,which,steps)`
+returns oscillator `which` at time `t`. Custom `H` and `U0` are
+`d`-by-`d`-by-`NOSC` arrays of Hermitian and unitary matrices,
+respectively. Terminal `'ensemble'` returns all evolved oscillator states
+as a single 3-D array instead of a single selected matrix.
+Terminal `'spectral'` returns an **unknown** general finite counting
+measure, not a fabricated analytic spectral density.
+
+**Special cases and useful invariants.**
+- At `kappa=0`, `U_j(t)=exp(-i*t*H_j)*U_j(0)` exactly.
+- With identical `H_j` and synchronized initial data, all states remain
+  synchronized and evolve under the common Hermitian propagator.
+- At `d=1`, the model reduces to scalar Kuramoto phases; the symmetric
+  two-oscillator zero-frequency case admits an exact solution for benchmarking
+  global time-stepping error.
+- If `H_j=0` and initial `U_j(0)` are real orthogonal, the flow remains
+  real orthogonal. Right multiplication by any common fixed unitary `R`
+  commutes with the full dynamics: `U_j(t;U0*R)=U_j(t;U0)*R`.
+- **Do not assume `SU(d)` invariance:** the Lohe coupling need not be
+  traceless, and individual determinants can evolve. A unitary matrix
+  family does not automatically lie in a special-unitary subgroup.
+
+**Spectral benchmarking.** Compare the time-dependent empirical measures
+`(1/d)*sum_k delta_(lambda_k(U_j(t)))`, and check unitarity, spectral
+continuity, and numerical sensitivity to step size. No generic exact
+eigenphase law, bulk density or OPUC measure is claimed.
+
+## N. Families reserved for future versions (not implemented)
 
 - **ETNA core-factor stress tests:** the five experimental constructions in
   Aurentz–Mach–Vandebril–Watkins (2015), including the nearly reducible Type
@@ -1880,3 +1940,5 @@ This is a useful exact averaging test, not a new family [79,80].
 83. T. Śmierzchalski and collaborators, “Hybrid quantum-classical computation for automatic guided vehicles scheduling,” *Scientific Reports* **14** (2024), 21809. [DOI](https://doi.org/10.1038/s41598-024-72101-y). Not a unitary-matrix source.
 84. S. Nishigaki, “Eigenphase distributions of unimodular circular ensembles,” *Progress of Theoretical and Experimental Physics* **2024** (2024), 021A02. [DOI](https://doi.org/10.1093/ptep/ptae018); [preprint](https://arxiv.org/abs/2401.09045).
 85. M. Fasi and L. Robol, “Sampling the eigenvalues of random orthogonal and unitary matrices,” *Linear Algebra and its Applications* **620** (2021), 297–321. [DOI](https://doi.org/10.1016/j.laa.2021.02.031); [preprint](https://arxiv.org/abs/2009.11515).
+86. M. A. Lohe, “Non-Abelian Kuramoto models and synchronization,” *J. Phys. A: Math. Theor.* **42** (2009), 395101. [DOI](https://doi.org/10.1088/1751-8113/42/39/395101).
+87. H. Choi, S.-Y. Ha and H. Park, “Emergent behaviors of discrete Lohe aggregation flows,” *Discrete Contin. Dyn. Syst. B* **27** (2022), 6083–6123. [DOI](https://doi.org/10.3934/dcdsb.2021308); [preprint](https://arxiv.org/abs/2110.12366).
