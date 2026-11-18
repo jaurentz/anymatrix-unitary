@@ -1,4 +1,4 @@
-function [U,properties,ensemble] = lohe_matrix_flow(d,nosc,kappa,t,H,U0,which,steps,mode)
+function [U,properties] = lohe_matrix_flow(d,nosc,kappa,t,H,U0,which,steps,mode)
 %LOHE_MATRIX_FLOW Nonlinear coupled unitary matrices (Lohe/Kuramoto model).
 %   U=LOHE_MATRIX_FLOW(D,NOSC,KAPPA,T,H,U0,WHICH,STEPS) returns the
 %   WHICH-th D-by-D unitary matrix of an NOSC-oscillator Lohe ensemble.
@@ -20,9 +20,8 @@ function [U,properties,ensemble] = lohe_matrix_flow(d,nosc,kappa,t,H,U0,which,st
 %   STEPS increases. Its trajectory is an APPROXIMATION, not an exact
 %   solution of the continuous-time Lohe equations.
 %
-%   [U,PROPERTIES,ALL]=LOHE_MATRIX_FLOW(...) also returns the complete
-%   D-by-D-by-NOSC evolved ensemble. Terminal MODE='ensemble' returns
-%   that ensemble as the first output; MODE='spectral' returns an
+%   Terminal MODE='ensemble' returns the complete D-by-D-by-NOSC
+%   evolved ensemble as the first output; MODE='spectral' returns an
 %   unknown-law spectral descriptor (no general analytic phase density).
 %   The default MODE='matrix' returns only oscillator WHICH.
 %
@@ -40,7 +39,6 @@ function [U,properties,ensemble] = lohe_matrix_flow(d,nosc,kappa,t,H,U0,which,st
 %   https://doi.org/10.3934/dcdsb.2021308
 properties={'square','unitary','normal','complex','scalable', ...
             'parameter-dependent'};
-ensemble=[];
 if nargin==0,U=[];return;end
 validateattributes(d,{'numeric'},{'scalar','integer','positive','finite'});
 if d>128
