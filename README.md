@@ -363,10 +363,12 @@ coupled trajectory**, rather than an eigenbasis or a fixed unitary
 propagator. The numerical method evolves all oscillators together using
 synchronous second-order exponential midpoint steps; every step preserves
 unitarity up to floating-point roundoff. Use a smaller step size for
-convergence studies. A third output gives the entire evolved ensemble.
+convergence studies. The terminal `'ensemble'` mode returns all evolved
+oscillator matrices in a 3-D array.
 
 ```matlab
-[U,~,All] = lohe_matrix_flow(4,3,1,1);  % order 4; three oscillators
+U = lohe_matrix_flow(4,3,1,1);      % order 4; three oscillators
+All = lohe_matrix_flow(4,3,1,1,[],[],1,32,'ensemble');
 err = norm(U'*U-eye(4),'fro');       % near machine precision
 W = lohe_matrix_flow(4,3,1,1,[],[],2,64); % oscillator 2, 64 steps
 S = lohe_matrix_flow(4,[],[],[],[],[],[],[],'spectral');
