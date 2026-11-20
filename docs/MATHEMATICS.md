@@ -283,7 +283,7 @@ unweighted eigenvalue density.
 
 ## Geodesic and holonomy spectral benchmark formulas
 
-The five geometry-derived generators `sphere_geodesic`, `grassmann_geodesic`,
+The four additional geometry-derived generators together with the existing spherical transport family `sphere_geodesic_transport`, `grassmann_geodesic`,
 `geodesic_holonomy`, `connection_cycle`, and `lie_geodesic_transport`
 use the distinction between an **ambient orthogonal/unitary lift** and
 parallel transport between tangent spaces. In particular, sphere rotations
@@ -299,32 +299,4 @@ is the product holonomy R(sum(phi)), which establishes its exact roots-of-
 phase spectrum. The latter is a proposed test construction rather than a
 published mesh operator. For the Lie construction, the commutator map has
 pairwise phase differences and exact trace moments without diagonalizing
-its n²-by-n² matrix. See encyclopedia entries and refs. 93–96.
-
-## Stiefel geodesics, canonical Grassmann holonomy, and Wigner D matrices
-
-For the canonical Stiefel metric, an orthonormal frame Y and tangent
-H=YA+QR (A skew-Hermitian, [Y,Q] orthonormal) induce a 2p-by-2p
-skew-Hermitian block K=[A,-R';R,0]. The ambient unitary
-I+[Y,Q]*(expm(t*K)-I)*[Y,Q]' has rank at most 2p departure from the
-identity; its finite trace eigenphases follow from a much smaller
-eigenvalue problem on K. This includes the Grassmann horizontal lift
-at A=0; the two generators are not redundant for A nonzero.
-
-In the canonical tautological bundle over Gr(r,n), geodesic transport
-between full-overlap subspaces in the prescribed orthonormal frames is
-polar(Y_next'*Y_current). The ordered closed product lies in U(r), and
-changes by a unitary similarity under independent frame gauges. This
-is not intrinsic Levi-Civita transport on Gr's tangent bundle. Rank-one
-holonomy is the normalized Bargmann phase. For higher r, no analytic
-general phase formula is asserted. Principal angle pi/2 makes a link
-singular and its polar completion nonunique; the generator rejects it.
-
-Wigner D^j for spin j=(n-1)/2 is unitary, with exact eigenphases
-exp(-i*m*theta) for m=-j,...,j and theta determined from the SU(2)
-conjugacy trace. For integer j it factors through SO(3), while for
-half-integer j the 2pi rotation gives -I, not I. The Euler-angle
-composition specifies the *endpoint* of a rotation-group geodesic;
-its arbitrary coordinate path is not itself asserted to be geodesic.
-The fixed-sample spectrum is atomic and differs from eigenvalues of a
-spherical-harmonic interpolation transform. Sources [93], [97-99].
+its n²-by-n² matrix. See encyclopedia entries and refs. 96–100.

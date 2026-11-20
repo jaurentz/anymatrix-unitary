@@ -722,13 +722,45 @@
     {
       "number": 93,
       "dois": [
+        "10.1016/0167-2789(80)90026-3"
+      ],
+      "permalink": "https://doi.org/10.1016/0167-2789(80)90026-3",
+      "alternate_permalink": ""
+    },
+    {
+      "number": 94,
+      "dois": [
+        "10.1007/s13373-018-0132-2"
+      ],
+      "permalink": "https://doi.org/10.1007/s13373-018-0132-2",
+      "alternate_permalink": ""
+    },
+    {
+      "number": 95,
+      "dois": [
+        "10.1007/978-3-642-05014-5"
+      ],
+      "permalink": "https://doi.org/10.1007/978-3-642-05014-5",
+      "alternate_permalink": "https://dlmf.nist.gov/18.21"
+    },
+    {
+      "number": 96,
+      "dois": [
+        "10.1515/9781400830244"
+      ],
+      "permalink": "https://doi.org/10.1515/9781400830244",
+      "alternate_permalink": "https://sites.uclouvain.be/absil/amsbook/"
+    },
+    {
+      "number": 97,
+      "dois": [
         "10.1137/S0895479895290954"
       ],
       "permalink": "https://doi.org/10.1137/S0895479895290954",
       "alternate_permalink": "https://arxiv.org/abs/physics/9806030"
     },
     {
-      "number": 94,
+      "number": 98,
       "dois": [
         "10.1111/j.1467-8659.2010.01761.x"
       ],
@@ -736,7 +768,7 @@
       "alternate_permalink": "https://www.cs.cmu.edu/~kmcrane/Projects/TrivialConnections/"
     },
     {
-      "number": 95,
+      "number": 99,
       "dois": [
         "10.1109/LCSYS.2024.3405485"
       ],
@@ -744,35 +776,11 @@
       "alternate_permalink": "https://arxiv.org/abs/2403.16411"
     },
     {
-      "number": 96,
+      "number": 100,
       "dois": [
         "10.3390/sym13112092"
       ],
       "permalink": "https://doi.org/10.3390/sym13112092",
-      "alternate_permalink": ""
-    },
-    {
-      "number": 97,
-      "dois": [
-        "10.1006/aphy.1993.1093"
-      ],
-      "permalink": "https://doi.org/10.1006/aphy.1993.1093",
-      "alternate_permalink": ""
-    },
-    {
-      "number": 98,
-      "dois": [
-        "10.1007/s10444-023-10090-8"
-      ],
-      "permalink": "https://doi.org/10.1007/s10444-023-10090-8",
-      "alternate_permalink": "https://arxiv.org/abs/2011.13699"
-    },
-    {
-      "number": 99,
-      "dois": [
-        "10.1007/s00041-008-9013-5"
-      ],
-      "permalink": "https://doi.org/10.1007/s00041-008-9013-5",
       "alternate_permalink": ""
     }
   ]

@@ -7,16 +7,16 @@ function test_sphere_parallel_transport_and_actions(testCase)
 for n=[2 3 9]
     theta=.69;p=zeros(n,1);p(1)=1;
     q=zeros(n,1);q(1)=cos(theta);q(2)=sin(theta);
-    R=sphere_geodesic(n,p,q);
+    R=sphere_geodesic_transport(n,p,q);
     verifyLessThan(testCase,norm(R'*R-eye(n),'fro'),3e-12*n);
     verifyLessThan(testCase,norm(R*p-q),3e-12*n);
     w=zeros(n,1);w(2)=1;
     transported=w-((w'*q)/(1+p'*q))*(p+q);
     verifyLessThan(testCase,norm(R*w-transported),3e-12*n);
-    S=sphere_geodesic(n,p,q,'spectral');
+    S=sphere_geodesic_transport(n,p,q,'spectral');
     verifyEqual(testCase,S.finite.kind,'exact');
     assert_spectrum(testCase,R,S.finite.eigenvalues());
-    F=sphere_geodesic(n,p,q,'operator');
+    F=sphere_geodesic_transport(n,p,q,'operator');
     verify_operator(testCase,R,F);
 end
 end
@@ -90,7 +90,7 @@ end
 
 function test_geometric_validation(testCase)
 p=[1;0;0];
-verifyError(testCase,@()sphere_geodesic(3,p,-p),'sphere_geodesic:Antipodal');
+verifyError(testCase,@()sphere_geodesic_transport(3,p,-p),'sphere_geodesic_transport:Antipodal');
 verifyError(testCase,@()grassmann_geodesic(5,[.1;.2],ones(5,4)), ...
     'grassmann_geodesic:Frames');
 verifyError(testCase,@()connection_cycle(4,[1;2;3;1i]), ...
