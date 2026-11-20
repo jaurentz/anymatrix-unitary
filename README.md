@@ -4,7 +4,7 @@ A MATLAB collection of finite **unitary and orthogonal test matrices**, designed
 an external group for [Anymatrix](https://github.com/north-numerical-computing/anymatrix).
 The repository is organized around reproducible mathematical constructions,
 known spectral information, and executable regression tests. It contains
-88 generators; additional benchmark families are under development.
+101 generators; additional benchmark families are under development.
 
 **Status:** development collection with MATLAB-only tests. Automated MATLAB
 regression and Anymatrix integration tests run on GitHub Actions after every
@@ -47,7 +47,7 @@ assertSuccess(results)
 
 ## Matrix generator interfaces
 
-The collection currently has **88 public generators**. Each has a complete
+The collection currently has **101 public generators**. Each has a complete
 entry with formulas, spectral information, applications, parameter conventions,
 and references in the [matrix encyclopedia](docs/MATRIX_ENCYCLOPEDIA.md).
 The [mathematical notes](docs/MATHEMATICS.md) explain the shared OPUC engine.
@@ -59,10 +59,12 @@ The [vibron ESQPT example](examples/vibron_esqpt_sector_gaps.m) compares U(3) an
 | OPUC / Szegő / core matrices | `finite_cmv`, `opuc_matrix`, `jacobi_szego`, `bernstein_szego`, `circular_beta`, `circular_jacobi`, `rogers_szego`, `geronimus_cmv`, `periodic_cmv`, `bernstein_szego_finite`, `lee_yang_ising`, `scattering_zipper`, `rational_opuc`, `unitary_rank_one_update`, `etna_hessenberg` |
 | Random and signal-processing | `haar_unitary`, `haar_orthogonal`, `haar_wavelet`, `daubechies_wavelet`, `haar_special_unitary`, `haar_unimodular_coe`, `haar_unimodular_cse`, `haar_tensor_power`, `haar_block_tensor_power` |
 | Signal-processing transforms | `orthogonal_dct`, `discrete_hartley`, `cazac_circulant`, `fresnel_transform`, `affine_fourier`, `finite_zak`, `time_frequency_shift`, `periodic_hilbert`, `discrete_fourier`, `discrete_sine`, `walsh_hadamard`, `dpss_transform`, `graph_fourier`, `blaschke_potapov`, `orthogonal_butterfly`, `complex_hadamard`, `krawtchouk_transform`, `hahn_transform`, `dual_hahn_transform` |
-| Riemannian geometry and gauge holonomy | `sphere_geodesic_transport`, `sphere_geodesic_holonomy`, `hyperbolic_triangle_holonomy`, `lattice_wilson_loop` |
+| Riemannian geometry | `sphere_geodesic_transport` |
 | Quantum maps, walks, and algorithms | `split_step_walk`, `dirac_automaton`, `grover_operator`, `quantum_baker`, `quantum_cat_map`, `kicked_harper`, `kicked_top`, `extended_lipkin_propagator`, `vibron_2d_esqpt`, `agassi_propagator`, `floquet_ising`, `selfdual_kicked_ising`, `driven_kitaev`, `kicked_rotor`, `dual_unitary_circuit`, `xxz_floquet`, `kicked_bose_hubbard`, `jaynes_cummings`, `chalker_coddington`, `unitary_almost_mathieu`, `szegedy_walk`, `coined_graph_walk`, `metric_quantum_graph` |
 | Matrix functions and dilations | `cayley_jacobi`, `polar_unitary`, `julia_unitary`, `entangled_reflection` |
 | Quantum group actions | `tensor_permutation` |
+| Geometric/symplectic integration | `geometric_oscillator` (periodic chain, FFT), `geometric_fem_wave` (Dirichlet FEM wave, DST); exact phase laws, positive-metric pencils, and a mass-weighted palindromic Verlet QEP |
+| Polynomial transforms and spherical rotations | `gauss_jacobi_transform` (includes associated Legendre), `gauss_hermite_transform`, `gauss_laguerre_transform`, `wigner_rotation`, `spherical_harmonic_rotation`, `periodic_sinc_shift` |
 | Nonlinear unitary dynamical systems | `lohe_matrix_flow` |
 | Strict unitary eigenvalue pencils | `mobius_unitary_pencil`, `unitary_delay_pencil`, `block_cmv_pencil`, `floquet_factor_pencil`, `cayley_hermitian_pencil`, `left_weighted_unitary_pencil` |
 
@@ -90,6 +92,10 @@ index reordering. See [matrix-free documentation](docs/MATRIX_FREE.md).
 several families; other families have ensemble laws, limiting densities, or
 no universal law. The encyclopedia distinguishes these cases. Do not infer a
 limiting eigenphase distribution from unitarity alone.
+
+### Orthogonal-polynomial and rotation constructions
+
+Six additional matrix families are available. The Gauss–Jacobi evaluation matrix also covers the fixed-order associated-Legendre block by setting `alpha=beta=m`; no duplicate Legendre generator is registered. Hermite and Laguerre use the shared Golub–Welsch basis engine. The Wigner irreducible representation and its degree-truncated block sum have distinct dimensions and spectral multiplicities. The periodic sinc shift is a named real circulant specialization with an FFT action. The original Townsend/Slevinsky, Golub–Welsch, and spherical-harmonic sources remain in the bibliography. The current Gauss transforms are explicit, not fast transform implementations.
 
 ## Eigenvalue-problem subclass
 
@@ -346,51 +352,6 @@ is the well-defined finite matrix in the database. The spectrum is
 the exactly known pair exp(±i theta), where theta=acos(x'*y),
 and n-2 copies of 1. Antipodal points are excluded.
 
-
-## Closed geodesic holonomy and non-Abelian Wilson loops
-
-~~~matlab
-% Great-sphere triangle around the e1,e2,e3 octant:
-H = sphere_geodesic_holonomy(3,eye(3));
-Sh = sphere_geodesic_holonomy(3,eye(3),'spectral');
-
-% O(n) path-ordered ambient transport on a large sphere:
-Hf = sphere_geodesic_holonomy(8192,[],'operator');
-
-% A triangle in the curvature -1 Poincare disk (2x2 geometry);
-% n>2 explicitly embeds the 2x2 holonomy as R +/- I_(n-2).
-Z = [0;.45;.35i];
-P = hyperbolic_triangle_holonomy(2,Z);
-Ph = hyperbolic_triangle_holonomy(64,Z,'spectral');
-
-% Lattice gauge link holonomy. The default four links lie in SU(n).
-W = lattice_wilson_loop(8);
-links = lattice_wilson_loop(8,[],'links');
-Wop = lattice_wilson_loop(8,links,'operator');
-~~~
-
-Unlike parallel transport between *different* tangent spaces, transport
-around a closed loop is a genuine orthogonal endomorphism at its
-basepoint. For spherical geodesic triangles the finite eigenvalues
-are a conjugate spherical-excess pair and n-2 copies of 1. The
-spherical polygon generator also handles longer loops, whose
-higher-dimensional SO(n-1) holonomy need not have a single
-eigenphase pair.
-
-Hyperbolic triangle holonomy has rotation angle equal to **minus**
-the oriented hyperbolic area, in curvature -1; only its leading
-2x2 block represents tangent transport. Additional identity
-coordinates permit scalable normal-matrix benchmarks without
-asserting that the hyperbolic tangent space itself has dimension n.
-
-A Wilson loop is an ordered product of non-Abelian **unitary gauge
-links**. Changing local gauge bases conjugates the loop at the
-basepoint, leaving its eigenvalues and traces invariant. Default
-links are deterministic SU(n) plaquette factors; user-supplied
-U(n) links may have nonunit determinant. The generic Wilson-loop
-finite eigenphase law is unknown. Operator mode applies the
-unitary factors without assembling their product.
-
 ## Install as an Anymatrix external group
 
 Install the upstream Anymatrix package first and add its root folder to the
@@ -545,6 +506,46 @@ Unlike the ordinary matrix exponential with a fixed Hermitian generator,
 these systems are coupled and nonlinear; they are not intrinsically a
 structured unitary eigenvalue problem. For source models and discretization
 see [the matrix encyclopedia](docs/MATRIX_ENCYCLOPEDIA.md).
+
+### Riemannian geometry and parallel-transport matrices
+
+The geometry collection reuses the existing sphere-transport generator and adds four distinct constructions. It exposes `sphere_geodesic_transport` (shortest-arc rank-two
+rotation), `grassmann_geodesic` (ambient unitary lift with exact angular
+spectrum), `geodesic_holonomy` (closed spherical geodesic polygon),
+`connection_cycle` (sparse discrete-connection block permutation), and
+`lie_geodesic_transport` (real orthogonal parallel transport on u(n)).
+
+```matlab
+A = sphere_geodesic_transport(1000);               % rank-two sphere transport rotation
+S = grassmann_geodesic(60, [.3;.8], [], 'spectral');
+H = geodesic_holonomy(5,eye(5,3));      % exact triangle eigenphase +/-pi/2
+F = connection_cycle(4096, [], 'operator');
+L = lie_geodesic_transport(10, [], 1); % order 100, sparse, known phases
+```
+
+The holonomy of a spherical triangle has an exact area-driven trace law;
+more general geodesic polygons are not automatically labeled exact.
+The connection cycle is a proposed benchmark based on documented discrete
+connection angles, not a built-in mesh geometry solver. See
+[the encyclopedia](docs/MATRIX_ENCYCLOPEDIA.md) for definitions, provenance,
+and finite-spectrum qualifications.
+
+The canonical `daubechies_wavelet` generator supports periodized db2, db3 and db4 wavelets. Its historical `daubechies_wavelet(n,levels,output)` call remains valid (db2); request higher orders with `daubechies_wavelet(n,levels,output,order)`. The single implementation preserves the cited wavelet construction and does not duplicate `quantum_cat_map` or `krawtchouk_transform`.
+
+### Further geometry: Stiefel frames and Grassmann holonomy
+
+The canonical `stiefel_geodesic` is an ambient square unitary lift of the canonical Stiefel geodesic, with a compact O(np) action. The separate `grassmann_holonomy` computes non-Abelian tautological-bundle holonomy from polar-overlap links (not Levi-Civita tangent transport). The existing `wigner_rotation` now accepts integer and half-integer spin j; no second Wigner implementation is registered. The original Mukunda–Simon, Bendokat–Zimmermann–Absil, and Kostelec–Rockmore references are retained.
+
+```matlab
+S = stiefel_geodesic(128,3,[],[],[],1,'spectral');
+H = grassmann_holonomy(8,2);
+W = wigner_rotation(10,.3,.7,-.4);   % integer SO(3)
+V = wigner_rotation(9.5,.3,.7,-.4);  % half-integer SU(2)
+```
+
+## Hyperbolic and gauge holonomy
+
+The existing `geodesic_holonomy` implements spherical polygon parallel transport and now additionally cites Needham. The new `hyperbolic_triangle_holonomy` gives the area rotation of a Poincaré-disk triangle (with optional identity padding). The new `lattice_wilson_loop` gives U(n) gauge-link products and gauge-conjugacy-invariant eigenphases and traces. Both new families support matrix-free actions.
 
 ## Automatic tests
 

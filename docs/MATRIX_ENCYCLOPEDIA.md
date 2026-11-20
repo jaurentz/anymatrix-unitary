@@ -2288,75 +2288,478 @@ transport of vectors and exact finite moment benchmarks.
 The ambient formula is verified by the tangent-space
 transport identity in the regression tests.
 
+## R. Families reserved for future versions (not implemented)
 
-## R. Spherical, hyperbolic and gauge holonomy constructions (November 2026)
+- **Additional ETNA benchmark cases:** the exact Example 7.1 common-parameter
+  and Example 7.5 inverse-eigenvalue presets are not yet implemented.
+  Types I, II and a controlled Type III are already available in
+  `etna_hessenberg`. [8]
+- **Rational and isometric Arnoldi:** pole sequences, orthonormal rational
+  basis conventions, unitary closures and appropriate generalized matrices/
+  pencils. Not every finite compression is unitary. [9, 10]
+- **Other OPUC measures:** positive Pastro and generalized $q$-weight
+  specializations, inverse spectral finite atomic measures, Aleksandrov
+  families, skew-shift parameters, and matrix-valued/block CMV. [5, 12]
+- **Additional signal-processing matrices:** other Daubechies orders,
+  wavelet packets, paraunitary polyphase banks and lossless scattering.
+  Boundary and frequency conventions must be specified before admitting a
+  finite matrix as unitary. [15]
+- **Larger quantum models:** Szegedy graph walks, quantum-graph scattering,
+  Floquet Ising models, kicked tops, cat maps and interferometer meshes.
+  Different symmetry sectors and truncations cannot be conflated. [26]
 
-### Spherical geodesic-polygon holonomy — [`sphere_geodesic_holonomy.m`](../sphere_geodesic_holonomy.m)
+## Geometry: geodesics, discrete connections, and holonomy
 
-Let v_1,...,v_m be unit points on S^(n-1), with m>=3 and
-each consecutive pair joined by a unique shortest great-circle
-arc. Set v_(m+1)=v_1 and define the minimal SO(n) ambient
-rotation of each edge by
+The shortest-arc spherical transport operator is already provided by [`sphere_geodesic_transport.m`](../sphere_geodesic_transport.m); its geometric interpretation is also discussed by Fiori [100]. The construction is not duplicated here.
 
-```math
-c_j=v_j^Tv_{j+1},\quad K_j=v_{j+1}v_j^T-v_jv_{j+1}^T,\quad
-R_j=I+K_j+\frac{K_j^2}{1+c_j}.
-```
+### Grassmannian geodesic ambient lift — [`grassmann_geodesic.m`](../grassmann_geodesic.m)
 
-The **closed path** has ambient holonomy
-
-```math
-H=R_m R_{m-1}\cdots R_1,\qquad Hv_1=v_1,\qquad
-H\in SO(n).
-```
-
-The restriction to the starting tangent space T_(v_1) S^(n-1)
-is a genuine orthogonal **endomorphism**, not a transport map
-between different tangent spaces. Its tangent determinant is +1.
-Each arc fixes the complement of its generating two-plane.
-The matrix-free operator composes the rank-two factors in
-O(m n) per right-hand side, and its adjoint traverses the
-edges in reverse order using their inverse rotations.
-
-For m=3, the triangle lies in a three-dimensional ambient
-subspace. Let G=[v_1 v_2 v_3]^T[v_1 v_2 v_3]. The magnitude
-of its spherical excess is
+**Order:** n; real orthogonal or complex unitary according to the supplied
+orthonormal frame B=[Y,U] of width 2r. With tangent singular angles a_j,
+the ambient lift is identity outside span(B) and on span(B) rotates by
 
 ```math
-\Omega=2\,\mathrm{atan2}\!
-\left(\sqrt{\det G},
-1+v_1^Tv_2+v_2^Tv_3+v_3^Tv_1\right).
+C=\begin{bmatrix}\cos(D)&-\sin(D)\\
+                  \sin(D)&\cos(D)\end{bmatrix},
+\qquad D=\mathrm{diag}(a_1,\ldots,a_r).
 ```
 
-In ambient dimension 3, the **oriented** numerator is the
-scalar triple product det([v_1 v_2 v_3]). In higher
-dimensions the orientation of the spanned three-plane is
-a convention, but the **eigenvalue multiset** is independent
-of this choice. Exact eigenvalues and normalized trace
-moments are
+Its exact eigenvalues are e^{+/-i a_j} and 1 with multiplicity n-2r.
+The subspace path Y(t)=Y cos(tD)+U sin(tD) is a Grassmann geodesic; this
+**ambient lift is not intrinsic parallel transport of the tangent bundle**.
+The low-rank action costs O(nr). See Edelman–Arias–Smith [97].
+
+### Spherical geodesic-loop holonomy — [`geodesic_holonomy.m`](../geodesic_holonomy.m)
+
+**Order:** n>=3. Columns of POINTS specify vertices of a closed spherical
+geodesic polygon. Multiply shortest-geodesic ambient rotations in path order.
+The result fixes the base point and is orthogonal; its restriction to the
+base tangent space is the Levi-Civita holonomy.
+
+For a triangle with Gram matrix G of its three unit vertices, the unsigned
+spherical excess in the induced oriented 3-plane is
 
 ```math
-\lambda(H)=
-\{e^{i\Omega},e^{-i\Omega},1^{(n-2)}\},\qquad
-m_k=\frac{n-2+2\cos(k\Omega)}{n}.
+a=2\mathrm{atan2}\left(\sqrt{\det G},
+1+G_{12}+G_{23}+G_{31}\right),
 ```
 
-The default right-octant triangle (e_1,e_2,e_3) has
-Omega=pi/2 and acts on span(e_2,e_3) by an exact quarter turn.
-This gives an application-derived finite spectral measure
-with at most three atoms.
+and the ambient eigenvalues are e^{+/-ia} and n-2 copies of 1.
+For polygons with more than three vertices, this generator does not claim
+an automatic analytic spectrum; the implicit action takes O(nm) for m legs.
+See sphere parallel transport [100] and the classical Gauss–Bonnet theorem.
 
-**For longer loops**, especially on S^(n-1) with n>3,
-holonomy may involve several independent rotation planes
-in SO(n-1). It is generally non-Abelian, and no universal
-single-excess eigenphase formula is claimed. Arc endpoints
-that are (nearly) antipodal are rejected, as they do not
-define a numerically unique shortest geodesic.
+### Cyclic discrete-connection transport — [`connection_cycle.m`](../connection_cycle.m)
 
-**Applications:** Levi-Civita holonomy, Gaussian curvature
-and Gauss-Bonnet checks, spherical parallel transport,
-non-Abelian geometric phases, and unitary moment regression.
-**References:** [96] (Absil et al.), [97] (Needham).
+**Order:** 2N; exactly sparse real orthogonal block-permutation matrix.
+Each leg carries a prescribed SO(2) connection rotation R(phi_j).
+The holonomy is R(sum(phi_j)), and the exact eigenvalues are
+
+```math
+\exp\left(i\frac{2\pi k\pm\sum_j\phi_j}{N}\right),
+\qquad k=0,\ldots,N-1.
+```
+
+This is an **original proposed benchmark** assembled from documented local
+discrete-connection rotations; the generator accepts connection angles but
+does not compute them from a triangulated mesh. Spectral density of this
+particular cyclic model is a pair of interlaced root grids, not an arbitrary
+mesh spectrum. Reference on discrete connection angles: Crane–Desbrun–
+Schröder [98].
+
+### Lie-group geodesic parallel transport — [`lie_geodesic_transport.m`](../lie_geodesic_transport.m)
+
+**Order:** n² real orthogonal matrix representing transport on the real Lie
+algebra u(n) of skew-Hermitian matrices. Along exp(tK), K=i diag(kappa),
+the left-trivialized transport is exp(-t ad_K/2). In the real orthonormal
+basis consisting of n diagonal and n(n-1)/2 off-diagonal generator pairs,
+the result is a sparse direct sum of 2x2 rotations and n singleton 1's.
+Exact eigenvalues are e^{+/-it(kappa_j-kappa_k)/2} for j<k, plus n ones.
+
+```math
+\frac{1}{n^2}\mathrm{tr}(Q^\ell)
+=\frac{1}{n^2}\left|\sum_{j=1}^n
+e^{i\ell t\kappa_j/2}\right|^2.
+```
+
+This is a canonical-coordinate transport matrix, not multiplication by
+exp(tK) on the ambient n-dimensional complex space. The eigenphase-difference
+formula connects geometric transport to unitary conjugation but represents
+a different real action. See Lie-group parallel transport [99].
+
+## Geometric integration: positive-metric unit-circle pencils
+
+### Periodic coupled oscillators: Gauss–Legendre and Störmer–Verlet — [`geometric_oscillator.m`](../geometric_oscillator.m)
+
+**Order:** $2n$ real orthogonal-symplectic, for $n$ mechanical
+displacements. **Application:** vibrational lattice dynamics, periodic
+semidiscretizations of wave equations and structure-preserving integration.
+The physical positive-stiffness oscillator is
+
+```math
+q''+Kq=0,\qquad
+K=\omega_0^2 I+\kappa(2I-P-P^T),\qquad
+\omega_j^2=\omega_0^2+4\kappa\sin^2(\pi j/n),
+```
+
+with cyclic permutation $P$, $\omega_0>0$, $\kappa\geq0$ and
+$j=0,\ldots,n-1$. The $n=1,2$ periodic bond multiplicities follow
+the same algebraic definition. A time step $h>0$ produces a **physical**
+$2n$-by-$2n$ phase-space map $M$ in $x=(q,p)$, which generally
+is not Euclidean orthogonal. Nevertheless, it preserves a definite
+quadratic invariant,
+
+```math
+M^TJM=J,\quad M^TGM=G,\quad G=G^T\succ0,\qquad
+J=\begin{pmatrix}0&I\\-I&0\end{pmatrix}.
+```
+
+Define $T$ so that $G=T^TT$. The default Anymatrix output
+$U=TMT^{-1}$ is **real orthogonal and symplectic**, and its spectrum
+equals that of $M$. The chosen $T$ need not itself be symplectic.
+The terminal `'pencil'` mode returns $A=GM$, $B=G$, together
+with $M,G,T,U$. It obeys
+
+```math
+A^TB^{-1}A=B,\qquad
+Ax=\lambda Bx\ \Longrightarrow\ |\lambda|=1.
+```
+
+**Crucial distinction:** $B^{-1}A=M$ is generally *not* Euclidean
+orthogonal, and $AA^T=BB^T$ generally fails. Hence this is a
+`circle_spectrum_only` positive-metric pencil, not one of the
+repository's `strict_unitary_pencil` examples. No generalized pencil
+is passed to Anymatrix by default: the returned matrix $U$ is
+genuinely unitary.
+
+**Midpoint and Gauss methods.** The methods `'midpoint'`,
+`'gauss2'` and `'gauss3'` give the diagonal Padé stability
+functions $R_s(z)=P_s(z)/P_s(-z)$ of orders 2, 4, 6, respectively.
+For all $h>0$, they preserve the *original* quadratic energy,
+so $G=\mathop{\mathrm{diag}}(K,I)$ and
+
+```math
+\sigma(U)=\left\{
+R_s(-ih\omega_j),\ R_s(ih\omega_j):0\leq j<n
+\right\}.
+```
+
+**Stable Störmer–Verlet.** With $h\max_j\omega_j<2$, velocity
+Verlet preserves a *modified* quadratic energy
+
+```math
+G=\mathop{\mathrm{diag}}\left(K(I-h^2K/4),I\right)\succ0.
+```
+
+Its eigenvalues are $e^{\pm i\theta_j}$, with
+$\theta_j=2\arcsin(h\omega_j/2)$. An independent terminal
+`'polynomial'` mode provides the **real symmetric palindromic**
+quadratic eigenvalue problem from the position recurrence,
+
+```math
+P(\lambda)=\lambda^2I+\lambda(h^2K-2I)+I,\qquad
+P(\lambda)^T=\lambda^2P(\lambda^{-1}).
+```
+
+At the stability boundary the modified form loses strict positivity;
+above it the Verlet multipliers can leave the circle, so the generator
+rejects those step sizes. In particular, *symplecticity alone* never
+guarantees unimodular eigenvalues.
+
+**Spectral reference:** the finite multiset of $2n$ conjugate unit
+phases is exact for every permitted method, returned without `eig`
+by terminal `'spectral'` mode. The periodic chain diagonalizes in
+the Fourier basis. The explicit real representative is generally
+dense. The terminal `'operator'` mode already provides $O(n\log n)$
+FFT-based forward/adjoint actions (including complex multiple
+right-hand sides), using only $O(n)$ stored frequency samples. Its symmetric phase measure
+must be distinguished from the one-sided $n$-point complex
+representation of the positive frequencies. The terminal `'spectral'` descriptor conforms to the shared trace-measure
+interface: `finite.eigenvalues()` and `finite.moments(k)` are callable,
+while the limiting density is marked unknown.
+The formulas and
+normalization are specified benchmark specializations of established
+geometric-integration theory, not named distributions originating
+in [93, 94]. **References:** [93, 94].
+
+### One-dimensional finite-element wave equation with consistent mass — [`geometric_fem_wave.m`](../geometric_fem_wave.m)
+
+**Order:** $2n$ real orthogonal-symplectic, from a spatially
+discretized elastic/acoustic wave model with $n$ interior nodes.
+For the scalar model $q_{tt}-c^2q_{xx}+\omega_0^2q=0$ on $(0,L)$,
+use continuous piecewise-linear finite elements on a uniform grid
+with homogeneous Dirichlet endpoints, mesh width $d=L/(n+1)$,
+wave speed $c>0$ and $\omega_0\geq0$. The consistent finite-element
+mass and stiffness matrices are
+
+```math
+\mathrm{Mass}=\frac{d}{6}\mathop{\mathrm{tridiag}}(1,4,1),\qquad
+K=\frac{c^2}{d}\mathop{\mathrm{tridiag}}(-1,2,-1)+\omega_0^2\mathrm{Mass},
+```
+
+with boundary truncation of the off-diagonals. These matrices are
+symmetric positive definite and simultaneously diagonalized by the
+orthonormal DST-I basis. The *exact finite generalized frequencies*
+satisfy
+
+```math
+K v_j=\omega_j^2\mathrm{Mass}\,v_j,\quad
+\theta_j=\frac{j\pi}{n+1},\quad
+\omega_j^2=\omega_0^2+
+\frac{6c^2(1-\cos\theta_j)}{d^2(2+\cos\theta_j)},
+\quad j=1,\ldots,n.
+```
+
+The canonical physical Hamiltonian uses momentum $p=\mathrm{Mass}\,q_t$,
+
+```math
+H(q,p)=\frac12 q^TKq+\frac12 p^T\mathrm{Mass}^{-1}p.
+```
+
+Its midpoint, Gauss-4 and Gauss-6 steps preserve this original
+quadratic energy and are symplectic. Stable velocity Verlet
+($h\max_j\omega_j<2$) preserves the positive *modified* form
+
+```math
+G=\mathop{\mathrm{diag}}\left(
+K-\frac{h^2}{4}K\mathrm{Mass}^{-1}K,\,
+\mathrm{Mass}^{-1}\right).
+```
+
+The terminal `'pencil'` mode returns the *physical* phase-space
+one-step matrix $M$, $G$, $T$, $U=TMT^{-1}$, and
+$A=GM,B=G$. Its generalized eigenvalues lie on the unit circle,
+but it is not generally a strict Euclidean-unitary pencil.
+The default output is the genuinely orthogonal-symplectic $U$.
+
+Most importantly, the **Verlet position recurrence retains the mass
+matrix**. Terminal `'polynomial'` mode returns the real symmetric
+palindromic quadratic
+
+```math
+P(z)=z^2\mathrm{Mass}
++z(h^2K-2\mathrm{Mass})+\mathrm{Mass}.
+```
+
+The spectrum consists of $e^{\pm i\theta_j^{(h)}}$, where
+$\theta_j^{(h)}=2\arcsin(h\omega_j/2)$ for Verlet;
+for the Gauss methods, the phases are the diagonal-Padé images
+$R_s(\pm ih\omega_j)$. All eigenvalues are exactly characterized
+at finite dimension. `'spectral'` returns the frequencies and
+phase multiset without an eigensolve; `'operator'` supplies
+$O(n\log n)$ forward and adjoint DST-I actions with $O(n)$
+stored frequency samples, including multiple complex right-hand
+sides. The explicit $U$ is generally dense. The standard terminal
+`'spectral'` descriptor exposes `finite.eigenvalues()` and
+`finite.moments(k)` and leaves the limiting density unasserted.
+
+Unlike the periodic oscillator in `geometric_oscillator`, this family
+has a **nonidentity consistent finite-element mass matrix**,
+Dirichlet boundary conditions, sine rather than Fourier modes,
+and a genuinely mass-weighted palindromic eigenvalue polynomial.
+The particular uniform Dirichlet test family is a mathematical
+specialization of standard finite-element and geometric-integrator
+constructions, not a claim of a novel scheme in [93, 95].
+**References:** [93, 95].
+
+### Daubechies db3/db4 parameter extensions (same canonical generator)
+
+The existing `daubechies_wavelet.m` also offers the 6-tap db3 and 8-tap db4
+orthonormal extremal-phase filters as an optional fourth argument,
+`daubechies_wavelet(n,levels,output,order)` with `order=2,3,4`.
+The legacy three-argument call remains db2/D4. Periodic extension,
+orthonormal QMF coefficients, and the multilevel forward/adjoint kernels
+are shared rather than creating separate matrix generators.
+The filter coefficients and original phase convention are documented by
+Daubechies [15] and the [PyWavelets coefficient table](https://github.com/PyWavelets/pywt/blob/main/pywt/_extensions/c/wavelets_coeffs.template.h).
+The Hannay–Berry cat-map and Krawtchouk references from the same research
+batch remain [93] and [94], attached to their existing canonical families.
+
+## Q. Quadrature-orthogonal transforms and spherical harmonic rotations (November 2026)
+
+**Scope and caveat.** The following are six mathematically unitary or real
+orthogonal finite matrices, not simply nonsingular polynomial coefficient
+conversions. The three Gauss transform generators are constructed through a
+dense Golub--Welsch symmetric eigensolver; this is *not* a claim that the
+current implementation has the fast matvec of Townsend/Slevinsky algorithms.
+
+### Gauss--Jacobi transform — [`gauss_jacobi_transform.m`](../gauss_jacobi_transform.m)
+
+**Order:** n. **Parameters:** alpha,beta > -1. The weight on [-1,1]
+is `(1-x)^alpha (1+x)^beta`, normalized to probability measure.
+The Gauss evaluation matrix is exactly real orthogonal, constructed
+through the Jacobi recurrence and Golub--Welsch. The special cases
+alpha=beta=0, -1/2, +1/2 give Legendre, Chebyshev I and Chebyshev II;
+alpha=beta=lambda-1/2 gives Gegenbauer. The first Jacobi offdiagonal
+uses the exact beta-distribution variance formula, avoiding removable
+0/0 for alpha+beta=-1. The eigenvalues of the real Jacobi tridiagonal
+are quadrature *nodes*, NOT eigenvalues of the orthogonal evaluation
+matrix. Construction O(n^3); multiplication O(n^2). [104,105,106]
+
+### Gauss--Hermite transform — [`gauss_hermite_transform.m`](../gauss_hermite_transform.m)
+
+**Order:** n. **Construction:** For the normalized Gaussian weight
+`exp(-x^2)/sqrt(pi)` and orthonormal physicists' Hermite polynomials `p_k`,
+the weighted Gauss evaluation matrix is
+
+```math
+Q_{jk}=\sqrt{w_j}\,p_{k-1}(x_j),\qquad Q^TQ=I.
+```
+
+Here the quadrature weights `w_j` sum to one. Compute `Q` as the
+transpose of the first-component-positive eigenvector matrix of the
+symmetric Jacobi tridiagonal with zero diagonal and offdiagonal
+`sqrt(k/2)` for k=1,...,n-1. **Spectral properties:** conjugate-paired
+unit-circle eigenvalues; no general closed form for their angles.
+Gauss--Hermite nodes are eigenvalues of the *Jacobi* matrix, not of `Q`.
+**Computational cost:** O(n^3) setup and O(n^2) explicit multiply.
+**Applications:** Hermite spectral approximations and Gaussian quadrature. [104,109]
+
+### Generalized Gauss--Laguerre transform — [`gauss_laguerre_transform.m`](../gauss_laguerre_transform.m)
+
+**Order:** n. **Parameter:** alpha > -1. The normalized positive measure
+has density proportional to `x^alpha exp(-x)` on `[0,infinity)`.
+The Jacobi tridiagonal for the positive-leading orthonormal Laguerre
+polynomials has diagonal `2*k+alpha+1`, k=0,...,n-1, and offdiagonal
+`sqrt(k*(k+alpha))`, k=1,...,n-1. Its ordered eigenvectors yield
+the weighted Gauss evaluation matrix `Q` with `Q'*Q=I`.
+**Spectral properties:** conjugate eigenphase pairs; quadrature nodes
+are NOT eigenvalues of `Q`. **Applications:** radial numerical spectral
+methods. **Action:** explicit dense, not fast. [104,106]
+
+### Associated-Legendre specialization — [`gauss_jacobi_transform.m`](../gauss_jacobi_transform.m)
+
+**Not a separate generator:** call `gauss_jacobi_transform(n,m,m)` for nonnegative integer m. The associated Legendre
+functions with degrees ell=m,...,m+n-1 are the Jacobi(m,m) orthonormal
+polynomials multiplied by `(1-x^2)^(m/2)`, up to an overall phase/sign.
+This is the existing Jacobi(m,m) quadrature, not a second mathematical construction. The corresponding n-point Gauss--Jacobi quadrature gives a square real
+orthogonal matrix. Its Jacobi tridiagonal has zero diagonal and
+
+```math
+a_k=\sqrt{\frac{k(k+2m)}{(2k+2m)^2-1}},\quad k=1,\ldots,n-1.
+```
+
+**Boundary:** this fixed-m block is a square orthogonal transform.
+The usual all-degrees spherical harmonic transform on a
+Gauss--Legendre-longitude grid is generally rectangular. Fast
+butterfly/connection transforms are a related *algorithmic* topic;
+we do not claim a fast action here. [104,106,107]
+
+### Wigner degree-ell rotation — [`wigner_rotation.m`](../wigner_rotation.m)
+
+**Order:** 2*ell+1, ell=0,1,... . **Parameters:** z-y-z Euler angles
+(alpha,beta,gamma) in radians. With m=-ell,...,ell, the generator
+builds the complex spherical harmonic representation
+
+```math
+D^{(\ell)}(R)=e^{-i\alpha J_z}e^{-i\beta J_y}e^{-i\gamma J_z},
+\qquad J_z=\mathrm{diag}(-\ell,\ldots,\ell).
+```
+
+The middle factor is calculated by exponentiating the real
+skew-symmetric matrix representing `-i*Jy`. It is unitary without
+evaluating numerically unstable factorial Wigner sums.
+For rotation angle delta satisfying
+`cos(delta/2)=cos(beta/2)*cos((alpha+gamma)/2)`, the exact eigenvalues
+are `exp(-i*m*delta)`, m=-ell,...,ell. **Action:** explicit dense matrix
+constructed using `expm`; no fast rotation algorithm claimed. [108]
+
+### Degree-truncated spherical rotation — [`spherical_harmonic_rotation.m`](../spherical_harmonic_rotation.m)
+
+**Order:** L^2, with degrees ell=0,...,L-1. **Structure:** sparse block
+diagonal with `D^(ell)(R)` blocks. The phase `exp(-i*m*delta)`
+has multiplicity `L-abs(m)` for m=-(L-1),...,L-1, before merging
+coincident phases. An exact Fourier-moment identity is
+
+```math
+\mathrm{tr}(D_L(R)^k)=
+\left|\sum_{j=0}^{L-1}e^{-ikj\delta}\right|^2.
+```
+
+If delta=c/L for fixed 0<c<pi, the normalized eigenphase density
+converges to the triangular law `(1-|theta|/c)/c` for |theta|<=c,
+and zero elsewhere. This is a derived spectral benchmark, NOT
+a claim that the cited rotation paper states the limiting law.
+**Applications:** controlled gaps, clusters, exact moments, SO(3)
+representation structure. [108]
+
+### Periodic sinc/Dirichlet fractional shift — [`periodic_sinc_shift.m`](../periodic_sinc_shift.m)
+
+**Order:** positive ODD n. **Parameter:** real fractional grid shift tau.
+With the negative-exponent normalized DFT F and centered Fourier
+frequencies k=-(n-1)/2,...,(n-1)/2,
+
+```math
+U_n(\tau)=F^*\,\mathrm{diag}\bigl(e^{-2\pi i k\tau/n}\bigr)F,
+\qquad U_n(\tau)^TU_n(\tau)=I.
+```
+
+The matrix is real, orthogonal and circulant; its entries are
+translated periodic Dirichlet-cardinal kernel samples, with the
+exact displayed eigenphases. Composition obeys
+`U_n(tau)*U_n(sigma)=U_n(tau+sigma)`. A matrix-free FFT action
+provides O(n log n) multiplies and transposes. Even n is excluded:
+the unpaired Nyquist frequency needs an explicit real-orthogonal
+convention for noninteger shifts. **Applications:** periodic
+bandlimited interpolation, phase-density benchmarks. [1,52]
+
+### Not-yet-admitted related candidates
+
+**Hankel/Bessel** Bessel-zero discretizations often give only
+approximately orthogonal finite transform matrices; a fast DHT
+does not by itself ensure unitarity. **RBF** positive-definite Gram
+matrices are nonunitary and their square polar factors are usually
+the identity. **Zernike, disk, triangle, spherical Gauss--Laguerre**
+transforms require square and quadrature-exact sampling conventions:
+standard grids may instead define rectangular isometries.
+See Slevinsky's [FastTransforms](https://mikaelslevinsky.github.io/FastTransforms/)
+for related fast *algorithms*, not a blanket assertion of unitarity.
+
+### Stiefel geodesic ambient lift — [`stiefel_geodesic.m`](../stiefel_geodesic.m)
+
+**Order:** n>=2p. Orthonormal frames B=[Y,Q] (N-by-2p), skew-Hermitian
+p-by-p A, and arbitrary p-by-p R specify tangent H=YA+QR. With
+
+```math
+K=\begin{bmatrix}A&-R^*\\R&0\end{bmatrix},
+\qquad G(t)=I+B(e^{tK}-I)B^*,
+```
+
+the frame geodesic Y(t)=G(t)Y is canonical-metric Stiefel motion.
+This extends the Grassmann lift with a nonzero vertical rotation A,
+but does **not** model intrinsic Stiefel tangent-bundle parallel transport.
+The large unitary spectrum is known from a small 2p-by-2p skew-Hermitian
+eigenproblem and n-2p fixed eigenvalues. The generator computes this small
+eigenproblem for its spectral reference, not a full n-by-n eigensolve.
+Operator mode stores a 2p-by-2p exponential and applies the low-rank update
+in O(np) arithmetic. Edelman–Arias–Smith [97].
+
+### Non-Abelian Grassmannian loop holonomy — [`grassmann_holonomy.m`](../grassmann_holonomy.m)
+
+**Order:** r, from n-by-r orthonormal frames Y_j of a closed subspace
+polygon in complex Gr(r,n). On each unique shortest geodesic arc the
+canonical tautological-bundle transport, represented in frame coordinates,
+is the unitary polar factor of Y_(j+1)^*Y_j (provided this overlap is
+invertible). Multiplication in traversal order gives H in U(r).
+Changing each frame by an arbitrary gauge Q_j changes the closed
+holonomy by Q_1^* H Q_1: eigenphases remain gauge invariant.
+This is not Grassmannian Levi-Civita tangent-bundle holonomy.
+
+For r=1 the scalar phase is the normalized Bargmann-invariant product
+of pairwise overlaps and is provided exactly without eig. For general
+r>=2, the phases can be genuinely non-Abelian; no generic closed-form
+phase law is claimed. Source on geometric phases [110] and Grassmann
+geometry [111]. The code's default frame polygon is a reproducible
+complex test case, not extracted from an application dataset.
+
+### Wigner rotations: canonical spin extension — [`wigner_rotation.m`](../wigner_rotation.m)
+
+The existing Wigner generator also covers half-integer SU(2) spins and the nontrivial 2pi double-cover sign. Its integer-spin version factors through SO(3); both use the same angular-momentum construction, now cross-referenced to Kostelec–Rockmore [112]. No `wigner_geodesic` generator is added.
+
+
+## Hyperbolic and gauge holonomy (November 2026)
+
+The spherical polygon holonomy is already implemented by [`geodesic_holonomy.m`](../geodesic_holonomy.m), now additionally citing Needham [113]. No duplicate spherical generator is added.
 
 ### Hyperbolic geodesic-triangle holonomy — [`hyperbolic_triangle_holonomy.m`](../hyperbolic_triangle_holonomy.m)
 
@@ -2411,7 +2814,7 @@ implicit forward/transpose actions are supported.
 **Applications:** hyperbolic curvature and area diagnostics,
 geodesic holonomy, exact-spectrum normal-matrix tests,
 and orientation-sensitive real orthogonal benchmarks.
-**References:** [97] (Needham) and [98] (Voight).
+**References:** [113] (Needham) and [114] (Voight).
 
 ### Non-Abelian lattice-gauge Wilson-loop matrices — [`lattice_wilson_loop.m`](../lattice_wilson_loop.m)
 
@@ -2460,27 +2863,8 @@ A generic exact finite spectral law is not asserted.
 **Applications:** lattice Yang-Mills, gauge-invariant
 observables, non-Abelian parallel transport, SU(n) spectral
 statistics and symmetry-preserving numerical methods.
-**Reference:** [99] (Ipp and Müller).
+**Reference:** [115] (Ipp and Müller).
 
-## S. Families reserved for future versions (not implemented)
-
-- **Additional ETNA benchmark cases:** the exact Example 7.1 common-parameter
-  and Example 7.5 inverse-eigenvalue presets are not yet implemented.
-  Types I, II and a controlled Type III are already available in
-  `etna_hessenberg`. [8]
-- **Rational and isometric Arnoldi:** pole sequences, orthonormal rational
-  basis conventions, unitary closures and appropriate generalized matrices/
-  pencils. Not every finite compression is unitary. [9, 10]
-- **Other OPUC measures:** positive Pastro and generalized $q$-weight
-  specializations, inverse spectral finite atomic measures, Aleksandrov
-  families, skew-shift parameters, and matrix-valued/block CMV. [5, 12]
-- **Additional signal-processing matrices:** other Daubechies orders,
-  wavelet packets, paraunitary polyphase banks and lossless scattering.
-  Boundary and frequency conventions must be specified before admitting a
-  finite matrix as unitary. [15]
-- **Larger quantum models:** Szegedy graph walks, quantum-graph scattering,
-  Floquet Ising models, kicked tops, cat maps and interferometer meshes.
-  Different symmetry sectors and truncations cannot be conflated. [26]
 
 ## Bibliography
 
@@ -2587,7 +2971,22 @@ statistics and symmetry-preserving numerical methods.
 
 95. R. Koekoek, P. A. Lesky and R. F. Swarttouw, *Hypergeometric Orthogonal Polynomials and Their q-Analogues*, Springer Monographs in Mathematics, Springer, 2010. [DOI](https://doi.org/10.1007/978-3-642-05014-5); [DLMF duality](https://dlmf.nist.gov/18.21).
 96. P.-A. Absil, R. Mahony and R. Sepulchre, *Optimization Algorithms on Matrix Manifolds*, Princeton University Press, 2008. [DOI](https://doi.org/10.1515/9781400830244); [author's book website](https://sites.uclouvain.be/absil/amsbook/).
-
-97. T. Needham, *Visual Differential Geometry and Forms: A Mathematical Drama in Five Acts*, Princeton University Press, 2021, especially its parallel-transport and holonomy treatment. [DOI](https://doi.org/10.1515/9780691219899); [publisher](https://press.princeton.edu/books/paperback/9780691203706/visual-differential-geometry-and-forms).
-98. J. Voight, “Hyperbolic plane,” Chapter 33 of *Quaternion Algebras*, Springer, 2021; Section 33.6 on hyperbolic area and Gauss–Bonnet. [DOI](https://doi.org/10.1007/978-3-030-56694-4_33).
-99. A. Ipp and D. Müller, “Implicit schemes for real-time lattice gauge theory,” *European Physical Journal C* **78** (2018), 884. [DOI](https://doi.org/10.1140/epjc/s10052-018-6323-x); [open access](https://pmc.ncbi.nlm.nih.gov/articles/PMC6315017/).
+97. A. Edelman, T. A. Arias and S. T. Smith, “The geometry of algorithms with orthogonality constraints,” *SIAM J. Matrix Anal. Appl.* **20** (1998), 303–353. [DOI](https://doi.org/10.1137/S0895479895290954).
+98. K. Crane, M. Desbrun and P. Schröder, “Trivial connections on discrete surfaces,” *Comput. Graph. Forum* **29** (2010), 1525–1533. [DOI](https://doi.org/10.1111/j.1467-8659.2010.01761.x).
+99. Y. Ge, P. van Goor and R. Mahony, “A geometric perspective on fusing Gaussian distributions on Lie groups,” *IEEE Control Systems Letters* **8** (2024), 844–849. [DOI](https://doi.org/10.1109/LCSYS.2024.3405485); [preprint](https://arxiv.org/abs/2403.16411).
+100. S. Fiori, “Manifold Calculus in System Theory and Control—Fundamentals and First-Order Systems,” *Symmetry* **13** (2021), 2092. [DOI](https://doi.org/10.3390/sym13112092).
+101. E. Hairer, C. Lubich and G. Wanner, *Geometric Numerical Integration: Structure-Preserving Algorithms for Ordinary Differential Equations*, 2nd ed., Springer, 2006. [DOI](https://doi.org/10.1007/3-540-30666-8).
+102. E. Hairer, C. Lubich and G. Wanner, “Geometric numerical integration illustrated by the Störmer–Verlet method,” *Acta Numerica* **12** (2003), 399–450. [DOI](https://doi.org/10.1017/S0962492902000144).
+103. B. Cockburn, S. Du and M. A. Sánchez, “Combining finite element space-discretizations with symplectic time-marching schemes for linear Hamiltonian systems,” *Frontiers in Applied Mathematics and Statistics* **9** (2023). [DOI](https://doi.org/10.3389/fams.2023.1165371).
+104. G. H. Golub and J. H. Welsch, “Calculation of Gauss quadrature rules,” *Math. Comp.* **23** (1969), 221–230. [DOI](https://doi.org/10.1090/S0025-5718-69-99647-1).
+105. N. Hale and A. Townsend, “A fast FFT-based discrete Legendre transform,” *IMA J. Numer. Anal.* **36** (2016), 1670–1684. [DOI](https://doi.org/10.1093/imanum/drv060).
+106. S. Olver, R. M. Slevinsky and A. Townsend, “Fast algorithms using orthogonal polynomials,” *Acta Numerica* **29** (2020), 573–699. [Publisher](https://www.cambridge.org/core/journals/acta-numerica/article/abs/fast-algorithms-using-orthogonal-polynomials/4FAD8C7C28EC20EE7583465C1A89AA3D).
+107. R. M. Slevinsky, “Fast and backward stable transforms between spherical harmonic expansions and bivariate Fourier series,” *Appl. Comput. Harmon. Anal.* **47** (2019). [Preprint](https://arxiv.org/abs/1705.05448).
+108. Ž. Gimbutas and L. Greengard, “A fast and stable method for rotating spherical harmonic expansions,” *J. Comput. Phys.* **228** (2009), 5621–5627. [DOI](https://doi.org/10.1016/j.jcp.2009.05.014).
+109. M. D. Webb, “Stable Hermite transforms via the Golub--Welsch algorithm,” arXiv:2604.02041 (2026). [Preprint](https://arxiv.org/abs/2604.02041).
+110. N. Mukunda and R. Simon, “Quantum Kinematic Approach to the Geometric Phase. I. General Formalism,” *Ann. Phys.* **228** (1993), 205–268. [DOI](https://doi.org/10.1006/aphy.1993.1093).
+111. T. Bendokat, R. Zimmermann and P.-A. Absil, “A Grassmann manifold handbook: Basic geometry and computational aspects,” *Adv. Comput. Math.* **50** (2024), article 6. [DOI](https://doi.org/10.1007/s10444-023-10090-8). See published correction: [DOI](https://doi.org/10.1007/s10444-024-10115-w).
+112. P. J. Kostelec and D. N. Rockmore, “FFTs on the Rotation Group,” *J. Fourier Anal. Appl.* **14** (2008), 145–179. [DOI](https://doi.org/10.1007/s00041-008-9013-5).
+113. T. Needham, *Visual Differential Geometry and Forms: A Mathematical Drama in Five Acts*, Princeton University Press, 2021, especially its parallel-transport and holonomy treatment. [DOI](https://doi.org/10.1515/9780691219899); [publisher](https://press.princeton.edu/books/paperback/9780691203706/visual-differential-geometry-and-forms).
+114. J. Voight, “Hyperbolic plane,” Chapter 33 of *Quaternion Algebras*, Springer, 2021; Section 33.6 on hyperbolic area and Gauss–Bonnet. [DOI](https://doi.org/10.1007/978-3-030-56694-4_33).
+115. A. Ipp and D. Müller, “Implicit schemes for real-time lattice gauge theory,” *European Physical Journal C* **78** (2018), 884. [DOI](https://doi.org/10.1140/epjc/s10052-018-6323-x); [open access](https://pmc.ncbi.nlm.nih.gov/articles/PMC6315017/).

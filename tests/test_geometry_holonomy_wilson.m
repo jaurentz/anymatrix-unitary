@@ -5,19 +5,19 @@ end
 
 function test_sphere_octant_triangle_holonomy(testCase)
 V=eye(3);
-H=sphere_geodesic_holonomy(3,V);
+H=geodesic_holonomy(3,V);
 expected=[1 0 0;0 0 -1;0 1 0];
 verifyLessThan(testCase,norm(H-expected,'fro'),3e-14);
 verifyLessThan(testCase,norm(H'*H-eye(3),'fro'),3e-14);
 verifyLessThan(testCase,abs(det(H)-1),3e-14);
-S=sphere_geodesic_holonomy(3,V,'spectral');
+S=geodesic_holonomy(3,V,'spectral');
 verifyEqual(testCase,S.finite.kind,'exact');
 z=S.finite.eigenvalues();
 verifyLessThan(testCase,max(arrayfun(@(q)min(abs(q-z)),eig(H))),3e-14);
 verifyLessThan(testCase,abs(S.finite.moments(1)-1/3),2e-14);
 verifyLessThan(testCase,abs(S.finite.moments(2)+1/3),2e-14);
 % Reversing the oriented geodesic triangle reverses the SO(2) holonomy.
-B=sphere_geodesic_holonomy(3,V(:,[1 3 2]));
+B=geodesic_holonomy(3,V(:,[1 3 2]));
 verifyLessThan(testCase,norm(B-H','fro'),3e-14);
 end
 
@@ -27,14 +27,14 @@ for n=[3 4 7 11]
     V(1,1)=1;
     V(1,2)=.3;V(2,2)=sqrt(1-.3^2);
     V(1,3)=.2;V(2,3)=.4;V(3,3)=sqrt(1-.2^2-.4^2);
-    H=sphere_geodesic_holonomy(n,V);
+    H=geodesic_holonomy(n,V);
     verifyLessThan(testCase,norm(H'*H-eye(n),'fro'),5e-12*n);
     verifyLessThan(testCase,norm(H*V(:,1)-V(:,1)),5e-12*n);
     verifyLessThan(testCase,abs(det(H)-1),5e-11*n);
     singular=svd(H-eye(n));
     verifyGreaterThan(testCase,singular(1),1e-5);
     verifyLessThan(testCase,singular(3),1e-11*n);
-    S=sphere_geodesic_holonomy(n,V,'spectral');
+    S=geodesic_holonomy(n,V,'spectral');
     verifyEqual(testCase,S.finite.kind,'exact');
     verifyEqual(testCase,numel(S.finite.eigenvalues()),n);
     z=S.finite.eigenvalues();
@@ -49,14 +49,14 @@ end
 
 function test_sphere_holonomy_polygon_nonabelian_and_inverse(testCase)
 n=5;V=eye(5,4);
-H=sphere_geodesic_holonomy(n,V);
+H=geodesic_holonomy(n,V);
 verifyLessThan(testCase,norm(H'*H-eye(n),'fro'),2e-11*n);
 verifyLessThan(testCase,norm(H*V(:,1)-V(:,1)),2e-11*n);
-S=sphere_geodesic_holonomy(n,V,'spectral');
+S=geodesic_holonomy(n,V,'spectral');
 verifyEqual(testCase,S.finite.kind,'unknown');
-R=sphere_geodesic_holonomy(n,V(:,[1 4 3 2]));
+R=geodesic_holonomy(n,V(:,[1 4 3 2]));
 verifyLessThan(testCase,norm(R-H','fro'),2e-11*n);
-F=sphere_geodesic_holonomy(n,V,'operator');
+F=geodesic_holonomy(n,V,'operator');
 verifyEqual(testCase,F([],'size'),[n n]);
 X=randn(n,3)+1i*randn(n,3);
 verifyLessThan(testCase,norm(F(X,'notransp')-H*X,'fro'),2e-11*n);
@@ -66,23 +66,23 @@ end
 
 function test_sphere_holonomy_large_operator_and_validation(testCase)
 n=4096;
-F=sphere_geodesic_holonomy(n,[],'operator');
+F=geodesic_holonomy(n,[],'operator');
 X=randn(n,2)+1i*randn(n,2);
 verifyLessThan(testCase,norm(F(F(X,'notransp'),'transp')-X,'fro'),2e-9);
-verifyError(testCase,@()sphere_geodesic_holonomy(2),'MATLAB:notGreaterEqual');
-verifyError(testCase,@()sphere_geodesic_holonomy(3,eye(3)*2), ...
-    'sphere_geodesic_holonomy:Unit');
-verifyError(testCase,@()sphere_geodesic_holonomy(4,eye(3)), ...
-    'sphere_geodesic_holonomy:Vertices');
+verifyError(testCase,@()geodesic_holonomy(2),'MATLAB:notGreaterEqual');
+verifyError(testCase,@()geodesic_holonomy(3,eye(3)*2), ...
+    'geodesic_holonomy:Points');
+verifyError(testCase,@()geodesic_holonomy(4,eye(3)), ...
+    'geodesic_holonomy:Points');
 V=eye(3);V(:,2)=-V(:,1);
-verifyError(testCase,@()sphere_geodesic_holonomy(3,V), ...
-    'sphere_geodesic_holonomy:Antipodal');
-verifyError(testCase,@()sphere_geodesic_holonomy(3,[], 'wrong'), ...
-    'sphere_geodesic_holonomy:Mode');
+verifyError(testCase,@()geodesic_holonomy(3,V), ...
+    'geodesic_holonomy:Antipodal');
+verifyError(testCase,@()geodesic_holonomy(3,[], 'wrong'), ...
+    'geodesic_holonomy:Mode');
 verifyError(testCase,@()F(zeros(n-1,1),'notransp'), ...
-    'um_spherical_holonomy_apply:Dimension');
+    'um_holonomy_apply:Dimension');
 verifyError(testCase,@()F(zeros(n,1),'wrong'), ...
-    'um_spherical_holonomy_apply:Flag');
+    'um_holonomy_apply:Flag');
 end
 
 function test_hyperbolic_area_vs_angle_defect(testCase)

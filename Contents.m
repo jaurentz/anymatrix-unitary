@@ -36,7 +36,7 @@
 %   tensor_permutation  Orthogonal tensor-factor permutation matrix.
 %   entangled_reflection Maximally entangled rank-one unitary phase reflector.
 %   haar_wavelet         Orthogonal finite Haar wavelet analysis transform.
-%   daubechies_wavelet   Periodized orthogonal D4/db2 multilevel wavelet.
+%   daubechies_wavelet   Periodized orthogonal D4/db3/db4/db2 multilevel wavelet. (db2 default)
 %
 % Non-quantum signal-processing transforms:
 %   orthogonal_dct       Orthonormal DCT-I, II, III, IV finite transforms.
@@ -61,9 +61,18 @@
 %
 % Riemannian geometry:
 %   sphere_geodesic_transport  SO(n) lift of tangent geodesic parallel transport.
-%   sphere_geodesic_holonomy  Closed spherical polygon SO(n) holonomy.
-%   hyperbolic_triangle_holonomy  Hyperbolic triangle angle-defect SO(2) holonomy.
-%   lattice_wilson_loop  Gauge-covariant non-Abelian lattice link holonomy.
+%
+% Orthogonal polynomial and spherical-harmonic transforms:
+%   gauss_jacobi_transform   Jacobi/Legendre/Chebyshev/Gegenbauer/associated Legendre.
+%   gauss_hermite_transform  Hermite Gauss-quadrature orthogonal basis.
+%   gauss_laguerre_transform Generalized Laguerre quadrature basis.
+%   wigner_rotation         Irreducible SO(3) unitary representation.
+%   spherical_harmonic_rotation Direct sum of Wigner blocks.
+%   periodic_sinc_shift     Real circulant fractional shift, FFT.
+%
+% Geometric and symplectic integration:
+%   geometric_oscillator  Periodic symplectic oscillator; exact phases and metric pencil.
+%   geometric_fem_wave    Finite-element Dirichlet wave; mass-weighted palindromic QEP.
 %
 % Nonlinear unitary dynamics:
 %   lohe_matrix_flow     Coupled Lohe oscillators on U(d), geometric midpoint integration.
@@ -118,5 +127,17 @@
 %   szego_verblunsky        Measure -> interior Schur coefficients.
 %   szego_matrix            Measure -> finite multiplication matrix.
 %   szego_quadrature        e1 spectral nodes and positive weights.
+%
+% Geometry, geodesics, and parallel transport:
+%   grassmann_geodesic        Grassmann geodesic ambient unitary lift.
+%   geodesic_holonomy         Closed spherical polygon parallel transport.
+%   connection_cycle          Sparse cyclic discrete-connection transport.
+%   lie_geodesic_transport    Orthogonal Lie-algebra geodesic transport.
+%
+%   stiefel_geodesic         Canonical Stiefel geodesic ambient lift.
+%   grassmann_holonomy       Non-Abelian tautological geodesic-loop holonomy.
+%
+%   hyperbolic_triangle_holonomy  Poincare disk triangle, SO(2) holonomy.
+%   lattice_wilson_loop          Non-Abelian U(n) gauge-link products.
 %
 % Test runner: test_run. See docs/MATRIX_ENCYCLOPEDIA.md for references.

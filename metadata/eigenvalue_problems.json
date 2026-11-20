@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0.0",
-  "updated": "2026-11-16",
-  "description": "Eigenvalue-problem subclass. Six additional strict unitary pencil generators and the existing finite_cmv family with pencil coefficient outputs. Non-strict nonlinear problems remain documented separately. Public generators preserve [U,properties] and expose strict coefficients via terminal pencil mode.",
+  "updated": "2026-11-20",
+  "description": "Eigenvalue-problem subclass. Six additional strict unitary pencil generators and the existing finite_cmv family with pencil coefficient outputs. Non-strict nonlinear problems remain documented separately. Public generators preserve [U,properties] and expose strict coefficients via terminal pencil mode. Two positive-metric symplectic-integration families are separately classified as circle_spectrum_only; their physical quotients need not be Euclidean unitary.",
   "strict_pencil_criterion": "B nonsingular, AA*=BB*, equivalently inv(B)A unitary in Euclidean inner product",
   "classifications": [
     "strict_unitary_pencil",
@@ -183,6 +183,34 @@
       ],
       "source": "https://github.com/ftisseur/nlevp/blob/master/private/railtrack2.m",
       "note": "Sparse low-rank palindromic coefficients; possible zero and infinite eigenvalues"
+    },
+    {
+      "id": "geometric_oscillator",
+      "classification": "circle_spectrum_only",
+      "problem_type": "positive_metric_pencil_and_palindromic_polynomial",
+      "status": "implemented",
+      "reference_ids": [
+        101,
+        102
+      ],
+      "pencil": "A=G*M, B=G, G>0, M'*G*M=G; B\\A=M generally nonorthogonal",
+      "root_relation": "eigenvalues of M and T*M/T lie on circle; Verlet additionally has P(z)=z^2 I+(h^2 K-2I)z+I",
+      "generator": "geometric_oscillator.m",
+      "source_status": "Explicit periodic coupled-oscillator specialization of Gauss-Legendre and Stoermer-Verlet geometric integration"
+    },
+    {
+      "id": "geometric_fem_wave",
+      "classification": "circle_spectrum_only",
+      "problem_type": "positive_metric_pencil_and_mass_weighted_palindromic_polynomial",
+      "status": "implemented",
+      "reference_ids": [
+        101,
+        103
+      ],
+      "pencil": "A=G*Mstep, B=G, G>0, Mstep'*G*Mstep=G; Mstep generally nonorthogonal",
+      "root_relation": "for uniform Dirichlet piecewise-linear FE, exactly known generalized frequencies; Verlet P(z)=z^2*Mass+z*(h^2*K-2*Mass)+Mass",
+      "generator": "geometric_fem_wave.m",
+      "source_status": "Canonical uniform 1D Dirichlet continuous linear finite-element specialization of published symplectic wave semidiscretization"
     }
   ]
 }
