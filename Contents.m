@@ -59,6 +59,7 @@
 %   paraunitary_fir     Multichannel FIR polyphase, exact finite periodic unitary.
 %   orthogonal_butterfly Recursive real orthogonal butterfly (fast implicit action).
 %   complex_hadamard     Dita-deformed Fourier-block complex Hadamard matrices.
+%   butson_hadamard      Integer-phase Tao BH(6,3) and Paley I BH(p+1,2).
 %   krawtchouk_transform Orthogonal binomial Krawtchouk polynomial transform.
 %   hahn_transform        Orthogonal Hahn transform via Jacobi difference operator.
 %   dual_hahn_transform   Dual Hahn quadratic-grid polynomial transform.
