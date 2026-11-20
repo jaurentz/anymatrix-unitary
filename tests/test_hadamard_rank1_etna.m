@@ -153,7 +153,7 @@ end
 
 function test_etna_type_three_coupling_and_block_limit(testCase)
 n=24;B=n/4;
-small=1e-8;
+small=1e-6;
 U=etna_hessenberg(n,'III',7,small);
 larger=etna_hessenberg(n,'III',7,.02);
 for k=[B 2*B 3*B]
