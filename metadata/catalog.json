@@ -1148,6 +1148,76 @@
       "matrix_free_supported": true,
       "operator_kernel": "um_core_apply",
       "operator_note": "O(n) core-factor action; Type III near-decoupled four-block structure."
+    },
+    {
+      "id": "sphere_geodesic",
+      "status": "implemented",
+      "category": "geometry",
+      "matrix_order": "n",
+      "representation": "rank-two ambient geodesic rotation on real sphere",
+      "spectral_reference": "exact exp(+/-i acos(p'*q)) and n-2 unit roots",
+      "encyclopedia_references": [
+        96
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_sphere_apply",
+      "operator_note": "O(n) rank-two matrix-free forward/adjoint"
+    },
+    {
+      "id": "grassmann_geodesic",
+      "status": "implemented",
+      "category": "geometry",
+      "matrix_order": "n",
+      "representation": "ambient lift of Grassmann geodesic via orthonormal frames",
+      "spectral_reference": "exact principal/tangent singular-angle pairs plus unit eigenvalues",
+      "encyclopedia_references": [
+        93
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_grassmann_apply",
+      "operator_note": "O(nr) frame-based low-rank action, possibly complex"
+    },
+    {
+      "id": "geodesic_holonomy",
+      "status": "implemented",
+      "category": "geometry",
+      "matrix_order": "n",
+      "representation": "product of shortest-geodesic sphere rotations",
+      "spectral_reference": "exact spherical triangle area law; generic polygons unknown",
+      "encyclopedia_references": [
+        96
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_holonomy_apply",
+      "operator_note": "O(nm) tangent holonomy via m rank-two legs"
+    },
+    {
+      "id": "connection_cycle",
+      "status": "implemented",
+      "category": "geometry",
+      "matrix_order": "2N",
+      "representation": "block-cyclic discrete connection SO(2) rotations",
+      "spectral_reference": "exact Nth roots of holonomy rotation pair",
+      "encyclopedia_references": [
+        94
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_connection_cycle_apply",
+      "operator_note": "O(N) block-permutation action"
+    },
+    {
+      "id": "lie_geodesic_transport",
+      "status": "implemented",
+      "category": "geometry",
+      "matrix_order": "n^2",
+      "representation": "left-trivialized parallel transport on U(n) Lie algebra",
+      "spectral_reference": "exact eigenphase differences and normalized trace moments",
+      "encyclopedia_references": [
+        95
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_lie_transport_apply",
+      "operator_note": "O(n^2) pair rotations with O(n^2) parameter storage"
     }
   ],
   "probability_measures": [

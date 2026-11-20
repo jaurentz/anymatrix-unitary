@@ -2031,6 +2031,99 @@ structure-preserving spectral approximation. **Reference:** [8].
   Floquet Ising models, kicked tops, cat maps and interferometer meshes.
   Different symmetry sectors and truncations cannot be conflated. [26]
 
+## Geometry: geodesics, discrete connections, and holonomy
+
+### Sphere-geodesic ambient rotation — [`sphere_geodesic.m`](../sphere_geodesic.m)
+
+**Order:** n>=2; real orthogonal. For non-antipodal points p,q on the unit
+sphere, let A=qp^T-pq^T and c=p^Tq. The ambient geodesic rotation is
+
+```math
+R=I+A+\frac{A^2}{1+c},\qquad
+\sigma(R)=\{e^{i\arccos(c)},e^{-i\arccos(c)},1^{(n-2)}\}.
+```
+
+This rotation maps p to q; its restriction to the tangent space at p is
+Levi-Civita parallel transport along the shortest great-circle arc.
+The matrix differs from identity by rank at most two, with O(n) matrix-free
+action. Antipodal points are excluded because the minimizing geodesic is not
+unique. See [96].
+
+### Grassmannian geodesic ambient lift — [`grassmann_geodesic.m`](../grassmann_geodesic.m)
+
+**Order:** n; real orthogonal or complex unitary according to the supplied
+orthonormal frame B=[Y,U] of width 2r. With tangent singular angles a_j,
+the ambient lift is identity outside span(B) and on span(B) rotates by
+
+```math
+C=\begin{bmatrix}\cos(D)&-\sin(D)\\
+                  \sin(D)&\cos(D)\end{bmatrix},
+\qquad D=\operatorname{diag}(a_1,\ldots,a_r).
+```
+
+Its exact eigenvalues are e^{+/-i a_j} and 1 with multiplicity n-2r.
+The subspace path Y(t)=Y cos(tD)+U sin(tD) is a Grassmann geodesic; this
+**ambient lift is not intrinsic parallel transport of the tangent bundle**.
+The low-rank action costs O(nr). See Edelman–Arias–Smith [93].
+
+### Spherical geodesic-loop holonomy — [`geodesic_holonomy.m`](../geodesic_holonomy.m)
+
+**Order:** n>=3. Columns of POINTS specify vertices of a closed spherical
+geodesic polygon. Multiply shortest-geodesic ambient rotations in path order.
+The result fixes the base point and is orthogonal; its restriction to the
+base tangent space is the Levi-Civita holonomy.
+
+For a triangle with Gram matrix G of its three unit vertices, the unsigned
+spherical excess in the induced oriented 3-plane is
+
+```math
+a=2\operatorname{atan2}\left(\sqrt{\det G},
+1+G_{12}+G_{23}+G_{31}\right),
+```
+
+and the ambient eigenvalues are e^{+/-ia} and n-2 copies of 1.
+For polygons with more than three vertices, this generator does not claim
+an automatic analytic spectrum; the implicit action takes O(nm) for m legs.
+See sphere parallel transport [96] and the classical Gauss–Bonnet theorem.
+
+### Cyclic discrete-connection transport — [`connection_cycle.m`](../connection_cycle.m)
+
+**Order:** 2N; exactly sparse real orthogonal block-permutation matrix.
+Each leg carries a prescribed SO(2) connection rotation R(phi_j).
+The holonomy is R(sum(phi_j)), and the exact eigenvalues are
+
+```math
+\exp\left(i\frac{2\pi k\pm\sum_j\phi_j}{N}\right),
+\qquad k=0,\ldots,N-1.
+```
+
+This is an **original proposed benchmark** assembled from documented local
+discrete-connection rotations; the generator accepts connection angles but
+does not compute them from a triangulated mesh. Spectral density of this
+particular cyclic model is a pair of interlaced root grids, not an arbitrary
+mesh spectrum. Reference on discrete connection angles: Crane–Desbrun–
+Schröder [94].
+
+### Lie-group geodesic parallel transport — [`lie_geodesic_transport.m`](../lie_geodesic_transport.m)
+
+**Order:** n² real orthogonal matrix representing transport on the real Lie
+algebra u(n) of skew-Hermitian matrices. Along exp(tK), K=i diag(kappa),
+the left-trivialized transport is exp(-t ad_K/2). In the real orthonormal
+basis consisting of n diagonal and n(n-1)/2 off-diagonal generator pairs,
+the result is a sparse direct sum of 2x2 rotations and n singleton 1's.
+Exact eigenvalues are e^{+/-it(kappa_j-kappa_k)/2} for j<k, plus n ones.
+
+```math
+\frac{1}{n^2}\operatorname{tr}(Q^\ell)
+=\frac{1}{n^2}\left|\sum_{j=1}^n
+e^{i\ell t\kappa_j/2}\right|^2.
+```
+
+This is a canonical-coordinate transport matrix, not multiplication by
+exp(tK) on the ambient n-dimensional complex space. The eigenphase-difference
+formula connects geometric transport to unitary conjugation but represents
+a different real action. See the bi-invariant connection [95].
+
 ## Bibliography
 
 1. P. J. Davis, *Circulant Matrices*, Wiley, 1979. ISBN 9780471057710. [Library record](https://openlibrary.org/books/OL4407364M/Circulant_matrices).
@@ -2130,3 +2223,7 @@ structure-preserving spectral approximation. **Reference:** [8].
 90. P. J. Forrester and E. M. Rains, “Jacobians and rank 1 perturbations relating to unitary Hessenberg matrices,” *Int. Math. Res. Not.* **2006** (2006), 48306. [DOI](https://doi.org/10.1155/IMRN/2006/48306); [preprint](https://arxiv.org/abs/math/0505552).
 91. P. Diţă, “Some results on the parametrization of complex Hadamard matrices,” *J. Phys. A* **37** (2004), 5355–5374. [DOI](https://doi.org/10.1088/0305-4470/37/20/008).
 92. W. Tadej and K. Życzkowski, “A concise guide to complex Hadamard matrices,” *Open Syst. Inf. Dyn.* **13** (2006), 133–177. [DOI](https://doi.org/10.1007/s11080-006-8220-2); [preprint](https://arxiv.org/abs/quant-ph/0512154).
+93. A. Edelman, T. A. Arias and S. T. Smith, “The geometry of algorithms with orthogonality constraints,” *SIAM J. Matrix Anal. Appl.* **20** (1998), 303–353. [DOI](https://doi.org/10.1137/S0895479895290954).
+94. K. Crane, M. Desbrun and P. Schröder, “Trivial connections on discrete surfaces,” *Comput. Graph. Forum* **29** (2010), 1525–1533. [DOI](https://doi.org/10.1111/j.1467-8659.2010.01761.x).
+95. “The Parallel Transport Map over Affine Symmetric Space,” *J. Geom. Anal.* (2025). [DOI](https://doi.org/10.1007/s12220-025-02172-4).
+96. “Manifold Calculus in System Theory and Control—Fundamentals and First-Order Systems,” *Symmetry* **13** (2021), 2092. [DOI](https://doi.org/10.3390/sym13112092).
