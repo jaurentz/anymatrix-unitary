@@ -2323,7 +2323,7 @@ subspace. Let G=[v_1 v_2 v_3]^T[v_1 v_2 v_3]. The magnitude
 of its spherical excess is
 
 ```math
-\Omega=2\,\operatorname{atan2}\!
+\Omega=2\,\mathrm{atan2}\!
 \left(\sqrt{\det G},
 1+v_1^Tv_2+v_2^Tv_3+v_3^Tv_1\right).
 ```
