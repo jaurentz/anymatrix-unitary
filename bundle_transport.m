@@ -6,7 +6,9 @@ function [U,properties]=bundle_transport(n,permutation,links,output)
 %   Default: one cycle and deterministic 2-by-2 real rotations.
 %   'operator' applies forward/adjoint in O(N*d^2) per RHS.
 %   'spectral' gives exact eigenphases/moments from small holonomies.
-%   See https://doi.org/10.1002/cpa.21395 for connection background.
+%   Discrete-connection context [98]:
+%   https://doi.org/10.1111/j.1467-8659.2010.01761.x
+%   Further connection background: https://doi.org/10.1002/cpa.21395
 properties={'square','unitary','normal','sparse','scalable', ...
     'eigenvalues','parameter-dependent'};
 if nargin==0,U=[];return;end
