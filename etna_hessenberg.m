@@ -53,6 +53,10 @@ validateattributes(coupling,{'numeric'},{'scalar','real','finite'});
 if strcmp(kind,'III') && ~(coupling>0 && coupling<1)
     error('etna_hessenberg:Coupling','Type III needs 0<COUPLING<1.');
 end
+if strcmp(kind,'III') && 1-coupling^2==1
+    error('etna_hessenberg:Coupling', ...
+          'COUPLING is too small to resolve in double-precision Schur parameters.');
+end
 if nargin<5||isempty(output),output='matrix';end
 if ~(ischar(output)||(isstring(output)&&isscalar(output)))
     error('etna_hessenberg:Mode','OUTPUT must be a scalar string.');
