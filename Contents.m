@@ -56,6 +56,11 @@
 %   orthogonal_butterfly Recursive real orthogonal butterfly (fast implicit action).
 %   complex_hadamard     Dita-deformed Fourier-block complex Hadamard matrices.
 %   krawtchouk_transform Orthogonal binomial Krawtchouk polynomial transform.
+%   hahn_transform        Orthogonal Hahn transform via Jacobi difference operator.
+%   dual_hahn_transform   Dual Hahn quadratic-grid polynomial transform.
+%
+% Riemannian geometry:
+%   sphere_geodesic_transport  SO(n) lift of tangent geodesic parallel transport.
 %
 % Nonlinear unitary dynamics:
 %   lohe_matrix_flow     Coupled Lohe oscillators on U(d), geometric midpoint integration.
