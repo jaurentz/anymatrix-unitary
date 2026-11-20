@@ -2395,7 +2395,10 @@ dense. The terminal `'operator'` mode already provides $O(n\log n)$
 FFT-based forward/adjoint actions (including complex multiple
 right-hand sides), using only $O(n)$ stored frequency samples. Its symmetric phase measure
 must be distinguished from the one-sided $n$-point complex
-representation of the positive frequencies. The formulas and
+representation of the positive frequencies. The terminal `'spectral'` descriptor conforms to the shared trace-measure
+interface: `finite.eigenvalues()` and `finite.moments(k)` are callable,
+while the limiting density is marked unknown.
+The formulas and
 normalization are specified benchmark specializations of established
 geometric-integration theory, not named distributions originating
 in [93, 94]. **References:** [93, 94].
@@ -2467,7 +2470,9 @@ at finite dimension. `'spectral'` returns the frequencies and
 phase multiset without an eigensolve; `'operator'` supplies
 $O(n\log n)$ forward and adjoint DST-I actions with $O(n)$
 stored frequency samples, including multiple complex right-hand
-sides. The explicit $U$ is generally dense.
+sides. The explicit $U$ is generally dense. The standard terminal
+`'spectral'` descriptor exposes `finite.eigenvalues()` and
+`finite.moments(k)` and leaves the limiting density unasserted.
 
 Unlike the periodic oscillator in `geometric_oscillator`, this family
 has a **nonidentity consistent finite-element mass matrix**,
