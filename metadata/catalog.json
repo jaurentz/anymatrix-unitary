@@ -1570,6 +1570,21 @@
       "matrix_free_supported": false,
       "operator_kernel": null,
       "operator_note": "Dense explicitly generated phase tables; no unsupported fast algorithm claimed."
+    },
+    {
+      "id": "inverse_opuc",
+      "status": "implemented",
+      "category": "opuc",
+      "matrix_order": "n",
+      "representation": "inverse Szego finite CMV or unitary Hessenberg core product from prescribed distinct circle nodes and positive cyclic weights",
+      "spectral_reference": "exact trace eigenphases with uniform weights; separate prescribed e1 cyclic measure",
+      "encyclopedia_references": [
+        5,
+        9
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_core_apply",
+      "operator_note": "Uses existing structured O(n^2) core-factor operator and adjoint; no dense matrix needed; inverse coefficients from finite Szego recurrences."
     }
   ],
   "probability_measures": [
