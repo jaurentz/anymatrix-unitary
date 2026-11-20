@@ -11,6 +11,9 @@ function [U,properties]=associated_legendre_transform(n,m)
 %       sqrt(k*(k+2*M)/((2*k+2*M)^2-1)), k=1,...,N-1.
 %   O(N^3) setup via eigenvectors; fast SHT kernels are not included.
 %   References: Golub-Welsch (1969); Slevinsky (2017); Olver et al. (2020).
+%   [93] https://doi.org/10.1090/S0025-5718-69-99647-1
+%   [95] https://www.cambridge.org/core/journals/acta-numerica/article/abs/fast-algorithms-using-orthogonal-polynomials/4FAD8C7C28EC20EE7583465C1A89AA3D
+%   [96] https://arxiv.org/abs/1705.05448
 properties={'square','unitary','normal','orthogonal','real', ...
     'scalable','parameter-dependent'};
 if nargin==0,U=[];return;end
