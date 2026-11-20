@@ -1998,7 +1998,8 @@ with sixteen eigenvalues clustered near -1. **The implementation
 does not claim to reproduce that same sample or that specific
 cluster.** Its Type III gives a reproducible family with the
 near-reducible structure of the benchmark; a user-controlled seed
-and coupling allow systematic parameter studies.
+and coupling allow systematic parameter studies. Coupling values too
+small to resolve in double-precision Schur parameters are rejected.
 
 All three variants are specified by n-1 core parameters and a
 unimodular closure, have O(n) implicit matvecs, and generate finite
