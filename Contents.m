@@ -80,6 +80,7 @@
 %
 % Geometric and symplectic integration:
 %   geometric_oscillator  Periodic symplectic oscillator; exact phases and metric pencil.
+%   time_skew_magnus    Noncommuting time-dependent orthogonal midpoint/Cayley flow.
 %   geometric_fem_wave    Finite-element Dirichlet wave; mass-weighted palindromic QEP.
 %
 % Nonlinear unitary dynamics:

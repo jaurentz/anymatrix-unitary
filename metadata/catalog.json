@@ -1600,6 +1600,21 @@
       "matrix_free_supported": true,
       "operator_kernel": "um_core_apply",
       "operator_note": "Uses inverse_opuc and OPUC core-product implicit actions, not a nonunitary monomial companion; strict block-CMV pencil optional."
+    },
+    {
+      "id": "time_skew_magnus",
+      "status": "implemented",
+      "category": "geometry",
+      "matrix_order": "n>=3",
+      "representation": "real SO(n) time-ordered exp-midpoint or sparse Cayley-midpoint on noncommuting skew generators",
+      "spectral_reference": "unknown noncommuting time-dependent finite phase law; exact constant-generator exp/Cayley spectral mapping",
+      "encyclopedia_references": [
+        101,
+        122
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_skew_midpoint_apply",
+      "operator_note": "Sparse Cayley LU cached per midpoint, O(steps) sparse solves per RHS; exponential variant caches dense exponentials and makes no sparse expmv claim."
     }
   ],
   "probability_measures": [
