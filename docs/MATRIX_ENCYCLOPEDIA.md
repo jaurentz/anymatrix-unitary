@@ -3773,6 +3773,126 @@ Carnahan, Zeuch and Bonesteel [131] discuss multi-anyon
 braid words in topological quantum computation.
 
 
+
+## Flux-normalized resonant multichannel scattering — [`resonant_scattering.m`](../resonant_scattering.m)
+
+**Application and distinction.** This is a genuine **open**
+finite-dimensional resonant-cavity scattering benchmark, distinct
+from the closed directed-bond Floquet operator
+`metric_quantum_graph` and the staggered unitary
+`scattering_zipper`. At a specified **real** energy
+$E$, incoming/outgoing amplitudes lie in an orthonormal,
+unit-flux basis of n asymptotic open channels. Every open
+channel is retained; there is no absorption, channel threshold
+or hidden inelastic channel. The internal cavity has $m\le n$
+states described by Hermitian $H\in\mathbb C^{m\times m}$,
+and a full-row-rank coupling
+$W\in\mathbb C^{m\times n}$.
+
+Set $\Gamma=WW^*>0$ and adopt a wide-band coupling convention
+in which $\Gamma$ is energy-independent (the factor of $\pi$
+in some Mahaux–Weidenmüller conventions is absorbed into W).
+The on-shell scattering matrix is
+
+```math
+A(z)=zI_m-H+i\Gamma,\qquad
+S(E)=I_n-2iW^*A(E)^{-1}W,\quad E\in\mathbb R.
+```
+
+This choice fixes the free/background scattering matrix to $I_n$.
+It is a dimensionally explicit finite version of the
+Mahaux–Weidenmüller resolvent formula used in transport theory
+[132,134]. Because $A(E)-A(E)^*=2iWW^*$,
+the resolvent identity proves
+$S(E)^*S(E)=I_n$ for every real E.
+The full-row-rank assumption gives $\Gamma>0$ and excludes
+singular real-energy bound/dark internal states in this model.
+For **real symmetric** H and **real** W,
+$S(E)^{\mathsf T}=S(E)$ (reciprocity/time-reversal symmetry),
+even though $S(E)$ is generally not real.
+
+**Resonances, derivative and Wigner–Smith delay.**
+The effective internal operator $H_{\mathrm{eff}}=H-iWW^*$
+is dissipative and non-Hermitian, with poles of the analytic
+continuation $S(z)$ at its eigenvalues in the *strict lower
+half-plane* (under the full-row-rank assumption). Its complex
+poles are not the real eigenvalues of H and are **not**
+unit-circle eigenvalues of a real-energy S(E). The `model`
+mode returns both the pole list and an evaluable meromorphic
+continuation. It must not be evaluated *at* a pole. Direct
+differentiation at a real energy gives
+
+```math
+\frac{dS}{dE}=2iW^*A(E)^{-2}W,\qquad
+Q(E)=-iS(E)^*\frac{dS}{dE}
+=2W^*A(E)^{-*}A(E)^{-1}W\succeq0.
+```
+
+The Hermitian **Wigner–Smith time-delay matrix** Q has
+proper-delay eigenvalues in energy-inverse units with
+$\hbar=1$ [133]. If $m<n$, Q has rank m and therefore
+$n-m$ zero delay eigenvalues. The `time_delay`
+mode returns Q, **not** a unitary. The `derivative`
+mode returns the analytic energy derivative of S, also **not**
+a unitary. For general coupled H, there is no claimed
+closed-form finite scattering-phase law. Nor is the
+deterministic benchmark automatically a Haar/CUE or
+Poisson-kernel ensemble: those are separate probabilistic
+transport models with coupling assumptions [132].
+
+**Exactly known finite trace spectra in decoupled cases.**
+When H and $\Gamma$ are both diagonal in the supplied internal
+basis (equivalently, the coupling rows are pairwise orthogonal),
+write $h_j=H_{jj}$ and $\gamma_j=\Gamma_{jj}>0$.
+The n on-shell scattering eigenvalues are exactly
+
+```math
+\lambda_j(E)=
+\frac{E-h_j-i\gamma_j}{E-h_j+i\gamma_j},
+\quad j=1,\dots,m;\qquad
+\lambda_{m+1}=\cdots=\lambda_n=1.
+```
+
+Thus the `spectral` mode returns the **exact finite
+trace measure** (with equal eigenvalue weights $1/n$)
+and exact Fourier moments without calling eig(S).
+For example, with one resonant open channel, its eigenphase
+derivative is the Lorentzian delay
+$2\gamma/((E-h)^2+\gamma^2)$. In the default coupled
+real-tridiagonal cavity with diagonal W, the finite
+trace phase law is conservatively marked *unknown analytically*;
+it is not replaced by a numerical eigendecomposition.
+
+**Observed channel blocks and loss of flux.** Any submatrix
+$B(E)$ obtained by deleting the same incoming and outgoing
+channels from the full unitary satisfies $B^*B\preceq I$,
+but is generally a strict **contraction**. Such a submatrix
+must not be registered as another unitary family. The tests
+check exact flux conservation for the complete matrix and
+strict flux loss for a chosen incomplete observation, along
+with reciprocity, real-energy delay positivity, numerical
+differentiation, resonance locations and unwrapped
+single-channel eigenphase curves.
+
+**Defaults and dimensions.** The default m=n cavity uses
+reproducible real-symmetric nearest-neighbor couplings and
+positive diagonal coupling strengths. User-supplied complex
+Hermitian H and rectangular full-row-rank W are permitted.
+Dense on-shell S has order n (n<=512); no unsupported
+matrix-free acceleration is claimed. This is a constant
+wide-band finite model, **not** a microscopic waveguide
+with energy-dependent channel thresholds.
+
+**References:** Beenakker [132] reviews multichannel
+quantum-transport scattering models and explains CUE versus
+Poisson-kernel ensemble assumptions. Brouwer, Frahm and
+Beenakker [133] give the Wigner–Smith proper-delay framework.
+Erdős, Krüger and Nemish [134] state a precise finite
+Mahaux–Weidenmüller scattering formula and its quantum-dot
+transport setting. The exact diagonal-channel phase identity
+above is elementary algebra applied to that fixed convention.
+
+
 ## Bibliography
 
 1. P. J. Davis, *Circulant Matrices*, Wiley, 1979. ISBN 9780471057710. [Library record](https://openlibrary.org/books/OL4407364M/Circulant_matrices).
@@ -3926,3 +4046,8 @@ braid words in topological quantum computation.
 
 130. S. Trebst, M. Troyer, Z. Wang and A. W. W. Ludwig, “A short introduction to Fibonacci anyon models,” *Progress of Theoretical Physics Supplement* **176** (2008), 384–407. [DOI](https://doi.org/10.1143/PTPS.176.384); [preprint](https://arxiv.org/abs/0902.3275).
 131. C. Carnahan, D. Zeuch and N. E. Bonesteel, “Systematically generated two-qubit anyon braids,” *Physical Review A* **93** (2016), 052328. [DOI](https://doi.org/10.1103/PhysRevA.93.052328); [preprint](https://arxiv.org/abs/1511.00719).
+
+
+132. C. W. J. Beenakker, “Random-matrix theory of quantum transport,” *Reviews of Modern Physics* **69** (1997), 731–808. [DOI](https://doi.org/10.1103/RevModPhys.69.731); [preprint](https://arxiv.org/abs/cond-mat/9612179).
+133. P. W. Brouwer, K. M. Frahm and C. W. J. Beenakker, “Quantum Mechanical Time-Delay Matrix in Chaotic Scattering,” *Physical Review Letters* **78** (1997), 4737–4740. [DOI](https://doi.org/10.1103/PhysRevLett.78.4737).
+134. L. Erdős, T. Krüger and Y. Nemish, “Scattering in Quantum Dots via Noncommutative Rational Functions,” *Annales Henri Poincaré* **22** (2021), 4205–4269. [DOI](https://doi.org/10.1007/s00023-021-01085-6); [preprint](https://arxiv.org/abs/1911.05112).
