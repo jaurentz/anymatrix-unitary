@@ -13,11 +13,11 @@ Y=X;
 switch flag
     case 'notransp'
         for j=1:m
-            Y=um_sphere_apply(Y,'notransp',P(:,j),P(:,mod(j,m)+1));
+            Y=um_geodesic_apply(Y,'notransp',P(:,j),P(:,mod(j,m)+1),P(:,j)'*P(:,mod(j,m)+1));
         end
     case {'transp','ctransp'}
         for j=m:-1:1
-            Y=um_sphere_apply(Y,'transp',P(:,j),P(:,mod(j,m)+1));
+            Y=um_geodesic_apply(Y,'transp',P(:,j),P(:,mod(j,m)+1),P(:,j)'*P(:,mod(j,m)+1));
         end
     otherwise,error('um_holonomy_apply:Flag','Unknown operator action.');
 end

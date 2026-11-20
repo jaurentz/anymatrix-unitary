@@ -2011,7 +2011,284 @@ eigenphase density is asserted.
 Hessenberg matrices, difficult clustered eigenvalues, and
 structure-preserving spectral approximation. **Reference:** [8].
 
-## P. Families reserved for future versions (not implemented)
+
+## P. Quantum cat, Krawtchouk and periodic Daubechies (November 2026)
+
+### Hyperbolic quantum cat map — [`quantum_cat_map.m`](../quantum_cat_map.m)
+
+The classical map is the integral hyperbolic torus automorphism
+
+```math
+S=\begin{bmatrix}a&1\\ad-1&d\end{bmatrix},
+\qquad a,d\in 2\mathbb Z_{>0},\quad ad\ge 4,\quad \det S=1.
+```
+
+The specific parity-compatible quantization, at Hilbert-space
+dimension n, is the chirp-Fourier-chirp propagator
+
+```math
+U_{jk}=\frac{1}{\sqrt n}\exp\left(
+\frac{i\pi}{n}(d j^2-2jk+a k^2)\right),\qquad 0\le j,k<n.
+```
+
+The default classical map is [2,1;3,2], rather than the
+standard textbook [2,1;1,1] with a different parity convention.
+For even diagonal a and d, the kernel is periodic under j or k
+shifts by n. The matrix is unitary: its phases are diagonal
+unimodular chirps surrounding the normalized DFT. Its overall
+metaplectic phase is fixed to 1, an explicit **projective phase
+convention**. Other global phases rotate the finite eigenphases
+even though they have identical adjoint dynamics.
+
+The implementation does not quantize arbitrary SL(2,Z) maps,
+nor does it assert a uniform finite eigenphase trace measure.
+In operator mode, both forward and adjoint matvecs use one FFT
+and O(n) chirp multiplications, hence O(n log n) complexity.
+
+**Application:** quantized hyperbolic dynamics, quantum chaos,
+semiclassical spectral statistics and unitary FFT-chirp benchmarks.
+**Reference:** [93], Hannay and Berry (1980).
+
+### Real orthogonal Krawtchouk polynomial transform — [`krawtchouk_transform.m`](../krawtchouk_transform.m)
+
+For n=N+1 and 0<p<1, define a real symmetric Jacobi matrix J,
+with x=0,...,N,
+
+```math
+J_{xx}=p(N-x)+(1-p)x,\qquad
+J_{x,x+1}=J_{x+1,x}=
+-\sqrt{p(1-p)(x+1)(N-x)}.
+```
+
+The eigenvalues of J are exactly 0,...,N. Order its
+real orthonormal eigenvectors by these eigenvalues and fix the
+signs by requiring a positive first-row component. Their matrix
+Q is the symmetric orthogonal Krawtchouk transform; its first
+column contains the square roots of the binomial probability
+weights. With the indicated sign/ordering convention,
+
+```math
+Q^T=Q,\quad Q^2=I,\quad
+\sigma(Q)=\{1,-1\},
+```
+
+with eigenvalue multiplicities ceil(n/2) for +1 and
+floor(n/2) for -1. Thus the **Jacobi nodes 0,...,N are
+NOT the eigenvalues of Q**. The finite normalized trace
+spectral measure of Q consists of two atoms at 0 and pi,
+not a smooth distribution on the circle.
+
+The first version forms Q by dense symmetric eigendecomposition
+at O(n^3) work. It does not claim a fast Krawtchouk algorithm.
+The first-component sign convention can become numerically
+delicate at high polynomial degrees or extreme binomial
+probability parameters; validation rejects unresolved zero
+first components.
+
+**Applications:** exact-moment unitary test problems, binomial
+signal representations and discrete orthogonal polynomial transforms.
+**Reference:** [94], Feinsilver and Schott.
+
+### Periodized four-tap Daubechies transform — [`daubechies_wavelet.m`](../daubechies_wavelet.m)
+
+The D4 (also known as db2, *two vanishing moments*) low-pass
+analysis coefficients are
+
+```math
+h=\frac{1}{4\sqrt 2}
+(1+\sqrt3,\ 3+\sqrt3,\ 3-\sqrt3,\ 1-\sqrt3).
+```
+
+The high-pass filter is g=(h_3,-h_2,h_1,-h_0) using
+zero-based coefficients. For an even-length *periodic* stage
+of length m, the low and high coefficients are
+
+```math
+a_j=\sum_{k=0}^3h_kx_{(2j+k)\bmod m},\qquad
+d_j=\sum_{k=0}^3g_kx_{(2j+k)\bmod m}.
+```
+
+The output ordering is [averages;details], and subsequent
+levels act only on the averages. For any power-of-two n,
+the number of levels can be zero (identity) through log2(n).
+The length-two final stage uses modulo indices, so its
+four taps alias pairwise to a valid orthogonal final split.
+The entire finite n-by-n matrix is therefore **real
+orthogonal with exact periodic boundary closure**.
+
+Matrix-free forward and transpose actions require O(n)
+operations over all levels. Other boundary extensions
+(zero padding, reflection) would require different operators
+and are not silently identified with this finite transform.
+No generic analytic finite eigenphase law is asserted.
+
+**Applications:** periodized orthogonal filter banks,
+finite matrix-free normal spectral-density benchmarks and
+boundary-sensitive signal transforms. **Reference:** [15],
+Daubechies, *Ten Lectures on Wavelets*.
+
+
+## Q. Hahn/dual Hahn transforms and spherical parallel transport (November 2026)
+
+### Normalized Hahn polynomial transform — [`hahn_transform.m`](../hahn_transform.m)
+
+For N=n-1 and real parameters alpha,beta>-1, define
+Hahn polynomials, normalized by Q_k(0)=1, as
+
+```math
+Q_k(x;\alpha,\beta,N)
+={}_3F_2\!\left(
+\begin{matrix}-k,\; k+\alpha+\beta+1,\;-x\\
+\alpha+1,\;-N\end{matrix};1\right),
+\quad 0\le k,x\le N.
+```
+
+The explicit weight is positive on the finite integer grid:
+
+```math
+w(x)={\alpha+x\choose x}{\beta+N-x\choose N-x}.
+```
+
+A numerically reproducible approach builds the symmetric
+self-adjoint difference matrix J from the coefficients
+
+```math
+B(x)=(x+\alpha+1)(x-N),\qquad
+D(x)=x(x-\beta-N-1),
+```
+
+with
+
+```math
+J_{xx}=-B(x)-D(x),\quad
+J_{x,x+1}=J_{x+1,x}=-\sqrt{B(x)D(x+1)}.
+```
+
+Here B(x),D(x) are nonpositive on their respective interior
+indices, so J is real symmetric. Its spectrum is the
+**quadratic degree grid**
+`lambda_k=k(k+alpha+beta+1)`. The eigenvectors, arranged
+with increasing lambda and a positive first component,
+form the weighted Hahn evaluation matrix V, where rows
+index x and columns index k. The generator returns
+`U=V'`, so U has degree k in its rows and grid x in its
+columns. Consequently
+
+```math
+U^T U=I,\qquad J U^T=U^T
+\,\mathrm{diag}\!\bigl(k(k+\alpha+\beta+1)\bigr).
+```
+
+**Spectral distinction:** the quadratic values are eigenvalues
+of the self-adjoint **difference operator J**. They are not,
+in general, eigenvalues of the orthogonal matrix U. Therefore
+this database does not assign the polynomial grid as
+eigenphases of U. The small, deterministic `eig(J)`
+construction is O(n^3); no fast Hahn transform is claimed.
+Eigenvector first-component sign setting can become
+ill-conditioned for extreme orders or parameters.
+
+**Applications:** finite orthogonal polynomial analysis,
+special-function quadrature, numerical tests with
+nonuniform discrete polynomial weights. **Reference:** [95],
+Koekoek, Lesky and Swarttouw; DLMF 18.22.
+
+### Dual Hahn transform on quadratic spectral grid — [`dual_hahn_transform.m`](../dual_hahn_transform.m)
+
+The dual Hahn polynomial
+`R_x(lambda(k);alpha,beta,N)` is defined by
+
+```math
+R_x(\lambda(k);\alpha,\beta,N)
+={}_3F_2\!\left(
+\begin{matrix}-x,\;-k,\;k+\alpha+\beta+1\\
+\alpha+1,\;-N\end{matrix};1\right),
+\quad \lambda(k)=k(k+\alpha+\beta+1).
+```
+
+The Hahn/dual Hahn duality is exactly
+
+```math
+Q_k(x;\alpha,\beta,N)
+=R_x(\lambda(k);\alpha,\beta,N).
+```
+
+Under the matching positive weight and orthonormal
+normalization conventions, their **analysis transforms**
+are adjoints:
+`dual_hahn_transform(n,alpha,beta) =
+hahn_transform(n,alpha,beta)'`.
+This guarantees exact algebraic transpose duality without
+duplicating an independent, potentially inconsistent weight
+computation. The dual Hahn transform is real orthogonal,
+and therefore its eigenvalues are complex conjugates of
+those of Hahn's transform; its quadratic **polynomial grid**
+is not itself a unit-circle eigenphase law.
+
+The current implementation reuses the shared Hahn
+Jacobi eigensolver (O(n^3)). **Applications:** quadratic-grid
+discrete spectral expansions, exactly normalized dual bases,
+polynomial transform pair benchmarks. **Reference:** [95];
+DLMF 18.21, "Duality of Hahn and Dual Hahn."
+
+### Spherical shortest-geodesic parallel transport — [`sphere_geodesic_transport.m`](../sphere_geodesic_transport.m)
+
+Given two unit vectors x,y on the unit sphere S^(n-1) with
+non-antipodal endpoints, let
+
+```math
+c=x^Ty,\quad
+K=yx^T-xy^T,\quad
+R=I+K+\frac{K^2}{1+c}.
+```
+
+R is the **unique minimal ambient rotation** in SO(n) that
+maps x to y and is the identity on the orthogonal complement
+of `span(x,y)`. Its restriction to
+`T_x S^{n-1}\to T_y S^{n-1}` is exactly the Levi-Civita
+parallel transport along the unique shortest geodesic,
+which on tangent vectors v satisfying x^Tv=0 has the
+closed form
+
+```math
+P_{x\to y}v
+=v-\frac{y^Tv}{1+x^Ty}(x+y).
+```
+
+The **tangent-space map is not an endomorphism** until the
+source and destination tangent frames are identified.
+This generator stores R, its canonical square ambient
+orthogonal lift, not an arbitrary frame-coordinate
+identification. The antipodal case is excluded because
+no unique shortest great circle joins x to -x, and near
+antipodal points are rejected to avoid division by
+an ill-conditioned `1+x^Ty`.
+
+Writing `theta=acos(x^Ty)`, the finite exact eigenvalues are
+
+```math
+e^{i\theta},\quad e^{-i\theta},\quad
+\underbrace{1,\ldots,1}_{n-2},\qquad
+m_k=\frac{n-2+2\cos(k\theta)}n.
+```
+
+These give an **exact discrete trace spectral measure**
+with at most three distinct atoms. At x=y, R=I and the
+measure is one atom at zero. The ambient rotation has
+rank(R-I)<=2, so the implicit forward/adjoint kernel
+applies in O(n) per right-hand side. This is an
+application-derived real orthogonal matrix family with
+an exact finite spectral reference, not a random rotation
+or an arbitrary product of Givens matrices.
+
+**Applications:** Riemannian optimization, spherical
+statistics, geometric numerical integration, geodesic
+transport of vectors and exact finite moment benchmarks.
+**Reference:** [96], Absil, Mahony and Sepulchre.
+The ambient formula is verified by the tangent-space
+transport identity in the regression tests.
+
+## R. Families reserved for future versions (not implemented)
 
 - **Additional ETNA benchmark cases:** the exact Example 7.1 common-parameter
   and Example 7.5 inverse-eigenvalue presets are not yet implemented.
@@ -2023,8 +2300,8 @@ structure-preserving spectral approximation. **Reference:** [8].
 - **Other OPUC measures:** positive Pastro and generalized $q$-weight
   specializations, inverse spectral finite atomic measures, Aleksandrov
   families, skew-shift parameters, and matrix-valued/block CMV. [5, 12]
-- **Additional signal-processing matrices:** normalized DCT/DST variants,
-  Daubechies wavelets, paraunitary polyphase banks and lossless scattering.
+- **Additional signal-processing matrices:** other Daubechies orders,
+  wavelet packets, paraunitary polyphase banks and lossless scattering.
   Boundary and frequency conventions must be specified before admitting a
   finite matrix as unitary. [15]
 - **Larger quantum models:** Szegedy graph walks, quantum-graph scattering,
@@ -2033,21 +2310,7 @@ structure-preserving spectral approximation. **Reference:** [8].
 
 ## Geometry: geodesics, discrete connections, and holonomy
 
-### Sphere-geodesic ambient rotation — [`sphere_geodesic.m`](../sphere_geodesic.m)
-
-**Order:** n>=2; real orthogonal. For non-antipodal points p,q on the unit
-sphere, let A=qp^T-pq^T and c=p^Tq. The ambient geodesic rotation is
-
-```math
-R=I+A+\frac{A^2}{1+c},\qquad
-\sigma(R)=\{e^{i\arccos(c)},e^{-i\arccos(c)},1^{(n-2)}\}.
-```
-
-This rotation maps p to q; its restriction to the tangent space at p is
-Levi-Civita parallel transport along the shortest great-circle arc.
-The matrix differs from identity by rank at most two, with O(n) matrix-free
-action. Antipodal points are excluded because the minimizing geodesic is not
-unique. See [96].
+The shortest-arc spherical transport operator is already provided by [`sphere_geodesic_transport.m`](../sphere_geodesic_transport.m); its geometric interpretation is also discussed by Fiori [100]. The construction is not duplicated here.
 
 ### Grassmannian geodesic ambient lift — [`grassmann_geodesic.m`](../grassmann_geodesic.m)
 
@@ -2064,7 +2327,7 @@ C=\begin{bmatrix}\cos(D)&-\sin(D)\\
 Its exact eigenvalues are e^{+/-i a_j} and 1 with multiplicity n-2r.
 The subspace path Y(t)=Y cos(tD)+U sin(tD) is a Grassmann geodesic; this
 **ambient lift is not intrinsic parallel transport of the tangent bundle**.
-The low-rank action costs O(nr). See Edelman–Arias–Smith [93].
+The low-rank action costs O(nr). See Edelman–Arias–Smith [97].
 
 ### Spherical geodesic-loop holonomy — [`geodesic_holonomy.m`](../geodesic_holonomy.m)
 
@@ -2084,7 +2347,7 @@ a=2\mathrm{atan2}\left(\sqrt{\det G},
 and the ambient eigenvalues are e^{+/-ia} and n-2 copies of 1.
 For polygons with more than three vertices, this generator does not claim
 an automatic analytic spectrum; the implicit action takes O(nm) for m legs.
-See sphere parallel transport [96] and the classical Gauss–Bonnet theorem.
+See sphere parallel transport [100] and the classical Gauss–Bonnet theorem.
 
 ### Cyclic discrete-connection transport — [`connection_cycle.m`](../connection_cycle.m)
 
@@ -2102,7 +2365,7 @@ discrete-connection rotations; the generator accepts connection angles but
 does not compute them from a triangulated mesh. Spectral density of this
 particular cyclic model is a pair of interlaced root grids, not an arbitrary
 mesh spectrum. Reference on discrete connection angles: Crane–Desbrun–
-Schröder [94].
+Schröder [98].
 
 ### Lie-group geodesic parallel transport — [`lie_geodesic_transport.m`](../lie_geodesic_transport.m)
 
@@ -2122,7 +2385,7 @@ e^{i\ell t\kappa_j/2}\right|^2.
 This is a canonical-coordinate transport matrix, not multiplication by
 exp(tK) on the ambient n-dimensional complex space. The eigenphase-difference
 formula connects geometric transport to unitary conjugation but represents
-a different real action. See Lie-group parallel transport [95].
+a different real action. See Lie-group parallel transport [99].
 
 ## Bibliography
 
@@ -2223,7 +2486,13 @@ a different real action. See Lie-group parallel transport [95].
 90. P. J. Forrester and E. M. Rains, “Jacobians and rank 1 perturbations relating to unitary Hessenberg matrices,” *Int. Math. Res. Not.* **2006** (2006), 48306. [DOI](https://doi.org/10.1155/IMRN/2006/48306); [preprint](https://arxiv.org/abs/math/0505552).
 91. P. Diţă, “Some results on the parametrization of complex Hadamard matrices,” *J. Phys. A* **37** (2004), 5355–5374. [DOI](https://doi.org/10.1088/0305-4470/37/20/008).
 92. W. Tadej and K. Życzkowski, “A concise guide to complex Hadamard matrices,” *Open Syst. Inf. Dyn.* **13** (2006), 133–177. [DOI](https://doi.org/10.1007/s11080-006-8220-2); [preprint](https://arxiv.org/abs/quant-ph/0512154).
-93. A. Edelman, T. A. Arias and S. T. Smith, “The geometry of algorithms with orthogonality constraints,” *SIAM J. Matrix Anal. Appl.* **20** (1998), 303–353. [DOI](https://doi.org/10.1137/S0895479895290954).
-94. K. Crane, M. Desbrun and P. Schröder, “Trivial connections on discrete surfaces,” *Comput. Graph. Forum* **29** (2010), 1525–1533. [DOI](https://doi.org/10.1111/j.1467-8659.2010.01761.x).
-95. Y. Ge, P. van Goor and R. Mahony, “A geometric perspective on fusing Gaussian distributions on Lie groups,” *IEEE Control Systems Letters* **8** (2024), 844–849. [DOI](https://doi.org/10.1109/LCSYS.2024.3405485); [preprint](https://arxiv.org/abs/2403.16411).
-96. S. Fiori, “Manifold Calculus in System Theory and Control—Fundamentals and First-Order Systems,” *Symmetry* **13** (2021), 2092. [DOI](https://doi.org/10.3390/sym13112092).
+
+93. J. H. Hannay and M. V. Berry, “Quantization of linear maps on a torus—Fresnel diffraction by a periodic grating,” *Physica D* **1** (1980), 267–290. [DOI](https://doi.org/10.1016/0167-2789(80)90026-3).
+94. P. Feinsilver and R. Schott, “Krawtchouk transforms and convolutions,” *Advances in Applied Clifford Algebras* (2018). [DOI](https://doi.org/10.1007/s13373-018-0132-2).
+
+95. R. Koekoek, P. A. Lesky and R. F. Swarttouw, *Hypergeometric Orthogonal Polynomials and Their q-Analogues*, Springer Monographs in Mathematics, Springer, 2010. [DOI](https://doi.org/10.1007/978-3-642-05014-5); [DLMF duality](https://dlmf.nist.gov/18.21).
+96. P.-A. Absil, R. Mahony and R. Sepulchre, *Optimization Algorithms on Matrix Manifolds*, Princeton University Press, 2008. [DOI](https://doi.org/10.1515/9781400830244); [author's book website](https://sites.uclouvain.be/absil/amsbook/).
+97. A. Edelman, T. A. Arias and S. T. Smith, “The geometry of algorithms with orthogonality constraints,” *SIAM J. Matrix Anal. Appl.* **20** (1998), 303–353. [DOI](https://doi.org/10.1137/S0895479895290954).
+98. K. Crane, M. Desbrun and P. Schröder, “Trivial connections on discrete surfaces,” *Comput. Graph. Forum* **29** (2010), 1525–1533. [DOI](https://doi.org/10.1111/j.1467-8659.2010.01761.x).
+99. Y. Ge, P. van Goor and R. Mahony, “A geometric perspective on fusing Gaussian distributions on Lie groups,” *IEEE Control Systems Letters* **8** (2024), 844–849. [DOI](https://doi.org/10.1109/LCSYS.2024.3405485); [preprint](https://arxiv.org/abs/2403.16411).
+100. S. Fiori, “Manifold Calculus in System Theory and Control—Fundamentals and First-Order Systems,” *Symmetry* **13** (2021), 2092. [DOI](https://doi.org/10.3390/sym13112092).

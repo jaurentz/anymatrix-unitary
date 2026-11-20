@@ -283,7 +283,7 @@ unweighted eigenvalue density.
 
 ## Geodesic and holonomy spectral benchmark formulas
 
-The five geometry-derived generators `sphere_geodesic`, `grassmann_geodesic`,
+The four additional geometry-derived generators together with the existing spherical transport family `sphere_geodesic_transport`, `grassmann_geodesic`,
 `geodesic_holonomy`, `connection_cycle`, and `lie_geodesic_transport`
 use the distinction between an **ambient orthogonal/unitary lift** and
 parallel transport between tangent spaces. In particular, sphere rotations
@@ -299,4 +299,4 @@ is the product holonomy R(sum(phi)), which establishes its exact roots-of-
 phase spectrum. The latter is a proposed test construction rather than a
 published mesh operator. For the Lie construction, the commutator map has
 pairwise phase differences and exact trace moments without diagonalizing
-its n²-by-n² matrix. See encyclopedia entries and refs. 93–96.
+its n²-by-n² matrix. See encyclopedia entries and refs. 96–100.

@@ -98,18 +98,6 @@ require O(n·RHS) arithmetic and working memory (plus O(n) operator data).
 The driven-Kitaev BdG family still needs a validated high-order exponential
 action before an implicit interface can be promised.
 
-## Geometric transport kernels
-
-- `um_sphere_apply` computes the geodesic sphere rank-two rotation in O(n).
-- `um_grassmann_apply` uses 2r orthonormal frame vectors for an O(nr) low-rank lift.
-- `um_holonomy_apply` composes m sphere rotations in O(nm) along a closed polygon.
-- `um_connection_cycle_apply` applies N local SO(2) rotations and cyclic shifts in O(N).
-- `um_lie_transport_apply` applies n(n-1)/2 rotation blocks directly in O(n²).
-
-All support `notransp`, conjugate-adjoint `transp`/`ctransp`, and `size`.
-The connection-cycle angles must be supplied from an external discrete connection;
-this API does not infer transport angles from a mesh.
-
 ## Testing
 
 Run `test_run` or `runtests('tests/test_matrix_free.m')`. Tests cover
