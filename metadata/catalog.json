@@ -1237,6 +1237,22 @@
       "matrix_free_supported": true,
       "operator_kernel": "um_periodic_sinc_apply",
       "operator_note": "O(n log n) FFT action, forward and adjoint; odd length."
+    },
+    {
+      "id": "gauss_jacobi_transform",
+      "status": "implemented",
+      "category": "signal_processing",
+      "matrix_order": "n",
+      "representation": "dense orthogonal Gauss-Jacobi evaluation for alpha,beta>-1",
+      "spectral_reference": "matrix eigenphases unknown; quadrature nodes belong to real Jacobi tridiagonal",
+      "encyclopedia_references": [
+        93,
+        94,
+        95
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": null,
+      "operator_note": "Explicit Golub-Welsch eigendecomposition; fast DLT algorithms not yet implemented."
     }
   ],
   "probability_measures": [
