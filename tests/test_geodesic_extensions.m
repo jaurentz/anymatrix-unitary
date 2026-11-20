@@ -45,7 +45,7 @@ for k=1:3
 end
 H2=grassmann_holonomy(n,r,P2);
 verifyLessThan(t,norm(H2-Q(:,:,1)'*H*Q(:,:,1),'fro'),2e-11);
-assert_spec(t,H,H2);
+assert_spec(t,H,eig(H2));
 end
 
 function test_grassmann_rank_one_bargmann(t)
