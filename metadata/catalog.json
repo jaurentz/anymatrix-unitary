@@ -1232,6 +1232,50 @@
       "matrix_free_supported": true,
       "operator_kernel": "um_geodesic_apply",
       "operator_note": "Rank-two ambient rotation; O(n) action and adjoint; antipodal ambiguity rejected."
+    },
+    {
+      "id": "sphere_geodesic_holonomy",
+      "status": "implemented",
+      "category": "geometry",
+      "matrix_order": "n",
+      "representation": "SO(n) ambient lift of spherical Levi-Civita polygon holonomy",
+      "spectral_reference": "geodesic triangles have exact spherical-excess eigenphase pair and n-2 unit eigenvalues",
+      "encyclopedia_references": [
+        96,
+        97
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_spherical_holonomy_apply",
+      "operator_note": "O(number-of-edges*n) composition of rank-two shortest-geodesic transports; polygon modes included."
+    },
+    {
+      "id": "hyperbolic_triangle_holonomy",
+      "status": "implemented",
+      "category": "geometry",
+      "matrix_order": "n",
+      "representation": "SO(2) hyperbolic Levi-Civita holonomy embedded in SO(n)",
+      "spectral_reference": "exact curvature -1 angle from oriented Poincare-disk triangle area; n-2 identity spectators",
+      "encyclopedia_references": [
+        97,
+        98
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_hyperbolic_holonomy_apply",
+      "operator_note": "Geometric n=2; padding with n-2 identity eigenvalues is explicitly a benchmark extension."
+    },
+    {
+      "id": "lattice_wilson_loop",
+      "status": "implemented",
+      "category": "gauge",
+      "matrix_order": "n",
+      "representation": "ordered U(n) lattice gauge link product (Wilson loop)",
+      "spectral_reference": "gauge-covariant unitary holonomy; finite eigenphases generally unknown",
+      "encyclopedia_references": [
+        99
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_wilson_apply",
+      "operator_note": "Factor-by-factor multiplication O(number-of-links*n^2) per RHS; user-defined unitary links, default SU(n)."
     }
   ],
   "probability_measures": [
