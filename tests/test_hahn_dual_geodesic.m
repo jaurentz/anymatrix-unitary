@@ -5,7 +5,7 @@ end
 
 function test_hahn_orthogonality_jacobi_and_duality(testCase)
 for n=[1 2 3 4 7 12 20]
-    for ab=[0 .4 -0.75;.3 .9 .2]'
+    for ab=[0 .4 -0.75;.3 .9 .2]
         a=ab(1);b=ab(2);
         H=hahn_transform(n,a,b);
         D=dual_hahn_transform(n,a,b);
