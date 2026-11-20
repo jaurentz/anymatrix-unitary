@@ -2058,7 +2058,7 @@ the ambient lift is identity outside span(B) and on span(B) rotates by
 ```math
 C=\begin{bmatrix}\cos(D)&-\sin(D)\\
                   \sin(D)&\cos(D)\end{bmatrix},
-\qquad D=\operatorname{diag}(a_1,\ldots,a_r).
+\qquad D=\mathrm{diag}(a_1,\ldots,a_r).
 ```
 
 Its exact eigenvalues are e^{+/-i a_j} and 1 with multiplicity n-2r.
@@ -2077,7 +2077,7 @@ For a triangle with Gram matrix G of its three unit vertices, the unsigned
 spherical excess in the induced oriented 3-plane is
 
 ```math
-a=2\operatorname{atan2}\left(\sqrt{\det G},
+a=2\mathrm{atan2}\left(\sqrt{\det G},
 1+G_{12}+G_{23}+G_{31}\right),
 ```
 
@@ -2114,7 +2114,7 @@ the result is a sparse direct sum of 2x2 rotations and n singleton 1's.
 Exact eigenvalues are e^{+/-it(kappa_j-kappa_k)/2} for j<k, plus n ones.
 
 ```math
-\frac{1}{n^2}\operatorname{tr}(Q^\ell)
+\frac{1}{n^2}\mathrm{tr}(Q^\ell)
 =\frac{1}{n^2}\left|\sum_{j=1}^n
 e^{i\ell t\kappa_j/2}\right|^2.
 ```
