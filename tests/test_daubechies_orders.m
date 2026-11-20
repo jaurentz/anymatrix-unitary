@@ -45,5 +45,5 @@ X=randn(n,2)+1i*randn(n,2);
 verifyLessThan(tc,norm(F(F(X,'notransp'),'transp')-X,'fro'),1e-9);
 verifyError(tc,@()daubechies_wavelet(8,1,'matrix',1),'daubechies_wavelet:Filter');
 verifyError(tc,@()daubechies_wavelet(8,1,'matrix',5),'daubechies_wavelet:Filter');
-verifyError(tc,@()daubechies_wavelet(8,4,'matrix',3),'daubechies_wavelet:Levels');
+verifyError(tc,@()daubechies_wavelet(8,4,'matrix',3),'MATLAB:notLessEqual');
 end
