@@ -9,15 +9,17 @@ for n=[1,2,5,10]
         name=method{1};
         U=geometric_oscillator(n,0.45,1.1,0.7,name);
         ref=geometric_oscillator(n,0.45,1.1,0.7,name,'spectral');
+    refEig=ref.finite.eigenvalues();
         verifyEqual(tc,size(U),[2*n,2*n]);
         verifyEqual(tc,ref.dimension,2*n);
-        verifyEqual(tc,ref.kind,'exact');
+        verifyEqual(tc,ref.finite.kind,'exact');
+        verifyLessThan(tc,abs(ref.finite.moments(0)-1),1e-13);
         verifyLessThan(tc,norm(U'*U-eye(2*n),'fro'),2e-11*n);
         J=[zeros(n),eye(n);-eye(n),zeros(n)];
         verifyLessThan(tc,norm(U'*J*U-J,'fro'),2e-11*n);
         eigs=eig(U);
-        for j=1:numel(ref.eigenvalues)
-            verifyLessThan(tc,min(abs(eigs-ref.eigenvalues(j))),2e-8);
+        for j=1:numel(refEig)
+            verifyLessThan(tc,min(abs(eigs-refEig(j))),2e-8);
         end
     end
 end
@@ -59,8 +61,9 @@ for n=[1 2 6]
     C=[zeros(n),eye(n);-p.A0,-p.A1];
     eigs=eig(C);
     z=geometric_oscillator(n,h,om,kappa,'verlet','spectral');
+    zEig=z.finite.eigenvalues();
     for j=1:2*n
-        verifyLessThan(tc,min(abs(eigs-z.eigenvalues(j))),2e-8);
+        verifyLessThan(tc,min(abs(eigs-zEig(j))),2e-8);
     end
 end
 end
@@ -70,6 +73,7 @@ n=8;h=0.4;om=1.2;kappa=0.9;
 for s=1:3
     methods={'midpoint','gauss2','gauss3'};
     ref=geometric_oscillator(n,h,om,kappa,methods{s},'spectral');
+    refEig=ref.finite.eigenvalues();
     w=ref.frequencies;
     switch s
         case 1, a=[1 1/2];
@@ -77,10 +81,11 @@ for s=1:3
         case 3, a=[1 1/2 1/10 1/120];
     end
     z=polyval(fliplr(a),-1i*h*w)./polyval(fliplr(a),1i*h*w);
-    verifyLessThan(tc,max(abs(ref.eigenvalues(1:n)-z)),1e-13);
+    verifyLessThan(tc,max(abs(refEig(1:n)-z)),1e-13);
 end
 ref=geometric_oscillator(n,h,om,kappa,'verlet','spectral');
-verifyLessThan(tc,max(abs(ref.eigenvalues(1:n)- ...
+    refEig=ref.finite.eigenvalues();
+verifyLessThan(tc,max(abs(refEig(1:n)- ...
     exp(-2i*asin(h*ref.frequencies/2)))),1e-13);
 end
 
