@@ -32,10 +32,16 @@ if 2^maxlevels~=n
 end
 if nargin<2||isempty(order),order=2;end
 validateattributes(order,{'numeric'}, ...
-    {'scalar','integer','finite','>=',2,'<=',4});
+    {'scalar','integer','finite'});
+if order<2 || order>4
+    error('daubechies_wavelet:Filter','ORDER must be 2, 3, or 4.');
+end
 if nargin<3||isempty(levels),levels=maxlevels;end
 validateattributes(levels,{'numeric'}, ...
-    {'scalar','integer','finite','>=',0,'<=',maxlevels});
+    {'scalar','integer','finite'});
+if levels<0 || levels>maxlevels
+    error('daubechies_wavelet:Levels','LEVELS must be between 0 and log2(N).');
+end
 if nargin<4||isempty(output),output='matrix';end
 if ~(ischar(output)||(isstring(output)&&isscalar(output)))
     error('daubechies_wavelet:Mode','OUTPUT must be a scalar string.');
