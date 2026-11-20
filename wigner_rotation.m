@@ -13,6 +13,7 @@ function [U,properties]=wigner_rotation(ell,alpha,beta,gamma,output)
 %   Defaults ALPHA=.3, BETA=.7, GAMMA=.4.
 %   This is a dense O((2*ELL+1)^3) setup, not a fast rotation kernel.
 %   Reference: Gimbutas and Greengard, JCP 228 (2009), 5621-5627.
+%   [97] https://doi.org/10.1016/j.jcp.2009.05.014
 properties={'square','unitary','normal','scalable','parameter-dependent'};
 if nargin==0,U=[];return;end
 validateattributes(ell,{'numeric'}, ...
