@@ -5,7 +5,9 @@ function [U,properties]=circle_polynomial_unitary(n,coeffs,weights,representatio
 %   realization of a degree-N polynomial having N DISTINCT roots
 %   on the unit circle. COEFFS are descending monomial coefficients;
 %   the polynomial is normalized to monic form before realization.
-%   REP='hessenberg' (default) or 'cmv'; WEIGHTS are positive cyclic
+%   REP='hessenberg' (default) or 'cmv'; WEIGHTS are assigned to
+%   roots in INCREASING principal angle, independent of ROOTS ordering.
+%   WEIGHTS are positive cyclic
 %   spectral weights (default equal) and need not be trace weights.
 %   This calls INVERSE_OPUC for the actual Verblunsky/core products.
 %   Neither the ordinary monomial companion nor an arbitrary
@@ -55,6 +57,8 @@ if any(~isfinite(z))||any(abs(abs(z)-1)>5e-8) || ...
         'All polynomial roots must lie on the unit circle.');
 end
 z=z./abs(z);  % remove small root solver radial errors
+[~,sorting]=sort(angle(z),'ascend');  % canonical root/weight pairing
+z=z(sorting);
 for j=2:n
     if min(abs(z(j)-z(1:j-1)))<=128*eps*max(1,n)
         error('circle_polynomial_unitary:Multiplicity', ...
