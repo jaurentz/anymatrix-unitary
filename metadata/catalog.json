@@ -1609,7 +1609,7 @@
       "representation": "real SO(n) time-ordered exp-midpoint or sparse Cayley-midpoint on noncommuting skew generators",
       "spectral_reference": "unknown noncommuting time-dependent finite phase law; exact constant-generator exp/Cayley spectral mapping",
       "encyclopedia_references": [
-        97,
+        101,
         122
       ],
       "matrix_free_supported": true,
