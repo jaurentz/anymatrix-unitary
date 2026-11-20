@@ -32,7 +32,7 @@ end
 function test_cat_periodic_lift_and_pertinent_classical_matrix(testCase)
 n=11;
 a=2;d=4;c=a*d-1;
-verifyEqual(testCase,det([a 1;c d]),1);
+verifyLessThan(testCase,abs(det([a 1;c d])-1),1e-13);
 verifyGreaterThan(testCase,a+d,2);
 % Formula must be periodic in each integer coordinate, without a
 % half-integer Bloch shift, in this admissible parity convention.
@@ -94,8 +94,8 @@ end
 end
 
 function test_krawtchouk_errors(testCase)
-verifyError(testCase,@()krawtchouk_transform(7,0),'MATLAB:expectedGreaterThan');
-verifyError(testCase,@()krawtchouk_transform(7,1),'MATLAB:expectedLessThan');
+verifyError(testCase,@()krawtchouk_transform(7,0),'MATLAB:notGreater');
+verifyError(testCase,@()krawtchouk_transform(7,1),'MATLAB:notLess');
 verifyError(testCase,@()krawtchouk_transform(7,.5,'operator'),'krawtchouk_transform:Mode');
 end
 
@@ -142,7 +142,7 @@ F=daubechies_wavelet(n,12,'operator');
 X=randn(n,2)+1i*randn(n,2);
 verifyLessThan(testCase,norm(F(F(X,'notransp'),'transp')-X,'fro'),3e-9);
 verifyError(testCase,@()daubechies_wavelet(6),'daubechies_wavelet:Order');
-verifyError(testCase,@()daubechies_wavelet(8,4),'MATLAB:expectedLessThanOrEqual');
+verifyError(testCase,@()daubechies_wavelet(8,4),'MATLAB:notLessEqual');
 verifyError(testCase,@()daubechies_wavelet(8,[], 'bad'),'daubechies_wavelet:Mode');
 verifyError(testCase,@()F(ones(n-1,1),'notransp'),'um_daubechies_apply:Dimension');
 verifyError(testCase,@()F(ones(n,1),'bad'),'um_daubechies_apply:Flag');
