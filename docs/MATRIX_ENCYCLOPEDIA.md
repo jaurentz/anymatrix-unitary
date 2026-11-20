@@ -2288,7 +2288,181 @@ transport of vectors and exact finite moment benchmarks.
 The ambient formula is verified by the tangent-space
 transport identity in the regression tests.
 
-## R. Families reserved for future versions (not implemented)
+
+## R. Spherical, hyperbolic and gauge holonomy constructions (November 2026)
+
+### Spherical geodesic-polygon holonomy — [`sphere_geodesic_holonomy.m`](../sphere_geodesic_holonomy.m)
+
+Let v_1,...,v_m be unit points on S^(n-1), with m>=3 and
+each consecutive pair joined by a unique shortest great-circle
+arc. Set v_(m+1)=v_1 and define the minimal SO(n) ambient
+rotation of each edge by
+
+```math
+c_j=v_j^Tv_{j+1},\quad K_j=v_{j+1}v_j^T-v_jv_{j+1}^T,\quad
+R_j=I+K_j+\frac{K_j^2}{1+c_j}.
+```
+
+The **closed path** has ambient holonomy
+
+```math
+H=R_m R_{m-1}\cdots R_1,\qquad Hv_1=v_1,\qquad
+H\in SO(n).
+```
+
+The restriction to the starting tangent space T_(v_1) S^(n-1)
+is a genuine orthogonal **endomorphism**, not a transport map
+between different tangent spaces. Its tangent determinant is +1.
+Each arc fixes the complement of its generating two-plane.
+The matrix-free operator composes the rank-two factors in
+O(m n) per right-hand side, and its adjoint traverses the
+edges in reverse order using their inverse rotations.
+
+For m=3, the triangle lies in a three-dimensional ambient
+subspace. Let G=[v_1 v_2 v_3]^T[v_1 v_2 v_3]. The magnitude
+of its spherical excess is
+
+```math
+\Omega=2\,\operatorname{atan2}\!
+\left(\sqrt{\det G},
+1+v_1^Tv_2+v_2^Tv_3+v_3^Tv_1\right).
+```
+
+In ambient dimension 3, the **oriented** numerator is the
+scalar triple product det([v_1 v_2 v_3]). In higher
+dimensions the orientation of the spanned three-plane is
+a convention, but the **eigenvalue multiset** is independent
+of this choice. Exact eigenvalues and normalized trace
+moments are
+
+```math
+\lambda(H)=
+\{e^{i\Omega},e^{-i\Omega},1^{(n-2)}\},\qquad
+m_k=\frac{n-2+2\cos(k\Omega)}{n}.
+```
+
+The default right-octant triangle (e_1,e_2,e_3) has
+Omega=pi/2 and acts on span(e_2,e_3) by an exact quarter turn.
+This gives an application-derived finite spectral measure
+with at most three atoms.
+
+**For longer loops**, especially on S^(n-1) with n>3,
+holonomy may involve several independent rotation planes
+in SO(n-1). It is generally non-Abelian, and no universal
+single-excess eigenphase formula is claimed. Arc endpoints
+that are (nearly) antipodal are rejected, as they do not
+define a numerically unique shortest geodesic.
+
+**Applications:** Levi-Civita holonomy, Gaussian curvature
+and Gauss-Bonnet checks, spherical parallel transport,
+non-Abelian geometric phases, and unitary moment regression.
+**References:** [96] (Absil et al.), [97] (Needham).
+
+### Hyperbolic geodesic-triangle holonomy — [`hyperbolic_triangle_holonomy.m`](../hyperbolic_triangle_holonomy.m)
+
+Represent the hyperbolic plane H² as the Poincare unit disk
+with complex coordinates z_j of three geodesic vertices.
+The Riemannian metric has Gaussian curvature K=-1:
+
+```math
+ds^2=\frac{4|dz|^2}{(1-|z|^2)^2},\qquad |z|<1.
+```
+
+Define the **oriented** hyperbolic triangle area
+
+```math
+A=-2\,\arg\!\left[
+(1-\overline z_1 z_2)
+(1-\overline z_2 z_3)
+(1-\overline z_3 z_1)\right].
+```
+
+The value lies between -pi and pi for a nondegenerate
+geodesic triangle. Independently, the unsigned area
+satisfies Gauss-Bonnet's angle defect
+
+```math
+|A|=\pi-(\alpha+\beta+\gamma),
+```
+
+where the angles are measured in the hyperbolic metric.
+The Levi-Civita tangent-space holonomy is the real
+2x2 rotation by **theta=-A**, with an oriented basis
+fixed by the Poincare disk's complex coordinate:
+
+```math
+R(\theta)=
+\begin{bmatrix}\cos\theta&-\sin\theta\\
+\sin\theta&\cos\theta\end{bmatrix},
+\qquad \theta=-A.
+```
+
+Its exact eigenvalues are e^(+/-i theta), so the normalized
+finite trace moments equal cos(k theta).
+For database scalability, the function accepts **n>=2**,
+returning R(theta) direct-summed with I_(n-2). Only the
+original **2x2 block is intrinsic** to hyperbolic tangent
+transport; higher-dimensional identity coordinates are
+spectator benchmark padding, not higher-dimensional
+hyperbolic holonomy. The embedded spectrum is the
+angle pair and n-2 copies of 1. Both matrix and O(n)
+implicit forward/transpose actions are supported.
+
+**Applications:** hyperbolic curvature and area diagnostics,
+geodesic holonomy, exact-spectrum normal-matrix tests,
+and orientation-sensitive real orthogonal benchmarks.
+**References:** [97] (Needham) and [98] (Voight).
+
+### Non-Abelian lattice-gauge Wilson-loop matrices — [`lattice_wilson_loop.m`](../lattice_wilson_loop.m)
+
+Assign a unitary link L_j in U(n) to each directed edge
+of a closed lattice contour. Traversing a link in reverse
+uses its Hermitian adjoint. For ordered links
+
+```math
+W=L_1L_2\cdots L_m.
+```
+
+This **matrix-valued Wilson loop** is unitary, but its
+eigenphases generally depend on the gauge field and the loop.
+The gauge-invariant Wilson observable is typically
+tr(W)/n; the trace alone does not give an eigenphase density.
+
+For site-dependent local changes of basis G_j in U(n),
+the oriented edge transforms by
+
+```math
+L_j\longmapsto G_jL_jG_{j+1}^*,\qquad G_{m+1}=G_1.
+```
+
+The intermediate gauges cancel **exactly**, giving
+
+```math
+W\longmapsto G_1WG_1^*.
+```
+
+Thus its trace, determinant, eigenvalues and normalized
+spectral measure are invariant under local gauge changes,
+although individual matrix entries are not. This is a
+natural gauge-covariant unitary matrix benchmark rather
+than an arbitrarily conjugated random unitary matrix.
+
+The default case uses four deterministic noncommuting
+special-unitary link matrices, each formed as exp(i H_j)
+for a traceless Hermitian H_j. A user may provide arbitrary
+N-by-N-by-M **unitary** link arrays, including general U(n)
+links with non-unit determinant. The optional "links" mode
+returns the link array. The matrix-free mode applies the
+ordered factors in O(m n²) per right-hand side; default
+link construction itself uses dense matrix exponentials.
+A generic exact finite spectral law is not asserted.
+
+**Applications:** lattice Yang-Mills, gauge-invariant
+observables, non-Abelian parallel transport, SU(n) spectral
+statistics and symmetry-preserving numerical methods.
+**Reference:** [99] (Ipp and Müller).
+
+## S. Families reserved for future versions (not implemented)
 
 - **Additional ETNA benchmark cases:** the exact Example 7.1 common-parameter
   and Example 7.5 inverse-eigenvalue presets are not yet implemented.
@@ -2413,3 +2587,7 @@ transport identity in the regression tests.
 
 95. R. Koekoek, P. A. Lesky and R. F. Swarttouw, *Hypergeometric Orthogonal Polynomials and Their q-Analogues*, Springer Monographs in Mathematics, Springer, 2010. [DOI](https://doi.org/10.1007/978-3-642-05014-5); [DLMF duality](https://dlmf.nist.gov/18.21).
 96. P.-A. Absil, R. Mahony and R. Sepulchre, *Optimization Algorithms on Matrix Manifolds*, Princeton University Press, 2008. [DOI](https://doi.org/10.1515/9781400830244); [author's book website](https://sites.uclouvain.be/absil/amsbook/).
+
+97. T. Needham, *Visual Differential Geometry and Forms: A Mathematical Drama in Five Acts*, Princeton University Press, 2021, especially its parallel-transport and holonomy treatment. [DOI](https://doi.org/10.1515/9780691219899); [publisher](https://press.princeton.edu/books/paperback/9780691203706/visual-differential-geometry-and-forms).
+98. J. Voight, “Hyperbolic plane,” Chapter 33 of *Quaternion Algebras*, Springer, 2021; Section 33.6 on hyperbolic area and Gauss–Bonnet. [DOI](https://doi.org/10.1007/978-3-030-56694-4_33).
+99. A. Ipp and D. Müller, “Implicit schemes for real-time lattice gauge theory,” *European Physical Journal C* **78** (2018), 884. [DOI](https://doi.org/10.1140/epjc/s10052-018-6323-x); [open access](https://pmc.ncbi.nlm.nih.gov/articles/PMC6315017/).
