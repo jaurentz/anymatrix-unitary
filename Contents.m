@@ -61,6 +61,9 @@
 %
 % Riemannian geometry:
 %   sphere_geodesic_transport  SO(n) lift of tangent geodesic parallel transport.
+%   sphere_geodesic_holonomy  Closed spherical polygon SO(n) holonomy.
+%   hyperbolic_triangle_holonomy  Hyperbolic triangle angle-defect SO(2) holonomy.
+%   lattice_wilson_loop  Gauge-covariant non-Abelian lattice link holonomy.
 %
 % Nonlinear unitary dynamics:
 %   lohe_matrix_flow     Coupled Lohe oscillators on U(d), geometric midpoint integration.
