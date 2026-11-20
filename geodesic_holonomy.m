@@ -11,6 +11,8 @@ function [H,properties]=geodesic_holonomy(n,points,output)
 %   'operator' applies the chain of rank-two rotations in O(Nm).
 %   Sphere parallel transport reference [96]:
 %   https://doi.org/10.3390/sym13112092
+%   T. Needham, Visual Differential Geometry and Forms (2021).
+%   https://doi.org/10.1515/9780691219899
 properties={'square','unitary','normal','orthogonal','real', ...
     'scalable','parameter-dependent'};
 if nargin==0,H=[];return;end
@@ -47,6 +49,12 @@ if strcmp(output,'spectral')
         z=[exp(1i*a);exp(-1i*a);ones(n-2,1)];
         H.finite.kind='exact';H.finite.eigenvalues=@()z;
         H.finite.moments=@(k)(n-2+2*cos(k*a))/n;
+        if abs(a)<5e-14
+            H.finite.atoms=struct('angles',0,'weights',1);
+        else
+            H.finite.atoms=struct('angles',[a;-a;0], ...
+                'weights',[1;1;n-2]/n);
+        end
         H.notes='Exact spherical-triangle area law; orientation does not affect trace spectrum.';
     end
 elseif any(strcmp(output,{'operator','implicit'}))

@@ -2757,6 +2757,115 @@ complex test case, not extracted from an application dataset.
 The existing Wigner generator also covers half-integer SU(2) spins and the nontrivial 2pi double-cover sign. Its integer-spin version factors through SO(3); both use the same angular-momentum construction, now cross-referenced to Kostelec–Rockmore [112]. No `wigner_geodesic` generator is added.
 
 
+## Hyperbolic and gauge holonomy (November 2026)
+
+The spherical polygon holonomy is already implemented by [`geodesic_holonomy.m`](../geodesic_holonomy.m), now additionally citing Needham [113]. No duplicate spherical generator is added.
+
+### Hyperbolic geodesic-triangle holonomy — [`hyperbolic_triangle_holonomy.m`](../hyperbolic_triangle_holonomy.m)
+
+Represent the hyperbolic plane H² as the Poincare unit disk
+with complex coordinates z_j of three geodesic vertices.
+The Riemannian metric has Gaussian curvature K=-1:
+
+```math
+ds^2=\frac{4|dz|^2}{(1-|z|^2)^2},\qquad |z|<1.
+```
+
+Define the **oriented** hyperbolic triangle area
+
+```math
+A=-2\,\arg\!\left[
+(1-\overline z_1 z_2)
+(1-\overline z_2 z_3)
+(1-\overline z_3 z_1)\right].
+```
+
+The value lies between -pi and pi for a nondegenerate
+geodesic triangle. Independently, the unsigned area
+satisfies Gauss-Bonnet's angle defect
+
+```math
+|A|=\pi-(\alpha+\beta+\gamma),
+```
+
+where the angles are measured in the hyperbolic metric.
+The Levi-Civita tangent-space holonomy is the real
+2x2 rotation by **theta=-A**, with an oriented basis
+fixed by the Poincare disk's complex coordinate:
+
+```math
+R(\theta)=
+\begin{bmatrix}\cos\theta&-\sin\theta\\
+\sin\theta&\cos\theta\end{bmatrix},
+\qquad \theta=-A.
+```
+
+Its exact eigenvalues are e^(+/-i theta), so the normalized
+finite trace moments equal cos(k theta).
+For database scalability, the function accepts **n>=2**,
+returning R(theta) direct-summed with I_(n-2). Only the
+original **2x2 block is intrinsic** to hyperbolic tangent
+transport; higher-dimensional identity coordinates are
+spectator benchmark padding, not higher-dimensional
+hyperbolic holonomy. The embedded spectrum is the
+angle pair and n-2 copies of 1. Both matrix and O(n)
+implicit forward/transpose actions are supported.
+
+**Applications:** hyperbolic curvature and area diagnostics,
+geodesic holonomy, exact-spectrum normal-matrix tests,
+and orientation-sensitive real orthogonal benchmarks.
+**References:** [113] (Needham) and [114] (Voight).
+
+### Non-Abelian lattice-gauge Wilson-loop matrices — [`lattice_wilson_loop.m`](../lattice_wilson_loop.m)
+
+Assign a unitary link L_j in U(n) to each directed edge
+of a closed lattice contour. Traversing a link in reverse
+uses its Hermitian adjoint. For ordered links
+
+```math
+W=L_1L_2\cdots L_m.
+```
+
+This **matrix-valued Wilson loop** is unitary, but its
+eigenphases generally depend on the gauge field and the loop.
+The gauge-invariant Wilson observable is typically
+tr(W)/n; the trace alone does not give an eigenphase density.
+
+For site-dependent local changes of basis G_j in U(n),
+the oriented edge transforms by
+
+```math
+L_j\longmapsto G_jL_jG_{j+1}^*,\qquad G_{m+1}=G_1.
+```
+
+The intermediate gauges cancel **exactly**, giving
+
+```math
+W\longmapsto G_1WG_1^*.
+```
+
+Thus its trace, determinant, eigenvalues and normalized
+spectral measure are invariant under local gauge changes,
+although individual matrix entries are not. This is a
+natural gauge-covariant unitary matrix benchmark rather
+than an arbitrarily conjugated random unitary matrix.
+
+The default case uses four deterministic noncommuting
+special-unitary link matrices, each formed as exp(i H_j)
+for a traceless Hermitian H_j. A user may provide arbitrary
+N-by-N-by-M **unitary** link arrays, including general U(n)
+links with non-unit determinant. The optional "links" mode
+returns the link array. The matrix-free mode applies the
+ordered factors in O(m n²) per right-hand side; default
+link construction itself uses dense matrix exponentials.
+A generic exact finite spectral law is not asserted.
+
+**Applications:** lattice Yang-Mills, gauge-invariant
+observables, non-Abelian parallel transport, SU(n) spectral
+statistics and symmetry-preserving numerical methods.
+**Reference:** [115] (Ipp and Müller).
+
+
 ## Bibliography
 
 1. P. J. Davis, *Circulant Matrices*, Wiley, 1979. ISBN 9780471057710. [Library record](https://openlibrary.org/books/OL4407364M/Circulant_matrices).
@@ -2878,3 +2987,6 @@ The existing Wigner generator also covers half-integer SU(2) spins and the nontr
 110. N. Mukunda and R. Simon, “Quantum Kinematic Approach to the Geometric Phase. I. General Formalism,” *Ann. Phys.* **228** (1993), 205–268. [DOI](https://doi.org/10.1006/aphy.1993.1093).
 111. T. Bendokat, R. Zimmermann and P.-A. Absil, “A Grassmann manifold handbook: Basic geometry and computational aspects,” *Adv. Comput. Math.* **50** (2024), article 6. [DOI](https://doi.org/10.1007/s10444-023-10090-8). See published correction: [DOI](https://doi.org/10.1007/s10444-024-10115-w).
 112. P. J. Kostelec and D. N. Rockmore, “FFTs on the Rotation Group,” *J. Fourier Anal. Appl.* **14** (2008), 145–179. [DOI](https://doi.org/10.1007/s00041-008-9013-5).
+113. T. Needham, *Visual Differential Geometry and Forms: A Mathematical Drama in Five Acts*, Princeton University Press, 2021, especially its parallel-transport and holonomy treatment. [DOI](https://doi.org/10.1515/9780691219899); [publisher](https://press.princeton.edu/books/paperback/9780691203706/visual-differential-geometry-and-forms).
+114. J. Voight, “Hyperbolic plane,” Chapter 33 of *Quaternion Algebras*, Springer, 2021; Section 33.6 on hyperbolic area and Gauss–Bonnet. [DOI](https://doi.org/10.1007/978-3-030-56694-4_33).
+115. A. Ipp and D. Müller, “Implicit schemes for real-time lattice gauge theory,” *European Physical Journal C* **78** (2018), 884. [DOI](https://doi.org/10.1140/epjc/s10052-018-6323-x); [open access](https://pmc.ncbi.nlm.nih.gov/articles/PMC6315017/).

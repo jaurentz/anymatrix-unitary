@@ -110,7 +110,7 @@ containing infinite endpoint values.
 
 ## Regression testing
 
-The MATLAB suite tests spectral mode for all 85 public generators,
+The MATLAB suite explicitly enumerates 87 spectral-reference cases (other registered generators have separate tests),
 analytically known finite eigenvalues against independent eig() results,
 Fourier moments, DFT and Grover multiplicities, Dirac band density and
 endpoint cases, wrapped phase periodicity, separation of OPUC measures,

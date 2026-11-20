@@ -137,4 +137,7 @@
 %   stiefel_geodesic         Canonical Stiefel geodesic ambient lift.
 %   grassmann_holonomy       Non-Abelian tautological geodesic-loop holonomy.
 %
+%   hyperbolic_triangle_holonomy  Poincare disk triangle, SO(2) holonomy.
+%   lattice_wilson_loop          Non-Abelian U(n) gauge-link products.
+%
 % Test runner: test_run. See docs/MATRIX_ENCYCLOPEDIA.md for references.

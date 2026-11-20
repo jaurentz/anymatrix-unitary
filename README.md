@@ -4,7 +4,7 @@ A MATLAB collection of finite **unitary and orthogonal test matrices**, designed
 an external group for [Anymatrix](https://github.com/north-numerical-computing/anymatrix).
 The repository is organized around reproducible mathematical constructions,
 known spectral information, and executable regression tests. It contains
-99 generators; additional benchmark families are under development.
+101 generators; additional benchmark families are under development.
 
 **Status:** development collection with MATLAB-only tests. Automated MATLAB
 regression and Anymatrix integration tests run on GitHub Actions after every
@@ -47,7 +47,7 @@ assertSuccess(results)
 
 ## Matrix generator interfaces
 
-The collection currently has **99 public generators**. Each has a complete
+The collection currently has **101 public generators**. Each has a complete
 entry with formulas, spectral information, applications, parameter conventions,
 and references in the [matrix encyclopedia](docs/MATRIX_ENCYCLOPEDIA.md).
 The [mathematical notes](docs/MATHEMATICS.md) explain the shared OPUC engine.
@@ -542,6 +542,10 @@ H = grassmann_holonomy(8,2);
 W = wigner_rotation(10,.3,.7,-.4);   % integer SO(3)
 V = wigner_rotation(9.5,.3,.7,-.4);  % half-integer SU(2)
 ```
+
+## Hyperbolic and gauge holonomy
+
+The existing `geodesic_holonomy` implements spherical polygon parallel transport and now additionally cites Needham. The new `hyperbolic_triangle_holonomy` gives the area rotation of a Poincaré-disk triangle (with optional identity padding). The new `lattice_wilson_loop` gives U(n) gauge-link products and gauge-conjugacy-invariant eigenphases and traces. Both new families support matrix-free actions.
 
 ## Automatic tests
 

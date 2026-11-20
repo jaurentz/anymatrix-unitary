@@ -1256,7 +1256,8 @@
       "representation": "product of shortest-geodesic sphere rotations",
       "spectral_reference": "exact spherical triangle area law; generic polygons unknown",
       "encyclopedia_references": [
-        100
+        100,
+        113
       ],
       "matrix_free_supported": true,
       "operator_kernel": "um_holonomy_apply",
@@ -1439,6 +1440,35 @@
       "matrix_free_supported": false,
       "operator_kernel": "",
       "operator_note": "Small dense r-by-r holonomy; no asymptotically cheaper matrix-free action claimed."
+    },
+    {
+      "id": "hyperbolic_triangle_holonomy",
+      "status": "implemented",
+      "category": "geometry",
+      "matrix_order": "n",
+      "representation": "SO(2) hyperbolic Levi-Civita holonomy embedded in SO(n)",
+      "spectral_reference": "exact curvature -1 angle from oriented Poincare-disk triangle area; n-2 identity spectators",
+      "encyclopedia_references": [
+        113,
+        114
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_hyperbolic_holonomy_apply",
+      "operator_note": "Geometric n=2; padding with n-2 identity eigenvalues is explicitly a benchmark extension."
+    },
+    {
+      "id": "lattice_wilson_loop",
+      "status": "implemented",
+      "category": "gauge",
+      "matrix_order": "n",
+      "representation": "ordered U(n) lattice gauge link product (Wilson loop)",
+      "spectral_reference": "gauge-covariant unitary holonomy; finite eigenphases generally unknown",
+      "encyclopedia_references": [
+        115
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_wilson_apply",
+      "operator_note": "Factor-by-factor multiplication O(number-of-links*n^2) per RHS; user-defined unitary links, default SU(n)."
     }
   ],
   "probability_measures": [
