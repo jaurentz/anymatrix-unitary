@@ -2013,14 +2013,14 @@ structure-preserving spectral approximation. **Reference:** [8].
 
 ## P. Quantized cat maps, Krawtchouk transforms, and compactly supported wavelets (November 2026)
 
-### Checkerboard Hannay--Berry quantum cat map — [quantum_cat.m](../quantum_cat.m)
+### Checkerboard Hannay--Berry quantum cat map — [`quantum_cat.m`](../quantum_cat.m)
 
 For each integer S>=1 the classical map of the two-dimensional torus is
 
 ```math
 T_S=\begin{pmatrix}2S&1\\4S-1&2\end{pmatrix},
 \qquad \det T_S=1,\quad \mathrm{tr}(T_S)=2S+2>2.
-~~~
+```
 
 The even/odd checkerboard pattern guarantees torus periodicity in both
 position and momentum representations for **all positive Hilbert-space
@@ -2030,7 +2030,7 @@ propagator uses the explicit kernel (indices j,k=0,...,N-1)
 ```math
 U_{jk}=\frac{e^{i\pi/4}}{\sqrt N}
  \exp\left[\frac{2\pi i}{N}\left(j^2-jk+S k^2\right)\right].
-~~~
+```
 
 This is a diagonal-chirp / normalized DFT / diagonal-chirp product.
 It is exactly unitary and has every entry of modulus 1/sqrt(N).
@@ -2051,7 +2051,7 @@ automorphisms, arithmetic spectral degeneracies, finite unitary
 eigensolvers, and unit-circle spectral density estimators.
 **Reference:** [93], especially Eqs. (21)--(22).
 
-### Krawtchouk orthonormal polynomial transform — [krawtchouk_transform.m](../krawtchouk_transform.m)
+### Krawtchouk orthonormal polynomial transform — [`krawtchouk_transform.m`](../krawtchouk_transform.m)
 
 For matrix dimension n, let N=n-1 and 0<p<1. The symmetric Jacobi
 matrix J (degree index j=0,...,N) has recurrence coefficients
@@ -2059,14 +2059,14 @@ matrix J (degree index j=0,...,N) has recurrence coefficients
 ```math
 J_{j,j}=Np+j(1-2p),\qquad
 J_{j,j+1}=\sqrt{p(1-p)(j+1)(N-j)}.
-~~~
+```
 
 Its eigenvalues are exactly x=0,...,N, and the spectral weights at
 the first coordinate are the binomial weights
 
 ```math
 w(x)=\binom{N}{x}p^x(1-p)^{N-x}.
-~~~
+```
 
 Diagonalizing J and sorting its orthonormal eigenvectors by x gives
 a **real orthogonal n-by-n matrix Q** whose entries are normalized
@@ -2087,7 +2087,7 @@ spectral weights, spin rotation models, signal/image transforms, and
 real orthogonal eigenvalue benchmarks. **Reference:** [94];
 NIST DLMF sections 18.19 and 18.22.
 
-### Periodized Daubechies wavelet transform — [daubechies_wavelet.m](../daubechies_wavelet.m)
+### Periodized Daubechies wavelet transform — [`daubechies_wavelet.m`](../daubechies_wavelet.m)
 
 For order 2, 3 or 4, use the 2*order-tap extremal-phase orthonormal
 Daubechies reconstruction low-pass filter h. Choose the associated
@@ -2098,7 +2098,7 @@ of even length m, take
 a_j=\sum_{k=0}^{L-1} h_k\,x_{(2j+k)\bmod m},
 \qquad
 d_j=\sum_{k=0}^{L-1} g_k\,x_{(2j+k)\bmod m}.
-~~~
+```
 
 The stage sends [x_0,...,x_{m-1}] to [a;d]. Applying the same
 operation recursively to a (up to the requested LEVELS) gives a
