@@ -117,7 +117,6 @@
 %   szego_quadrature        e1 spectral nodes and positive weights.
 %
 % Geometry, geodesics, and parallel transport:
-%   sphere_geodesic_transport Rank-two great-circle ambient rotation (already included).
 %   grassmann_geodesic        Grassmann geodesic ambient unitary lift.
 %   geodesic_holonomy         Closed spherical polygon parallel transport.
 %   connection_cycle          Sparse cyclic discrete-connection transport.
