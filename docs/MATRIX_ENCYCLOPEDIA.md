@@ -134,6 +134,54 @@ algorithms and conjugation-symmetric phase density. **References:** [3, 4].
 
 ## B. OPUC, Szegő measures, and core-factorized representations
 
+### Inverse spectral CMV / Hessenberg — [`inverse_opuc.m`](../inverse_opuc.m)
+
+**Order:** n. Input is a collection of n **distinct** unit-circle
+points z_j and strictly positive numbers w_j, normalized so
+sum(w_j)=1. This defines a finite **cyclic** spectral measure
+mu_e1=sum_j w_j delta_(z_j). The inverse finite Szego procedure
+computes the n-1 interior Verblunsky coefficients and a
+unimodular terminal boundary beta, and the resulting standard
+CMV or unitary Hessenberg core product is formed by the existing
+`js_core_product`. An arbitrary monomial companion matrix
+is **not** asserted to be unitary.
+
+The inverse uses evaluations of the Szego monic polynomial
+Phi_k and its reversed polynomial Phi_k^* on the support,
+with inner product weighted by w_j:
+
+```math
+c_k=\frac{\sum_j w_j\,\overline{\Phi_k^*(z_j)}\,z_j\Phi_k(z_j)}
+{\sum_j w_j|\Phi_k^*(z_j)|^2},\quad
+\alpha_k=\overline{c_k},\quad
+\Phi_{k+1}(z)=z\Phi_k(z)-c_k\Phi_k^*(z).
+```
+
+A common normalization at every step improves scaling. Since
+the measure has n atoms with nonzero weights, `|alpha_k|<1`
+for k<n-1 in exact arithmetic. The terminal coefficient has
+exact phase `beta=(-1)^(n+1)*conj(prod_j z_j)`. Finite CMV
+factors are unitary, independently of the reconstruction method.
+`'parameters'` exposes the computed reflection coefficients.
+Near-breakdown or unresolved coincident nodes are **rejected**
+rather than silently labeled reliable; arbitrarily clustered
+phases are not claimed to be numerically stable.
+
+The finite *trace* measure is the uniform atomic measure
+`(1/n)sum_j delta_(z_j)`, while the **distinguished-vector**
+measure is `sum_j w_j delta_(z_j)`, matching the squared
+first entries of normalized eigenvectors. `'spectral'`
+exposes the two independent measures as `S.finite` and
+`S.cyclic`, with their distinct Fourier moments.
+`'operator'` reuses the existing OPUC adjacent-core
+matrix-free actions, forward and Hermitian adjoint.
+
+**Application:** inverse unitary eigenvalue problems, rational
+quadrature on the circle and experimental counterexamples
+for randomized trace-versus-vector spectral estimators.
+References: Simon, *OPUC* [5], and unit-circle matrix
+quadrature [9].
+
 ### 7. Finite CMV — [`finite_cmv.m`](../finite_cmv.m)
 
 **Order:** $n$. **Structure:** sparse five-diagonal unitary. From
