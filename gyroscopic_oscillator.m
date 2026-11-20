@@ -23,8 +23,13 @@ function [U,properties]=gyroscopic_oscillator(n,h,omega0,kappa,gamma,method,mode
 %   The heterogeneous nearest-neighbor benchmark coefficients are a
 %   reproducible specialization, not measured experimental input.
 %   J. Qian and W.-W. Lin, J. Sound Vib. 306 (2007), 284-296 [125].
+%     https://doi.org/10.1016/j.jsv.2007.05.009
 %   T. Ohsawa, SIAM J. Numer. Anal. 61 (2023), 1293-1315 [126].
+%     https://doi.org/10.1137/22M1517718
 %   E. Hairer, C. Lubich and G. Wanner (2006) [101].
+%     https://doi.org/10.1007/3-540-30666-8
+%   I. Kuzmanovic Ivicic and S. Miodragovic (2024) [127].
+%     https://doi.org/10.1016/j.cam.2024.116061
 properties={'square','unitary','orthogonal','real','normal', ...
     'scalable','parameter-dependent'};
 if nargin==0,U=[];return;end
