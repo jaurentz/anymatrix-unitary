@@ -10,6 +10,8 @@ function [U,properties]=gauss_hermite_transform(n)
 %   U's eigenphases are NOT the Gauss-Hermite nodes.
 %   Uses a dense eigenvector construction; O(N^3) setup, O(N^2) multiply.
 %   References: Golub and Welsch (1969); Webb (2026), arXiv:2604.02041.
+%   [93] https://doi.org/10.1090/S0025-5718-69-99647-1
+%   [98] https://arxiv.org/abs/2604.02041
 properties={'square','unitary','normal','orthogonal','real', ...
     'scalable','parameter-dependent'};
 if nargin==0,U=[];return;end
