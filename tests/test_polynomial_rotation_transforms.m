@@ -147,3 +147,39 @@ n=size(U,1);
 verifyEqual(tc,size(U),[n n]);
 verifyLessThan(tc,norm(full(U'*U-speye(n)),'fro'),tol);
 end
+
+function test_exact_spectral_reference_interfaces(tc)
+a=.3;b=.7;g=.4;
+for ell=[0 1 3 7]
+    S=wigner_rotation(ell,a,b,g,'spectral');
+    D=wigner_rotation(ell,a,b,g);
+    verifyEqual(tc,S.dimension,2*ell+1);
+    verifyEqual(tc,S.finite.kind,'exact');
+    z=S.finite.eigenvalues();
+    verifyEqual(tc,numel(z),2*ell+1);
+    verifyLessThan(tc,abs(sum(z.^3)-trace(D^3)),2e-10*(2*ell+1));
+    verifyLessThan(tc,abs(S.finite.moments(3)-trace(D^3)/(2*ell+1)), ...
+        2e-10*(2*ell+1));
+end
+for L=[1 2 4 7]
+    S=spherical_harmonic_rotation(L,a,b,g,'spectral');
+    U=spherical_harmonic_rotation(L,a,b,g);
+    verifyEqual(tc,S.dimension,L^2);
+    z=S.finite.eigenvalues();
+    verifyEqual(tc,numel(z),L^2);
+    for k=0:4
+        verifyLessThan(tc,abs(sum(z.^k)-trace(U^k)),3e-10*L^2);
+        verifyLessThan(tc,abs(S.finite.moments(k)-trace(U^k)/L^2), ...
+            3e-10*L^2);
+    end
+end
+for n=[1 3 5 9]
+    S=periodic_sinc_shift(n,.37,'spectral');
+    U=periodic_sinc_shift(n,.37);
+    verifyEqual(tc,S.dimension,n);
+    z=S.finite.eigenvalues();
+    for k=1:3
+        verifyLessThan(tc,abs(sum(z.^k)-trace(U^k)),3e-10*n);
+    end
+end
+end
