@@ -29,7 +29,10 @@ if nargin==0,U=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','positive','finite'});
 if nargin<2||isempty(p),p=.5;end
 validateattributes(p,{'numeric'}, ...
-    {'scalar','real','finite','>',0,'<',1});
+    {'scalar','real','finite'});
+if ~(p>0 && p<1)
+    error('krawtchouk_transform:Probability','P must lie strictly between 0 and 1.');
+end
 if nargin<3||isempty(output),output='matrix';end
 if ~(ischar(output)||(isstring(output)&&isscalar(output)))
     error('krawtchouk_transform:Mode','OUTPUT must be a scalar string.');
