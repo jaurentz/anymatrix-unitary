@@ -31,7 +31,7 @@ function [U,properties]=time_skew_magnus(n,T,steps,frequency,amplitude,method,ou
 %
 %   [122] Celledoni--Marthinsen--Owren (2003):
 %   https://doi.org/10.1016/S0167-739X(02)00161-9
-%   [97] Hairer--Lubich--Wanner (2006):
+%   [101] Hairer--Lubich--Wanner (2006):
 %   https://doi.org/10.1007/3-540-30666-8
 properties={'square','unitary','normal','orthogonal','real', ...
     'scalable','parameter-dependent'};
