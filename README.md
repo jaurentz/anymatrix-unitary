@@ -4,7 +4,7 @@ A MATLAB collection of finite **unitary and orthogonal test matrices**, designed
 an external group for [Anymatrix](https://github.com/north-numerical-computing/anymatrix).
 The repository is organized around reproducible mathematical constructions,
 known spectral information, and executable regression tests. It contains
-91 generators; additional benchmark families are under development.
+97 generators; additional benchmark families are under development.
 
 **Status:** development collection with MATLAB-only tests. Automated MATLAB
 regression and Anymatrix integration tests run on GitHub Actions after every
@@ -47,7 +47,7 @@ assertSuccess(results)
 
 ## Matrix generator interfaces
 
-The collection currently has **91 public generators**. Each has a complete
+The collection currently has **97 public generators**. Each has a complete
 entry with formulas, spectral information, applications, parameter conventions,
 and references in the [matrix encyclopedia](docs/MATRIX_ENCYCLOPEDIA.md).
 The [mathematical notes](docs/MATHEMATICS.md) explain the shared OPUC engine.
@@ -64,6 +64,7 @@ The [vibron ESQPT example](examples/vibron_esqpt_sector_gaps.m) compares U(3) an
 | Matrix functions and dilations | `cayley_jacobi`, `polar_unitary`, `julia_unitary`, `entangled_reflection` |
 | Quantum group actions | `tensor_permutation` |
 | Geometric/symplectic integration | `geometric_oscillator` (periodic chain, FFT), `geometric_fem_wave` (Dirichlet FEM wave, DST); exact phase laws, positive-metric pencils, and a mass-weighted palindromic Verlet QEP |
+| Polynomial transforms and spherical rotations | `gauss_jacobi_transform` (includes associated Legendre), `gauss_hermite_transform`, `gauss_laguerre_transform`, `wigner_rotation`, `spherical_harmonic_rotation`, `periodic_sinc_shift` |
 | Nonlinear unitary dynamical systems | `lohe_matrix_flow` |
 | Strict unitary eigenvalue pencils | `mobius_unitary_pencil`, `unitary_delay_pencil`, `block_cmv_pencil`, `floquet_factor_pencil`, `cayley_hermitian_pencil`, `left_weighted_unitary_pencil` |
 
@@ -91,6 +92,10 @@ index reordering. See [matrix-free documentation](docs/MATRIX_FREE.md).
 several families; other families have ensemble laws, limiting densities, or
 no universal law. The encyclopedia distinguishes these cases. Do not infer a
 limiting eigenphase distribution from unitarity alone.
+
+### Orthogonal-polynomial and rotation constructions
+
+Six additional matrix families are available. The Gauss–Jacobi evaluation matrix also covers the fixed-order associated-Legendre block by setting `alpha=beta=m`; no duplicate Legendre generator is registered. Hermite and Laguerre use the shared Golub–Welsch basis engine. The Wigner irreducible representation and its degree-truncated block sum have distinct dimensions and spectral multiplicities. The periodic sinc shift is a named real circulant specialization with an FFT action. The original Townsend/Slevinsky, Golub–Welsch, and spherical-harmonic sources remain in the bibliography. The current Gauss transforms are explicit, not fast transform implementations.
 
 ## Eigenvalue-problem subclass
 

@@ -26,7 +26,7 @@ end
 family=char(family);
 n=varargin{1};
 validateattributes(n,{'numeric'},{'scalar','integer','finite','nonnegative'});
-if n==0 && ~strcmp(family,'jaynes_cummings')
+if n==0 && ~any(strcmp(family,{'jaynes_cummings','wigner_rotation'}))
     error('unitary_spectral_reference:Dimension','N must be positive.');
 end
 blank=struct('kind','unknown','density',[],'support',[], ...
@@ -50,6 +50,10 @@ switch family
         S.dimension=2*double(n);
     case 'entangled_reflection'
         S.dimension=double(n)^2;
+    case 'wigner_rotation'
+        S.dimension=2*double(n)+1;
+    case 'spherical_harmonic_rotation'
+        S.dimension=double(n)^2;
     case 'haar_tensor_power'
         t=param(varargin,2,2);
         S.dimension=double(n)^double(t);
@@ -71,6 +75,43 @@ switch family
 end
 
 switch family
+    case 'wigner_rotation'
+        alpha=param(varargin,2,.3);
+        beta=param(varargin,3,.7);
+        gamma=param(varargin,4,.4);
+        validateattributes(alpha,{'numeric'},{'scalar','real','finite'});
+        validateattributes(beta,{'numeric'},{'scalar','real','finite'});
+        validateattributes(gamma,{'numeric'},{'scalar','real','finite'});
+        delta=2*acos(max(-1,min(1,cos(beta/2)*cos((alpha+gamma)/2))));
+        S=exact_finite(S,@() exp(-1i*(-n:n)'*delta));
+        S.reference='Gimbutas and Greengard, JCP 228 (2009)';
+        S.notes='Exact SO(3) rotation eigenphases; independent of the harmonic-coordinate axis.';
+
+    case 'spherical_harmonic_rotation'
+        alpha=param(varargin,2,.3);
+        beta=param(varargin,3,.7);
+        gamma=param(varargin,4,.4);
+        validateattributes(alpha,{'numeric'},{'scalar','real','finite'});
+        validateattributes(beta,{'numeric'},{'scalar','real','finite'});
+        validateattributes(gamma,{'numeric'},{'scalar','real','finite'});
+        delta=2*acos(max(-1,min(1,cos(beta/2)*cos((alpha+gamma)/2))));
+        S=exact_finite(S,@() spherical_rotation_eigs(n,delta));
+        S.finite.moments=@(k) spherical_rotation_moments(n,delta,k);
+        S.reference='Gimbutas and Greengard, JCP 228 (2009); derived finite character identity';
+        S.notes='Exact L^2 phase multiplicities and Fejer-square trace moments. For a size-dependent delta=c/L, 0<c<pi, the limiting trace density is triangular. No limit is asserted for fixed Euler angles.';
+
+    case 'periodic_sinc_shift'
+        delta=param(varargin,2,.375);
+        validateattributes(n,{'numeric'},{'scalar','integer','positive','finite'});
+        if mod(n,2)==0
+            error('unitary_spectral_reference:Order','Periodic real sinc shift requires odd N.');
+        end
+        validateattributes(delta,{'numeric'},{'scalar','real','finite'});
+        k=(-(n-1)/2:(n-1)/2)';
+        S=exact_finite(S,@() exp(-2i*pi*k*delta/n));
+        S.reference='Periodic trigonometric interpolation / normalized DFT';
+        S.notes='Exact centered-frequency eigenvalues of the real circulant fractional shift.';
+
     case 'cycle_shift'
         S=exact_finite(S,@() exp(2i*pi*(0:n-1)'/n));
         S.finite.moments=@(k) shift_moments(k,n);
@@ -637,4 +678,22 @@ if t2>0
     m=m.*mean(bsxfun(@power,z2(:),kk),1).^t2;
 end
 m=reshape(m,shape);
+end
+
+function z=spherical_rotation_eigs(L,delta)
+m=(-(L-1):(L-1))';
+z=repelem(exp(-1i*m*delta),L-abs(m));
+z=z(:);
+end
+
+function M=spherical_rotation_moments(L,delta,k)
+validateattributes(k,{'numeric'},{'integer','finite','real'});
+shape=size(k);
+kk=k(:);
+M=zeros(size(kk));
+j=(0:L-1)';
+for r=1:numel(kk)
+    M(r)=abs(sum(exp(-1i*kk(r)*delta*j)))^2/L^2;
+end
+M=reshape(M,shape);
 end

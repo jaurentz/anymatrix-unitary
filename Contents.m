@@ -62,6 +62,14 @@
 % Riemannian geometry:
 %   sphere_geodesic_transport  SO(n) lift of tangent geodesic parallel transport.
 %
+% Orthogonal polynomial and spherical-harmonic transforms:
+%   gauss_jacobi_transform   Jacobi/Legendre/Chebyshev/Gegenbauer/associated Legendre.
+%   gauss_hermite_transform  Hermite Gauss-quadrature orthogonal basis.
+%   gauss_laguerre_transform Generalized Laguerre quadrature basis.
+%   wigner_rotation         Irreducible SO(3) unitary representation.
+%   spherical_harmonic_rotation Direct sum of Wigner blocks.
+%   periodic_sinc_shift     Real circulant fractional shift, FFT.
+%
 % Geometric and symplectic integration:
 %   geometric_oscillator  Periodic symplectic oscillator; exact phases and metric pencil.
 %   geometric_fem_wave    Finite-element Dirichlet wave; mass-weighted palindromic QEP.
