@@ -62,6 +62,10 @@
 % Riemannian geometry:
 %   sphere_geodesic_transport  SO(n) lift of tangent geodesic parallel transport.
 %
+% Geometric and symplectic integration:
+%   geometric_oscillator  Periodic symplectic oscillator; exact phases and metric pencil.
+%   geometric_fem_wave    Finite-element Dirichlet wave; mass-weighted palindromic QEP.
+%
 % Nonlinear unitary dynamics:
 %   lohe_matrix_flow     Coupled Lohe oscillators on U(d), geometric midpoint integration.
 %
