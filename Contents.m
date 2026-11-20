@@ -19,6 +19,7 @@
 %   geronimus_cmv        Constant real or complex Verblunsky coefficients.
 %   periodic_cmv         Periodic real or complex Verblunsky coefficients.
 %   bernstein_szego_finite  General finite Bernstein-Szego rational circle weight.
+%   rational_opuc       Pole-parameterized finite rational OPUC unitary model.
 %   lee_yang_ising      Sparse twisted Floquet-CMV for Ising Lee-Yang zeros.
 %   scattering_zipper   General multichannel scattering zipper with boundary mixing.
 %
@@ -48,6 +49,8 @@
 %   walsh_hadamard       Natural/sequency ordered fast Walsh transform.
 %   dpss_transform       Explicit Slepian concentration eigenbasis.
 %   graph_fourier        Explicit weighted-graph Laplacian eigenbasis.
+%   blaschke_potapov    Rational inner / lossless rank-one product frequency response.
+%   orthogonal_butterfly Recursive real orthogonal butterfly (fast implicit action).
 %
 % Nonlinear unitary dynamics:
 %   lohe_matrix_flow     Coupled Lohe oscillators on U(d), geometric midpoint integration.
