@@ -13,7 +13,7 @@ function [U,properties]=wigner_geodesic(n,alpha,beta,gamma,output)
 %   cos(theta/2)=cos(beta/2)*cos((alpha+gamma)/2),
 %   theta in [0,2pi] chosen to retain the SU(2) lift.
 %   This is dense by default; no fast matrix-free mode is asserted.
-%   [99] Kostelec and Rockmore, J. Fourier Anal. Appl. 14 (2008).
+%   [103] Kostelec and Rockmore, J. Fourier Anal. Appl. 14 (2008).
 %   https://doi.org/10.1007/s00041-008-9013-5
 properties={'square','unitary','normal','complex','scalable', ...
     'eigenvalues','parameter-dependent'};

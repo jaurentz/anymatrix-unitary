@@ -98,6 +98,15 @@ require O(n·RHS) arithmetic and working memory (plus O(n) operator data).
 The driven-Kitaev BdG family still needs a validated high-order exponential
 action before an implicit interface can be promised.
 
+### Stiefel geodesic lift
+
+The `stiefel_geodesic` generator supports `operator` mode through
+`um_stiefel_apply`, which caches a small 2p-by-2p exponential and
+orthonormal frame basis; forward/adjoint matvec costs O(np). In contrast,
+`grassmann_holonomy` returns a small dense r-by-r polar-overlap product,
+while `wigner_geodesic` returns a generally dense spin-j rotation matrix.
+Neither is incorrectly marked as having fast matrix-free multiplication.
+
 ## Testing
 
 Run `test_run` or `runtests('tests/test_matrix_free.m')`. Tests cover

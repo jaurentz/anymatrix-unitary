@@ -11,7 +11,7 @@ function [G,properties]=stiefel_geodesic(n,p,A,R,frames,t,output)
 %   mathematically exact but numerical in the generic case.
 %   The ambient lift is not intrinsic Stiefel tangent transport.
 %   Operator mode applies the precomputed 2P block in O(NP).
-%   [93] Edelman, Arias, Smith, SIAM J. Matrix Anal. Appl. (1998).
+%   [97] Edelman, Arias, Smith, SIAM J. Matrix Anal. Appl. (1998).
 %   https://doi.org/10.1137/S0895479895290954
 properties={'square','unitary','normal','scalable', ...
     'eigenvalues','parameter-dependent'};
