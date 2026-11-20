@@ -183,3 +183,22 @@ for n=[1 3 5 9]
     end
 end
 end
+
+function test_general_jacobi_and_classical_specializations(tc)
+params=[0 0; -.5 -.5; .5 .5; -.95 -.2; .4 1.4; 3 3];
+for n=[1 2 6 18]
+    for j=1:size(params,1)
+        alpha=params(j,1); beta=params(j,2);
+        Q=gauss_jacobi_transform(n,alpha,beta);
+        orthogonal(tc,Q,1e-11*n);
+        verifyGreaterThanOrEqual(tc,min(Q(:,1)),-2e-14);
+    end
+    for m=[0 1 3]
+        A=associated_legendre_transform(n,m);
+        J=gauss_jacobi_transform(n,m,m);
+        verifyLessThan(tc,norm(A-J,'fro'),1e-10*n);
+    end
+end
+verifyEqual(tc,gauss_jacobi_transform(8), ...
+    gauss_jacobi_transform(8,0,0),'AbsTol',1e-12);
+end
