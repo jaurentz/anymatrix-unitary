@@ -1830,7 +1830,94 @@ measure, not a fabricated analytic spectral density.
 continuity, and numerical sensitivity to step size. No generic exact
 eigenphase law, bulk density or OPUC measure is claimed.
 
-## N. Families reserved for future versions (not implemented)
+
+## N. Citation-led rational and butterfly constructions (November 2026)
+
+### Pole-parameterized rational OPUC finite unitary model — [`rational_opuc.m`](../rational_opuc.m)
+
+**Construction.** Supply exterior poles `poles` of length `n-1`
+(`abs(poles)>1` or `Inf`), strict-disk recurrence coefficients
+`schur` of length `n-1`, and a unimodular closing parameter `beta`.
+Set the diagonal normal strict contraction
+`A=diag([0;1./conj(poles)])` with `1/Inf=0`, and
+`D=diag(sqrt(1-abs(diag(A)).^2))`. If `H` is the finite unitary
+Hessenberg core matrix from the recurrence, define
+
+```math
+U=A+D H (I+A^*H)^{-1}D.
+```
+
+This is an operator Möbius transform (equivalent to the normalized
+linear-fractional representation for a normal strict contraction).
+It is exactly unitary when `H` is unitary and `norm(A)<1`. All-infinite
+poles recover the polynomial Hessenberg model. The poles are
+**recurrence parameters**, not eigenvalues or singularities of `U` as a
+fixed numeric matrix. The finite boundary choice determines a rational
+paraorthogonal approximation; generic equal-weight eigenphase laws
+are unknown. With poles near the unit circle the linear solve may
+become ill-conditioned. This is not claimed to be a universal finite
+rational-Krylov pencil or to preserve an independently fixed
+polynomial OPUC measure.
+
+**Applications:** orthogonal rational functions and rational quadrature,
+pole-sensitive eigenphase tests, structured unitary Möbius models.
+The explicit matrix uses an N-by-N solve; no matrix-free option is
+claimed. **References:** [88], [5], and the 2017 SIGMA ORF survey.
+
+### Rank-one Blaschke–Potapov products — [`blaschke_potapov.m`](../blaschke_potapov.m)
+
+**Construction.** For strict-disk poles `a_j`, normalized vectors `v_j`,
+frequency `z=exp(1i*omega)`, and an initial unitary `U0`, define
+
+```math
+B(z)=U_0\prod_{j=1}^m
+ \left(I+\left(\frac{z-a_j}{1-\overline{a_j}z}-1\right)v_jv_j^*\right).
+```
+
+Each factor has eigenvalues 1 on `v_j^perp` and the unimodular
+Blaschke factor on `span(v_j)`, so `B(z)` is exactly unitary
+for `abs(z)=1`. Projectors need not commute. The determinant
+satisfies `det(B(z))=det(U0)*prod(b_j(z))`. The generic
+matrix eigenphases need not be the individual factor phases.
+
+**Applications:** lossless multichannel scattering, rational all-pass
+filter banks, phase winding, noncommuting rank-one updates.
+The `operator` mode applies factors in O(n*m) plus the cost of `U0`;
+the default identity `U0` permits a genuinely low-storage action.
+These are **pointwise** unitaries of order n, not automatically the
+finite analysis matrix of a sampled filter bank. **Reference:** [61].
+
+### Recursive orthogonal butterflies — [`orthogonal_butterfly.m`](../orthogonal_butterfly.m)
+
+**Construction.** For `n=2^k`, prescribe `n-1` real angles indexed
+in preorder across a binary tree. With recursively generated
+`B_left, B_right` of order n/2,
+
+```math
+B_n=
+\begin{bmatrix}
+ cI&sI\\
+ -sI&cI
+\end{bmatrix}
+\begin{bmatrix}
+ B_{\rm left}&0\\
+ 0&B_{\rm right}
+\end{bmatrix},
+\quad c=\cos\theta,\ s=\sin\theta,\quad B_1=1.
+```
+
+Every node is orthogonal with positive determinant, hence `B_n` is
+real orthogonal with determinant 1, a factored O(n log n) action,
+and conjugation-symmetric eigenphases. A particular distribution of
+angles (e.g., independent uniform) defines its random ensemble;
+it is not generally Haar on all of `SO(n)`. The matrix-free
+operator supports forward and adjoint multiple-RHS actions.
+
+**Applications:** large-scale orthogonal eigensolver benchmarks,
+spectral-density estimation with exact real symmetry, randomized
+linear algebra and structured fast transformations. **Reference:** [89].
+
+## O. Families reserved for future versions (not implemented)
 
 - **ETNA core-factor stress tests:** the five experimental constructions in
   Aurentz–Mach–Vandebril–Watkins (2015), including the nearly reducible Type
@@ -1942,3 +2029,6 @@ eigenphase law, bulk density or OPUC measure is claimed.
 85. M. Fasi and L. Robol, “Sampling the eigenvalues of random orthogonal and unitary matrices,” *Linear Algebra and its Applications* **620** (2021), 297–321. [DOI](https://doi.org/10.1016/j.laa.2021.02.031); [preprint](https://arxiv.org/abs/2009.11515).
 86. M. A. Lohe, “Non-Abelian Kuramoto models and synchronization,” *J. Phys. A: Math. Theor.* **42** (2009), 395101. [DOI](https://doi.org/10.1088/1751-8113/42/39/395101).
 87. H. Choi, S.-Y. Ha and H. Park, “Emergent behaviors of discrete Lohe aggregation flows,” *Discrete Contin. Dyn. Syst. B* **27** (2022), 6083–6123. [DOI](https://doi.org/10.3934/dcdsb.2021308); [preprint](https://arxiv.org/abs/2110.12366).
+
+88. L. Velázquez, “Spectral methods for orthogonal rational functions,” *J. Funct. Anal.* **254** (2008), 954–986. [DOI](https://doi.org/10.1016/j.jfa.2007.11.004); [arXiv](https://arxiv.org/abs/0704.3456).
+89. T. Trogdon, “On spectral and numerical properties of random butterfly matrices,” *Appl. Math. Lett.* **95** (2019), 48–58. [DOI](https://doi.org/10.1016/j.aml.2019.03.024); [arXiv](https://arxiv.org/abs/1710.00087).
