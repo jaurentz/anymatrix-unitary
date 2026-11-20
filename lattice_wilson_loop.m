@@ -30,6 +30,16 @@ properties={'square','unitary','normal','complex','scalable', ...
             'parameter-dependent'};
 if nargin==0,U=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','positive','finite'});
+if nargin>=3 && (ischar(output)||(isstring(output)&&isscalar(output))) ...
+        && strcmpi(char(output),'spectral') && (nargin<2||isempty(links))
+    U=unitary_spectral_reference('lattice_wilson_loop',n);
+    U.reference='Ipp and Muller, Eur. Phys. J. C 78 (2018), 884';
+    U.notes=['Default four-link SU(n) Wilson loop. Eigenphases ' ...
+        'are gauge-conjugacy invariants but have no generic exact ' ...
+        'finite counting law. Spectral metadata is independent of ' ...
+        'costly matrix-exponential link construction.'];
+    return
+end
 if nargin<2||isempty(links)
     links=default_links(n);
 else
