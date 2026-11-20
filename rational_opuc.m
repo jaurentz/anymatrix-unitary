@@ -17,6 +17,9 @@ function [U,properties] = rational_opuc(n,poles,schur,beta,output)
 %   Finite eigenphase counting laws are generally not known in closed form.
 %
 %   References:
+%   B. Simon, Orthogonal Polynomials on the Unit Circle, Parts 1-2.
+%     https://doi.org/10.1090/coll054.1
+%     https://doi.org/10.1090/coll/054.2
 %   L. Velazquez, J. Funct. Anal. 254 (2008), 954-986,
 %     https://doi.org/10.1016/j.jfa.2007.11.004
 %   Bultheel, Cruz-Barroso, Lasarow, SIGMA 13 (2017), 090,
