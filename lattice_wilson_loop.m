@@ -91,7 +91,8 @@ function links=default_links(n)
 m=4;links=complex(zeros(n,n,m));
 d=(0:n-1)'-(n-1)/2;
 A=diag(d/max(1,n-1));
-S=diag(ones(n-1,1),1);
+S=zeros(n);
+for k=1:n-1,S(k,k+1)=1;end
 B=(S+S')/2;C=1i*(S-S')/2;
 for j=1:m
     H=(.3+.17*j)*A + (.5*cos(.7*j))*B + (.6*sin(.5*j))*C;
