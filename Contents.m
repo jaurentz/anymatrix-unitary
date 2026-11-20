@@ -20,6 +20,8 @@
 %   periodic_cmv         Periodic real or complex Verblunsky coefficients.
 %   bernstein_szego_finite  General finite Bernstein-Szego rational circle weight.
 %   rational_opuc       Pole-parameterized finite rational OPUC unitary model.
+%   unitary_rank_one_update Multiplicative unitary rank-one Hessenberg update.
+%   etna_hessenberg     Type I/II/III reproducible unitary Hessenberg benchmarks.
 %   lee_yang_ising      Sparse twisted Floquet-CMV for Ising Lee-Yang zeros.
 %   scattering_zipper   General multichannel scattering zipper with boundary mixing.
 %
@@ -51,6 +53,7 @@
 %   graph_fourier        Explicit weighted-graph Laplacian eigenbasis.
 %   blaschke_potapov    Rational inner / lossless rank-one product frequency response.
 %   orthogonal_butterfly Recursive real orthogonal butterfly (fast implicit action).
+%   complex_hadamard     Dita-deformed Fourier-block complex Hadamard matrices.
 %
 % Nonlinear unitary dynamics:
 %   lohe_matrix_flow     Coupled Lohe oscillators on U(d), geometric midpoint integration.

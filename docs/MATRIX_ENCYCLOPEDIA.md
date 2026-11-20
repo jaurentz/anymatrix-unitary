@@ -1917,12 +1917,106 @@ operator supports forward and adjoint multiple-RHS actions.
 spectral-density estimation with exact real symmetry, randomized
 linear algebra and structured fast transformations. **Reference:** [89].
 
-## O. Families reserved for future versions (not implemented)
+## O. Complex Hadamard and structured Hessenberg benchmark families (November 2026)
 
-- **ETNA core-factor stress tests:** the five experimental constructions in
-  Aurentz–Mach–Vandebril–Watkins (2015), including the nearly reducible Type
-  III case with heavily clustered eigenvalues. Will use shared Verblunsky/core
-  machinery but separate benchmark presets. [8]
+### Diţă-deformed Fourier-block complex Hadamard — [`complex_hadamard.m`](../complex_hadamard.m)
+
+**Construction:** For n=m r with normalized Fourier matrices F_m and
+F_r, and r-by-m real phase angles t_{a,j}, set D_j=diag(exp(i*t(:,j))).
+Define
+
+```math
+U=(F_m\otimes I_r)\,\mathrm{diag}(D_1F_r,\ldots,D_mF_r).
+```
+
+The product is unitary and *every entry* of U has modulus 1/sqrt(n).
+Thus it is a normalized complex Hadamard matrix. Distinct angle choices
+yield Diţă-type deformations, generally not simply Fourier matrices.
+The default choice is deterministic and nontrivial when both factors
+have order at least 2. For a prime n, the default m=1 recovers F_n.
+The `operator` mode applies two FFTs and diagonal phases with
+O(n log n) complexity, including multiple RHS and adjoints. Only
+the undeformed Fourier corner provides an asserted analytic finite
+eigenphase law. A complex Hadamard matrix need not be an involution.
+
+**Application:** constant-modulus unitary transforms, structured
+randomized linear algebra, signal coding, mutually unbiased bases,
+and dense normal eigenvalue tests with highly non-generic entries.
+
+**References:** [91], [92]. Equimodularity is a property of matrix
+entries, not an assertion about eigenphase uniformity.
+
+### Multiplicative rank-one unitary perturbations — [`unitary_rank_one_update.m`](../unitary_rank_one_update.m)
+
+Let H be a unitary upper Hessenberg matrix encoded by Schur/Verblunsky
+coefficients. For a unit vector v and real phase phi, set
+
+```math
+U=H\left(I+(e^{i\phi}-1)vv^*\right).
+```
+
+This preserves unitarity and ensures rank(U-H)<=1 and
+det(U)=exp(i*phi)*det(H). By default v=e_n, so only the last column
+of H changes and U is still upper Hessenberg. Arbitrary v gives
+another valid unitary, but usually loses the Hessenberg constraint.
+This is multiplicative *unitary-to-unitary* rank-one perturbation,
+not the additive nonnormal companion-matrix model H+uv^*.
+The latter belongs to a different matrix class.
+
+When all interior coefficients vanish and v=e_n, the exact finite
+eigenvalues are n-th roots of exp(i*phi)*conj(beta), for boundary beta.
+For generic coefficients and vectors, finite trace eigenphases remain
+unknown. The matrix-free kernel applies the rank-one projector and
+unitary core product in O(n).
+
+**Application:** eigenphase interlacing and motion, rank-sensitive
+unitary eigensolver benchmarks, circular-ensemble perturbation theory,
+and exact-cycle regression problems. **References:** [90], [5].
+
+### ETNA core-factor unitary Hessenberg tests — [`etna_hessenberg.m`](../etna_hessenberg.m)
+
+This generator exposes the Type I, II and III constructions discussed
+in Section 7 of Aurentz–Mach–Vandebril–Watkins [8]:
+
+- **Type I:** Each core has first column
+  `[(-1)^(k-1)*m_k*p_k; sqrt(1-m_k^2)]`, with
+  `m_k` sampled independently in (0,1) and `p_k` on the unit circle.
+  The unitary second column is fixed by the repository core convention.
+- **Type II:** Real core first columns `[cos(t_k);sin(t_k)]`,
+  `t_k` sampled from (0,pi); the chosen orthogonal completion follows
+  the same core convention. The result is real orthogonal Hessenberg.
+- **Type III:** Four identical Type-I *interior* core sequences,
+  coupled at three block boundaries by a real core with small
+  `rho=coupling` (default 0.001), and terminal phase -1. This
+  provides an exactly fourfold block spectrum as coupling tends to
+  zero, with clusters split by small coupling at finite n. The
+  coupling phase is fixed by construction instead of being
+  sampled as in the original paper.
+
+The published Example 7.4 reported a difficult real instance
+with sixteen eigenvalues clustered near -1. **The implementation
+does not claim to reproduce that same sample or that specific
+cluster.** Its Type III gives a reproducible family with the
+near-reducible structure of the benchmark; a user-controlled seed
+and coupling allow systematic parameter studies. Coupling values too
+small to resolve in double-precision Schur parameters are rejected.
+
+All three variants are specified by n-1 core parameters and a
+unimodular closure, have O(n) implicit matvecs, and generate finite
+unitary upper Hessenberg matrices. The seeded generator temporarily
+changes the random stream and restores it. No general sample
+eigenphase density is asserted.
+
+**Application:** fast unitary QR/QZ, double shifts on real orthogonal
+Hessenberg matrices, difficult clustered eigenvalues, and
+structure-preserving spectral approximation. **Reference:** [8].
+
+## P. Families reserved for future versions (not implemented)
+
+- **Additional ETNA benchmark cases:** the exact Example 7.1 common-parameter
+  and Example 7.5 inverse-eigenvalue presets are not yet implemented.
+  Types I, II and a controlled Type III are already available in
+  `etna_hessenberg`. [8]
 - **Rational and isometric Arnoldi:** pole sequences, orthonormal rational
   basis conventions, unitary closures and appropriate generalized matrices/
   pencils. Not every finite compression is unitary. [9, 10]
@@ -2032,3 +2126,7 @@ linear algebra and structured fast transformations. **Reference:** [89].
 
 88. L. Velázquez, “Spectral methods for orthogonal rational functions,” *J. Funct. Anal.* **254** (2008), 954–986. [DOI](https://doi.org/10.1016/j.jfa.2007.11.004); [arXiv](https://arxiv.org/abs/0704.3456).
 89. T. Trogdon, “On spectral and numerical properties of random butterfly matrices,” *Appl. Math. Lett.* **95** (2019), 48–58. [DOI](https://doi.org/10.1016/j.aml.2019.03.024); [arXiv](https://arxiv.org/abs/1710.00087).
+
+90. P. J. Forrester and E. M. Rains, “Jacobians and rank 1 perturbations relating to unitary Hessenberg matrices,” *Int. Math. Res. Not.* **2006** (2006), 48306. [DOI](https://doi.org/10.1155/IMRN/2006/48306); [preprint](https://arxiv.org/abs/math/0505552).
+91. P. Diţă, “Some results on the parametrization of complex Hadamard matrices,” *J. Phys. A* **37** (2004), 5355–5374. [DOI](https://doi.org/10.1088/0305-4470/37/20/008).
+92. W. Tadej and K. Życzkowski, “A concise guide to complex Hadamard matrices,” *Open Syst. Inf. Dyn.* **13** (2006), 133–177. [DOI](https://doi.org/10.1007/s11080-006-8220-2); [preprint](https://arxiv.org/abs/quant-ph/0512154).

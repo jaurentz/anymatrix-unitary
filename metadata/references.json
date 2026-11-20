@@ -694,6 +694,30 @@
       ],
       "permalink": "https://doi.org/10.1016/j.aml.2019.03.024",
       "alternate_permalink": "https://arxiv.org/abs/1710.00087"
+    },
+    {
+      "number": 90,
+      "dois": [
+        "10.1155/IMRN/2006/48306"
+      ],
+      "permalink": "https://doi.org/10.1155/IMRN/2006/48306",
+      "alternate_permalink": "https://arxiv.org/abs/math/0505552"
+    },
+    {
+      "number": 91,
+      "dois": [
+        "10.1088/0305-4470/37/20/008"
+      ],
+      "permalink": "https://doi.org/10.1088/0305-4470/37/20/008",
+      "alternate_permalink": ""
+    },
+    {
+      "number": 92,
+      "dois": [
+        "10.1007/s11080-006-8220-2"
+      ],
+      "permalink": "https://doi.org/10.1007/s11080-006-8220-2",
+      "alternate_permalink": "https://arxiv.org/abs/quant-ph/0512154"
     }
   ]
 }
