@@ -4,7 +4,7 @@ A MATLAB collection of finite **unitary and orthogonal test matrices**, designed
 an external group for [Anymatrix](https://github.com/north-numerical-computing/anymatrix).
 The repository is organized around reproducible mathematical constructions,
 known spectral information, and executable regression tests. It contains
-79 generators; additional benchmark families are under development.
+85 generators; additional benchmark families are under development.
 
 **Status:** development collection with MATLAB-only tests. Automated MATLAB
 regression and Anymatrix integration tests run on GitHub Actions after every
@@ -47,7 +47,7 @@ assertSuccess(results)
 
 ## Matrix generator interfaces
 
-The collection currently has **79 public generators**. Each has a complete
+The collection currently has **85 public generators**. Each has a complete
 entry with formulas, spectral information, applications, parameter conventions,
 and references in the [matrix encyclopedia](docs/MATRIX_ENCYCLOPEDIA.md).
 The [mathematical notes](docs/MATHEMATICS.md) explain the shared OPUC engine.
@@ -62,6 +62,7 @@ The [vibron ESQPT example](examples/vibron_esqpt_sector_gaps.m) compares U(3) an
 | Quantum maps, walks, and algorithms | `split_step_walk`, `dirac_automaton`, `grover_operator`, `quantum_baker`, `kicked_harper`, `kicked_top`, `extended_lipkin_propagator`, `vibron_2d_esqpt`, `agassi_propagator`, `floquet_ising`, `selfdual_kicked_ising`, `driven_kitaev`, `kicked_rotor`, `dual_unitary_circuit`, `xxz_floquet`, `kicked_bose_hubbard`, `jaynes_cummings`, `chalker_coddington`, `unitary_almost_mathieu`, `szegedy_walk`, `coined_graph_walk`, `metric_quantum_graph` |
 | Matrix functions and dilations | `cayley_jacobi`, `polar_unitary`, `julia_unitary`, `entangled_reflection` |
 | Quantum group actions | `tensor_permutation` |
+| Orthogonal polynomial and spherical rotations | gauss_hermite_transform, gauss_laguerre_transform, associated_legendre_transform, wigner_rotation, spherical_harmonic_rotation, periodic_sinc_shift |
 | Nonlinear unitary dynamical systems | `lohe_matrix_flow` |
 | Strict unitary eigenvalue pencils | `mobius_unitary_pencil`, `unitary_delay_pencil`, `block_cmv_pencil`, `floquet_factor_pencil`, `cayley_hermitian_pencil`, `left_weighted_unitary_pencil` |
 
@@ -89,6 +90,19 @@ index reordering. See [matrix-free documentation](docs/MATRIX_FREE.md).
 several families; other families have ensemble laws, limiting densities, or
 no universal law. The encyclopedia distinguishes these cases. Do not infer a
 limiting eigenphase distribution from unitarity alone.
+
+### Fast-transform research additions (November 2026)
+
+Six exactly unitary or orthogonal mathematical transforms have been added.
+Hermite, Laguerre and fixed-order associated-Legendre blocks use an explicit
+Golub-Welsch eigendecomposition (not a fast transform algorithm). Wigner
+rotations and their degree-truncated direct sum have analytically known
+spectra but use matrix exponentials to construct small blocks. The odd-order
+periodic sinc/Dirichlet shift has a real circulant representation and an
+O(n log n) FFT matrix-free action. Even-order fractional shifts require
+a separate Nyquist convention. DPSS already exists in dpss_transform;
+Bessel/Hankel and RBF transforms remain candidates subject to a strict
+unitarity audit. References and derivations appear in the encyclopedia.
 
 ## Eigenvalue-problem subclass
 
