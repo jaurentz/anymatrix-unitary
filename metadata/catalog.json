@@ -1615,6 +1615,21 @@
       "matrix_free_supported": true,
       "operator_kernel": "um_skew_midpoint_apply",
       "operator_note": "Sparse Cayley LU cached per midpoint, O(steps) sparse solves per RHS; exponential variant caches dense exponentials and makes no sparse expmv claim."
+    },
+    {
+      "id": "graph_connection_propagator",
+      "status": "implemented",
+      "category": "geometry",
+      "matrix_order": "n*q",
+      "representation": "exact expm of graph connection Laplacian with supplied unitary q-by-q edge links; sparse PSD Hermitian generator",
+      "spectral_reference": "exact twisted-cycle holonomy eigenphases for default graph; general weighted graph analytical trace law unknown",
+      "encyclopedia_references": [
+        98,
+        123
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": null,
+      "operator_note": "Exact matrix via dense expm for moderate n*q. Explicitly labeled distinct unitary sparse Cayley rational approximation offers cached LU operator/adjoint but is not an exact expm action."
     }
   ],
   "probability_measures": [

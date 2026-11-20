@@ -68,6 +68,7 @@
 %
 % Riemannian geometry:
 %   sphere_geodesic_transport  SO(n) lift of tangent geodesic parallel transport.
+%   graph_connection_propagator  exp(-itL) of a general graph connection Laplacian.
 %
 % Orthogonal polynomial and spherical-harmonic transforms:
 %   gauss_recurrence_transform  Orthogonal Gaussian transform from any positive Jacobi recurrence.
