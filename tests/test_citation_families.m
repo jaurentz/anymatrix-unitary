@@ -45,9 +45,7 @@ for n=[1 2 5 8]
         V(mod(k-1,n)+1,k)=1;
         V(mod(k,n)+1,k)=V(mod(k,n)+1,k)+.7i;
     end
-    Q=orthogonal_butterfly(2^ceil(log2(n)));
-    Q=Q(1:n,1:n);
-    % Only use a genuine N-by-N unitary U0, not a truncated matrix.
+    % Use a genuine N-by-N unitary factor as the initial matrix.
     [Q,~]=qr(randn(n)+1i*randn(n));
     for omega=[-.8 0 .9 pi]
         z=exp(1i*omega);
