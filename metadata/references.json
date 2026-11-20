@@ -896,6 +896,14 @@
       ],
       "permalink": "https://doi.org/10.1140/epjc/s10052-018-6323-x",
       "alternate_permalink": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6315017/"
+    },
+    {
+      "number": 116,
+      "dois": [
+        "10.26421/QIC5.3-3"
+      ],
+      "permalink": "https://doi.org/10.26421/QIC5.3-3",
+      "alternate_permalink": "https://arxiv.org/abs/quant-ph/0404180"
     }
   ]
 }
