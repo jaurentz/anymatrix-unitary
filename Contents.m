@@ -54,6 +54,8 @@
 %   blaschke_potapov    Rational inner / lossless rank-one product frequency response.
 %   orthogonal_butterfly Recursive real orthogonal butterfly (fast implicit action).
 %   complex_hadamard     Dita-deformed Fourier-block complex Hadamard matrices.
+%   krawtchouk_transform Orthogonal Krawtchouk polynomial transform (binomial weight).
+%   daubechies_wavelet  Periodic db2/db3/db4 orthonormal multilevel wavelet matrices.
 %
 % Nonlinear unitary dynamics:
 %   lohe_matrix_flow     Coupled Lohe oscillators on U(d), geometric midpoint integration.
@@ -67,6 +69,7 @@
 %   dirac_automaton      Periodic 1D Dirac cellular automaton (size 2n).
 %   grover_operator      Grover reflections with exact degeneracies.
 %   quantum_baker        Balazs-Voros / Saraceno quantum baker map.
+%   quantum_cat          Hannay-Berry hyperbolic cat-map quantization (all orders).
 %   kicked_harper        Finite-torus kicked Harper Floquet map.
 %   kicked_top           Spin-j quantum kicked top.
 %   extended_lipkin_propagator  Nuclear two-level boson phase-transition evolution.
