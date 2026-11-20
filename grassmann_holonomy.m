@@ -12,9 +12,9 @@ function [H,properties]=grassmann_holonomy(n,r,frames,output)
 %   This is NOT Levi-Civita transport on the Grassmann tangent bundle.
 %   'spectral' gives an exact rank-one Bargmann phase, but labels
 %   generic non-Abelian rank-R>=2 spectra unknown analytically.
-%   [101] Mukunda and Simon, Ann. Phys. 228 (1993), 205-268.
+%   [110] Mukunda and Simon, Ann. Phys. 228 (1993), 205-268.
 %   https://doi.org/10.1006/aphy.1993.1093
-%   [102] Bendokat, Zimmermann, Absil, Adv. Comput. Math. 50 (2024).
+%   [111] Bendokat, Zimmermann, Absil, Adv. Comput. Math. 50 (2024).
 %   https://doi.org/10.1007/s10444-023-10090-8
 properties={'square','unitary','normal','scalable','parameter-dependent'};
 if nargin==0,H=[];return;end

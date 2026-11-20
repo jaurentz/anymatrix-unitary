@@ -65,21 +65,21 @@ end
 function test_wigner_representation_and_spectrum(t)
 for n=[1 2 3 5 8]
     a=.37;b=.91;c=-1.2;
-    U=wigner_geodesic(n,a,b,c);
+    U=wigner_rotation((n-1)/2,a,b,c);
     verifyLessThan(t,norm(U'*U-eye(n),'fro'),4e-11*n);
-    S=wigner_geodesic(n,a,b,c,'spectral');
+    S=wigner_rotation((n-1)/2,a,b,c,'spectral');
     verifyEqual(t,S.finite.kind,'exact');
     assert_spec(t,U,S.finite.eigenvalues());
     verifyLessThan(t,abs(det(U)-1),3e-10*n);
     for k=[0 1 2 -2]
         verifyLessThan(t,abs(S.finite.moments(k)-trace(U^k)/n),2e-10*n);
     end
-    D=wigner_geodesic(n,a,0,c);
+    D=wigner_rotation((n-1)/2,a,0,c);
     m=(-(n-1)/2:(n-1)/2)';
     verifyLessThan(t,norm(D-diag(exp(-1i*(a+c)*m)),'fro'),2e-12*n);
 end
 % Fundamental SU(2) representation must retain a nontrivial 2pi lift.
-U=wigner_geodesic(2,2*pi,0,0);
+U=wigner_rotation(0.5,2*pi,0,0);
 verifyLessThan(t,norm(U+eye(2),'fro'),2e-12);
 end
 
@@ -89,7 +89,7 @@ verifyError(t,@()stiefel_geodesic(6,2,eye(2)),'stiefel_geodesic:Skew');
 verifyError(t,@()grassmann_holonomy(3,3),'grassmann_holonomy:Order');
 P=cat(3,[1;0;0],[0;1;0],[0;0;1]);
 verifyError(t,@()grassmann_holonomy(3,1,P),'grassmann_holonomy:CutLocus');
-verifyError(t,@()wigner_geodesic(4,.1,.2,.3,'operator'),'wigner_geodesic:Mode');
+verifyError(t,@()wigner_rotation(1.5,.1,.2,.3,'operator'),'wigner_rotation:Mode');
 end
 
 function assert_spec(t,A,z)

@@ -4,7 +4,7 @@ A MATLAB collection of finite **unitary and orthogonal test matrices**, designed
 an external group for [Anymatrix](https://github.com/north-numerical-computing/anymatrix).
 The repository is organized around reproducible mathematical constructions,
 known spectral information, and executable regression tests. It contains
-89 generators; additional benchmark families are under development.
+99 generators; additional benchmark families are under development.
 
 **Status:** development collection with MATLAB-only tests. Automated MATLAB
 regression and Anymatrix integration tests run on GitHub Actions after every
@@ -47,7 +47,7 @@ assertSuccess(results)
 
 ## Matrix generator interfaces
 
-The collection currently has **89 public generators**. Each has a complete
+The collection currently has **99 public generators**. Each has a complete
 entry with formulas, spectral information, applications, parameter conventions,
 and references in the [matrix encyclopedia](docs/MATRIX_ENCYCLOPEDIA.md).
 The [mathematical notes](docs/MATHEMATICS.md) explain the shared OPUC engine.
@@ -63,6 +63,8 @@ The [vibron ESQPT example](examples/vibron_esqpt_sector_gaps.m) compares U(3) an
 | Quantum maps, walks, and algorithms | `split_step_walk`, `dirac_automaton`, `grover_operator`, `quantum_baker`, `quantum_cat_map`, `kicked_harper`, `kicked_top`, `extended_lipkin_propagator`, `vibron_2d_esqpt`, `agassi_propagator`, `floquet_ising`, `selfdual_kicked_ising`, `driven_kitaev`, `kicked_rotor`, `dual_unitary_circuit`, `xxz_floquet`, `kicked_bose_hubbard`, `jaynes_cummings`, `chalker_coddington`, `unitary_almost_mathieu`, `szegedy_walk`, `coined_graph_walk`, `metric_quantum_graph` |
 | Matrix functions and dilations | `cayley_jacobi`, `polar_unitary`, `julia_unitary`, `entangled_reflection` |
 | Quantum group actions | `tensor_permutation` |
+| Geometric/symplectic integration | `geometric_oscillator` (periodic chain, FFT), `geometric_fem_wave` (Dirichlet FEM wave, DST); exact phase laws, positive-metric pencils, and a mass-weighted palindromic Verlet QEP |
+| Polynomial transforms and spherical rotations | `gauss_jacobi_transform` (includes associated Legendre), `gauss_hermite_transform`, `gauss_laguerre_transform`, `wigner_rotation`, `spherical_harmonic_rotation`, `periodic_sinc_shift` |
 | Nonlinear unitary dynamical systems | `lohe_matrix_flow` |
 | Strict unitary eigenvalue pencils | `mobius_unitary_pencil`, `unitary_delay_pencil`, `block_cmv_pencil`, `floquet_factor_pencil`, `cayley_hermitian_pencil`, `left_weighted_unitary_pencil` |
 
@@ -90,6 +92,10 @@ index reordering. See [matrix-free documentation](docs/MATRIX_FREE.md).
 several families; other families have ensemble laws, limiting densities, or
 no universal law. The encyclopedia distinguishes these cases. Do not infer a
 limiting eigenphase distribution from unitarity alone.
+
+### Orthogonal-polynomial and rotation constructions
+
+Six additional matrix families are available. The Gauss–Jacobi evaluation matrix also covers the fixed-order associated-Legendre block by setting `alpha=beta=m`; no duplicate Legendre generator is registered. Hermite and Laguerre use the shared Golub–Welsch basis engine. The Wigner irreducible representation and its degree-truncated block sum have distinct dimensions and spectral multiplicities. The periodic sinc shift is a named real circulant specialization with an FFT action. The original Townsend/Slevinsky, Golub–Welsch, and spherical-harmonic sources remain in the bibliography. The current Gauss transforms are explicit, not fast transform implementations.
 
 ## Eigenvalue-problem subclass
 
@@ -524,21 +530,18 @@ connection angles, not a built-in mesh geometry solver. See
 [the encyclopedia](docs/MATRIX_ENCYCLOPEDIA.md) for definitions, provenance,
 and finite-spectrum qualifications.
 
-### Additional geodesic and holonomy generators
+The canonical `daubechies_wavelet` generator supports periodized db2, db3 and db4 wavelets. Its historical `daubechies_wavelet(n,levels,output)` call remains valid (db2); request higher orders with `daubechies_wavelet(n,levels,output,order)`. The single implementation preserves the cited wavelet construction and does not duplicate `quantum_cat_map` or `krawtchouk_transform`.
+
+### Further geometry: Stiefel frames and Grassmann holonomy
+
+The canonical `stiefel_geodesic` is an ambient square unitary lift of the canonical Stiefel geodesic, with a compact O(np) action. The separate `grassmann_holonomy` computes non-Abelian tautological-bundle holonomy from polar-overlap links (not Levi-Civita tangent transport). The existing `wigner_rotation` now accepts integer and half-integer spin j; no second Wigner implementation is registered. The original Mukunda–Simon, Bendokat–Zimmermann–Absil, and Kostelec–Rockmore references are retained.
 
 ```matlab
-S = stiefel_geodesic(128,3,[],[],[],1,'spectral'); % small spectral reduction
-T = stiefel_geodesic(128,3,[],[],[],1,'operator'); % O(np) matvec
-H = grassmann_holonomy(8,2);                       % U(2) geometric holonomy
-W = wigner_geodesic(21,.3,.7,-.4);                % SO(3) spin-10 representation
-V = wigner_geodesic(20,.3,.7,-.4,'spectral');     % half-integer SU(2) spectrum
+S = stiefel_geodesic(128,3,[],[],[],1,'spectral');
+H = grassmann_holonomy(8,2);
+W = wigner_rotation(10,.3,.7,-.4);   % integer SO(3)
+V = wigner_rotation(9.5,.3,.7,-.4);  % half-integer SU(2)
 ```
-
-Grassmannian holonomy is tautological-bundle transport along a closed
-polygon of unique minimizing geodesic arcs; it is not the Grassmann
-Levi-Civita tangent-space transport. All supplied overlap matrices must
-be nonsingular. The Wigner representation belongs to rotation-group
-geometry, although its spin interpretation overlaps quantum mechanics.
 
 ## Automatic tests
 

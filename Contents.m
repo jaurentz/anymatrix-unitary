@@ -36,7 +36,7 @@
 %   tensor_permutation  Orthogonal tensor-factor permutation matrix.
 %   entangled_reflection Maximally entangled rank-one unitary phase reflector.
 %   haar_wavelet         Orthogonal finite Haar wavelet analysis transform.
-%   daubechies_wavelet   Periodized orthogonal D4/db2 multilevel wavelet.
+%   daubechies_wavelet   Periodized orthogonal D4/db3/db4/db2 multilevel wavelet. (db2 default)
 %
 % Non-quantum signal-processing transforms:
 %   orthogonal_dct       Orthonormal DCT-I, II, III, IV finite transforms.
@@ -61,6 +61,18 @@
 %
 % Riemannian geometry:
 %   sphere_geodesic_transport  SO(n) lift of tangent geodesic parallel transport.
+%
+% Orthogonal polynomial and spherical-harmonic transforms:
+%   gauss_jacobi_transform   Jacobi/Legendre/Chebyshev/Gegenbauer/associated Legendre.
+%   gauss_hermite_transform  Hermite Gauss-quadrature orthogonal basis.
+%   gauss_laguerre_transform Generalized Laguerre quadrature basis.
+%   wigner_rotation         Irreducible SO(3) unitary representation.
+%   spherical_harmonic_rotation Direct sum of Wigner blocks.
+%   periodic_sinc_shift     Real circulant fractional shift, FFT.
+%
+% Geometric and symplectic integration:
+%   geometric_oscillator  Periodic symplectic oscillator; exact phases and metric pencil.
+%   geometric_fem_wave    Finite-element Dirichlet wave; mass-weighted palindromic QEP.
 %
 % Nonlinear unitary dynamics:
 %   lohe_matrix_flow     Coupled Lohe oscillators on U(d), geometric midpoint integration.
@@ -124,6 +136,5 @@
 %
 %   stiefel_geodesic         Canonical Stiefel geodesic ambient lift.
 %   grassmann_holonomy       Non-Abelian tautological geodesic-loop holonomy.
-%   wigner_geodesic          Wigner D spin-j representation of rotations.
 %
 % Test runner: test_run. See docs/MATRIX_ENCYCLOPEDIA.md for references.
