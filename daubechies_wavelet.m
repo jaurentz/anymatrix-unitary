@@ -1,4 +1,4 @@
-function [U,properties]=daubechies_wavelet(n,levels,output,order)
+function [U,properties]=daubechies_wavelet(n,levels,output,order,packet)
 %DAUBECHIES_WAVELET Periodic finite orthonormal Daubechies analysis transform.
 %   U=DAUBECHIES_WAVELET(N,LEVELS,OUTPUT,ORDER) builds an N-by-N real
 %   orthogonal multilevel wavelet analysis matrix with periodic boundary
@@ -6,6 +6,12 @@ function [U,properties]=daubechies_wavelet(n,levels,output,order)
 %   ORDER=2,3,4 selects db2, db3, db4, respectively (filter lengths
 %   4,6,8); default ORDER=2. ORDER is the optional FOURTH argument to
 %   preserve the legacy DAUBECHIES_WAVELET(N,LEVELS,OUTPUT) interface.
+%   Optional fifth PACKET arg: 'dwt' (legacy), 'full' (all packets),
+%   'none' (identity), or vector of parent-closed binary heap split nodes.
+%   Root node 1 has children 2 and 3; packet coefficients are arranged
+%   in deterministic left-to-right dyadic leaf order.
+%   ORDER can alternatively be a real even-length orthonormal QMF tap
+%   vector with sum sqrt(2), norm one and zero even-shift correlations.
 %   LEVELS defaults to log2(N); LEVELS=0
 %   returns the identity.
 %
@@ -37,11 +43,32 @@ validateattributes(levels,{'numeric'}, ...
     {'scalar','integer','>=',0,'<=',maxlevels,'finite'});
 if nargin<3||isempty(output),output='matrix';end
 if nargin<4||isempty(order),order=2;end
-validateattributes(order,{'numeric'}, ...
-    {'scalar','integer','finite'});
-if order<2 || order>4
-    error('daubechies_wavelet:Filter','ORDER must be 2, 3, or 4.');
+if nargin<5||isempty(packet),packet='dwt';end
+if isnumeric(order)&&isvector(order)&&numel(order)>1
+    h=order(:);
+    if ~isreal(h)||any(~isfinite(h))||mod(numel(h),2)~=0 ...
+            ||abs(sum(h)-sqrt(2))>1e-10 ...
+            ||abs(sum(h.^2)-1)>1e-10
+        error('daubechies_wavelet:Filter', ...
+            'Custom QMF must have finite even real taps, unit norm and DC sqrt(2).');
+    end
+    for lag=2:2:numel(h)-2
+        if abs(h(1:end-lag)'*h(1+lag:end))>1e-10
+            error('daubechies_wavelet:Filter', ...
+                'Custom QMF must have zero even-shift correlations.');
+        end
+    end
+    filterName='custom orthonormal QMF';
+else
+    validateattributes(order,{'numeric'}, ...
+        {'scalar','integer','finite'});
+    if order<2 || order>4
+        error('daubechies_wavelet:Filter','ORDER must be 2, 3, or 4.');
+    end
+    h=db_lowpass(order);
+    filterName=sprintf('db%d',order);
 end
+split=packet_split_nodes(levels,packet);
 if ~(ischar(output)||(isstring(output)&&isscalar(output)))
     error('daubechies_wavelet:Mode','OUTPUT must be a scalar string.');
 end
@@ -49,15 +76,15 @@ output=lower(char(output));
 if strcmp(output,'spectral')
     U=unitary_spectral_reference('daubechies_wavelet',n);
     U.reference='Daubechies, Ten Lectures on Wavelets (1992)';
-    if levels==0
+    if isempty(split)
         U.finite.kind='exact';
         U.finite.eigenvalues=@()ones(n,1);
         U.finite.moments=@(k)ones(size(k));
-        U.notes='Zero decomposition levels: exactly the identity matrix.';
+        U.notes='Empty packet tree: exactly the identity matrix.';
     else
-        U.notes=['Orthogonal finite periodic wavelet analysis, order db2, db3, ' ...
-            'or db4. The finite trace eigenphase law is not the scaling ' ...
-            'filter frequency response and has no generic closed form.'];
+        U.notes=['Orthogonal periodic wavelet or packet tree with ' filterName ...
+            '. The finite trace eigenphase law is not the filter frequency ' ...
+            'response and has no generic closed form.'];
     end
     return
 end
@@ -65,9 +92,12 @@ if ~any(strcmp(output,{'matrix','explicit','operator','implicit'}))
     error('daubechies_wavelet:Mode', ...
         'Supported modes: matrix, operator, spectral.');
 end
-h=db_lowpass(order);
 g=(-1).^(0:numel(h)-1)'.*flipud(h);
-F=@(X,flag)um_daubechies_apply(X,flag,n,levels,h,g);
+if (ischar(packet)||isstring(packet)) && strcmpi(char(packet),'dwt')
+    F=@(X,flag)um_daubechies_apply(X,flag,n,levels,h,g);
+else
+    F=@(X,flag)um_wavelet_packet_apply(X,flag,n,split,h,g);
+end
 if any(strcmp(output,{'operator','implicit'}))
     U=F;
 else
@@ -102,5 +132,37 @@ switch order
           .0308413818355607636272193625349590502; ...
           .0328830116668851997354075135492443887; ...
          -.0105974017850690321048832085240272207];
+end
+end
+
+
+function split=packet_split_nodes(levels,packet)
+%PACKET_SPLIT_NODES Sorted, ancestor-closed binary heap internal nodes.
+if ischar(packet)||(isstring(packet)&&isscalar(packet))
+    switch lower(char(packet))
+        case 'dwt'
+            split=2.^(0:levels-1);
+        case 'full'
+            split=1:(2^levels-1);
+        case 'none'
+            split=[];
+        otherwise
+            error('daubechies_wavelet:Packet','Unknown wavelet-packet tree.');
+    end
+elseif isnumeric(packet)&&isvector(packet)
+    split=double(packet(:))';
+    if any(~isfinite(split))||any(split<1)|| ...
+            any(split~=round(split))||any(split>=2^levels)|| ...
+            numel(unique(split))~=numel(split)
+        error('daubechies_wavelet:Packet','Invalid split-node indices.');
+    end
+    for k=1:numel(split)
+        if split(k)>1 && ~any(split==floor(split(k)/2))
+            error('daubechies_wavelet:Packet','Split-node parents must be split.');
+        end
+    end
+    split=sort(split);
+else
+    error('daubechies_wavelet:Packet','Invalid packet-tree specification.');
 end
 end

@@ -63,3 +63,7 @@ Our `test_run.m` therefore copies the MATLAB sources, metadata, docs and
 regression suite to a temporary ordinary directory for the integration run,
 executes the **same tests**, then restores the caller's path and removes the
 temporary copy. No alternate test implementation is maintained.
+
+Wavelet-packet tests cover db2/db3/db4 and custom QMF filters, full and
+incomplete binary trees, n=2 periodic wraparound, adjoint multi-RHS
+operators, exact reconstruction, and preservation of the legacy DWT API.
