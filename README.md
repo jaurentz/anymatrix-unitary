@@ -4,7 +4,7 @@ A MATLAB collection of finite **unitary and orthogonal test matrices**, designed
 an external group for [Anymatrix](https://github.com/north-numerical-computing/anymatrix).
 The repository is organized around reproducible mathematical constructions,
 known spectral information, and executable regression tests. It contains
-85 generators; additional benchmark families are under development.
+88 generators; additional benchmark families are under development.
 
 **Status:** development collection with MATLAB-only tests. Automated MATLAB
 regression and Anymatrix integration tests run on GitHub Actions after every
@@ -47,7 +47,7 @@ assertSuccess(results)
 
 ## Matrix generator interfaces
 
-The collection currently has **85 public generators**. Each has a complete
+The collection currently has **88 public generators**. Each has a complete
 entry with formulas, spectral information, applications, parameter conventions,
 and references in the [matrix encyclopedia](docs/MATRIX_ENCYCLOPEDIA.md).
 The [mathematical notes](docs/MATHEMATICS.md) explain the shared OPUC engine.
@@ -59,7 +59,7 @@ The [vibron ESQPT example](examples/vibron_esqpt_sector_gaps.m) compares U(3) an
 | OPUC / Szegő / core matrices | `finite_cmv`, `opuc_matrix`, `jacobi_szego`, `bernstein_szego`, `circular_beta`, `circular_jacobi`, `rogers_szego`, `geronimus_cmv`, `periodic_cmv`, `bernstein_szego_finite`, `lee_yang_ising`, `scattering_zipper`, `rational_opuc`, `unitary_rank_one_update`, `etna_hessenberg` |
 | Random and signal-processing | `haar_unitary`, `haar_orthogonal`, `haar_wavelet`, `daubechies_wavelet`, `haar_special_unitary`, `haar_unimodular_coe`, `haar_unimodular_cse`, `haar_tensor_power`, `haar_block_tensor_power` |
 | Signal-processing transforms | `orthogonal_dct`, `discrete_hartley`, `cazac_circulant`, `fresnel_transform`, `affine_fourier`, `finite_zak`, `time_frequency_shift`, `periodic_hilbert`, `discrete_fourier`, `discrete_sine`, `walsh_hadamard`, `dpss_transform`, `graph_fourier`, `blaschke_potapov`, `orthogonal_butterfly`, `complex_hadamard`, `krawtchouk_transform`, `hahn_transform`, `dual_hahn_transform` |
-| Riemannian geometry | `sphere_geodesic_transport` |
+| Riemannian geometry and gauge holonomy | `sphere_geodesic_transport`, `sphere_geodesic_holonomy`, `hyperbolic_triangle_holonomy`, `lattice_wilson_loop` |
 | Quantum maps, walks, and algorithms | `split_step_walk`, `dirac_automaton`, `grover_operator`, `quantum_baker`, `quantum_cat_map`, `kicked_harper`, `kicked_top`, `extended_lipkin_propagator`, `vibron_2d_esqpt`, `agassi_propagator`, `floquet_ising`, `selfdual_kicked_ising`, `driven_kitaev`, `kicked_rotor`, `dual_unitary_circuit`, `xxz_floquet`, `kicked_bose_hubbard`, `jaynes_cummings`, `chalker_coddington`, `unitary_almost_mathieu`, `szegedy_walk`, `coined_graph_walk`, `metric_quantum_graph` |
 | Matrix functions and dilations | `cayley_jacobi`, `polar_unitary`, `julia_unitary`, `entangled_reflection` |
 | Quantum group actions | `tensor_permutation` |
@@ -345,6 +345,51 @@ orthogonal extension—not an arbitrarily chosen tangent-frame matrix—
 is the well-defined finite matrix in the database. The spectrum is
 the exactly known pair exp(±i theta), where theta=acos(x'*y),
 and n-2 copies of 1. Antipodal points are excluded.
+
+
+## Closed geodesic holonomy and non-Abelian Wilson loops
+
+~~~matlab
+% Great-sphere triangle around the e1,e2,e3 octant:
+H = sphere_geodesic_holonomy(3,eye(3));
+Sh = sphere_geodesic_holonomy(3,eye(3),'spectral');
+
+% O(n) path-ordered ambient transport on a large sphere:
+Hf = sphere_geodesic_holonomy(8192,[],'operator');
+
+% A triangle in the curvature -1 Poincare disk (2x2 geometry);
+% n>2 explicitly embeds the 2x2 holonomy as R +/- I_(n-2).
+Z = [0;.45;.35i];
+P = hyperbolic_triangle_holonomy(2,Z);
+Ph = hyperbolic_triangle_holonomy(64,Z,'spectral');
+
+% Lattice gauge link holonomy. The default four links lie in SU(n).
+W = lattice_wilson_loop(8);
+links = lattice_wilson_loop(8,[],'links');
+Wop = lattice_wilson_loop(8,links,'operator');
+~~~
+
+Unlike parallel transport between *different* tangent spaces, transport
+around a closed loop is a genuine orthogonal endomorphism at its
+basepoint. For spherical geodesic triangles the finite eigenvalues
+are a conjugate spherical-excess pair and n-2 copies of 1. The
+spherical polygon generator also handles longer loops, whose
+higher-dimensional SO(n-1) holonomy need not have a single
+eigenphase pair.
+
+Hyperbolic triangle holonomy has rotation angle equal to **minus**
+the oriented hyperbolic area, in curvature -1; only its leading
+2x2 block represents tangent transport. Additional identity
+coordinates permit scalable normal-matrix benchmarks without
+asserting that the hyperbolic tangent space itself has dimension n.
+
+A Wilson loop is an ordered product of non-Abelian **unitary gauge
+links**. Changing local gauge bases conjugates the loop at the
+basepoint, leaving its eigenvalues and traces invariant. Default
+links are deterministic SU(n) plaquette factors; user-supplied
+U(n) links may have nonunit determinant. The generic Wilson-loop
+finite eigenphase law is unknown. Operator mode applies the
+unitary factors without assembling their product.
 
 ## Install as an Anymatrix external group
 
