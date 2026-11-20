@@ -750,6 +750,30 @@
       ],
       "permalink": "https://doi.org/10.1515/9781400830244",
       "alternate_permalink": "https://sites.uclouvain.be/absil/amsbook/"
+    },
+    {
+      "number": 97,
+      "dois": [
+        "10.1007/3-540-30666-8"
+      ],
+      "permalink": "https://doi.org/10.1007/3-540-30666-8",
+      "alternate_permalink": ""
+    },
+    {
+      "number": 98,
+      "dois": [
+        "10.1017/S0962492902000144"
+      ],
+      "permalink": "https://doi.org/10.1017/S0962492902000144",
+      "alternate_permalink": ""
+    },
+    {
+      "number": 99,
+      "dois": [
+        "10.3389/fams.2023.1165371"
+      ],
+      "permalink": "https://doi.org/10.3389/fams.2023.1165371",
+      "alternate_permalink": ""
     }
   ]
 }
