@@ -178,7 +178,10 @@ construction for a continuous infinite OPUC measure.
 
 **Order:** n. Input is an admissible polynomial of degree n in
 descending monomial coefficients, with n **simple** unit-circle roots,
-and optionally positive cyclic spectral weights. Such a polynomial
+and optionally positive cyclic spectral weights. For a polynomial,
+the root ordering is not intrinsic; WEIGHTS are therefore paired
+with roots sorted by increasing principal phase angle in [-pi,pi].
+Such a polynomial
 is necessarily **self-inversive**, but self-inversiveness alone
 does *not* ensure circle-rootedness (for example, z²−3z+1).
 The generator checks both coefficient reciprocity and numerical
