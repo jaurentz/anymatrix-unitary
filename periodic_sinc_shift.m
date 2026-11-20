@@ -16,6 +16,8 @@ function [U,properties]=periodic_sinc_shift(n,delta,output)
 %   That implementation uses FFTs in O(N log N) per right-hand side.
 %   Even N is intentionally excluded: real orthogonal fractional
 %   shifts require an explicit Nyquist-frequency convention.
+%   [1] https://openlibrary.org/books/OL4407364M/Circulant_matrices
+%   [94] https://doi.org/10.1093/imanum/drv060
 properties={'square','unitary','normal','orthogonal','real', ...
     'circulant','scalable','parameter-dependent'};
 if nargin==0,U=[];return;end
