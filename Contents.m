@@ -109,6 +109,7 @@
 %   driven_kitaev        Two-step driven Kitaev BdG operator.
 %   kicked_rotor         Quantum kicked rotor (Fourier grid and kinetic phases).
 %   dual_unitary_circuit Dual-unitary two-qubit brickwork Floquet circuit.
+%   clifford_circuit     Ordered stabilizer Clifford gates; exact atomic presets.
 %   xxz_floquet          Integrable six-vertex XXZ brickwork Floquet circuit.
 %   kicked_bose_hubbard Two-mode bosonic Floquet dimer, order n+1.
 %   jaynes_cummings     Sparse cavity-QED propagator, order 2(n+1).

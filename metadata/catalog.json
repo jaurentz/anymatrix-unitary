@@ -1661,6 +1661,21 @@
       "matrix_free_supported": true,
       "operator_kernel": "um_gyroscopic_oscillator_apply",
       "operator_note": "Sparse rational actions with energy-metric Cholesky; physical circle-spectral pencil and continuous QEP separately exposed. Sparse solves may incur fill-in."
+    },
+    {
+      "id": "clifford_circuit",
+      "status": "implemented",
+      "category": "quantum",
+      "matrix_order": "2^q, q=1..20 (explicit <=10)",
+      "representation": "ordered Clifford local-gate words H,S,SDG, Pauli, CNOT/CZ/SWAP; fixed global-phase convention; Pauli normalizer",
+      "spectral_reference": "exact finite trace eigenphase atoms and multiplicities for identity/single-gate presets, unknown analytic finite multiset for general words",
+      "encyclopedia_references": [
+        128,
+        129
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_circuit_apply",
+      "operator_note": "Shared local-gate statevector and adjoint actions, O(gates*2^q) arithmetic; no dense unitary in operator mode. Clifford finite phase structure does not imply CUE."
     }
   ],
   "probability_measures": [
