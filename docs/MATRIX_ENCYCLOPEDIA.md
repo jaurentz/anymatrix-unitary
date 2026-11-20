@@ -2758,6 +2758,62 @@ exp(tK) on the ambient n-dimensional complex space. The eigenphase-difference
 formula connects geometric transport to unitary conjugation but represents
 a different real action. See Lie-group parallel transport [99].
 
+### Time-dependent noncommuting SO(n) flows — [`time_skew_magnus.m`](../time_skew_magnus.m)
+
+**Order:** n>=3. This benchmark treats the time-dependent nonquantum
+flow Y'(t)=A(t)Y(t), with Y(0)=I and **real skew-symmetric**
+
+```math
+A(t)=A_0+\gamma\sin(\nu t)A_1,\qquad
+[A_0,A_1]\ne0.
+```
+
+The default sparse A0 and A1 use first- and second-neighbor skew
+links, respectively. For every n>=3 their commutator is nonzero.
+Consequently there is no reduction to a single time-independent
+matrix exponential for general gamma. This distinguishes the model
+from `lie_geodesic_transport`, `polar_unitary`, and
+the nonlinear matrix-valued `lohe_matrix_flow`.
+
+For h=T/m and stage midpoint times t_j=(j-1/2)h, the **second-order
+commutator-free exponential midpoint** scheme is
+
+```math
+Q_j=\exp(hA(t_j)),\qquad U_m=Q_m\cdots Q_1.
+```
+
+The second supported scheme is **implicit/Cayley midpoint**,
+
+```math
+Q_j=(I-hA(t_j)/2)^{-1}(I+hA(t_j)/2),\qquad
+U_m=Q_m\cdots Q_1.
+```
+
+Both are second-order methods (not an asserted fourth-order modified
+Cayley–Magnus scheme). In exact arithmetic every stage belongs to
+SO(n), so both products are exactly orthogonal with determinant +1.
+The Cayley operator caches sparse LU factorizations of I±hA/2,
+applies each factor and reverse-order adjoint with sparse solves;
+complex multi-RHS vectors are supported. The exponential variant
+caches dense `expm` factors and does **not** claim exact sparse
+exponential actions. Both methods are symmetric in step
+reversal, but this does not imply that a nonautonomous flow
+is autonomous or that generic SO(2k) stages preserve canonical J.
+Indeed, the default n=4 example is **not** symplectic.
+
+An independent high-accuracy ODE integration checks second-order
+global convergence for genuinely noncommuting stages. The generic
+finite trace **eigenphase law is unknown analytically**.
+When gamma=0, stage matrices commute, so the `'spectral'`
+mode obtains exact algebraic exponent/Cayley eigenphase maps of
+the numerical eigenvalues of A0 (independent of forming U).
+This is not a closed-form eigenphase law for the nonautonomous case.
+
+**Applications:** geometric integration, nonautonomous rotation
+systems, orthogonality-preserving time-ordered numerical benchmarks.
+References: Celledoni, Marthinsen and Owren (2003) [122],
+and Hairer, Lubich and Wanner [97].
+
 ## Geometric integration: positive-metric unit-circle pencils
 
 ### Symplectic-Euler oscillator steps within `geometric_oscillator.m`
@@ -3469,3 +3525,5 @@ statistics and symmetry-preserving numerical methods.
 120. P. P. Vaidyanathan, *Multirate Systems and Filter Banks*, Prentice-Hall, 1993. [Publisher](https://www.informit.com/store/multirate-systems-and-filter-banks-9780136057185).
 
 121. R. E. A. C. Paley, “On Orthogonal Matrices,” *Journal of Mathematics and Physics* **12** (1933), 311–320. [DOI](https://doi.org/10.1002/sapm1933121311).
+
+122. E. Celledoni, A. Marthinsen and B. Owren, “Commutator-free Lie group methods,” *Future Generation Computer Systems* **19** (2003), 341–352. [DOI](https://doi.org/10.1016/S0167-739X(02)00161-9).
