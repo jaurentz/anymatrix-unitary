@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0.0",
-  "updated": "2026-11-18",
+  "updated": "2026-11-20",
   "bibliography": "docs/MATRIX_ENCYCLOPEDIA.md",
   "notes": "Publication DOIs validated against Crossref metadata, arXiv preprint DOI in reference 14 is DataCite registered (not a journal-article DOI), and non-DOI items use stable publisher/library/archival links. The 2021 AFDM conference paper (reference 50) is distinct from the 2022 arXiv article formerly linked. References 58-68 add eigenvalue-problem literature; external nonlinear benchmarks are categorized separately from public unitary matrix generators. References 77-83 review the seven quantum-information publications, including two references retained as context-only; 84-85 support unimodular circular ensembles and efficient Haar eigenvalue sampling. References 86-87 document the original Lohe U(d) matrix synchronization flow and geometric time-discretizations; the later Schrödinger–Lohe wavefunction study is not needed for the matrix generator.",
   "references": [
@@ -678,6 +678,22 @@
       ],
       "permalink": "https://doi.org/10.3934/dcdsb.2021308",
       "alternate_permalink": "https://arxiv.org/abs/2110.12366"
+    },
+    {
+      "number": 88,
+      "dois": [
+        "10.1016/j.jfa.2007.11.004"
+      ],
+      "permalink": "https://doi.org/10.1016/j.jfa.2007.11.004",
+      "alternate_permalink": "https://arxiv.org/abs/0704.3456"
+    },
+    {
+      "number": 89,
+      "dois": [
+        "10.1016/j.aml.2019.03.024"
+      ],
+      "permalink": "https://doi.org/10.1016/j.aml.2019.03.024",
+      "alternate_permalink": "https://arxiv.org/abs/1710.00087"
     }
   ]
 }
