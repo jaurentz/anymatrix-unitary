@@ -1511,6 +1511,20 @@
       "matrix_free_supported": false,
       "operator_kernel": null,
       "operator_note": "Spectral mode avoids large lift via small d-by-d eigensolve and elementary symmetric moments; no true fast operator claimed."
+    },
+    {
+      "id": "bosonic_symmetric_power",
+      "status": "implemented",
+      "category": "quantum",
+      "matrix_order": "binomial(d+p-1,p) with p>=0",
+      "representation": "normalized repeated-row/column permanents, N<=100 and p<=7 explicit",
+      "spectral_reference": "exact repeated occupation products of d one-particle eigenvalues and complete homogeneous trace moments",
+      "encyclopedia_references": [
+        117
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": null,
+      "operator_note": "Explicit small permanent matrices only; spectral mode avoids lift using d-by-d eigensolve and O(d*p) per-moment recurrence; no generic fast action."
     }
   ],
   "probability_measures": [

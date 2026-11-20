@@ -1720,6 +1720,39 @@ zero, whereas the product-state numerical range is the real interval
 `[1-2/d,1]`. This separation is informative for quantum certification but
 does not change the empirical trace spectral measure.
 
+### Bosonic symmetric-power lift — [`bosonic_symmetric_power.m`](../bosonic_symmetric_power.m)
+
+For a one-particle V in U(d) and p indistinguishable bosons in d
+modes, Sym^p(V) is a unitary matrix of order N=binomial(d+p-1,p)
+on the normalized occupation-number basis (n_1,...,n_d), with
+nonnegative occupancies summing to p. The mode-occupation ordering
+is the lexicographic order of the underlying stars-and-bars separators.
+For output occupation m and input n, repeat the rows of V according
+to m and its columns according to n. The transition amplitude is
+the permanent of this p-by-p repeated-index matrix, divided by
+sqrt(prod(m_j!)*prod(n_j!)). These factorial normalizations follow
+from normalized bosonic creation operators and are essential for
+strict unitarity. P=0 gives [1], p=1 gives V, and d=1 gives V^p.
+
+The exact N trace-eigenphases are all products of p one-particle
+eigenvalues with **repetition allowed**, counted by occupation
+multiplicity. For integer k the normalized trace moment is the
+complete homogeneous symmetric polynomial
+h_p(z_1^k,...,z_d^k)/N, evaluated by an O(d*p) recurrence.
+Thus a large many-body spectral reference is available without
+forming the N-by-N matrix. The explicit Ryser-permanent method
+is intentionally restricted to N<=100 and p<=7, and there is
+**no claimed generic fast matrix-free operator**.
+
+This is a proper symmetric subrepresentation of V^(tensor p);
+it differs from the fermionic exterior power, in which occupancy
+is limited to 0 or 1 and determinants replace permanents. This
+family provides exact phase-multiplicity tests for linear optics
+and bosonic many-body problems.
+
+**Reference [117]:** S. Scheel, *Permanents in linear optical
+networks* (2004), [arXiv](https://arxiv.org/abs/quant-ph/0406127).
+
 ### Fermionic exterior-power lift — [`fermionic_exterior_power.m`](../fermionic_exterior_power.m)
 
 Given V in U(d) and a number p of conserved fermions, 0<=p<=d,
@@ -3142,3 +3175,5 @@ statistics and symmetry-preserving numerical methods.
 115. A. Ipp and D. Müller, “Implicit schemes for real-time lattice gauge theory,” *European Physical Journal C* **78** (2018), 884. [DOI](https://doi.org/10.1140/epjc/s10052-018-6323-x); [open access](https://pmc.ncbi.nlm.nih.gov/articles/PMC6315017/).
 
 116. S. Bravyi, “Lagrangian representation for fermionic linear optics,” *Quantum Information and Computation* **5** (2005), 216–238. [DOI](https://doi.org/10.26421/QIC5.3-3); [preprint](https://arxiv.org/abs/quant-ph/0404180).
+
+117. S. Scheel, “Permanents in linear optical networks,” arXiv:quant-ph/0406127 (2004). [Preprint](https://arxiv.org/abs/quant-ph/0406127).
