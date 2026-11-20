@@ -31,8 +31,9 @@ for n=[3 4 7 11]
     verifyLessThan(testCase,norm(H'*H-eye(n),'fro'),5e-12*n);
     verifyLessThan(testCase,norm(H*V(:,1)-V(:,1)),5e-12*n);
     verifyLessThan(testCase,abs(det(H)-1),5e-11*n);
-    verifyLessThan(testCase(norm(H-eye(n),'fro')>0),1);
-    verifyLessThan(testCase,svd(H-eye(n),'econ')(3),1e-11*n);
+    singular=svd(H-eye(n));
+    verifyGreaterThan(testCase,singular(1),1e-5);
+    verifyLessThan(testCase,singular(3),1e-11*n);
     S=sphere_geodesic_holonomy(n,V,'spectral');
     verifyEqual(testCase,S.finite.kind,'exact');
     verifyEqual(testCase,numel(S.finite.eigenvalues()),n);
