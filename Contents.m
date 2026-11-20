@@ -11,6 +11,7 @@
 % Orthogonal polynomials on the unit circle:
 %   finite_cmv           Five-diagonal CMV; terminal 'pencil' mode for factors A,B.
 %   inverse_opuc         Inverse eigenphases/positive cyclic weights to finite CMV.
+%   circle_polynomial_unitary Unit-circle polynomial to strict unitary core realization.
 %   opuc_matrix          General finite unitary twisted-core matrix.
 %   jacobi_szego         Jacobi-Szego/Geronimus family, four representations.
 %   bernstein_szego      Poisson/Bernstein-Szego measure, four representations.
