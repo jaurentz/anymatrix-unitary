@@ -2684,6 +2684,78 @@ transport identity in the regression tests.
   Floquet Ising models, kicked tops, cat maps and interferometer meshes.
   Different symmetry sectors and truncations cannot be conflated. [26]
 
+### Graph connection-Laplacian unitary propagators — [`graph_connection_propagator.m`](../graph_connection_propagator.m)
+
+**Order:** N=nq, with n graph vertices and q complex fiber
+coordinates per vertex. For every oriented representative edge
+(i,j), the supplied q-by-q unitary connection link R_ij
+maps the **fiber at j to the fiber at i**. A nonnegative
+undirected weight w_ij determines the Hermitian graph
+connection Laplacian:
+
+```math
+(L_\nabla x)_i=\sum_{j\sim i}w_{ij}(x_i-R_{ij}x_j),\quad
+R_{ji}=R_{ij}^*,\qquad
+x^*L_\nabla x=\sum_{\{i,j\}}w_{ij}\|x_i-R_{ij}x_j\|^2\ge0.
+```
+
+The finite **unitary** matrix in this family is
+`U(t)=expm(-1i*t*L_nabla)`. The sparse positive-semidefinite
+Laplacian itself is **not** unitary. `'laplacian'` returns
+its complete sparse matrix, oriented links, weights and
+gauge convention. For moderate N, `'matrix'` computes the
+dense true matrix exponential, which is unitary to numerical
+rounding and has eigenphases `exp(-it*lambda_j(L_nabla))`.
+For a generic supplied graph no closed-form analytical
+trace phase distribution is asserted.
+
+The default N-cycle has unit edge weights, identity interior
+links, and a diagonal q-by-q closing holonomy with phases
+`phi_a=0.33*a` for a=1,...,q. Each channel's exact
+Laplacian eigenvalues and propagator eigenphases are
+
+```math
+\lambda_{a,k}=2-2\cos\left(\frac{2\pi k+\phi_a}{n}\right),
+\qquad z_{a,k}=\exp(-it\lambda_{a,k}),\quad k=0,\ldots,n-1.
+```
+
+This default therefore has **exact finite trace spectral
+data** with equal weights 1/(nq) over all channels and sites.
+General non-Abelian graph links need not commute and
+their finite eigenvalue laws remain unknown analytically.
+
+Under a local unitary frame change G_i, the links transform as
+`R'_{ij}=G_i R_{ij}G_j^*` and the full operator is conjugated
+by D=diag(G_i): `L'=DLD^*`, `U'=DUD^*`. This is genuine
+gauge covariance; no assumption is made that the user-supplied
+links arise from Levi–Civita parallel transport on a mesh.
+
+For large graphs, `'cayley_operator'` supplies a separately
+**labeled approximation**, the s-fold implicit midpoint
+rational map
+
+```math
+Q_s=\left[(I+itL_\nabla/(2s))^{-1}
+(I-itL_\nabla/(2s))\right]^s.
+```
+
+This approximation is exactly unitary in exact arithmetic,
+admits sparse cached-LU forward/adjoint actions and converges
+to `U(t)` at second order in 1/s for fixed t.
+It is **not identical to exp(-itL_nabla)**, and is not registered
+as an exact matrix-free action for the primary family.
+Generic polynomial/Krylov exponential actions are not falsely
+certified as exactly unitary.
+
+**Applications:** discrete vector diffusion, gauge-aware geometric
+graphs, connection-aware spectral density estimation, and finite
+unitary approximation benchmarks. Distinct from the
+single-cycle block permutation `connection_cycle` and the
+general block-monomial `bundle_transport` families.
+
+References: Singer and Wu, *Vector diffusion maps and the
+connection Laplacian* [123], and Crane, Desbrun and Schröder [98].
+
 ## Geometry: geodesics, discrete connections, and holonomy
 
 The shortest-arc spherical transport operator is already provided by [`sphere_geodesic_transport.m`](../sphere_geodesic_transport.m); its geometric interpretation is also discussed by Fiori [100]. The construction is not duplicated here.
@@ -3557,3 +3629,5 @@ statistics and symmetry-preserving numerical methods.
 121. R. E. A. C. Paley, “On Orthogonal Matrices,” *Journal of Mathematics and Physics* **12** (1933), 311–320. [DOI](https://doi.org/10.1002/sapm1933121311).
 
 122. E. Celledoni, A. Marthinsen and B. Owren, “Commutator-free Lie group methods,” *Future Generation Computer Systems* **19** (2003), 341–352. [DOI](https://doi.org/10.1016/S0167-739X(02)00161-9).
+
+123. A. Singer and H.-T. Wu, “Vector diffusion maps and the connection Laplacian,” *Communications on Pure and Applied Mathematics* **65** (2012), 1067–1144. [DOI](https://doi.org/10.1002/cpa.21395).
