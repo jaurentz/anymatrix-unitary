@@ -2685,23 +2685,60 @@ representation structure. [108]
 
 ### Periodic sinc/Dirichlet fractional shift — [`periodic_sinc_shift.m`](../periodic_sinc_shift.m)
 
-**Order:** positive ODD n. **Parameter:** real fractional grid shift tau.
-With the negative-exponent normalized DFT F and centered Fourier
-frequencies k=-(n-1)/2,...,(n-1)/2,
+**Order:** arbitrary positive n, with an explicit distinction between odd-
+and even-order constructions. **Parameter:** real shift tau in grid samples.
+The default call is unchanged: it requires ODD n and gives the real
+orthogonal translation with the centered Fourier modes
+`k=-(n-1)/2,...,(n-1)/2`. Let F be the normalized negative-exponent DFT:
 
 ```math
-U_n(\tau)=F^*\,\mathrm{diag}\bigl(e^{-2\pi i k\tau/n}\bigr)F,
-\qquad U_n(\tau)^TU_n(\tau)=I.
+U_n(\tau)=F^*\,\mathrm{diag}(e^{-2\pi i k\tau/n})F.
 ```
 
-The matrix is real, orthogonal and circulant; its entries are
-translated periodic Dirichlet-cardinal kernel samples, with the
-exact displayed eigenphases. Composition obeys
-`U_n(tau)*U_n(sigma)=U_n(tau+sigma)`. A matrix-free FFT action
-provides O(n log n) multiplies and transposes. Even n is excluded:
-the unpaired Nyquist frequency needs an explicit real-orthogonal
-convention for noninteger shifts. **Applications:** periodic
-bandlimited interpolation, phase-density benchmarks. [1,52]
+For odd n, each nonzero frequency has its negative-frequency conjugate,
+so the matrix is real, orthogonal and circulant. It is a periodic
+Dirichlet-cardinal interpolation matrix, and `U(1)` is the forward cyclic
+permutation P. Its eigenvalues are the displayed finite Fourier multipliers.
+
+**Even-order obstruction.** The cyclic permutation is one cycle of length
+even n, and therefore `det(P)=(-1)^(n-1)=-1`. Every continuous path
+`Q(t)` in the real orthogonal group with `Q(0)=I` has determinant +1
+throughout (the determinant maps continuously into the discrete set
+`{+1,-1}`). Consequently no continuous real-orthogonal fractional shift
+can join I to P for even n, whether or not a group composition law is
+required. In the DFT basis, the single real Nyquist mode must have a
+continuous real eigenvalue, hence must remain +1 when starting at I,
+whereas P acts as -1 on it.
+
+The **explicit complex-unitary variant** uses
+`periodic_sinc_shift(n,tau,'matrix','complex')` for EVEN n. Frequencies
+are in FFT order with positive Nyquist `k=n/2`: `0,1,...,n/2,
+-n/2+1,...,-1`. This defines a continuous one-parameter unitary group,
+including the full `U(1)=P`, but matrices are generally complex rather
+than real. It is also the corresponding choice of phase parameters in
+the existing `phase_circulant` family, rather than an unrelated class.
+
+The **Nyquist-frozen variant** uses
+`periodic_sinc_shift(n,tau,'matrix','nyquist-frozen')`. All paired
+frequencies retain their multipliers, but the Nyquist multiplier is fixed
+at +1. This is a continuous real orthogonal one-parameter group in
+SO(n), **not** an interpolation to P. At tau=1 it equals
+`P+2vv^T`, where `v_j=(-1)^j/sqrt(n)` for `j=0,...,n-1`.
+In particular, the even-order `n=2` frozen family is the identity.
+
+For every admitted variant, `U(tau)U(sigma)=U(tau+sigma)`.
+The optional `'operator'` mode applies the matrix and its conjugate
+adjoint to multiple columns in O(n log n) using FFTs; `'spectral'`
+returns exactly the finite trace-measure eigenphases and moments.
+As elsewhere in the library, operator flag `'transp'` means the
+conjugate adjoint. No universal continuous limiting phase density
+is asserted without specifying how tau scales with n.
+
+**Applications:** periodic interpolation and fractional translation,
+Dirichlet kernels, exact eigenphase benchmarks, determinant topology
+of O(n), and verification of unitary versus orthogonal numerical
+implementations. Existing code uses the same odd-order default and is
+unaffected. [1,52]
 
 ### Not-yet-admitted related candidates
 
