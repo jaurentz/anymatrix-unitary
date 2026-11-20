@@ -74,9 +74,19 @@ tp=theta;tp(3)=tp(3)+step;
 tm=theta;tm(3)=tm(3)-step;
 fd=(optical_mesh(n,'reck',tp,phi,ext)- ...
     optical_mesh(n,'reck',tm,phi,ext))/(2*step);
-% dG(theta)/dtheta is itself unitary, so the full product's
-% single-core derivative preserves vector norms.
-verifyLessThan(tc,abs(norm(fd*v)-norm(v)),1e-7*norm(v));
+% The embedded two-mode derivative has nonzero action only on
+% its two addressed modes. All preceding/following cores are unitary.
+% Therefore the sensitivity norm equals the entering pair's norm.
+pairs=independent_schedule(n,'reck');
+before=v;
+for t=1:2
+    j=pairs(t);c=cos(theta(t));s=sin(theta(t));
+    G=[exp(1i*phi(t))*c,-s;exp(1i*phi(t))*s,c];
+    before(j:j+1)=G*before(j:j+1);
+end
+pair=pairs(3);
+expected=norm(before(pair:pair+1));
+verifyLessThan(tc,abs(norm(fd*v)-expected),1e-7*max(1,expected));
 verifyGreaterThan(tc,norm(fd*v),1e-5);
 verifyLessThan(tc,norm(a'*a-eye(n),'fro'),3e-12);
 end
