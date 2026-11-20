@@ -11,6 +11,8 @@ function [U,properties]=gauss_laguerre_transform(n,alpha)
 %   The eigenvalues of U are not the Laguerre quadrature nodes.
 %   Explicit Golub-Welsch construction; no fast matvec is claimed.
 %   Reference: Golub and Welsch, Math. Comp. 23 (1969), 221-230.
+%   [93] https://doi.org/10.1090/S0025-5718-69-99647-1
+%   [95] https://www.cambridge.org/core/journals/acta-numerica/article/abs/fast-algorithms-using-orthogonal-polynomials/4FAD8C7C28EC20EE7583465C1A89AA3D
 properties={'square','unitary','normal','orthogonal','real', ...
     'scalable','parameter-dependent'};
 if nargin==0,U=[];return;end
