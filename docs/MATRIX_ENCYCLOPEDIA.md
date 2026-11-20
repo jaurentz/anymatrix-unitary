@@ -3554,7 +3554,7 @@ statistics and symmetry-preserving numerical methods.
 **Reference:** [115] (Ipp and Müller).
 
 
-### Heterogeneous gyroscopic/Coriolis oscillators — [gyroscopic_oscillator.m](../gyroscopic_oscillator.m)
+### Heterogeneous gyroscopic/Coriolis oscillators — [`gyroscopic_oscillator.m`](../gyroscopic_oscillator.m)
 
 **Order:** $2n$ real orthogonal ($n\geq2$ mechanical displacements). **Application:** conservative gyroscopic vibrations and rotating-structure models. This is a reproducible *benchmark specialization*, not experimental apparatus data.
 
