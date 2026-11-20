@@ -4,7 +4,7 @@ A MATLAB collection of finite **unitary and orthogonal test matrices**, designed
 an external group for [Anymatrix](https://github.com/north-numerical-computing/anymatrix).
 The repository is organized around reproducible mathematical constructions,
 known spectral information, and executable regression tests. It contains
-85 generators; additional benchmark families are under development.
+89 generators; additional benchmark families are under development.
 
 **Status:** development collection with MATLAB-only tests. Automated MATLAB
 regression and Anymatrix integration tests run on GitHub Actions after every
@@ -47,7 +47,7 @@ assertSuccess(results)
 
 ## Matrix generator interfaces
 
-The collection currently has **85 public generators**. Each has a complete
+The collection currently has **89 public generators**. Each has a complete
 entry with formulas, spectral information, applications, parameter conventions,
 and references in the [matrix encyclopedia](docs/MATRIX_ENCYCLOPEDIA.md).
 The [mathematical notes](docs/MATHEMATICS.md) explain the shared OPUC engine.
@@ -500,6 +500,29 @@ Unlike the ordinary matrix exponential with a fixed Hermitian generator,
 these systems are coupled and nonlinear; they are not intrinsically a
 structured unitary eigenvalue problem. For source models and discretization
 see [the matrix encyclopedia](docs/MATRIX_ENCYCLOPEDIA.md).
+
+### Riemannian geometry and parallel-transport matrices
+
+The geometry collection reuses the existing sphere-transport generator and adds four distinct constructions. It exposes `sphere_geodesic_transport` (shortest-arc rank-two
+rotation), `grassmann_geodesic` (ambient unitary lift with exact angular
+spectrum), `geodesic_holonomy` (closed spherical geodesic polygon),
+`connection_cycle` (sparse discrete-connection block permutation), and
+`lie_geodesic_transport` (real orthogonal parallel transport on u(n)).
+
+```matlab
+A = sphere_geodesic_transport(1000);               % rank-two sphere transport rotation
+S = grassmann_geodesic(60, [.3;.8], [], 'spectral');
+H = geodesic_holonomy(5,eye(5,3));      % exact triangle eigenphase +/-pi/2
+F = connection_cycle(4096, [], 'operator');
+L = lie_geodesic_transport(10, [], 1); % order 100, sparse, known phases
+```
+
+The holonomy of a spherical triangle has an exact area-driven trace law;
+more general geodesic polygons are not automatically labeled exact.
+The connection cycle is a proposed benchmark based on documented discrete
+connection angles, not a built-in mesh geometry solver. See
+[the encyclopedia](docs/MATRIX_ENCYCLOPEDIA.md) for definitions, provenance,
+and finite-spectrum qualifications.
 
 ## Automatic tests
 

@@ -280,3 +280,23 @@ Gauss--Szego quadrature measure; its nodes with *equal* weights are not,
 in general, distributed according to the original OPUC weight. An
 absolutely continuous circle weight need not give a nonuniform limiting
 unweighted eigenvalue density.
+
+## Geodesic and holonomy spectral benchmark formulas
+
+The four additional geometry-derived generators together with the existing spherical transport family `sphere_geodesic_transport`, `grassmann_geodesic`,
+`geodesic_holonomy`, `connection_cycle`, and `lie_geodesic_transport`
+use the distinction between an **ambient orthogonal/unitary lift** and
+parallel transport between tangent spaces. In particular, sphere rotations
+restrict to true tangent parallel transport; the Grassmann ambient lift does
+not equal the intrinsic tangent-space transport. The left-trivialized Lie
+transport is a real orthogonal action on the n²-dimensional real Lie algebra.
+
+For sphere triangles, Gauss–Bonnet gives the two nontrivial eigenphases
++/- the spherical excess, and n-2 fixed ambient directions. For longer
+geodesic polygons the spectral mode conservatively reports unknown.
+For a cyclic discrete SO(2) connection, U^N is block diagonal and each block
+is the product holonomy R(sum(phi)), which establishes its exact roots-of-
+phase spectrum. The latter is a proposed test construction rather than a
+published mesh operator. For the Lie construction, the commutator map has
+pairwise phase differences and exact trace moments without diagonalizing
+its n²-by-n² matrix. See encyclopedia entries and refs. 96–100.
