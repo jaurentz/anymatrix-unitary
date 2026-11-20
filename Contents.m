@@ -68,6 +68,7 @@
 %
 % Riemannian geometry:
 %   sphere_geodesic_transport  SO(n) lift of tangent geodesic parallel transport.
+%   berry_wilson_loop     Polar-overlap Berry/Wilczek-Zee from moving frames.
 %   graph_connection_propagator  exp(-itL) of a general graph connection Laplacian.
 %
 % Orthogonal polynomial and spherical-harmonic transforms:

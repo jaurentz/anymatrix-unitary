@@ -2756,6 +2756,68 @@ general block-monomial `bundle_transport` families.
 References: Singer and Wu, *Vector diffusion maps and the
 connection Laplacian* [123], and Crane, Desbrun and Schröder [98].
 
+### Non-Abelian Berry/Wilczek–Zee holonomy from moving eigenspaces — [`berry_wilson_loop.m`](../berry_wilson_loop.m)
+
+**Order:** r, the rank of the occupied subspace. The input is a
+closed sequence of m>=2 orthonormal d-by-r frames Q_j, with the
+final overlap closing Q_m to Q_1. Unlike a collection of arbitrary
+gauge links, these frames can represent actual parameter-dependent
+eigenspaces of a band Hamiltonian. The generator does **not**
+claim to infer a Hamiltonian or its occupied eigenstates; the
+user is responsible for supplying physically meaningful frames.
+
+From the adjacent frame overlaps, form
+
+```math
+M_j=Q_j^*Q_{j+1},\quad
+V_j=\mathrm{polar}(M_j)=U_jZ_j^*,\quad
+M_j=U_j\Sigma_jZ_j^*,\quad Q_{m+1}=Q_1,\quad
+W=V_1V_2\cdots V_m.
+```
+
+Although each M_j is generally **contractive** and its raw
+product is not unitary, every V_j is unitary if M_j is
+nonsingular, and therefore W is genuinely in U(r).
+Singular or poorly conditioned overlaps are rejected instead of
+using an arbitrarily chosen polar factor across a rank loss.
+
+Gauge changes Q_j to Q_jG_j imply
+M_j to G_j^*M_jG_(j+1) and V_j to G_j^*V_jG_(j+1), so
+
+```math
+W\mapsto G_1^*WG_1.
+```
+
+Thus the eigenphases, traces and determinant of a closed
+holonomy are gauge invariant, while its individual entries
+depend on the base-frame convention. The `'operator'` mode
+reuses the ordered unitary-link kernel from
+`lattice_wilson_loop`, applying the factors in reverse
+order to vectors and their adjoints in forward order. This
+avoids materializing the full W product and handles complex
+multiple RHS.
+
+The rank-one default is a spinor latitude at polar angle
+theta=1.1. Its sampled polar-overlap Berry phase converges
+quadratically under uniform refinement to
+`exp(i*pi*(1-cos(theta)))` with the stated
+`M_j=Q_j^*Q_(j+1)` orientation.
+For r>=2 the deterministic default has genuinely
+noncommuting link matrices; the `'spectral'` descriptor
+does not invent a generic analytic non-Abelian phase law.
+`'data'` explicitly distinguishes raw overlap products,
+singular values, unitary polar links and sampled W.
+
+Wilson eigenphases alone are not automatically bulk Chern
+numbers or topological invariants; such conclusions require
+a specified gapped band family and the relevant physical
+symmetries or global parameter-space assumptions.
+This **complex occupied-band** fiber is distinct from
+sphere tangent-bundle parallel transport and from
+user-supplied lattice-gauge links.
+
+**Reference:** Wilczek and Zee [124].
+
 ## Geometry: geodesics, discrete connections, and holonomy
 
 The shortest-arc spherical transport operator is already provided by [`sphere_geodesic_transport.m`](../sphere_geodesic_transport.m); its geometric interpretation is also discussed by Fiori [100]. The construction is not duplicated here.
@@ -3631,3 +3693,5 @@ statistics and symmetry-preserving numerical methods.
 122. E. Celledoni, A. Marthinsen and B. Owren, “Commutator-free Lie group methods,” *Future Generation Computer Systems* **19** (2003), 341–352. [DOI](https://doi.org/10.1016/S0167-739X(02)00161-9).
 
 123. A. Singer and H.-T. Wu, “Vector diffusion maps and the connection Laplacian,” *Communications on Pure and Applied Mathematics* **65** (2012), 1067–1144. [DOI](https://doi.org/10.1002/cpa.21395).
+
+124. F. Wilczek and A. Zee, “Appearance of Gauge Structure in Simple Dynamical Systems,” *Physical Review Letters* **52** (1984), 2111–2114. [DOI](https://doi.org/10.1103/PhysRevLett.52.2111).

@@ -1630,6 +1630,20 @@
       "matrix_free_supported": false,
       "operator_kernel": null,
       "operator_note": "Exact matrix via dense expm for moderate n*q. Explicitly labeled distinct unitary sparse Cayley rational approximation offers cached LU operator/adjoint but is not an exact expm action."
+    },
+    {
+      "id": "berry_wilson_loop",
+      "status": "implemented",
+      "category": "geometry",
+      "matrix_order": "r",
+      "representation": "rank-r moving eigenspace frames: polar factors of adjacent overlap contractions around a closed loop",
+      "spectral_reference": "exact sampled Abelian phase for r=1; generic non-Abelian analytic eigenphase multiset unknown",
+      "encyclopedia_references": [
+        124
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_wilson_apply",
+      "operator_note": "O(m r²) per-RHS products of computed polar links via existing um_wilson_apply; no dense r-by-r holonomy multiplication required, but O(m d r) frame storage and SVD setup."
     }
   ],
   "probability_measures": [
