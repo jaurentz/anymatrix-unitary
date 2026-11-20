@@ -116,4 +116,10 @@
 %   szego_matrix            Measure -> finite multiplication matrix.
 %   szego_quadrature        e1 spectral nodes and positive weights.
 %
+% Geometry, geodesics, and parallel transport:
+%   grassmann_geodesic        Grassmann geodesic ambient unitary lift.
+%   geodesic_holonomy         Closed spherical polygon parallel transport.
+%   connection_cycle          Sparse cyclic discrete-connection transport.
+%   lie_geodesic_transport    Orthogonal Lie-algebra geodesic transport.
+%
 % Test runner: test_run. See docs/MATRIX_ENCYCLOPEDIA.md for references.

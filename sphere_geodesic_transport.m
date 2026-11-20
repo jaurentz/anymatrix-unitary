@@ -21,6 +21,8 @@ function [U,properties]=sphere_geodesic_transport(n,x,y,output)
 %   P.-A. Absil, R. Mahony, R. Sepulchre,
 %   Optimization Algorithms on Matrix Manifolds (2008).
 %   https://doi.org/10.1515/9781400830244
+%   S. Fiori, Symmetry 13 (2021), 2092 (same spherical transport geometry).
+%   https://doi.org/10.3390/sym13112092
 properties={'square','unitary','normal','orthogonal','real', ...
     'scalable','eigenvalues','parameter-dependent'};
 if nargin==0,U=[];return;end
