@@ -1232,7 +1232,7 @@
       "spectral_reference": "exact centered Fourier phase multipliers",
       "encyclopedia_references": [
         1,
-        94
+        52
       ],
       "matrix_free_supported": true,
       "operator_kernel": "um_periodic_sinc_apply",
