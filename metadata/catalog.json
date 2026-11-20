@@ -1483,6 +1483,20 @@
       "matrix_free_supported": true,
       "operator_kernel": "um_bundle_transport_apply",
       "operator_note": "O(N*d^2) multi-RHS forward and adjoint actions; O(N*d^2) link storage"
+    },
+    {
+      "id": "gauss_recurrence_transform",
+      "status": "implemented",
+      "category": "signal_processing",
+      "matrix_order": "n",
+      "representation": "dense real orthogonal quadrature transform from arbitrary positive Jacobi recurrence",
+      "spectral_reference": "real Jacobi quadrature nodes known; eigenphases of Q unknown",
+      "encyclopedia_references": [
+        104
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": null,
+      "operator_note": "Dense Golub--Welsch eigensolver O(n^3) setup, O(n^2) multiplication; fast generic method not claimed."
     }
   ],
   "probability_measures": [

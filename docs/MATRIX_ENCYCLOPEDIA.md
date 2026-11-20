@@ -2608,6 +2608,31 @@ conversions. The three Gauss transform generators are constructed through a
 dense Golub--Welsch symmetric eigensolver; this is *not* a claim that the
 current implementation has the fast matvec of Townsend/Slevinsky algorithms.
 
+### General Gaussian transform from Jacobi recurrences — [`gauss_recurrence_transform.m`](../gauss_recurrence_transform.m)
+
+**Order:** n. Input is the real diagonal b_0,...,b_(n-1) and strictly
+positive subdiagonal a_1,...,a_(n-1) of a finite Jacobi tridiagonal
+J=diag(b)+diag(a,1)+diag(a,-1). This gives simple real quadrature nodes,
+positive Gaussian weights and the orthogonal evaluation transform
+Q=V', where columns of V are ascending, first-component-positive
+orthonormal eigenvectors of J. Thus Q'*Q=I and Q*J*Q' is the
+diagonal matrix of quadrature nodes.
+
+The finite eigenphases of Q are **not** the Jacobi nodes; a generic
+analytical trace eigenphase law is unknown. This general generator
+reuses the project's `um_gauss_basis` Golub--Welsch routine, extending
+Legendre, Jacobi, Hermite and Laguerre from built-in recurrence
+coefficients to user-defined classical/nonclassical measures.
+It is a dense O(n^3) setup and O(n^2) multiply, not a claimed fast
+Slevinsky/Townsend transform. At n=1, Q=[1]. Nonpositive recurrence
+subdiagonals are rejected. Numerical conditioning may limit very
+large or tightly clustered recurrences.
+
+**Applications:** arbitrary positive spectral measures and their
+orthogonal polynomial quadrature transforms; reproducible geometric
+and spectral testing. Golub and Welsch [104],
+[DOI](https://doi.org/10.1090/S0025-5718-69-99647-1).
+
 ### Gauss--Jacobi transform — [`gauss_jacobi_transform.m`](../gauss_jacobi_transform.m)
 
 **Order:** n. **Parameters:** alpha,beta > -1. The weight on [-1,1]

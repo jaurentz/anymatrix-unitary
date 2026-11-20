@@ -63,6 +63,7 @@
 %   sphere_geodesic_transport  SO(n) lift of tangent geodesic parallel transport.
 %
 % Orthogonal polynomial and spherical-harmonic transforms:
+%   gauss_recurrence_transform  Orthogonal Gaussian transform from any positive Jacobi recurrence.
 %   gauss_jacobi_transform   Jacobi/Legendre/Chebyshev/Gegenbauer/associated Legendre.
 %   gauss_hermite_transform  Hermite Gauss-quadrature orthogonal basis.
 %   gauss_laguerre_transform Generalized Laguerre quadrature basis.
