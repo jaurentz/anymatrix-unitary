@@ -3893,6 +3893,169 @@ transport setting. The exact diagonal-channel phase identity
 above is elementary algebra applied to that fixed convention.
 
 
+
+## Symmetry-protected cluster-spin Floquet drive — [`cluster_floquet.m`](../cluster_floquet.m)
+
+**A reproducible ideal spin-chain representative, not a generic
+Floquet topology classification.** The matrix order is $2^n$ for
+$n=4,\ldots,20$ spins. Site 1 is the most-significant computational
+qubit, $Z|0\rangle=|0\rangle$. The drive is an ordered product
+of two local unitary layers with a fixed global-phase convention:
+
+```math
+\begin{aligned}
+K_j&=Z_{j-1}X_jZ_{j+1},\\
+U_F(\delta)&=P(\delta)
+ \exp\left(-i\sum_{j\in J}\theta_j K_j\right),\\
+P(\delta)&=\prod_{j=1}^n
+ X_j\exp(-i\delta X_j)
+ =i^n\prod_{j=1}^n\exp[-i(\pi/2+\delta)X_j].
+\end{aligned}
+```
+
+Here $J=\{2,\ldots,n-1\}$ for **open** boundaries, so both
+boundary cluster stabilizers are deliberately absent.
+For **periodic** boundaries use every $j=1,\ldots,n$ with
+indices taken cyclically; n must be even for the
+bipartite symmetry. The real parameters $\theta_j$ may be
+inhomogeneous/disordered. The real pulse detuning $\delta$
+is zero in the exactly solvable limit. The scalar
+$i^n$ fixes the global quasienergy convention: at $\delta=0$,
+$P(0)=\prod_jX_j$. One must not drop this phase when checking
+individual eigenphase multiplicities.
+
+The two commuting parity symmetries are
+
+```math
+G_{\mathrm{o}}=\prod_{j\ \mathrm{odd}}X_j,\qquad
+G_{\mathrm{e}}=\prod_{j\ \mathrm{even}}X_j,\qquad
+[U_F(\delta),G_{\mathrm{o}}]=[U_F(\delta),G_{\mathrm{e}}]=0.
+```
+
+The ideal cluster stabilizers $K_j$ commute mutually,
+and $G_{\mathrm{o}},G_{\mathrm{e}}$ commute with both drive
+layers for every $\delta$. For **open** chains at
+$\delta=0$, the two strictly boundary-supported observables
+$Z_1$ and $Z_n$ commute with the bulk cluster layer but
+anticommute with $P(0)$. Consequently
+
+```math
+U_F(0)Z_1=-Z_1 U_F(0),\qquad
+U_F(0)Z_n=-Z_n U_F(0).
+```
+
+Thus a quasienergy eigenphase $\lambda$ is paired exactly
+with $-\lambda$, separated by $\pi$ modulo $2\pi$.
+This is an **operator-level edge diagnostic**, not an assumption
+about a limiting random-matrix law. Other edge operators
+$X_1Z_2$ and $Z_{n-1}X_n$ also anticommute with the ideal
+drive. Sector-resolved pairing is visible because $Z_1$
+reverses the odd symmetry eigenvalue while leaving the
+even one fixed; for even n, $Z_n$ similarly reverses
+the even symmetry eigenvalue. With periodic boundaries,
+local $Z_1$ no longer commutes with the bulk K terms
+and these exact edge identities do not apply.
+
+**Exact finite trace spectra in the commuting ideal limit.**
+For the open chain, choosing every interior stabilizer
+sign $k_j\in\{-1,1\}$ independently gives
+
+```math
+\lambda_{k,\pm}=
+\pm\exp\left(-i\sum_{j=2}^{n-1}\theta_jk_j\right),
+\qquad\text{each repeated twice}.
+```
+
+There are $2^{n-2}$ interior sign configurations and
+four edge states per configuration; hence the multiset
+contains precisely $2^n$ eigenvalues, counting multiplicities.
+The normalized **global trace** Fourier moments are
+
+```math
+m_\ell^{\mathrm{open}}=
+\begin{cases}
+0,&\ell\text{ odd},\\
+\prod_{j=2}^{n-1}\cos(\ell\theta_j),&\ell\text{ even}.
+\end{cases}
+```
+
+For even periodic chains, use the commuting circuit
+$C=\prod_j CZ_{j,j+1}$, which conjugates
+$X_j$ into $K_j$ and satisfies
+$\prod_j K_j=\prod_jX_j=P(0)$. Consequently the exact
+finite eigenvalues and trace moments are
+
+```math
+\begin{aligned}
+\lambda_k^{\mathrm{per}}&=
+\left(\prod_{j=1}^n k_j\right)
+\exp\left(-i\sum_{j=1}^n\theta_jk_j\right),\\
+m_\ell^{\mathrm{per}}&=
+\begin{cases}
+\prod_j\cos(\ell\theta_j),&\ell\text{ even},\\
+\prod_j[-i\sin(\ell\theta_j)],&\ell\text{ odd}.
+\end{cases}
+\end{aligned}
+```
+
+These are **finite sample trace laws** derived from the
+commuting stabilizer algebra. They are not densities of an
+infinite-dimensional system and not a universal CUE law.
+Although the ideal open-chain trace spectrum has exact
+$\pi$ symmetry, this global fact **alone** does not identify
+an edge-localized mode; the anticommuting local operators
+and the symmetry sectors supply the missing localization
+information. A feature supported on a fixed number of
+states can have negligible normalized trace mass as the
+many-body dimension grows, so the global trace measure and
+edge-resolved probes should not be conflated.
+
+**Symmetry-preserving detuning.** A nonzero $\delta$
+rotates each spin slightly away from the ideal $\pi/2$
+pulse while preserving both $\mathbb Z_2$ symmetries.
+It generally destroys the *exact* boundary anticommutation
+and can produce finite-chain deviations from exact
+$\pi$ pairing. This implementation does not infer
+thermodynamic topological stability, localization or a
+phase transition solely from such finite numerical data.
+Bulk disorder in the commuting $\theta_j K_j$ terms,
+by contrast, leaves ideal $\delta=0$ pairing exact.
+
+**Efficient construction.** Let C be the product of
+nearest-neighbor CZ gates (including the closing bond
+for periodic chains). Then
+$\exp(-i\sum_{j\in J}\theta_jK_j)=
+C[\prod_{j\in J}\exp(-i\theta_jX_j)]C$.
+The generator implements the chronological CZ, X-rotation,
+CZ and pulse gate sequence using existing
+`um_circuit_apply`/`um_gate_apply`.
+It supports dense assembly for $n\le10$ and local
+matrix-free forward/adjoint actions for $n\le20$
+with $O(n2^n)$ state-vector arithmetic per RHS.
+Its `spectral` mode uses the exact finite
+multisets and moments **only** at $\delta=0$; otherwise
+it reports an unknown finite analytic law without
+substituting a numerical eigendecomposition.
+
+This is a **distinct** spin-chain Floquet family from
+the existing Ising, self-dual Ising, XXZ and BdG
+generators. Its $\mathbb Z_2\times\mathbb Z_2$
+cluster symmetry and exact open-edge operator algebra
+are central to the construction.
+
+**References and scope:** Potter, Morimoto and Vishwanath
+[135] and Else and Nayak [136] establish the broader
+Floquet symmetry-protected topology framework. Zhang,
+Jiang, Deng and collaborators [137] demonstrate a
+related driven spin-chain Floquet-SPT phenomenon
+with $\mathbb Z_2\times\mathbb Z_2$ symmetry.
+Our particular commuting-cluster/pulse specialization,
+its fixed phase convention and finite trace moment
+identities are **derived here**; they should not be
+misidentified as exact verbatim equations or disorder
+protocols taken from those papers.
+
+
 ## Bibliography
 
 1. P. J. Davis, *Circulant Matrices*, Wiley, 1979. ISBN 9780471057710. [Library record](https://openlibrary.org/books/OL4407364M/Circulant_matrices).
@@ -4051,3 +4214,8 @@ above is elementary algebra applied to that fixed convention.
 132. C. W. J. Beenakker, “Random-matrix theory of quantum transport,” *Reviews of Modern Physics* **69** (1997), 731–808. [DOI](https://doi.org/10.1103/RevModPhys.69.731); [preprint](https://arxiv.org/abs/cond-mat/9612179).
 133. P. W. Brouwer, K. M. Frahm and C. W. J. Beenakker, “Quantum Mechanical Time-Delay Matrix in Chaotic Scattering,” *Physical Review Letters* **78** (1997), 4737–4740. [DOI](https://doi.org/10.1103/PhysRevLett.78.4737).
 134. L. Erdős, T. Krüger and Y. Nemish, “Scattering in Quantum Dots via Noncommutative Rational Functions,” *Annales Henri Poincaré* **22** (2021), 4205–4269. [DOI](https://doi.org/10.1007/s00023-021-01085-6); [preprint](https://arxiv.org/abs/1911.05112).
+
+
+135. A. C. Potter, T. Morimoto and A. Vishwanath, “Classification of Interacting Topological Floquet Phases in One Dimension,” *Physical Review X* **6** (2016), 041001. [DOI](https://doi.org/10.1103/PhysRevX.6.041001); [preprint](https://arxiv.org/abs/1602.05194).
+136. D. V. Else and C. Nayak, “Classification of topological phases in periodically driven interacting systems,” *Physical Review B* **93** (2016), 201103(R). [DOI](https://doi.org/10.1103/PhysRevB.93.201103); [preprint](https://arxiv.org/abs/1602.04804).
+137. X. Zhang, W. Jiang, J. Deng et al., “Digital quantum simulation of Floquet symmetry-protected topological phases,” *Nature* **607** (2022), 468–473. [DOI](https://doi.org/10.1038/s41586-022-04854-3); [open access](https://pmc.ncbi.nlm.nih.gov/articles/PMC9300455/).
