@@ -750,6 +750,30 @@
       ],
       "permalink": "https://doi.org/10.1515/9781400830244",
       "alternate_permalink": "https://sites.uclouvain.be/absil/amsbook/"
+    },
+    {
+      "number": 97,
+      "dois": [
+        "10.1515/9780691219899"
+      ],
+      "permalink": "https://doi.org/10.1515/9780691219899",
+      "alternate_permalink": "https://press.princeton.edu/books/paperback/9780691203706/visual-differential-geometry-and-forms"
+    },
+    {
+      "number": 98,
+      "dois": [
+        "10.1007/978-3-030-56694-4_33"
+      ],
+      "permalink": "https://doi.org/10.1007/978-3-030-56694-4_33",
+      "alternate_permalink": "https://link.springer.com/chapter/10.1007/978-3-030-56694-4_33"
+    },
+    {
+      "number": 99,
+      "dois": [
+        "10.1140/epjc/s10052-018-6323-x"
+      ],
+      "permalink": "https://doi.org/10.1140/epjc/s10052-018-6323-x",
+      "alternate_permalink": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6315017/"
     }
   ]
 }
