@@ -1061,6 +1061,49 @@
       "matrix_free_supported": false,
       "operator_kernel": null,
       "operator_note": "Implicit dynamical system but each sample is an explicit dense d-by-d unitary. Optional full D-by-D-by-NOSC ensemble output. Second-order exponential midpoint; preserves unitarity, not necessarily determinant one."
+    },
+    {
+      "id": "rational_opuc",
+      "status": "implemented",
+      "category": "opuc",
+      "matrix_order": "n",
+      "representation": "operator Mobius transform of unitary Hessenberg",
+      "spectral_reference": "unitary finite rational recurrence model; general finite counting law unknown",
+      "encyclopedia_references": [
+        88,
+        5
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": "none",
+      "operator_note": "Finite dense matrix; structured rational model with explicit linear solves."
+    },
+    {
+      "id": "blaschke_potapov",
+      "status": "implemented",
+      "category": "random_signal",
+      "matrix_order": "n",
+      "representation": "rank-one rational-inner factors evaluated on the circle",
+      "spectral_reference": "unitary pointwise frequency response; eigenphase winding, no generic trace law",
+      "encyclopedia_references": [
+        61
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_blaschke_apply",
+      "operator_note": "Factorized forward/adjoint action without materializing the N-by-N matrix."
+    },
+    {
+      "id": "orthogonal_butterfly",
+      "status": "implemented",
+      "category": "random_signal",
+      "matrix_order": "n",
+      "representation": "recursive planar-rotation butterfly tree",
+      "spectral_reference": "conjugate-paired unit-circle eigenvalues; angle-distribution dependent",
+      "encyclopedia_references": [
+        89
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_butterfly_apply",
+      "operator_note": "Factorized forward/adjoint action without materializing the N-by-N matrix."
     }
   ],
   "probability_measures": [
