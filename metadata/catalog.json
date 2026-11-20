@@ -1585,6 +1585,21 @@
       "matrix_free_supported": true,
       "operator_kernel": "um_core_apply",
       "operator_note": "Uses existing structured O(n^2) core-factor operator and adjoint; no dense matrix needed; inverse coefficients from finite Szego recurrences."
+    },
+    {
+      "id": "circle_polynomial_unitary",
+      "status": "implemented",
+      "category": "eigenvalue_problems",
+      "matrix_order": "n",
+      "representation": "unitary Hessenberg/CMV core realization of admissible monic simple unimodular-root polynomials",
+      "spectral_reference": "numerically computed polynomial circle roots; trace phase distribution vs prescribed cyclic weights",
+      "encyclopedia_references": [
+        5,
+        9
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_core_apply",
+      "operator_note": "Uses inverse_opuc and OPUC core-product implicit actions, not a nonunitary monomial companion; strict block-CMV pencil optional."
     }
   ],
   "probability_measures": [

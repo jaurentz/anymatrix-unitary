@@ -174,6 +174,55 @@ construction for a continuous infinite OPUC measure.
 “Darboux transformations for CMV matrices,”
 [DOI](https://doi.org/10.1016/j.aim.2016.03.042).
 
+### Unit-circle polynomial / companion-like unitary realization — [`circle_polynomial_unitary.m`](../circle_polynomial_unitary.m)
+
+**Order:** n. Input is an admissible polynomial of degree n in
+descending monomial coefficients, with n **simple** unit-circle roots,
+and optionally positive cyclic spectral weights. For a polynomial,
+the root ordering is not intrinsic; WEIGHTS are therefore paired
+with roots sorted by increasing principal phase angle in [-pi,pi].
+Such a polynomial
+is necessarily **self-inversive**, but self-inversiveness alone
+does *not* ensure circle-rootedness (for example, z²−3z+1).
+The generator checks both coefficient reciprocity and numerical
+root unimodularity, rejects repeated or poorly resolved roots,
+and limits the numerical `roots`-based procedure to moderate n.
+
+A generic monomial companion matrix is **not** generally unitary.
+Instead this generator passes the computed circle-root nodes and
+positive weights to `inverse_opuc` and obtains a **strictly
+unitary** finite Hessenberg (default) or CMV realization.
+The characteristic polynomial agrees, up to rounding in the
+root computation, with the monic supplied polynomial; the
+Hessenberg realization is built from adjacent Verblunsky
+unitary cores rather than a nonunitary companion similarity.
+This is a constructive example of a paraorthogonal-polynomial
+unitary representation. The terminal unimodular closure is
+computed from the root product, and all interior Verblunsky
+coefficients have modulus less than one.
+
+`'operator'` uses the existing adjacent-core fast actions and
+Hermitian adjoint. `'pencil'` reuses the strict block-CMV
+unitary generalized pencil, which shares the spectrum but
+need not equal the Hessenberg matrix. `'parameters'` returns
+the normalized input coefficients, computed nodes, Schur
+parameters and boundary phase.
+
+The **trace** eigenphase measure weights every root equally,
+whereas the prescribed **cyclic** measure uses the independent
+positive weights for e1. `'spectral'` provides these two
+distinct finite atomic measures, but its root phases come
+from a numerical `roots` calculation, not a symbolic
+closed-form polynomial root formula. General monomial,
+Jacobi-basis and rational-basis **nonunitary** colleagues or
+companions are not automatically included in this class.
+
+**Applications:** structure-preserving unitary eigenvalue
+benchmarks and finite paraorthogonal eigenvalue problems.
+**References:** Simon, *OPUC* [5], unit-circle quadrature [9],
+and structured companion background
+[DOI](https://doi.org/10.1016/0024-3795(94)90190-2).
+
 ### Inverse spectral CMV / Hessenberg — [`inverse_opuc.m`](../inverse_opuc.m)
 
 **Order:** n. Input is a collection of n **distinct** unit-circle
