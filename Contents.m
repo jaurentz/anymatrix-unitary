@@ -55,6 +55,14 @@
 %   orthogonal_butterfly Recursive real orthogonal butterfly (fast implicit action).
 %   complex_hadamard     Dita-deformed Fourier-block complex Hadamard matrices.
 %
+% Orthogonal polynomial and spherical-harmonic transforms:
+%   gauss_hermite_transform Hermite Gauss-quadrature orthogonal basis.
+%   gauss_laguerre_transform Generalized Laguerre quadrature basis.
+%   associated_legendre_transform Gauss-Jacobi spherical block.
+%   wigner_rotation       Irreducible SO(3) unitary representation.
+%   spherical_harmonic_rotation Direct sum of Wigner blocks.
+%   periodic_sinc_shift   Real circulant fractional shift, FFT.
+%
 % Nonlinear unitary dynamics:
 %   lohe_matrix_flow     Coupled Lohe oscillators on U(d), geometric midpoint integration.
 %
