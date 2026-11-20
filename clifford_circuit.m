@@ -31,7 +31,7 @@ properties={'square','unitary','normal','complex', ...
     'parameter-dependent','scalable'};
 if nargin==0,U=[];return;end
 validateattributes(q,{'numeric'},{'scalar','real','finite','integer','>=',1,'<=',20});
-if nargin<2 || isempty(circuit)
+if nargin<2 || (isempty(circuit) && ~iscell(circuit) && ~isstruct(circuit))
     if q==1,circuit='hadamard';else,circuit='bell';end
 end
 if nargin<3 || isempty(mode),mode='matrix';end
