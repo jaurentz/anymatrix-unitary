@@ -43,7 +43,7 @@ end
 function test_associated_legendre_fixed_order(tc)
 for n=[1 2 5 14]
     for m=[0 1 3 8]
-        Q=associated_legendre_transform(n,m);
+        Q=gauss_jacobi_transform(n,m,m);
         orthogonal(tc,Q,5e-12*n);
         k=1:n-1;
         e=sqrt(k.*(k+2*m)./((2*k+2*m).^2-1));
@@ -58,8 +58,8 @@ for n=[1 2 5 14]
         end
     end
 end
-verifyEqual(tc,associated_legendre_transform(8,0), ...
-    associated_legendre_transform(8),'AbsTol',1e-12);
+verifyEqual(tc,gauss_jacobi_transform(8,0,0), ...
+    gauss_jacobi_transform(8),'AbsTol',1e-12);
 end
 
 function test_wigner_representation_and_exact_character(tc)
@@ -193,11 +193,8 @@ for n=[1 2 6 18]
         orthogonal(tc,Q,1e-11*n);
         verifyGreaterThanOrEqual(tc,min(Q(:,1)),-2e-14);
     end
-    for m=[0 1 3]
-        A=associated_legendre_transform(n,m);
-        J=gauss_jacobi_transform(n,m,m);
-        verifyLessThan(tc,norm(A-J,'fro'),1e-10*n);
-    end
+    % Fixed-order associated Legendre is the Jacobi(m,m) specialization;
+    % the Jacobi-intertwining test above validates it independently.
 end
 verifyEqual(tc,gauss_jacobi_transform(8), ...
     gauss_jacobi_transform(8,0,0),'AbsTol',1e-12);

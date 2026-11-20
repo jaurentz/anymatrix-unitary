@@ -10,9 +10,9 @@ function [U,properties]=gauss_jacobi_transform(n,alpha,beta)
 %   Quadrature nodes are the Jacobi tridiagonal eigenvalues, NOT
 %   the unit-circle eigenvalues of U.
 %   Dense O(N^3) Golub-Welsch setup; fast DLT algorithm not included.
-%   [93] https://doi.org/10.1090/S0025-5718-69-99647-1
-%   [94] https://doi.org/10.1093/imanum/drv060
-%   [95] https://www.cambridge.org/core/journals/acta-numerica/article/abs/fast-algorithms-using-orthogonal-polynomials/4FAD8C7C28EC20EE7583465C1A89AA3D
+%   [104] https://doi.org/10.1090/S0025-5718-69-99647-1
+%   [105] https://doi.org/10.1093/imanum/drv060
+%   [106] https://www.cambridge.org/core/journals/acta-numerica/article/abs/fast-algorithms-using-orthogonal-polynomials/4FAD8C7C28EC20EE7583465C1A89AA3D
 properties={'square','unitary','normal','orthogonal','real', ...
     'scalable','parameter-dependent'};
 if nargin==0,U=[];return;end

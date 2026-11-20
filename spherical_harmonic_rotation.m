@@ -12,7 +12,7 @@ function [U,properties]=spherical_harmonic_rotation(L,alpha,beta,gamma,output)
 %   eigenphase density tends to (1-|theta|/c)/c on |theta|<=c.
 %   Sparse block-diagonal explicit representation; no fast
 %   spherical transform (FFT/butterfly) is claimed.
-%   [97] https://doi.org/10.1016/j.jcp.2009.05.014
+%   [108] https://doi.org/10.1016/j.jcp.2009.05.014
 properties={'square','unitary','normal','sparse', ...
     'scalable','parameter-dependent'};
 if nargin==0,U=[];return;end

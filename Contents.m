@@ -36,6 +36,7 @@
 %   tensor_permutation  Orthogonal tensor-factor permutation matrix.
 %   entangled_reflection Maximally entangled rank-one unitary phase reflector.
 %   haar_wavelet         Orthogonal finite Haar wavelet analysis transform.
+%   daubechies_wavelet   Periodized orthogonal D4/db3/db4/db2 multilevel wavelet. (db2 default)
 %
 % Non-quantum signal-processing transforms:
 %   orthogonal_dct       Orthonormal DCT-I, II, III, IV finite transforms.
@@ -54,15 +55,24 @@
 %   blaschke_potapov    Rational inner / lossless rank-one product frequency response.
 %   orthogonal_butterfly Recursive real orthogonal butterfly (fast implicit action).
 %   complex_hadamard     Dita-deformed Fourier-block complex Hadamard matrices.
+%   krawtchouk_transform Orthogonal binomial Krawtchouk polynomial transform.
+%   hahn_transform        Orthogonal Hahn transform via Jacobi difference operator.
+%   dual_hahn_transform   Dual Hahn quadratic-grid polynomial transform.
+%
+% Riemannian geometry:
+%   sphere_geodesic_transport  SO(n) lift of tangent geodesic parallel transport.
 %
 % Orthogonal polynomial and spherical-harmonic transforms:
-%   gauss_jacobi_transform  Jacobi/Legendre/Chebyshev/Gegenbauer quadrature.
-%   gauss_hermite_transform Hermite Gauss-quadrature orthogonal basis.
+%   gauss_jacobi_transform   Jacobi/Legendre/Chebyshev/Gegenbauer/associated Legendre.
+%   gauss_hermite_transform  Hermite Gauss-quadrature orthogonal basis.
 %   gauss_laguerre_transform Generalized Laguerre quadrature basis.
-%   associated_legendre_transform Gauss-Jacobi spherical block.
-%   wigner_rotation       Irreducible SO(3) unitary representation.
+%   wigner_rotation         Irreducible SO(3) unitary representation.
 %   spherical_harmonic_rotation Direct sum of Wigner blocks.
-%   periodic_sinc_shift   Real circulant fractional shift, FFT.
+%   periodic_sinc_shift     Real circulant fractional shift, FFT.
+%
+% Geometric and symplectic integration:
+%   geometric_oscillator  Periodic symplectic oscillator; exact phases and metric pencil.
+%   geometric_fem_wave    Finite-element Dirichlet wave; mass-weighted palindromic QEP.
 %
 % Nonlinear unitary dynamics:
 %   lohe_matrix_flow     Coupled Lohe oscillators on U(d), geometric midpoint integration.
@@ -76,6 +86,7 @@
 %   dirac_automaton      Periodic 1D Dirac cellular automaton (size 2n).
 %   grover_operator      Grover reflections with exact degeneracies.
 %   quantum_baker        Balazs-Voros / Saraceno quantum baker map.
+%   quantum_cat_map      Finite metaplectic quantization of hyperbolic toral map.
 %   kicked_harper        Finite-torus kicked Harper Floquet map.
 %   kicked_top           Spin-j quantum kicked top.
 %   extended_lipkin_propagator  Nuclear two-level boson phase-transition evolution.
@@ -116,5 +127,11 @@
 %   szego_verblunsky        Measure -> interior Schur coefficients.
 %   szego_matrix            Measure -> finite multiplication matrix.
 %   szego_quadrature        e1 spectral nodes and positive weights.
+%
+% Geometry, geodesics, and parallel transport:
+%   grassmann_geodesic        Grassmann geodesic ambient unitary lift.
+%   geodesic_holonomy         Closed spherical polygon parallel transport.
+%   connection_cycle          Sparse cyclic discrete-connection transport.
+%   lie_geodesic_transport    Orthogonal Lie-algebra geodesic transport.
 %
 % Test runner: test_run. See docs/MATRIX_ENCYCLOPEDIA.md for references.

@@ -1150,6 +1150,177 @@
       "operator_note": "O(n) core-factor action; Type III near-decoupled four-block structure."
     },
     {
+      "id": "quantum_cat_map",
+      "status": "implemented",
+      "category": "quantum",
+      "matrix_order": "n",
+      "representation": "chirp-DFT-chirp metaplectic torus map",
+      "spectral_reference": "unitary fixed-phase quantization; generic finite trace law unknown",
+      "encyclopedia_references": [
+        93
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_cat_apply",
+      "operator_note": "Two diagonal chirps and an FFT, O(n log n) action, including adjoint."
+    },
+    {
+      "id": "krawtchouk_transform",
+      "status": "implemented",
+      "category": "random_signal",
+      "matrix_order": "n",
+      "representation": "normalized binomial Krawtchouk functions via Jacobi eigendecomposition",
+      "spectral_reference": "involution with exact +/-1 eigenvalues; binomial grid Jacobi eigenvalues differ",
+      "encyclopedia_references": [
+        94
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": "none",
+      "operator_note": "Construction uses dense symmetric eigensolver O(n^3); no implicit fast transform asserted."
+    },
+    {
+      "id": "daubechies_wavelet",
+      "status": "implemented",
+      "category": "random_signal",
+      "matrix_order": "n",
+      "representation": "periodized compactly supported D4 (db2) orthogonal multilevel wavelet",
+      "spectral_reference": "identity for zero levels; generic finite eigenphase law unknown",
+      "encyclopedia_references": [
+        15
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_daubechies_apply",
+      "operator_note": "Finite periodic two-channel four-tap filter, O(n) forward/adjoint action."
+    },
+    {
+      "id": "hahn_transform",
+      "status": "implemented",
+      "category": "random_signal",
+      "matrix_order": "n",
+      "representation": "normalized finite Hahn polynomial transform via symmetric Jacobi eigenbasis",
+      "spectral_reference": "no general closed-form matrix eigenphase law; Jacobi nodes are quadratic in degree",
+      "encyclopedia_references": [
+        95
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": "none",
+      "operator_note": "Dense symmetric eigendecomposition O(n^3); polynomial analysis transform."
+    },
+    {
+      "id": "dual_hahn_transform",
+      "status": "implemented",
+      "category": "random_signal",
+      "matrix_order": "n",
+      "representation": "normalized dual Hahn polynomial transform on quadratic lattice",
+      "spectral_reference": "spectra conjugate to Hahn transform due transpose duality; generic laws unknown",
+      "encyclopedia_references": [
+        95
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": "none",
+      "operator_note": "Exactly the transpose dual family to Hahn under matching conventions."
+    },
+    {
+      "id": "sphere_geodesic_transport",
+      "status": "implemented",
+      "category": "geometry",
+      "matrix_order": "n",
+      "representation": "SO(n) ambient extension of Levi-Civita shortest-geodesic tangent transport",
+      "spectral_reference": "exact conjugate pair exp(±i acos(x'*y)) plus n-2 ones",
+      "encyclopedia_references": [
+        96,
+        100
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_geodesic_apply",
+      "operator_note": "Rank-two ambient rotation; O(n) action and adjoint; antipodal ambiguity rejected."
+    },
+    {
+      "id": "grassmann_geodesic",
+      "status": "implemented",
+      "category": "geometry",
+      "matrix_order": "n",
+      "representation": "ambient lift of Grassmann geodesic via orthonormal frames",
+      "spectral_reference": "exact principal/tangent singular-angle pairs plus unit eigenvalues",
+      "encyclopedia_references": [
+        97
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_grassmann_apply",
+      "operator_note": "O(nr) frame-based low-rank action, possibly complex"
+    },
+    {
+      "id": "geodesic_holonomy",
+      "status": "implemented",
+      "category": "geometry",
+      "matrix_order": "n",
+      "representation": "product of shortest-geodesic sphere rotations",
+      "spectral_reference": "exact spherical triangle area law; generic polygons unknown",
+      "encyclopedia_references": [
+        100
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_holonomy_apply",
+      "operator_note": "O(nm) tangent holonomy via m rank-two legs"
+    },
+    {
+      "id": "connection_cycle",
+      "status": "implemented",
+      "category": "geometry",
+      "matrix_order": "2N",
+      "representation": "block-cyclic discrete connection SO(2) rotations",
+      "spectral_reference": "exact Nth roots of holonomy rotation pair",
+      "encyclopedia_references": [
+        98
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_connection_cycle_apply",
+      "operator_note": "O(N) block-permutation action"
+    },
+    {
+      "id": "lie_geodesic_transport",
+      "status": "implemented",
+      "category": "geometry",
+      "matrix_order": "n^2",
+      "representation": "left-trivialized parallel transport on U(n) Lie algebra",
+      "spectral_reference": "exact eigenphase differences and normalized trace moments",
+      "encyclopedia_references": [
+        99
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_lie_transport_apply",
+      "operator_note": "O(n^2) pair rotations with O(n^2) parameter storage"
+    },
+    {
+      "id": "geometric_oscillator",
+      "status": "implemented",
+      "category": "eigenvalue_problems",
+      "matrix_order": "2n",
+      "representation": "real dense orthogonal-symplectic Fourier-normalized step",
+      "spectral_reference": "exact Gauss-Pade / stable Verlet frequency maps; conjugate eigenphase pairs",
+      "encyclopedia_references": [
+        101,
+        102
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_geometric_oscillator_apply",
+      "operator_note": "FFT-based O(n log n) actions for exact periodic frequency samples; 'pencil' and 'polynomial' modes expose physical structure separately."
+    },
+    {
+      "id": "geometric_fem_wave",
+      "status": "implemented",
+      "category": "eigenvalue_problems",
+      "matrix_order": "2n",
+      "representation": "real dense orthogonal-symplectic; sparse consistent mass and stiffness; DST-I operator",
+      "spectral_reference": "exact finite generalized FEM frequencies and Gauss-Pade/Verlet phases",
+      "encyclopedia_references": [
+        101,
+        103
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_geometric_wave_apply",
+      "operator_note": "O(n log n) DST-I action through um_dst1_apply. Physical positive-metric circle-spectral pencil and mass-weighted palindromic QEP exposed separately."
+    },
+    {
       "id": "gauss_hermite_transform",
       "status": "implemented",
       "category": "signal_processing",
@@ -1157,8 +1328,8 @@
       "representation": "dense orthogonal Gauss-Hermite evaluation",
       "spectral_reference": "matrix eigenphases unknown; Gauss-Hermite nodes are NOT eigenvalues",
       "encyclopedia_references": [
-        93,
-        98
+        104,
+        109
       ],
       "matrix_free_supported": false,
       "operator_kernel": null,
@@ -1172,24 +1343,8 @@
       "representation": "dense orthogonal generalized Laguerre evaluation",
       "spectral_reference": "matrix eigenphases unknown; Gauss-Laguerre nodes are NOT eigenvalues",
       "encyclopedia_references": [
-        93,
-        95
-      ],
-      "matrix_free_supported": false,
-      "operator_kernel": null,
-      "operator_note": "Explicit eigendecomposition/exponential; no fast action claimed."
-    },
-    {
-      "id": "associated_legendre_transform",
-      "status": "implemented",
-      "category": "signal_processing",
-      "matrix_order": "n",
-      "representation": "dense orthogonal fixed-order associated-Legendre / Gauss-Jacobi block",
-      "spectral_reference": "conjugate-paired unit circle; Gauss-Jacobi nodes are NOT eigenvalues",
-      "encyclopedia_references": [
-        93,
-        95,
-        96
+        104,
+        106
       ],
       "matrix_free_supported": false,
       "operator_kernel": null,
@@ -1203,7 +1358,7 @@
       "representation": "dense spherical harmonic irreducible SO(3) representation",
       "spectral_reference": "exact exp(-i*m*delta), m=-ell:ell",
       "encyclopedia_references": [
-        97
+        108
       ],
       "matrix_free_supported": false,
       "operator_kernel": null,
@@ -1217,7 +1372,7 @@
       "representation": "block-sparse direct sum of Wigner rotations",
       "spectral_reference": "exact phase multiplicities L-|m|; exact Fejer-square moments and triangular scaling limit",
       "encyclopedia_references": [
-        97
+        108
       ],
       "matrix_free_supported": false,
       "operator_kernel": null,
@@ -1246,9 +1401,10 @@
       "representation": "dense orthogonal Gauss-Jacobi evaluation for alpha,beta>-1",
       "spectral_reference": "matrix eigenphases unknown; quadrature nodes belong to real Jacobi tridiagonal",
       "encyclopedia_references": [
-        93,
-        94,
-        95
+        104,
+        105,
+        106,
+        107
       ],
       "matrix_free_supported": false,
       "operator_kernel": null,
