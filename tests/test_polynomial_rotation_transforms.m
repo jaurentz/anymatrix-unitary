@@ -137,6 +137,67 @@ verifyError(tc,@()F(zeros(5,2),'bad'), ...
     'um_periodic_sinc_apply:Flag');
 end
 
+function test_even_periodic_sinc_variants(tc)
+% Even-order cyclic shift has determinant -1, so no continuous
+% real-orthogonal group can join it to I.
+for n=[2 4 6 12]
+    P=circshift(eye(n),1,1);
+    v=(-1).^(0:n-1)'/sqrt(n); % normalized Nyquist eigenvector
+    verifyLessThan(tc,abs(det(P)+1),2e-12*n);
+    for tau=[0 .375 1 -1.25]
+        C=periodic_sinc_shift(n,tau,'matrix','complex');
+        R=periodic_sinc_shift(n,tau,'matrix','nyquist-frozen');
+        unitary(tc,C,5e-12*n);
+        orthogonal(tc,R,5e-12*n);
+        verifyLessThan(tc,abs(det(R)-1),5e-12*n);
+        % Independent Fourier formulas, including the Nyquist choice.
+        k=(0:n-1)';k(k>n/2)=k(k>n/2)-n;
+        F=exp(-2i*pi*((0:n-1)'*(0:n-1))/n)/sqrt(n);
+        D=exp(-2i*pi*k*tau/n);
+        verifyLessThan(tc,norm(C-F'*diag(D)*F,'fro'),5e-12*n);
+        D(n/2+1)=1;
+        verifyLessThan(tc,norm(R-F'*diag(D)*F,'fro'),5e-12*n);
+        X=randn(n,3)+1i*randn(n,3);
+        for variant={'complex','nyquist-frozen'}
+            name=variant{1};
+            A=periodic_sinc_shift(n,tau,'matrix',name);
+            op=periodic_sinc_shift(n,tau,'operator',name);
+            verifyEqual(tc,op([],'size'),[n n]);
+            verifyLessThan(tc,norm(op(X,'notransp')-A*X,'fro'),5e-11*n);
+            verifyLessThan(tc,norm(op(X,'transp')-A'*X,'fro'),5e-11*n);
+            verifyLessThan(tc,norm(op(X,'ctransp')-A'*X,'fro'),5e-11*n);
+            verifyLessThan(tc,norm(op(op(X,'notransp'),'ctransp')-X,'fro'),5e-11*n);
+            S=periodic_sinc_shift(n,tau,'spectral',name);
+            verifyEqual(tc,S.finite.kind,'exact');
+            verifyEqual(tc,S.dimension,n);
+            for j=0:3
+                verifyLessThan(tc,abs(sum(S.finite.eigenvalues().^j)-trace(A^j)),5e-11*n);
+            end
+        end
+    end
+    verifyLessThan(tc,norm(periodic_sinc_shift(n,1,'matrix','complex')-P,'fro'),4e-12*n);
+    verifyLessThan(tc,norm(periodic_sinc_shift(n,1,'matrix','nyquist-frozen')- ...
+        (P+2*(v*v')),'fro'),4e-12*n);
+    verifyGreaterThan(tc,norm(periodic_sinc_shift(n,1,'matrix','nyquist-frozen')-P,'fro'),1.9);
+    for name={'complex','nyquist-frozen'}
+        variant=name{1};
+        A=periodic_sinc_shift(n,.3,'matrix',variant);
+        B=periodic_sinc_shift(n,.4,'matrix',variant);
+        C=periodic_sinc_shift(n,.7,'matrix',variant);
+        verifyLessThan(tc,norm(A*B-C,'fro'),5e-11*n);
+        verifyLessThan(tc,norm(periodic_sinc_shift(n,0,'matrix',variant)-eye(n),'fro'),5e-12*n);
+    end
+end
+verifyError(tc,@()periodic_sinc_shift(4,.3), ...
+    'periodic_sinc_shift:Order');
+verifyError(tc,@()periodic_sinc_shift(4,.3,'matrix','real'), ...
+    'periodic_sinc_shift:Order');
+verifyError(tc,@()periodic_sinc_shift(5,.3,'matrix','complex'), ...
+    'periodic_sinc_shift:Variant');
+verifyError(tc,@()periodic_sinc_shift(4,.3,'matrix','bogus'), ...
+    'periodic_sinc_shift:Variant');
+end
+
 function orthogonal(tc,Q,tol)
 verifyTrue(tc,isreal(Q));
 unitary(tc,Q,tol);
