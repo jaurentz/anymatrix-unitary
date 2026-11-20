@@ -134,6 +134,46 @@ algorithms and conjugation-symmetric phase density. **References:** [3, 4].
 
 ## B. OPUC, Szegő measures, and core-factorized representations
 
+### Finite OPUC Christoffel measure change — [`opuc_christoffel.m`](../opuc_christoffel.m)
+
+Given an n-atomic positive finite measure
+`mu=sum_j w_j delta_(z_j)` on the unit circle and any finite
+complex `zeta`, the positive Christoffel transformation is
+
+```math
+d\widetilde\mu(z)
+=\frac{|z-\zeta|^2}{\sum_jw_j|z_j-\zeta|^2}\,d\mu(z).
+```
+
+The routine forms this new discrete measure and delegates inverse
+unitary CMV/Hessenberg construction to `inverse_opuc`; it does
+**not** implement a CMV Darboux matrix factorization. The two
+operations should not be identified. `'operator'` reuses adjacent
+Verblunsky core actions and their Hermitian adjoints.
+
+If zeta is unequal to **every** original support point,
+all transformed weights remain strictly positive. Therefore
+the **finite trace spectrum** (the uniform measure on the
+support) is unchanged, even though the distinguished-vector
+measure, Verblunsky parameters and actual CMV matrix change.
+In contrast, if zeta equals a support point exactly, that
+atom is removed and the finite matrix's order decreases.
+There is no claim of preserved finite eigenphases or order
+under that support loss. If all mass is annihilated, the
+transformation is invalid. Close or nearly coincident nodes
+may make inverse Szego reconstruction ill conditioned and
+are rejected when numerical breakdown is detected.
+
+The additional metadata output records the old and new support
+and weights, the positive normalization and removed indices;
+the terminal `'spectral'` mode exposes the new trace and
+cyclic measures separately. A finite atomic Christoffel
+transformation does **not** automatically give a faithful
+construction for a continuous infinite OPUC measure.
+**References:** Simon, *OPUC* [5]; Cantero and collaborators,
+“Darboux transformations for CMV matrices,”
+[DOI](https://doi.org/10.1016/j.aim.2016.03.042).
+
 ### Inverse spectral CMV / Hessenberg — [`inverse_opuc.m`](../inverse_opuc.m)
 
 **Order:** n. Input is a collection of n **distinct** unit-circle

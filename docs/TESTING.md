@@ -67,3 +67,9 @@ temporary copy. No alternate test implementation is maintained.
 Wavelet-packet tests cover db2/db3/db4 and custom QMF filters, full and
 incomplete binary trees, n=2 periodic wraparound, adjoint multi-RHS
 operators, exact reconstruction, and preservation of the legacy DWT API.
+
+The finite Christoffel OPUC helper tests positive reweighting,
+preservation of support eigenphases versus changed cyclic weights,
+exact support loss and dimension reduction, conjugation covariance,
+operator/adjoint actions and annihilation guards. It delegates to
+`inverse_opuc` rather than registering a redundant Anymatrix class.

@@ -134,6 +134,7 @@
 %   szego_verblunsky        Measure -> interior Schur coefficients.
 %   szego_matrix            Measure -> finite multiplication matrix.
 %   szego_quadrature        e1 spectral nodes and positive weights.
+%   opuc_christoffel         Positive finite-circle measure transform, inverse CMV.
 %
 % Geometry, geodesics, and parallel transport:
 %   grassmann_geodesic        Grassmann geodesic ambient unitary lift.
