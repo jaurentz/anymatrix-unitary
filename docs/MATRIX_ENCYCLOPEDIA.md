@@ -2157,7 +2157,7 @@ exact displayed eigenphases. Composition obeys
 provides O(n log n) multiplies and transposes. Even n is excluded:
 the unpaired Nyquist frequency needs an explicit real-orthogonal
 convention for noninteger shifts. **Applications:** periodic
-bandlimited interpolation, phase-density benchmarks. [1,94]
+bandlimited interpolation, phase-density benchmarks. [1,52]
 
 ### Not-yet-admitted related candidates
 
