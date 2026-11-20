@@ -190,8 +190,8 @@
       "problem_type": "positive_metric_pencil_and_palindromic_polynomial",
       "status": "implemented",
       "reference_ids": [
-        97,
-        98
+        101,
+        102
       ],
       "pencil": "A=G*M, B=G, G>0, M'*G*M=G; B\\A=M generally nonorthogonal",
       "root_relation": "eigenvalues of M and T*M/T lie on circle; Verlet additionally has P(z)=z^2 I+(h^2 K-2I)z+I",
@@ -204,8 +204,8 @@
       "problem_type": "positive_metric_pencil_and_mass_weighted_palindromic_polynomial",
       "status": "implemented",
       "reference_ids": [
-        97,
-        99
+        101,
+        103
       ],
       "pencil": "A=G*Mstep, B=G, G>0, Mstep'*G*Mstep=G; Mstep generally nonorthogonal",
       "root_relation": "for uniform Dirichlet piecewise-linear FE, exactly known generalized frequencies; Verlet P(z)=z^2*Mass+z*(h^2*K-2*Mass)+Mass",

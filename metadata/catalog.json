@@ -1227,11 +1227,68 @@
       "representation": "SO(n) ambient extension of Levi-Civita shortest-geodesic tangent transport",
       "spectral_reference": "exact conjugate pair exp(±i acos(x'*y)) plus n-2 ones",
       "encyclopedia_references": [
-        96
+        96,
+        100
       ],
       "matrix_free_supported": true,
       "operator_kernel": "um_geodesic_apply",
       "operator_note": "Rank-two ambient rotation; O(n) action and adjoint; antipodal ambiguity rejected."
+    },
+    {
+      "id": "grassmann_geodesic",
+      "status": "implemented",
+      "category": "geometry",
+      "matrix_order": "n",
+      "representation": "ambient lift of Grassmann geodesic via orthonormal frames",
+      "spectral_reference": "exact principal/tangent singular-angle pairs plus unit eigenvalues",
+      "encyclopedia_references": [
+        97
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_grassmann_apply",
+      "operator_note": "O(nr) frame-based low-rank action, possibly complex"
+    },
+    {
+      "id": "geodesic_holonomy",
+      "status": "implemented",
+      "category": "geometry",
+      "matrix_order": "n",
+      "representation": "product of shortest-geodesic sphere rotations",
+      "spectral_reference": "exact spherical triangle area law; generic polygons unknown",
+      "encyclopedia_references": [
+        100
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_holonomy_apply",
+      "operator_note": "O(nm) tangent holonomy via m rank-two legs"
+    },
+    {
+      "id": "connection_cycle",
+      "status": "implemented",
+      "category": "geometry",
+      "matrix_order": "2N",
+      "representation": "block-cyclic discrete connection SO(2) rotations",
+      "spectral_reference": "exact Nth roots of holonomy rotation pair",
+      "encyclopedia_references": [
+        98
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_connection_cycle_apply",
+      "operator_note": "O(N) block-permutation action"
+    },
+    {
+      "id": "lie_geodesic_transport",
+      "status": "implemented",
+      "category": "geometry",
+      "matrix_order": "n^2",
+      "representation": "left-trivialized parallel transport on U(n) Lie algebra",
+      "spectral_reference": "exact eigenphase differences and normalized trace moments",
+      "encyclopedia_references": [
+        99
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_lie_transport_apply",
+      "operator_note": "O(n^2) pair rotations with O(n^2) parameter storage"
     },
     {
       "id": "geometric_oscillator",
@@ -1241,8 +1298,8 @@
       "representation": "real dense orthogonal-symplectic Fourier-normalized step",
       "spectral_reference": "exact Gauss-Pade / stable Verlet frequency maps; conjugate eigenphase pairs",
       "encyclopedia_references": [
-        97,
-        98
+        101,
+        102
       ],
       "matrix_free_supported": true,
       "operator_kernel": "um_geometric_oscillator_apply",
@@ -1256,8 +1313,8 @@
       "representation": "real dense orthogonal-symplectic; sparse consistent mass and stiffness; DST-I operator",
       "spectral_reference": "exact finite generalized FEM frequencies and Gauss-Pade/Verlet phases",
       "encyclopedia_references": [
-        97,
-        99
+        101,
+        103
       ],
       "matrix_free_supported": true,
       "operator_kernel": "um_geometric_wave_apply",

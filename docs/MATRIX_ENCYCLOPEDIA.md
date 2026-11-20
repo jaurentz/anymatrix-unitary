@@ -2308,6 +2308,85 @@ transport identity in the regression tests.
   Floquet Ising models, kicked tops, cat maps and interferometer meshes.
   Different symmetry sectors and truncations cannot be conflated. [26]
 
+## Geometry: geodesics, discrete connections, and holonomy
+
+The shortest-arc spherical transport operator is already provided by [`sphere_geodesic_transport.m`](../sphere_geodesic_transport.m); its geometric interpretation is also discussed by Fiori [100]. The construction is not duplicated here.
+
+### Grassmannian geodesic ambient lift — [`grassmann_geodesic.m`](../grassmann_geodesic.m)
+
+**Order:** n; real orthogonal or complex unitary according to the supplied
+orthonormal frame B=[Y,U] of width 2r. With tangent singular angles a_j,
+the ambient lift is identity outside span(B) and on span(B) rotates by
+
+```math
+C=\begin{bmatrix}\cos(D)&-\sin(D)\\
+                  \sin(D)&\cos(D)\end{bmatrix},
+\qquad D=\mathrm{diag}(a_1,\ldots,a_r).
+```
+
+Its exact eigenvalues are e^{+/-i a_j} and 1 with multiplicity n-2r.
+The subspace path Y(t)=Y cos(tD)+U sin(tD) is a Grassmann geodesic; this
+**ambient lift is not intrinsic parallel transport of the tangent bundle**.
+The low-rank action costs O(nr). See Edelman–Arias–Smith [97].
+
+### Spherical geodesic-loop holonomy — [`geodesic_holonomy.m`](../geodesic_holonomy.m)
+
+**Order:** n>=3. Columns of POINTS specify vertices of a closed spherical
+geodesic polygon. Multiply shortest-geodesic ambient rotations in path order.
+The result fixes the base point and is orthogonal; its restriction to the
+base tangent space is the Levi-Civita holonomy.
+
+For a triangle with Gram matrix G of its three unit vertices, the unsigned
+spherical excess in the induced oriented 3-plane is
+
+```math
+a=2\mathrm{atan2}\left(\sqrt{\det G},
+1+G_{12}+G_{23}+G_{31}\right),
+```
+
+and the ambient eigenvalues are e^{+/-ia} and n-2 copies of 1.
+For polygons with more than three vertices, this generator does not claim
+an automatic analytic spectrum; the implicit action takes O(nm) for m legs.
+See sphere parallel transport [100] and the classical Gauss–Bonnet theorem.
+
+### Cyclic discrete-connection transport — [`connection_cycle.m`](../connection_cycle.m)
+
+**Order:** 2N; exactly sparse real orthogonal block-permutation matrix.
+Each leg carries a prescribed SO(2) connection rotation R(phi_j).
+The holonomy is R(sum(phi_j)), and the exact eigenvalues are
+
+```math
+\exp\left(i\frac{2\pi k\pm\sum_j\phi_j}{N}\right),
+\qquad k=0,\ldots,N-1.
+```
+
+This is an **original proposed benchmark** assembled from documented local
+discrete-connection rotations; the generator accepts connection angles but
+does not compute them from a triangulated mesh. Spectral density of this
+particular cyclic model is a pair of interlaced root grids, not an arbitrary
+mesh spectrum. Reference on discrete connection angles: Crane–Desbrun–
+Schröder [98].
+
+### Lie-group geodesic parallel transport — [`lie_geodesic_transport.m`](../lie_geodesic_transport.m)
+
+**Order:** n² real orthogonal matrix representing transport on the real Lie
+algebra u(n) of skew-Hermitian matrices. Along exp(tK), K=i diag(kappa),
+the left-trivialized transport is exp(-t ad_K/2). In the real orthonormal
+basis consisting of n diagonal and n(n-1)/2 off-diagonal generator pairs,
+the result is a sparse direct sum of 2x2 rotations and n singleton 1's.
+Exact eigenvalues are e^{+/-it(kappa_j-kappa_k)/2} for j<k, plus n ones.
+
+```math
+\frac{1}{n^2}\mathrm{tr}(Q^\ell)
+=\frac{1}{n^2}\left|\sum_{j=1}^n
+e^{i\ell t\kappa_j/2}\right|^2.
+```
+
+This is a canonical-coordinate transport matrix, not multiplication by
+exp(tK) on the ambient n-dimensional complex space. The eigenphase-difference
+formula connects geometric transport to unitary conjugation but represents
+a different real action. See Lie-group parallel transport [99].
+
 ## Geometric integration: positive-metric unit-circle pencils
 
 ### Periodic coupled oscillators: Gauss–Legendre and Störmer–Verlet — [`geometric_oscillator.m`](../geometric_oscillator.m)
@@ -2588,9 +2667,10 @@ constructions, not a claim of a novel scheme in [93, 95].
 
 95. R. Koekoek, P. A. Lesky and R. F. Swarttouw, *Hypergeometric Orthogonal Polynomials and Their q-Analogues*, Springer Monographs in Mathematics, Springer, 2010. [DOI](https://doi.org/10.1007/978-3-642-05014-5); [DLMF duality](https://dlmf.nist.gov/18.21).
 96. P.-A. Absil, R. Mahony and R. Sepulchre, *Optimization Algorithms on Matrix Manifolds*, Princeton University Press, 2008. [DOI](https://doi.org/10.1515/9781400830244); [author's book website](https://sites.uclouvain.be/absil/amsbook/).
-
-97. E. Hairer, C. Lubich and G. Wanner, *Geometric Numerical Integration: Structure-Preserving Algorithms for Ordinary Differential Equations*, 2nd ed., Springer, 2006. [DOI](https://doi.org/10.1007/3-540-30666-8).
-
-98. E. Hairer, C. Lubich and G. Wanner, “Geometric numerical integration illustrated by the Störmer–Verlet method,” *Acta Numerica* **12** (2003), 399–450. [DOI](https://doi.org/10.1017/S0962492902000144).
-
-99. B. Cockburn, S. Du and M. A. Sánchez, “Combining finite element space-discretizations with symplectic time-marching schemes for linear Hamiltonian systems,” *Frontiers in Applied Mathematics and Statistics* **9** (2023). [DOI](https://doi.org/10.3389/fams.2023.1165371).
+97. A. Edelman, T. A. Arias and S. T. Smith, “The geometry of algorithms with orthogonality constraints,” *SIAM J. Matrix Anal. Appl.* **20** (1998), 303–353. [DOI](https://doi.org/10.1137/S0895479895290954).
+98. K. Crane, M. Desbrun and P. Schröder, “Trivial connections on discrete surfaces,” *Comput. Graph. Forum* **29** (2010), 1525–1533. [DOI](https://doi.org/10.1111/j.1467-8659.2010.01761.x).
+99. Y. Ge, P. van Goor and R. Mahony, “A geometric perspective on fusing Gaussian distributions on Lie groups,” *IEEE Control Systems Letters* **8** (2024), 844–849. [DOI](https://doi.org/10.1109/LCSYS.2024.3405485); [preprint](https://arxiv.org/abs/2403.16411).
+100. S. Fiori, “Manifold Calculus in System Theory and Control—Fundamentals and First-Order Systems,” *Symmetry* **13** (2021), 2092. [DOI](https://doi.org/10.3390/sym13112092).
+101. E. Hairer, C. Lubich and G. Wanner, *Geometric Numerical Integration: Structure-Preserving Algorithms for Ordinary Differential Equations*, 2nd ed., Springer, 2006. [DOI](https://doi.org/10.1007/3-540-30666-8).
+102. E. Hairer, C. Lubich and G. Wanner, “Geometric numerical integration illustrated by the Störmer–Verlet method,” *Acta Numerica* **12** (2003), 399–450. [DOI](https://doi.org/10.1017/S0962492902000144).
+103. B. Cockburn, S. Du and M. A. Sánchez, “Combining finite element space-discretizations with symplectic time-marching schemes for linear Hamiltonian systems,” *Frontiers in Applied Mathematics and Statistics* **9** (2023). [DOI](https://doi.org/10.3389/fams.2023.1165371).
