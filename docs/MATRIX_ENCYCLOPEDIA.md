@@ -2017,9 +2017,9 @@ structure-preserving spectral approximation. **Reference:** [8].
 
 For each integer S>=1 the classical map of the two-dimensional torus is
 
-~~~math
+```math
 T_S=\begin{pmatrix}2S&1\\4S-1&2\end{pmatrix},
-\qquad \det T_S=1,\quad \operatorname{tr}T_S=2S+2>2.
+\qquad \det T_S=1,\quad \mathrm{tr}(T_S)=2S+2>2.
 ~~~
 
 The even/odd checkerboard pattern guarantees torus periodicity in both
@@ -2027,7 +2027,7 @@ position and momentum representations for **all positive Hilbert-space
 dimensions N** in the Hannay--Berry quantization. The finite quantum
 propagator uses the explicit kernel (indices j,k=0,...,N-1)
 
-~~~math
+```math
 U_{jk}=\frac{e^{i\pi/4}}{\sqrt N}
  \exp\left[\frac{2\pi i}{N}\left(j^2-jk+S k^2\right)\right].
 ~~~
@@ -2056,7 +2056,7 @@ eigensolvers, and unit-circle spectral density estimators.
 For matrix dimension n, let N=n-1 and 0<p<1. The symmetric Jacobi
 matrix J (degree index j=0,...,N) has recurrence coefficients
 
-~~~math
+```math
 J_{j,j}=Np+j(1-2p),\qquad
 J_{j,j+1}=\sqrt{p(1-p)(j+1)(N-j)}.
 ~~~
@@ -2064,7 +2064,7 @@ J_{j,j+1}=\sqrt{p(1-p)(j+1)(N-j)}.
 Its eigenvalues are exactly x=0,...,N, and the spectral weights at
 the first coordinate are the binomial weights
 
-~~~math
+```math
 w(x)=\binom{N}{x}p^x(1-p)^{N-x}.
 ~~~
 
@@ -2094,7 +2094,7 @@ Daubechies reconstruction low-pass filter h. Choose the associated
 quadrature-mirror high-pass g_k=(-1)^k h_{L-1-k}. For a periodic stage
 of even length m, take
 
-~~~math
+```math
 a_j=\sum_{k=0}^{L-1} h_k\,x_{(2j+k)\bmod m},
 \qquad
 d_j=\sum_{k=0}^{L-1} g_k\,x_{(2j+k)\bmod m}.
@@ -2244,4 +2244,4 @@ and multiresolution signal processing. **Reference:** [15];
 92. W. Tadej and K. Życzkowski, “A concise guide to complex Hadamard matrices,” *Open Syst. Inf. Dyn.* **13** (2006), 133–177. [DOI](https://doi.org/10.1007/s11080-006-8220-2); [preprint](https://arxiv.org/abs/quant-ph/0512154).
 
 93. J. H. Hannay and M. V. Berry, “Quantization of linear maps on a torus—Fresnel diffraction by a periodic grating,” *Physica D* **1** (1980), 267–290. [DOI](https://doi.org/10.1016/0167-2789(80)90026-3); [author-hosted PDF](https://michaelberryphysics.wordpress.com/wp-content/uploads/2013/07/berry095.pdf).
-94. “Krawtchouk transforms and convolutions,” *Adv. Appl. Math.* (2018). [DOI](https://doi.org/10.1007/s13373-018-0132-2); [DLMF recurrence reference](https://dlmf.nist.gov/18.22).
+94. P. Feinsilver and R. Schott, “Krawtchouk transforms and convolutions,” *Bull. Math. Sci.* (published online 2018). [DOI](https://doi.org/10.1007/s13373-018-0132-2); [DLMF recurrence reference](https://dlmf.nist.gov/18.22).
