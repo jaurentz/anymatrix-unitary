@@ -2039,6 +2039,19 @@ conversions. The three Gauss transform generators are constructed through a
 dense Golub--Welsch symmetric eigensolver; this is *not* a claim that the
 current implementation has the fast matvec of Townsend/Slevinsky algorithms.
 
+### Gauss--Jacobi transform — [`gauss_jacobi_transform.m`](../gauss_jacobi_transform.m)
+
+**Order:** n. **Parameters:** alpha,beta > -1. The weight on [-1,1]
+is `(1-x)^alpha (1+x)^beta`, normalized to probability measure.
+The Gauss evaluation matrix is exactly real orthogonal, constructed
+through the Jacobi recurrence and Golub--Welsch. The special cases
+alpha=beta=0, -1/2, +1/2 give Legendre, Chebyshev I and Chebyshev II;
+alpha=beta=lambda-1/2 gives Gegenbauer. The first Jacobi offdiagonal
+uses the exact beta-distribution variance formula, avoiding removable
+0/0 for alpha+beta=-1. The eigenvalues of the real Jacobi tridiagonal
+are quadrature *nodes*, NOT eigenvalues of the orthogonal evaluation
+matrix. Construction O(n^3); multiplication O(n^2). [93,94,95]
+
 ### Gauss--Hermite transform — [`gauss_hermite_transform.m`](../gauss_hermite_transform.m)
 
 **Order:** n. **Construction:** For the normalized Gaussian weight
