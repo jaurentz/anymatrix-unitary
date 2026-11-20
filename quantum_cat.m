@@ -27,7 +27,8 @@ if nargin==0,U=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','positive','finite'});
 if nargin<2||isempty(s),s=1;end
 validateattributes(s,{'numeric'}, ...
-    {'scalar','integer','positive','finite'});
+    {'scalar','integer','finite'});
+if s<1,error('quantum_cat:Parameter','S must be a positive integer.');end
 if nargin<3||isempty(output),output='matrix';end
 if ~(ischar(output)||(isstring(output)&&isscalar(output)))
     error('quantum_cat:Mode','OUTPUT must be a scalar string.');
