@@ -1,4 +1,4 @@
-function [U,properties]=wigner_rotation(ell,alpha,beta,gamma)
+function [U,properties]=wigner_rotation(ell,alpha,beta,gamma,output)
 %WIGNER_ROTATION Unitary degree-ell spherical-harmonic SO(3) rotation.
 %   U=WIGNER_ROTATION(ELL,ALPHA,BETA,GAMMA) returns D^ell(R) for
 %   integer ELL>=0 and z-y-z Euler angles (radians). The ordered
@@ -23,6 +23,13 @@ if nargin<4||isempty(gamma),gamma=.4;end
 validateattributes(alpha,{'numeric'},{'scalar','real','finite'});
 validateattributes(beta,{'numeric'},{'scalar','real','finite'});
 validateattributes(gamma,{'numeric'},{'scalar','real','finite'});
+if nargin>=5
+    if ~(ischar(output)||isstring(output)) || ~strcmpi(char(output),'spectral')
+        error('wigner_rotation:Mode','Only terminal spectral mode is supported.');
+    end
+    U=unitary_spectral_reference('wigner_rotation',ell,alpha,beta,gamma);
+    return
+end
 if ell==0,U=1;return;end
 m=(-ell:ell)';
 c=sqrt((ell-m(1:end-1)).*(ell+m(1:end-1)+1));
