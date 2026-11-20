@@ -2080,6 +2080,52 @@ linear algebra and structured fast transformations. **Reference:** [89].
 
 ## O. Complex Hadamard and structured Hessenberg benchmark families (November 2026)
 
+### Butson Hadamard phase tables — [`butson_hadamard.m`](../butson_hadamard.m)
+
+A Butson matrix BH(n,q) is an unnormalized n-by-n matrix
+with entries among the q-th roots of unity, whose Gram matrix
+is exactly nI. The normalized matrix U=H/sqrt(n) is therefore
+strictly unitary. The generator constructs reproducible **integer
+exponent tables** E with H(j,k)=exp(2*pi*i*E(j,k)/q), and exposes
+them with `'exponents'` output, separately from its ordinary
+normalized unitary matrix.
+
+**Tao's isolated BH(6,3).** The supported 6-by-6 construction
+has q=3 and an explicitly tabulated symmetric integer phase
+table (entries 0,1,2). Every pair of distinct rows has exactly
+two phase differences in each residue class modulo 3, so
+the complex Hadamard Gram identity follows from
+1+omega+omega^2=0 for omega=exp(2*pi*i/3).
+This is the isolated S6 matrix cataloged by Tadej and
+Zyczkowski [92], and **not** another Diţă deformation or Fourier
+block matrix.
+
+**Paley type-I real BH(p+1,2).** For prime p congruent to
+3 (mod 4), set Q(i,j)=chi(i-j) for i~=j (quadratic
+character modulo p) and Q(i,i)=0. The bordered sign matrix
+
+```math
+H=\begin{bmatrix}1&\boldsymbol{1}^T\\
+\boldsymbol{1}&Q-I_p\end{bmatrix}
+```
+
+satisfies H H^T=(p+1)I, since Q is skew-symmetric and
+Q Q^T=pI-J. The construction gives real orthogonal
+normalized matrices of orders 4, 8, 12, 20, 24 and
+other admissible prime-plus-one sizes, including orders
+not covered by tensor powers of the Sylvester transform.
+The sign/exponent table is exact, not a floating-point
+optimization output. Source: Paley [121].
+
+**Spectra.** The root-of-unity restriction on entries
+does **not** imply the unitary eigenvalues are q-th
+roots of unity. Generic finite trace eigenphase laws
+are accordingly recorded as unknown. Left/right
+Hadamard equivalence operations (row/column phases
+and permutations) do not generally give a unitary
+similarity and need not preserve eigenvalues.
+No general fast implicit action is asserted.
+
 ### Diţă-deformed Fourier-block complex Hadamard — [`complex_hadamard.m`](../complex_hadamard.m)
 
 **Construction:** For n=m r with normalized Fourier matrices F_m and
@@ -3284,3 +3330,5 @@ statistics and symmetry-preserving numerical methods.
 119. W. R. Clements, P. C. Humphreys, B. J. Metcalf, W. S. Kolthammer and I. A. Walmsley, “Optimal design for universal multiport interferometers,” *Optica* **3** (2016), 1460–1465. [DOI](https://doi.org/10.1364/OPTICA.3.001460).
 
 120. P. P. Vaidyanathan, *Multirate Systems and Filter Banks*, Prentice-Hall, 1993. [Publisher](https://www.informit.com/store/multirate-systems-and-filter-banks-9780136057185).
+
+121. R. E. A. C. Paley, “On Orthogonal Matrices,” *Journal of Mathematics and Physics* **12** (1933), 311–320. [DOI](https://doi.org/10.1002/sapm1933121311).

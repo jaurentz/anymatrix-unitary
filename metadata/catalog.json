@@ -1555,6 +1555,21 @@
       "matrix_free_supported": true,
       "operator_kernel": "um_paraunitary_apply",
       "operator_note": "O(d*L*m) rank-one time-delay sections per RHS; exact transpose/adjoint; no dense finite operator required."
+    },
+    {
+      "id": "butson_hadamard",
+      "status": "implemented",
+      "category": "random_signal",
+      "matrix_order": "n=6 (Tao) or n=p+1 for p prime, p=3 mod 4 (Paley)",
+      "representation": "exact integer exponent Butson BH(6,3) isolated Tao and real BH(p+1,2) Paley I",
+      "spectral_reference": "unknown generic finite trace eigenphase law; integer phase table and exact Hadamard Gram identity",
+      "encyclopedia_references": [
+        92,
+        121
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": null,
+      "operator_note": "Dense explicitly generated phase tables; no unsupported fast algorithm claimed."
     }
   ],
   "probability_measures": [
