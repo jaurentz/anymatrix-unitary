@@ -89,6 +89,57 @@ verifyLessThan(tc,max(abs(refEig(1:n)- ...
     exp(-2i*asin(h*ref.frequencies/2)))),1e-13);
 end
 
+function test_euler_physical_steps_invariants_phases_and_actions(tc)
+for n=[1 2 5 8]
+    h=.4;om=1.3;kappa=.6;
+    P=sparse(1:n,[2:n 1],1,n,n);
+    K=full(om^2*speye(n)+kappa*(2*speye(n)-P-P'));
+    I=eye(n);Z=zeros(n);
+    J=[Z,I;-I,Z];
+    for method={'euler_kick_drift','euler_drift_kick'}
+        name=method{1};
+        S=geometric_oscillator(n,h,om,kappa,name,'pencil');
+        if strcmp(name,'euler_kick_drift')
+            M=[I-h*h*K,h*I;-h*K,I];
+            G=[K,-h*K/2;-h*K/2,I];
+        else
+            M=[I,h*I;-h*K,I-h*h*K];
+            G=[K,h*K/2;h*K/2,I];
+        end
+        verifyLessThan(tc,norm(S.M-M,'fro'),3e-13*n);
+        verifyLessThan(tc,norm(S.G-G,'fro'),3e-13*n);
+        verifyGreaterThan(tc,min(eig(G)),1e-5);
+        verifyLessThan(tc,norm(M'*G*M-G,'fro'),4e-12*n);
+        verifyLessThan(tc,norm(M'*J*M-J,'fro'),4e-12*n);
+        verifyLessThan(tc,norm(S.T'*S.T-G,'fro'),4e-11*n);
+        verifyLessThan(tc,norm(S.T*M/S.T-S.U,'fro'),4e-10*n);
+        verifyLessThan(tc,norm(S.U'*S.U-eye(2*n),'fro'),4e-11*n);
+        verifyLessThan(tc,norm(S.A'* (S.B\S.A)-S.B,'fro'), ...
+            4e-10*n);
+        ref=geometric_oscillator(n,h,om,kappa,name,'spectral');
+        verifyEqual(tc,ref.dimension,2*n);
+        verifyEqual(tc,ref.finite.kind,'exact');
+        eigs=ref.finite.eigenvalues();
+        verifyEqual(tc,numel(eigs),2*n);
+        for z=eig(S.A,S.B).'
+            verifyLessThan(tc,min(abs(eigs-z)),1e-8);
+        end
+        V=geometric_oscillator(n,h,om,kappa,'verlet');
+        verifyLessThan(tc,norm(S.U-V,'fro'),4e-11*n);
+        F=geometric_oscillator(n,h,om,kappa,name,'operator');
+        X=randn(2*n,3)+1i*randn(2*n,3);
+        verifyEqual(tc,F([],'size'),[2*n 2*n]);
+        verifyLessThan(tc,norm(F(X,'notransp')-S.U*X,'fro'),4e-11*n);
+        verifyLessThan(tc,norm(F(X,'ctransp')-S.U'*X,'fro'),4e-11*n);
+        verifyLessThan(tc,norm(F(F(X,'notransp'),'transp')-X,'fro'),4e-11*n);
+    end
+end
+for method={'euler_kick_drift','euler_drift_kick'}
+    verifyError(tc,@()geometric_oscillator(2,2,1,0,method{1}), ...
+        'geometric_oscillator:Stability');
+end
+end
+
 function test_defaults_and_validation(tc)
 [u,props]=geometric_oscillator();
 verifyEmpty(tc,u);
