@@ -3606,6 +3606,82 @@ The generic finite eigenphase law is **unknown analytically**. Numerical QEP roo
 
 **References:** Qian–Lin [125] (gyroscopic QEP), Hairer–Lubich–Wanner [101] and Ohsawa [126] (geometric integration and quadratic invariants). Kuzmanović Ivičić–Miodragović [127] treat a different negative-stiffness gyroscopic-stabilization regime, not a justification for this positive-energy construction.
 
+
+## Clifford/stabilizer circuits — [`clifford_circuit.m`](../clifford_circuit.m)
+
+**Matrix order:** $2^q$, where $1\le q\le20$ is a qubit count;
+dense assembly is limited to $q\le10$. The computational basis
+is $|b_1\cdots b_q\rangle$, with the first qubit most significant.
+This finite family consists of ordered words in standard
+**Clifford gates** H, S, S-dagger, Pauli X/Y/Z, CNOT, CZ and SWAP.
+A MATLAB N-by-2 cell list gives a gate name and its ordered site
+indices, with chronological convention $U=G_m\cdots G_1$.
+It reuses the existing `um_circuit_apply` and
+`um_gate_apply` local-statevector algorithms. It is
+not equivalent to the existing generic `dual_unitary_circuit`:
+ordinary dual-unitary two-qubit gates need not be Clifford.
+
+The global-phase convention is fixed rather than quotienting the
+actual matrices by arbitrary scalars:
+
+```math
+H=\frac1{\sqrt2}\begin{bmatrix}1&1\\1&-1\end{bmatrix},
+\qquad S=\mathop{\mathrm{diag}}(1,i),\qquad
+Y=\begin{bmatrix}0&-i\\i&0\end{bmatrix}.
+```
+
+The first listed CNOT site is the **control** qubit; its local basis
+is $|00\rangle,|01\rangle,|10\rangle,|11\rangle$.
+No arbitrary continuous global scalar phase is inserted.
+Clifford gate words normalize the Pauli group: each
+$UPU^*$, for a Hermitian Pauli tensor product $P$, is another
+Hermitian Pauli tensor product with sign $+1$ or $-1$.
+The projective Clifford group is finite. With the specified
+finite-phase gate generators, all eigenvalues are roots of unity;
+however, their exact **finite multiset** for a general word is
+not inferred from the group order, and no CUE eigenphase density
+or level-spacing law is asserted.
+
+**Exactly known trace spectra for elementary presets**
+with $N=2^q$, allowing idle tensor factors:
+
+| Circuit preset | Exact finite eigenvalues and multiplicities |
+| --- | --- |
+| identity | $+1$ with multiplicity $N$ |
+| hadamard, pauli_x, pauli_y, pauli_z | $+1$ and $-1$, each multiplicity $N/2$ |
+| phase | $1$ and $i$, each multiplicity $N/2$ |
+| phase_dagger | $1$ and $-i$, each multiplicity $N/2$ |
+| cnot, cz, swap ($q\ge2$) | $+1$ multiplicity $3N/4$, $-1$ multiplicity $N/4$ |
+
+The first one or two qubits carry each named gate; the rest are idle.
+Any custom one-gate word has the corresponding exact trace spectrum,
+regardless of the chosen valid sites. The default bell circuit
+performs H on site 1 followed by CNOT(1,2) and creates a Bell state
+from $|00\rangle$. The generic multi-gate spectrum is conservatively
+marked **unknown analytically** even though the explicit matrix
+could be diagonalized for small q. Exact presets expose lazy
+finite eigenvalues, probability-weighted atoms and Fourier
+moments $m_k=N^{-1}\mathop{\mathrm{tr}}(U^k)$.
+
+Operator mode supports forward and adjoint local-gate actions
+with $O(L2^q)$ operations for L elementary gates, using
+$O(2^q)$ state storage per right-hand side, without a
+dense $4^q$-entry matrix. Its regression tests independently
+assemble small test circuits, check exact phase multiplicities,
+and verify the Clifford Pauli normalizer property.
+
+**Applications:** stabilizer-state simulation, Clifford twirling,
+fault-tolerant quantum computing and highly atomic non-CUE
+spectral-density benchmarks.
+
+**References:** Dehaene and De Moor [128] describe the binary
+quadratic and stabilizer structure of the Clifford group.
+Gross, Nezami and Walter [129] develop representation-theoretic
+properties and related applications. The simple finite phase
+multiplicities in the table follow directly from the canonical
+gate matrices.
+
+
 ## Bibliography
 
 1. P. J. Davis, *Circulant Matrices*, Wiley, 1979. ISBN 9780471057710. [Library record](https://openlibrary.org/books/OL4407364M/Circulant_matrices).
@@ -3751,3 +3827,7 @@ The generic finite eigenphase law is **unknown analytically**. Numerical QEP roo
 125. J. Qian and W.-W. Lin, “A numerical method for quadratic eigenvalue problems of gyroscopic systems,” *Journal of Sound and Vibration* **306** (2007), 284–296. [DOI](https://doi.org/10.1016/j.jsv.2007.05.009).
 126. T. Ohsawa, “Preservation of Quadratic Invariants by Semiexplicit Symplectic Integrators for Nonseparable Hamiltonian Systems,” *SIAM Journal on Numerical Analysis* **61** (2023), 1293–1315. [DOI](https://doi.org/10.1137/22M1517718).
 127. I. Kuzmanović Ivičić and S. Miodragović, “Perturbation bounds for stable gyroscopic systems in motion about an unstable equilibrium position,” *Journal of Computational and Applied Mathematics* **451** (2024), 116061. [DOI](https://doi.org/10.1016/j.cam.2024.116061).
+
+
+128. J. Dehaene and B. De Moor, “Clifford group, stabilizer states, and linear and quadratic operations over GF(2),” *Physical Review A* **68** (2003), 042318. [DOI](https://doi.org/10.1103/PhysRevA.68.042318).
+129. D. Gross, S. Nezami and M. Walter, “Schur–Weyl duality for the Clifford group with applications: Property testing, a robust Hudson theorem, and de Finetti representations,” *Communications in Mathematical Physics* **385** (2021), 1325–1393. [DOI](https://doi.org/10.1007/s00220-021-04118-7).
