@@ -1919,22 +1919,22 @@ linear algebra and structured fast transformations. **Reference:** [89].
 
 ## O. Complex Hadamard and structured Hessenberg benchmark families (November 2026)
 
-### Diţă-deformed Fourier-block complex Hadamard — [\`complex_hadamard.m\`](../complex_hadamard.m)
+### Diţă-deformed Fourier-block complex Hadamard — [`complex_hadamard.m`](../complex_hadamard.m)
 
 **Construction:** For n=m r with normalized Fourier matrices F_m and
 F_r, and r-by-m real phase angles t_{a,j}, set D_j=diag(exp(i*t(:,j))).
 Define
 
-\`\`\`math
+```math
 U=(F_m\otimes I_r)\,\mathrm{diag}(D_1F_r,\ldots,D_mF_r).
-\`\`\`
+```
 
 The product is unitary and *every entry* of U has modulus 1/sqrt(n).
 Thus it is a normalized complex Hadamard matrix. Distinct angle choices
 yield Diţă-type deformations, generally not simply Fourier matrices.
 The default choice is deterministic and nontrivial when both factors
 have order at least 2. For a prime n, the default m=1 recovers F_n.
-The \`operator\` mode applies two FFTs and diagonal phases with
+The `operator` mode applies two FFTs and diagonal phases with
 O(n log n) complexity, including multiple RHS and adjoints. Only
 the undeformed Fourier corner provides an asserted analytic finite
 eigenphase law. A complex Hadamard matrix need not be an involution.
@@ -1946,14 +1946,14 @@ and dense normal eigenvalue tests with highly non-generic entries.
 **References:** [91], [92]. Equimodularity is a property of matrix
 entries, not an assertion about eigenphase uniformity.
 
-### Multiplicative rank-one unitary perturbations — [\`unitary_rank_one_update.m\`](../unitary_rank_one_update.m)
+### Multiplicative rank-one unitary perturbations — [`unitary_rank_one_update.m`](../unitary_rank_one_update.m)
 
 Let H be a unitary upper Hessenberg matrix encoded by Schur/Verblunsky
 coefficients. For a unit vector v and real phase phi, set
 
-\`\`\`math
+```math
 U=H\left(I+(e^{i\phi}-1)vv^*\right).
-\`\`\`
+```
 
 This preserves unitarity and ensures rank(U-H)<=1 and
 det(U)=exp(i*phi)*det(H). By default v=e_n, so only the last column
@@ -1973,21 +1973,21 @@ unitary core product in O(n).
 unitary eigensolver benchmarks, circular-ensemble perturbation theory,
 and exact-cycle regression problems. **References:** [90], [5].
 
-### ETNA core-factor unitary Hessenberg tests — [\`etna_hessenberg.m\`](../etna_hessenberg.m)
+### ETNA core-factor unitary Hessenberg tests — [`etna_hessenberg.m`](../etna_hessenberg.m)
 
 This generator exposes the Type I, II and III constructions discussed
 in Section 7 of Aurentz–Mach–Vandebril–Watkins [8]:
 
 - **Type I:** Each core has first column
-  \`[(-1)^(k-1)*m_k*p_k; sqrt(1-m_k^2)]\`, with
-  \`m_k\` sampled independently in (0,1) and \`p_k\` on the unit circle.
+  `[(-1)^(k-1)*m_k*p_k; sqrt(1-m_k^2)]`, with
+  `m_k` sampled independently in (0,1) and `p_k` on the unit circle.
   The unitary second column is fixed by the repository core convention.
-- **Type II:** Real core first columns \`[cos(t_k);sin(t_k)]\`,
-  \`t_k\` sampled from (0,pi); the chosen orthogonal completion follows
+- **Type II:** Real core first columns `[cos(t_k);sin(t_k)]`,
+  `t_k` sampled from (0,pi); the chosen orthogonal completion follows
   the same core convention. The result is real orthogonal Hessenberg.
 - **Type III:** Four identical Type-I *interior* core sequences,
   coupled at three block boundaries by a real core with small
-  \`rho=coupling\` (default 0.001), and terminal phase -1. This
+  `rho=coupling` (default 0.001), and terminal phase -1. This
   provides an exactly fourfold block spectrum as coupling tends to
   zero, with clusters split by small coupling at finite n. The
   coupling phase is fixed by construction instead of being
