@@ -465,6 +465,22 @@ connection angles, not a built-in mesh geometry solver. See
 [the encyclopedia](docs/MATRIX_ENCYCLOPEDIA.md) for definitions, provenance,
 and finite-spectrum qualifications.
 
+### Additional geodesic and holonomy generators
+
+```matlab
+S = stiefel_geodesic(128,3,[],[],[],1,'spectral'); % small spectral reduction
+T = stiefel_geodesic(128,3,[],[],[],1,'operator'); % O(np) matvec
+H = grassmann_holonomy(8,2);                       % U(2) geometric holonomy
+W = wigner_geodesic(21,.3,.7,-.4);                % SO(3) spin-10 representation
+V = wigner_geodesic(20,.3,.7,-.4,'spectral');     % half-integer SU(2) spectrum
+```
+
+Grassmannian holonomy is tautological-bundle transport along a closed
+polygon of unique minimizing geodesic arcs; it is not the Grassmann
+Levi-Civita tangent-space transport. All supplied overlap matrices must
+be nonsingular. The Wigner representation belongs to rotation-group
+geometry, although its spin interpretation overlaps quantum mechanics.
+
 ## Automatic tests
 
 - **MATLAB unit tests** under [`tests/`](tests/) check normalizations,
