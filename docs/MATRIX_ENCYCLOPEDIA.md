@@ -2349,6 +2349,31 @@ For polygons with more than three vertices, this generator does not claim
 an automatic analytic spectrum; the implicit action takes O(nm) for m legs.
 See sphere parallel transport [100] and the classical Gauss–Bonnet theorem.
 
+### Block-permutation bundle transport — [\`bundle_transport.m\`](../bundle_transport.m)
+
+**Order:** N*d for N sites, a permutation pi of sites, and unitary
+d-by-d link matrices R_j. Define U(e_j tensor v) = e_{pi(j)} tensor R_j v.
+This is a sparse **unitary** block-permutation (real **orthogonal** for
+orthogonal links). For each cycle (j_1,...,j_ell), its holonomy is the
+ordered product H = R_{j_ell} ... R_{j_1}. The characteristic polynomial
+on that cycle is det(z^ell I_d - H). Thus each eigenvalue of H produces
+all ell-th roots, with exact multiplicities. For integer k, its trace
+contribution is ell*trace(H^(k/ell)) if ell divides k, and zero
+otherwise. Dividing by N*d gives the equal-weight trace moments.
+
+The operator/adjoint apply link matrices and reverse edges in O(N*d^2)
+work per right-hand side. A change of site frames G_j replaces a link
+with G_{pi(j)} R_j G_j^* and conjugates U by the global block-diagonal
+frame matrix. The old \`connection_cycle\` is the single-cycle d=2
+planar-rotation specialization and is retained unchanged.
+
+This is a proposed exact finite benchmark of **supplied** connection
+links, not a numerical construction of a Levi-Civita connection from
+a surface mesh. Connection background: Singer and Wu, "Vector diffusion
+maps and the connection Laplacian," *Comm. Pure Appl. Math.* 65 (2012),
+[DOI](https://doi.org/10.1002/cpa.21395).
+
+
 ### Cyclic discrete-connection transport — [`connection_cycle.m`](../connection_cycle.m)
 
 **Order:** 2N; exactly sparse real orthogonal block-permutation matrix.
