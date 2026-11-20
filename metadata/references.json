@@ -734,6 +734,22 @@
       ],
       "permalink": "https://doi.org/10.1007/s13373-018-0132-2",
       "alternate_permalink": ""
+    },
+    {
+      "number": 95,
+      "dois": [
+        "10.1007/978-3-642-05014-5"
+      ],
+      "permalink": "https://doi.org/10.1007/978-3-642-05014-5",
+      "alternate_permalink": "https://dlmf.nist.gov/18.21"
+    },
+    {
+      "number": 96,
+      "dois": [
+        "10.1515/9781400830244"
+      ],
+      "permalink": "https://doi.org/10.1515/9781400830244",
+      "alternate_permalink": "https://sites.uclouvain.be/absil/amsbook/"
     }
   ]
 }
