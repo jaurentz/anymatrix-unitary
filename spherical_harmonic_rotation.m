@@ -1,4 +1,4 @@
-function [U,properties]=spherical_harmonic_rotation(L,alpha,beta,gamma)
+function [U,properties]=spherical_harmonic_rotation(L,alpha,beta,gamma,output)
 %SPHERICAL_HARMONIC_ROTATION Orthogonal direct sum of Wigner blocks.
 %   U=SPHERICAL_HARMONIC_ROTATION(L,ALPHA,BETA,GAMMA) represents a
 %   single SO(3) rotation on all complex spherical harmonics of
@@ -22,6 +22,13 @@ if nargin<4||isempty(gamma),gamma=.4;end
 validateattributes(alpha,{'numeric'},{'scalar','real','finite'});
 validateattributes(beta,{'numeric'},{'scalar','real','finite'});
 validateattributes(gamma,{'numeric'},{'scalar','real','finite'});
+if nargin>=5
+    if ~(ischar(output)||isstring(output)) || ~strcmpi(char(output),'spectral')
+        error('spherical_harmonic_rotation:Mode','Only terminal spectral mode is supported.');
+    end
+    U=unitary_spectral_reference('spherical_harmonic_rotation',L,alpha,beta,gamma);
+    return
+end
 N=L^2;
 nStored=sum((2*(0:L-1)+1).^2);
 U=spalloc(N,N,nStored);
