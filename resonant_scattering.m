@@ -43,7 +43,10 @@ function [S,properties]=resonant_scattering(n,E,H,W,mode)
 %   https://doi.org/10.1007/s00023-021-01085-6
 properties={'square','unitary','normal','complex','parameter-dependent'};
 if nargin==0,S=[];return;end
-validateattributes(n,{'numeric'},{'scalar','integer','finite','positive','<=',512});
+if ~(isnumeric(n)&&isscalar(n)&&isreal(n)&&isfinite(n) ...
+        &&n==floor(n)&&n>=1&&n<=512)
+    error('resonant_scattering:Channels','N must be an integer from 1 to 512.');
+end
 if nargin<2 || isempty(E),E=0.2;end
 if nargin<3 || isempty(H)
     d=(0:n-1)';
@@ -76,7 +79,11 @@ if m>n
     error('resonant_scattering:Channels', ...
         'At least M open channels are required for M internal states.');
 end
-validateattributes(W,{'numeric'},{'2d','finite','size',[m n]});
+if ~(isnumeric(W)&&ismatrix(W)&&isequal(size(W),[m n]) ...
+        &&all(isfinite(W(:))))
+    error('resonant_scattering:CouplingShape', ...
+        'W must be a finite M-by-N coupling matrix.');
+end
 if norm(H-H','fro')>1e-11*max(1,norm(H,'fro'))
     error('resonant_scattering:Hamiltonian','H must be Hermitian.');
 end
@@ -102,7 +109,10 @@ if strcmp(mode,'model')
           'no thresholds/absorption. Poles differ from eig(H).']);
     return
 end
-validateattributes(E,{'numeric'},{'scalar','real','finite'});
+if ~(isnumeric(E)&&isscalar(E)&&isreal(E)&&isfinite(E))
+    error('resonant_scattering:Energy', ...
+        'The on-shell scattering energy must be real and finite.');
+end
 if strcmp(mode,'spectral')
     S=um_resonant_scattering_spectral(n,E,H,W,Gamma);
     return
