@@ -56,6 +56,7 @@
 %   dpss_transform       Explicit Slepian concentration eigenbasis.
 %   graph_fourier        Explicit weighted-graph Laplacian eigenbasis.
 %   blaschke_potapov    Rational inner / lossless rank-one product frequency response.
+%   paraunitary_fir     Multichannel FIR polyphase, exact finite periodic unitary.
 %   orthogonal_butterfly Recursive real orthogonal butterfly (fast implicit action).
 %   complex_hadamard     Dita-deformed Fourier-block complex Hadamard matrices.
 %   krawtchouk_transform Orthogonal binomial Krawtchouk polynomial transform.

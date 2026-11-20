@@ -1966,6 +1966,65 @@ pole-sensitive eigenphase tests, structured unitary Möbius models.
 The explicit matrix uses an N-by-N solve; no matrix-free option is
 claimed. **References:** [88], [5], and the 2017 SIGMA ORF survey.
 
+### Multichannel paraunitary FIR and finite periodic operators — [`paraunitary_fir.m`](../paraunitary_fir.m)
+
+**Size and conventions.** L temporal polyphase blocks with d channels
+per block yield a finite dL-by-dL unitary. The M unit-norm
+projection directions v_j and constant d-by-d unitary U0 define
+a degree-M matrix Laurent polynomial
+
+```math
+E(z)=U_0 S_M(z)\cdots S_1(z),\qquad
+S_j(z)=I_d+(z^{-1}-1)v_j v_j^*,\qquad |z|=1.
+```
+
+Every S_j(z) acts as z^(-1) on span(v_j) and as identity
+on its orthogonal complement. Consequently E(z) is
+**paraunitary** for every point of the unit circle, and
+its determinant has winding number -M. `'frequency'`
+returns one small d-by-d E(exp(i*omega)), and
+`'polyphase'` returns the exact Laurent coefficient
+array `E(z)=sum_r E_r z^(-r)` and winding -M.
+The tap autocorrelations satisfy
+`sum_r E_r^* E_(r+k) = delta_(k,0) I_d`.
+
+The actual finite periodic critically sampled polyphase model
+uses circular delay `v_j^*x_(t-1)` of the projected channel
+amplitude in each stage, then applies U0 at every time block.
+The action is exactly unitary under **circular boundary closure**
+for all positive L, even L=1 (where the delay is the identity).
+The `'operator'` mode performs O(dLM) arithmetic per right-hand
+side using rank-one local updates and applies the Hermitian
+adjoint with reversed factors and inverse circular shifts.
+
+The finite operator is block circulant in time: the
+normalized temporal DFT reduces it to the direct sum
+of the L **small frequency responses**
+
+```math
+E(e^{2\pi i k/L}),\quad k=0,\ldots,L-1.
+```
+
+Hence its full finite trace-eigenphase measure is exactly
+the union of the eigenvalues of these L small d-by-d blocks,
+with multiplicities. `'spectral'` derives eigenvalues and
+moments from that reduction without diagonalizing the dL matrix.
+The eigenphases of a **single response** do *not* give the
+finite operator spectrum, and the continuous response's
+frequency curves are not an independently defined trace law.
+The sampled blocks' small eigenvalues are computed numerically,
+not asserted to have general closed forms.
+
+This is distinct from the rational pointwise
+`blaschke_potapov` and the predefined two-channel
+`daubechies_wavelet` analysis. The factored construction
+gives exact alias cancellation and perfect reconstruction
+for ideal, lossless **critically sampled** polyphase filters.
+
+**Applications:** multirate signal processing, filter banks,
+lossless lattice sections, block-circulant spectral density
+benchmarks. See Daubechies [15] and Vaidyanathan [120].
+
 ### Rank-one Blaschke–Potapov products — [`blaschke_potapov.m`](../blaschke_potapov.m)
 
 **Construction.** For strict-disk poles `a_j`, normalized vectors `v_j`,
@@ -3223,3 +3282,5 @@ statistics and symmetry-preserving numerical methods.
 
 118. M. Reck, A. Zeilinger, H. J. Bernstein and P. Bertani, “Experimental realization of any discrete unitary operator,” *Phys. Rev. Lett.* **73** (1994), 58–61. [DOI](https://doi.org/10.1103/PhysRevLett.73.58).
 119. W. R. Clements, P. C. Humphreys, B. J. Metcalf, W. S. Kolthammer and I. A. Walmsley, “Optimal design for universal multiport interferometers,” *Optica* **3** (2016), 1460–1465. [DOI](https://doi.org/10.1364/OPTICA.3.001460).
+
+120. P. P. Vaidyanathan, *Multirate Systems and Filter Banks*, Prentice-Hall, 1993. [Publisher](https://www.informit.com/store/multirate-systems-and-filter-banks-9780136057185).

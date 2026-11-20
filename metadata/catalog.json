@@ -1540,6 +1540,21 @@
       "matrix_free_supported": true,
       "operator_kernel": "um_optical_mesh_apply",
       "operator_note": "O(n^2) adjacent 2x2 core products for n(n-1)/2 couplers, O(n^2) parameter storage and O(n*nrhs) state storage."
+    },
+    {
+      "id": "paraunitary_fir",
+      "status": "implemented",
+      "category": "signal_processing",
+      "matrix_order": "d*L",
+      "representation": "rank-one factored FIR polyphase E(z) and finite circularly closed d-channel L-block operator",
+      "spectral_reference": "exact finite trace measure from L small d-by-d Fourier response eigenproblems, distinct from single-frequency point spectrum",
+      "encyclopedia_references": [
+        15,
+        120
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_paraunitary_apply",
+      "operator_note": "O(d*L*m) rank-one time-delay sections per RHS; exact transpose/adjoint; no dense finite operator required."
     }
   ],
   "probability_measures": [
