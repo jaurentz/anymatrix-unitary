@@ -94,6 +94,7 @@
 %   szegedy_walk        Markov-chain product-of-reflections walk, exact spectrum.
 %   coined_graph_walk   Flip-flop coins on an arbitrary weighted graph.
 %   metric_quantum_graph  Bond-scattering U(k), arbitrary metric edge lengths.
+%   resonant_scattering    Open-channel flux-normalized unitary S(E), cavity poles/delay.
 %   unitary_almost_mathieu  Magnetic quasiperiodic two-state quantum walk.
 %   dirac_automaton      Periodic 1D Dirac cellular automaton (size 2n).
 %   grover_operator      Grover reflections with exact degeneracies.

@@ -1020,6 +1020,30 @@
       ],
       "permalink": "https://doi.org/10.1103/PhysRevA.93.052328",
       "alternate_permalink": "https://arxiv.org/abs/1511.00719"
+    },
+    {
+      "number": 132,
+      "dois": [
+        "10.1103/RevModPhys.69.731"
+      ],
+      "permalink": "https://doi.org/10.1103/RevModPhys.69.731",
+      "alternate_permalink": "https://arxiv.org/abs/cond-mat/9612179"
+    },
+    {
+      "number": 133,
+      "dois": [
+        "10.1103/PhysRevLett.78.4737"
+      ],
+      "permalink": "https://doi.org/10.1103/PhysRevLett.78.4737",
+      "alternate_permalink": ""
+    },
+    {
+      "number": 134,
+      "dois": [
+        "10.1007/s00023-021-01085-6"
+      ],
+      "permalink": "https://doi.org/10.1007/s00023-021-01085-6",
+      "alternate_permalink": "https://arxiv.org/abs/1911.05112"
     }
   ]
 }
