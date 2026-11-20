@@ -56,6 +56,7 @@
 %   complex_hadamard     Dita-deformed Fourier-block complex Hadamard matrices.
 %
 % Orthogonal polynomial and spherical-harmonic transforms:
+%   gauss_jacobi_transform  Jacobi/Legendre/Chebyshev/Gegenbauer quadrature.
 %   gauss_hermite_transform Hermite Gauss-quadrature orthogonal basis.
 %   gauss_laguerre_transform Generalized Laguerre quadrature basis.
 %   associated_legendre_transform Gauss-Jacobi spherical block.
