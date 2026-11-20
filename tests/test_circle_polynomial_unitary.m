@@ -6,6 +6,8 @@ function test_polynomial_and_circle_spectrum(tc)
 for n=[1 2 3 5 8 12]
     phases=2*pi*((0:n-1)'+.17)/n+.04*cos((1:n)');
     z=exp(1i*phases);
+    [~,sorting]=sort(angle(z),'ascend');
+    z=z(sorting);   % WEIGHTS are prescribed in principal-angle order
     c=poly(z);
     w=(1:n)';w=w/sum(w);
     for rep={'hessenberg','cmv'}
@@ -49,7 +51,7 @@ verifyGreaterThan(tc,abs(S.cyclic.moments(1)-S.finite.moments(1)),.02);
 P=circle_polynomial_unitary(n,c,w,'hessenberg','pencil');
 verifyEqual(tc,size(P.A),[n n]);
 verifyEqual(tc,size(P.B),[n n]);
-eigp=eig(P.A,P.B);
+eigp=eig(full(P.A),full(P.B));
 for j=1:n
     verifyLessThan(tc,min(abs(eigp-z(j))),1e-8);
 end
