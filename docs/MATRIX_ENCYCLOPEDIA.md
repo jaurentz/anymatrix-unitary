@@ -2127,7 +2127,168 @@ finite matrix-free normal spectral-density benchmarks and
 boundary-sensitive signal transforms. **Reference:** [15],
 Daubechies, *Ten Lectures on Wavelets*.
 
-## Q. Families reserved for future versions (not implemented)
+
+## Q. Hahn/dual Hahn transforms and spherical parallel transport (November 2026)
+
+### Normalized Hahn polynomial transform — [`hahn_transform.m`](../hahn_transform.m)
+
+For N=n-1 and real parameters alpha,beta>-1, define
+Hahn polynomials, normalized by Q_k(0)=1, as
+
+```math
+Q_k(x;\alpha,\beta,N)
+={}_3F_2\!\left(
+\begin{matrix}-k,\; k+\alpha+\beta+1,\;-x\\
+\alpha+1,\;-N\end{matrix};1\right),
+\quad 0\le k,x\le N.
+```
+
+The explicit weight is positive on the finite integer grid:
+
+```math
+w(x)={\alpha+x\choose x}{\beta+N-x\choose N-x}.
+```
+
+A numerically reproducible approach builds the symmetric
+self-adjoint difference matrix J from the coefficients
+
+```math
+B(x)=(x+\alpha+1)(x-N),\qquad
+D(x)=x(x-\beta-N-1),
+```
+
+with
+
+```math
+J_{xx}=-B(x)-D(x),\quad
+J_{x,x+1}=J_{x+1,x}=-\sqrt{B(x)D(x+1)}.
+```
+
+Here B(x),D(x) are nonpositive on their respective interior
+indices, so J is real symmetric. Its spectrum is the
+**quadratic degree grid**
+`lambda_k=k(k+alpha+beta+1)`. The eigenvectors, arranged
+with increasing lambda and a positive first component,
+form the weighted Hahn evaluation matrix V, where rows
+index x and columns index k. The generator returns
+`U=V'`, so U has degree k in its rows and grid x in its
+columns. Consequently
+
+```math
+U^T U=I,\qquad J U^T=U^T
+\,\mathrm{diag}\!\bigl(k(k+\alpha+\beta+1)\bigr).
+```
+
+**Spectral distinction:** the quadratic values are eigenvalues
+of the self-adjoint **difference operator J**. They are not,
+in general, eigenvalues of the orthogonal matrix U. Therefore
+this database does not assign the polynomial grid as
+eigenphases of U. The small, deterministic `eig(J)`
+construction is O(n^3); no fast Hahn transform is claimed.
+Eigenvector first-component sign setting can become
+ill-conditioned for extreme orders or parameters.
+
+**Applications:** finite orthogonal polynomial analysis,
+special-function quadrature, numerical tests with
+nonuniform discrete polynomial weights. **Reference:** [95],
+Koekoek, Lesky and Swarttouw; DLMF 18.22.
+
+### Dual Hahn transform on quadratic spectral grid — [`dual_hahn_transform.m`](../dual_hahn_transform.m)
+
+The dual Hahn polynomial
+`R_x(lambda(k);alpha,beta,N)` is defined by
+
+```math
+R_x(\lambda(k);\alpha,\beta,N)
+={}_3F_2\!\left(
+\begin{matrix}-x,\;-k,\;k+\alpha+\beta+1\\
+\alpha+1,\;-N\end{matrix};1\right),
+\quad \lambda(k)=k(k+\alpha+\beta+1).
+```
+
+The Hahn/dual Hahn duality is exactly
+
+```math
+Q_k(x;\alpha,\beta,N)
+=R_x(\lambda(k);\alpha,\beta,N).
+```
+
+Under the matching positive weight and orthonormal
+normalization conventions, their **analysis transforms**
+are adjoints:
+`dual_hahn_transform(n,alpha,beta) =
+hahn_transform(n,alpha,beta)'`.
+This guarantees exact algebraic transpose duality without
+duplicating an independent, potentially inconsistent weight
+computation. The dual Hahn transform is real orthogonal,
+and therefore its eigenvalues are complex conjugates of
+those of Hahn's transform; its quadratic **polynomial grid**
+is not itself a unit-circle eigenphase law.
+
+The current implementation reuses the shared Hahn
+Jacobi eigensolver (O(n^3)). **Applications:** quadratic-grid
+discrete spectral expansions, exactly normalized dual bases,
+polynomial transform pair benchmarks. **Reference:** [95];
+DLMF 18.21, "Duality of Hahn and Dual Hahn."
+
+### Spherical shortest-geodesic parallel transport — [`sphere_geodesic_transport.m`](../sphere_geodesic_transport.m)
+
+Given two unit vectors x,y on the unit sphere S^(n-1) with
+non-antipodal endpoints, let
+
+```math
+c=x^Ty,\quad
+K=yx^T-xy^T,\quad
+R=I+K+\frac{K^2}{1+c}.
+```
+
+R is the **unique minimal ambient rotation** in SO(n) that
+maps x to y and is the identity on the orthogonal complement
+of `span(x,y)`. Its restriction to
+`T_x S^{n-1}\to T_y S^{n-1}` is exactly the Levi-Civita
+parallel transport along the unique shortest geodesic,
+which on tangent vectors v satisfying x^Tv=0 has the
+closed form
+
+```math
+P_{x\to y}v
+=v-\frac{y^Tv}{1+x^Ty}(x+y).
+```
+
+The **tangent-space map is not an endomorphism** until the
+source and destination tangent frames are identified.
+This generator stores R, its canonical square ambient
+orthogonal lift, not an arbitrary frame-coordinate
+identification. The antipodal case is excluded because
+no unique shortest great circle joins x to -x, and near
+antipodal points are rejected to avoid division by
+an ill-conditioned `1+x^Ty`.
+
+Writing `theta=acos(x^Ty)`, the finite exact eigenvalues are
+
+```math
+e^{i\theta},\quad e^{-i\theta},\quad
+\underbrace{1,\ldots,1}_{n-2},\qquad
+m_k=\frac{n-2+2\cos(k\theta)}n.
+```
+
+These give an **exact discrete trace spectral measure**
+with at most three distinct atoms. At x=y, R=I and the
+measure is one atom at zero. The ambient rotation has
+rank(R-I)<=2, so the implicit forward/adjoint kernel
+applies in O(n) per right-hand side. This is an
+application-derived real orthogonal matrix family with
+an exact finite spectral reference, not a random rotation
+or an arbitrary product of Givens matrices.
+
+**Applications:** Riemannian optimization, spherical
+statistics, geometric numerical integration, geodesic
+transport of vectors and exact finite moment benchmarks.
+**Reference:** [96], Absil, Mahony and Sepulchre.
+The ambient formula is verified by the tangent-space
+transport identity in the regression tests.
+
+## R. Families reserved for future versions (not implemented)
 
 - **Additional ETNA benchmark cases:** the exact Example 7.1 common-parameter
   and Example 7.5 inverse-eigenvalue presets are not yet implemented.
@@ -2249,3 +2410,6 @@ Daubechies, *Ten Lectures on Wavelets*.
 
 93. J. H. Hannay and M. V. Berry, “Quantization of linear maps on a torus—Fresnel diffraction by a periodic grating,” *Physica D* **1** (1980), 267–290. [DOI](https://doi.org/10.1016/0167-2789(80)90026-3).
 94. P. Feinsilver and R. Schott, “Krawtchouk transforms and convolutions,” *Advances in Applied Clifford Algebras* (2018). [DOI](https://doi.org/10.1007/s13373-018-0132-2).
+
+95. R. Koekoek, P. A. Lesky and R. F. Swarttouw, *Hypergeometric Orthogonal Polynomials and Their q-Analogues*, Springer Monographs in Mathematics, Springer, 2010. [DOI](https://doi.org/10.1007/978-3-642-05014-5); [DLMF duality](https://dlmf.nist.gov/18.21).
+96. P.-A. Absil, R. Mahony and R. Sepulchre, *Optimization Algorithms on Matrix Manifolds*, Princeton University Press, 2008. [DOI](https://doi.org/10.1515/9781400830244); [author's book website](https://sites.uclouvain.be/absil/amsbook/).

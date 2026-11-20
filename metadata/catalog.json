@@ -1190,6 +1190,48 @@
       "matrix_free_supported": true,
       "operator_kernel": "um_daubechies_apply",
       "operator_note": "Finite periodic two-channel four-tap filter, O(n) forward/adjoint action."
+    },
+    {
+      "id": "hahn_transform",
+      "status": "implemented",
+      "category": "random_signal",
+      "matrix_order": "n",
+      "representation": "normalized finite Hahn polynomial transform via symmetric Jacobi eigenbasis",
+      "spectral_reference": "no general closed-form matrix eigenphase law; Jacobi nodes are quadratic in degree",
+      "encyclopedia_references": [
+        95
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": "none",
+      "operator_note": "Dense symmetric eigendecomposition O(n^3); polynomial analysis transform."
+    },
+    {
+      "id": "dual_hahn_transform",
+      "status": "implemented",
+      "category": "random_signal",
+      "matrix_order": "n",
+      "representation": "normalized dual Hahn polynomial transform on quadratic lattice",
+      "spectral_reference": "spectra conjugate to Hahn transform due transpose duality; generic laws unknown",
+      "encyclopedia_references": [
+        95
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": "none",
+      "operator_note": "Exactly the transpose dual family to Hahn under matching conventions."
+    },
+    {
+      "id": "sphere_geodesic_transport",
+      "status": "implemented",
+      "category": "geometry",
+      "matrix_order": "n",
+      "representation": "SO(n) ambient extension of Levi-Civita shortest-geodesic tangent transport",
+      "spectral_reference": "exact conjugate pair exp(±i acos(x'*y)) plus n-2 ones",
+      "encyclopedia_references": [
+        96
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_geodesic_apply",
+      "operator_note": "Rank-two ambient rotation; O(n) action and adjoint; antipodal ambiguity rejected."
     }
   ],
   "probability_measures": [
