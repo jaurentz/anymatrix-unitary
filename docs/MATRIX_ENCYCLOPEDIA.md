@@ -2812,7 +2812,7 @@ This is not a closed-form eigenphase law for the nonautonomous case.
 **Applications:** geometric integration, nonautonomous rotation
 systems, orthogonality-preserving time-ordered numerical benchmarks.
 References: Celledoni, Marthinsen and Owren (2003) [122],
-and Hairer, Lubich and Wanner [97].
+and Hairer, Lubich and Wanner [101].
 
 ## Geometric integration: positive-metric unit-circle pencils
 
