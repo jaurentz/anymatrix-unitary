@@ -2387,6 +2387,19 @@ exp(tK) on the ambient n-dimensional complex space. The eigenphase-difference
 formula connects geometric transport to unitary conjugation but represents
 a different real action. See Lie-group parallel transport [99].
 
+### Daubechies db3/db4 parameter extensions (same canonical generator)
+
+The existing `daubechies_wavelet.m` also offers the 6-tap db3 and 8-tap db4
+orthonormal extremal-phase filters as an optional fourth argument,
+`daubechies_wavelet(n,levels,output,order)` with `order=2,3,4`.
+The legacy three-argument call remains db2/D4. Periodic extension,
+orthonormal QMF coefficients, and the multilevel forward/adjoint kernels
+are shared rather than creating separate matrix generators.
+The filter coefficients and original phase convention are documented by
+Daubechies [15] and the [PyWavelets coefficient table](https://github.com/PyWavelets/pywt/blob/main/pywt/_extensions/c/wavelets_coeffs.template.h).
+The Hannay–Berry cat-map and Krawtchouk references from the same research
+batch remain [93] and [94], attached to their existing canonical families.
+
 ## Bibliography
 
 1. P. J. Davis, *Circulant Matrices*, Wiley, 1979. ISBN 9780471057710. [Library record](https://openlibrary.org/books/OL4407364M/Circulant_matrices).

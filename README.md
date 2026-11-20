@@ -524,6 +524,8 @@ connection angles, not a built-in mesh geometry solver. See
 [the encyclopedia](docs/MATRIX_ENCYCLOPEDIA.md) for definitions, provenance,
 and finite-spectrum qualifications.
 
+The canonical `daubechies_wavelet` generator supports periodized db2, db3 and db4 wavelets. Its historical `daubechies_wavelet(n,levels,output)` call remains valid (db2); request higher orders with `daubechies_wavelet(n,levels,output,order)`. The single implementation preserves the cited wavelet construction and does not duplicate `quantum_cat_map` or `krawtchouk_transform`.
+
 ## Automatic tests
 
 - **MATLAB unit tests** under [`tests/`](tests/) check normalizations,

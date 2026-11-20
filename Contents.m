@@ -36,7 +36,7 @@
 %   tensor_permutation  Orthogonal tensor-factor permutation matrix.
 %   entangled_reflection Maximally entangled rank-one unitary phase reflector.
 %   haar_wavelet         Orthogonal finite Haar wavelet analysis transform.
-%   daubechies_wavelet   Periodized orthogonal D4/db2 multilevel wavelet.
+%   daubechies_wavelet   Periodized orthogonal D4/db3/db4/db2 multilevel wavelet. (db2 default)
 %
 % Non-quantum signal-processing transforms:
 %   orthogonal_dct       Orthonormal DCT-I, II, III, IV finite transforms.
