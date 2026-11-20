@@ -1232,6 +1232,36 @@
       "matrix_free_supported": true,
       "operator_kernel": "um_geodesic_apply",
       "operator_note": "Rank-two ambient rotation; O(n) action and adjoint; antipodal ambiguity rejected."
+    },
+    {
+      "id": "geometric_oscillator",
+      "status": "implemented",
+      "category": "eigenvalue_problems",
+      "matrix_order": "2n",
+      "representation": "real dense orthogonal-symplectic Fourier-normalized step",
+      "spectral_reference": "exact Gauss-Pade / stable Verlet frequency maps; conjugate eigenphase pairs",
+      "encyclopedia_references": [
+        97,
+        98
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_geometric_oscillator_apply",
+      "operator_note": "FFT-based O(n log n) actions for exact periodic frequency samples; 'pencil' and 'polynomial' modes expose physical structure separately."
+    },
+    {
+      "id": "geometric_fem_wave",
+      "status": "implemented",
+      "category": "eigenvalue_problems",
+      "matrix_order": "2n",
+      "representation": "real dense orthogonal-symplectic; sparse consistent mass and stiffness; DST-I operator",
+      "spectral_reference": "exact finite generalized FEM frequencies and Gauss-Pade/Verlet phases",
+      "encyclopedia_references": [
+        97,
+        99
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_geometric_wave_apply",
+      "operator_note": "O(n log n) DST-I action through um_dst1_apply. Physical positive-metric circle-spectral pencil and mass-weighted palindromic QEP exposed separately."
     }
   ],
   "probability_measures": [
