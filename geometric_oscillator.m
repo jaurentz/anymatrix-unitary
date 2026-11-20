@@ -24,7 +24,7 @@ function [U,properties] = geometric_oscillator(n,h,omega0,kappa,method,mode)
 %   strict Euclidean-unitary pencil: B\A=M need not be orthogonal.
 %   Terminal 'polynomial' (Verlet only) returns symmetric palindromic
 %   P(lambda)=lambda^2*I+lambda*(H^2*K-2I)+I (coefficients A0,A1,A2).
-%   Terminal 'spectral' returns the exact finite spectrum and frequencies.
+%   Terminal 'spectral' returns the standard finite trace-spectrum descriptor.
 %
 %   E. Hairer, C. Lubich, G. Wanner, Geometric Numerical Integration,
 %   2nd ed., 2006. [97] https://doi.org/10.1007/3-540-30666-8
@@ -80,9 +80,7 @@ if strcmp(mode,'operator')
     return
 end
 if strcmp(mode,'spectral')
-    U=struct('dimension',2*n,'kind','exact', ...
-        'eigenvalues',[z;conj(z)],'frequencies',w, ...
-        'method',method);
+    U=um_geometric_spectral('geometric_oscillator',z,w);
     return
 end
 P=sparse(1:n,[2:n,1],1,n,n);
