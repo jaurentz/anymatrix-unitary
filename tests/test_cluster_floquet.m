@@ -174,8 +174,8 @@ end
 function [Go,Ge]=symmetries(n)
 odd=repmat({'I'},1,n);
 even=odd;
-odd(1:2:end)={'X'};
-even(2:2:end)={'X'};
+odd(1:2:end)=repmat({'X'},1,numel(1:2:n));
+even(2:2:end)=repmat({'X'},1,numel(2:2:n));
 Go=pauli_word(odd);
 Ge=pauli_word(even);
 end

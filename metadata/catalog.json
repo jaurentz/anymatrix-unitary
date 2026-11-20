@@ -1707,6 +1707,22 @@
       "matrix_free_supported": false,
       "operator_kernel": null,
       "operator_note": "Dense n-by-n full on-shell S(E), n<=512. 'model' supplies poles and meromorphic continuation; 'time_delay' returns Hermitian positive semidefinite Wigner-Smith Q (not unitary). All channels retained; partial observations contractive."
+    },
+    {
+      "id": "cluster_floquet",
+      "status": "implemented",
+      "category": "quantum",
+      "matrix_order": "2^n for n=4..20 spins (explicit n<=10, matrix-free n<=20); even n for periodic",
+      "representation": "two-layer Z2 x Z2 symmetric cluster-stabilizer Floquet spin drive, U=P(kick)*exp(-i sum angles_j Z_{j-1} X_j Z_{j+1}), open/periodic boundaries, local CZ conjugations",
+      "spectral_reference": "exact finite many-body trace phase multiset/moments at ideal kick=0; for open, pi-paired edge spectrum from local anticommuting operators; distinct periodic spectrum; nonzero kick unknown exact finite law",
+      "encyclopedia_references": [
+        135,
+        136,
+        137
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_circuit_apply",
+      "operator_note": "Reuses local-gate CZ/X rotations in O(n*2^n) per state vector and adjoint; phase pairing guaranteed only in ideal open limit; exact finite spectral moments independent of eig(U)."
     }
   ],
   "probability_measures": [
