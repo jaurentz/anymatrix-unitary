@@ -2349,7 +2349,7 @@ For polygons with more than three vertices, this generator does not claim
 an automatic analytic spectrum; the implicit action takes O(nm) for m legs.
 See sphere parallel transport [100] and the classical Gauss–Bonnet theorem.
 
-### Block-permutation bundle transport — [\`bundle_transport.m\`](../bundle_transport.m)
+### Block-permutation bundle transport — [`bundle_transport.m`](../bundle_transport.m)
 
 **Order:** N*d for N sites, a permutation pi of sites, and unitary
 d-by-d link matrices R_j. Define U(e_j tensor v) = e_{pi(j)} tensor R_j v.
@@ -2364,7 +2364,7 @@ otherwise. Dividing by N*d gives the equal-weight trace moments.
 The operator/adjoint apply link matrices and reverse edges in O(N*d^2)
 work per right-hand side. A change of site frames G_j replaces a link
 with G_{pi(j)} R_j G_j^* and conjugates U by the global block-diagonal
-frame matrix. The old \`connection_cycle\` is the single-cycle d=2
+frame matrix. The old `connection_cycle` is the single-cycle d=2
 planar-rotation specialization and is retained unchanged.
 
 This is a proposed exact finite benchmark of **supplied** connection
