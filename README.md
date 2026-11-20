@@ -4,7 +4,7 @@ A MATLAB collection of finite **unitary and orthogonal test matrices**, designed
 an external group for [Anymatrix](https://github.com/north-numerical-computing/anymatrix).
 The repository is organized around reproducible mathematical constructions,
 known spectral information, and executable regression tests. It contains
-82 generators; additional benchmark families are under development.
+85 generators; additional benchmark families are under development.
 
 **Status:** development collection with MATLAB-only tests. Automated MATLAB
 regression and Anymatrix integration tests run on GitHub Actions after every
@@ -47,7 +47,7 @@ assertSuccess(results)
 
 ## Matrix generator interfaces
 
-The collection currently has **82 public generators**. Each has a complete
+The collection currently has **85 public generators**. Each has a complete
 entry with formulas, spectral information, applications, parameter conventions,
 and references in the [matrix encyclopedia](docs/MATRIX_ENCYCLOPEDIA.md).
 The [mathematical notes](docs/MATHEMATICS.md) explain the shared OPUC engine.
@@ -58,7 +58,8 @@ The [vibron ESQPT example](examples/vibron_esqpt_sector_gaps.m) compares U(3) an
 | Prescribed spectra and circulants | `cycle_shift`, `weighted_shift`, `diagonal_phase`, `phase_circulant`, `cycle_propagator`, `orthogonal_blocks` |
 | OPUC / Szegő / core matrices | `finite_cmv`, `opuc_matrix`, `jacobi_szego`, `bernstein_szego`, `circular_beta`, `circular_jacobi`, `rogers_szego`, `geronimus_cmv`, `periodic_cmv`, `bernstein_szego_finite`, `lee_yang_ising`, `scattering_zipper`, `rational_opuc`, `unitary_rank_one_update`, `etna_hessenberg` |
 | Random and signal-processing | `haar_unitary`, `haar_orthogonal`, `haar_wavelet`, `daubechies_wavelet`, `haar_special_unitary`, `haar_unimodular_coe`, `haar_unimodular_cse`, `haar_tensor_power`, `haar_block_tensor_power` |
-| Signal-processing transforms | `orthogonal_dct`, `discrete_hartley`, `cazac_circulant`, `fresnel_transform`, `affine_fourier`, `finite_zak`, `time_frequency_shift`, `periodic_hilbert`, `discrete_fourier`, `discrete_sine`, `walsh_hadamard`, `dpss_transform`, `graph_fourier`, `blaschke_potapov`, `orthogonal_butterfly`, `complex_hadamard`, `krawtchouk_transform` |
+| Signal-processing transforms | `orthogonal_dct`, `discrete_hartley`, `cazac_circulant`, `fresnel_transform`, `affine_fourier`, `finite_zak`, `time_frequency_shift`, `periodic_hilbert`, `discrete_fourier`, `discrete_sine`, `walsh_hadamard`, `dpss_transform`, `graph_fourier`, `blaschke_potapov`, `orthogonal_butterfly`, `complex_hadamard`, `krawtchouk_transform`, `hahn_transform`, `dual_hahn_transform` |
+| Riemannian geometry | `sphere_geodesic_transport` |
 | Quantum maps, walks, and algorithms | `split_step_walk`, `dirac_automaton`, `grover_operator`, `quantum_baker`, `quantum_cat_map`, `kicked_harper`, `kicked_top`, `extended_lipkin_propagator`, `vibron_2d_esqpt`, `agassi_propagator`, `floquet_ising`, `selfdual_kicked_ising`, `driven_kitaev`, `kicked_rotor`, `dual_unitary_circuit`, `xxz_floquet`, `kicked_bose_hubbard`, `jaynes_cummings`, `chalker_coddington`, `unitary_almost_mathieu`, `szegedy_walk`, `coined_graph_walk`, `metric_quantum_graph` |
 | Matrix functions and dilations | `cayley_jacobi`, `polar_unitary`, `julia_unitary`, `entangled_reflection` |
 | Quantum group actions | `tensor_permutation` |
@@ -314,6 +315,36 @@ rather than a fast polynomial recurrence.
 The Daubechies D4/db2 transform explicitly uses periodic boundary
 closure, including the length-2 final stage. It differs from Haar
 and provides O(n) forward/adjoint operations.
+
+
+## Hahn and dual Hahn transforms, and spherical geodesic transport
+
+~~~matlab
+H = hahn_transform(20, .4, .9);       % polynomial Hahn transform
+D = dual_hahn_transform(20, .4, .9);  % exactly H' (dual quadratic grid)
+
+R = sphere_geodesic_transport(7);   % SO(7) shortest-geodesic lift
+Fr = sphere_geodesic_transport(10000,[],[],'operator');
+Sr = sphere_geodesic_transport(7,[],[],'spectral'); % exact phase pair
+~~~
+
+The Hahn family is defined using the self-adjoint Hahn difference
+operator. Its **Jacobi** eigenvalues are quadratic in polynomial
+degree, but its **orthogonal transform** eigenvalues are generally
+different and not available in closed form. The dual Hahn transform
+uses the matching transpose basis: the dual polynomial grid is
+quadratic, and matrix orthogonality is preserved exactly in the
+normalization conventions. Both generators use a dense symmetric
+eigensolver, not a fast polynomial transform.
+
+The spherical family records the ambient SO(n) rotation whose
+restriction to tangent spaces is **Levi-Civita parallel transport**
+along the unique shortest geodesic from x to y on the unit sphere.
+Because source and destination tangent spaces differ, the ambient
+orthogonal extension—not an arbitrarily chosen tangent-frame matrix—
+is the well-defined finite matrix in the database. The spectrum is
+the exactly known pair exp(±i theta), where theta=acos(x'*y),
+and n-2 copies of 1. Antipodal points are excluded.
 
 ## Install as an Anymatrix external group
 
