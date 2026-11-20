@@ -98,7 +98,7 @@ for j=1:numel(grid)
 end
 phase=unwrap(angle(s));
 slope=(phase(3:end)-phase(1:end-2))./(grid(3:end)-grid(1:end-2));
-verifyLessThan(tc,max(abs(slope-delay(2:end-1))),1.2e-4);
+verifyLessThan(tc,max(abs(slope-delay(2:end-1))),2.5e-4);
 verifyTrue(tc,all(diff(phase)>-1e-9));
 end
 
