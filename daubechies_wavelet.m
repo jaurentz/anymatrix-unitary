@@ -1,10 +1,12 @@
-function [U,properties]=daubechies_wavelet(n,order,levels,output)
+function [U,properties]=daubechies_wavelet(n,levels,output,order)
 %DAUBECHIES_WAVELET Periodic finite orthonormal Daubechies analysis transform.
-%   U=DAUBECHIES_WAVELET(N,ORDER,LEVELS) builds an N-by-N real
+%   U=DAUBECHIES_WAVELET(N,LEVELS,OUTPUT,ORDER) builds an N-by-N real
 %   orthogonal multilevel wavelet analysis matrix with periodic boundary
 %   handling. N must be a power of two (including N=1).
 %   ORDER=2,3,4 selects db2, db3, db4, respectively (filter lengths
-%   4,6,8); default ORDER=2. LEVELS defaults to log2(N); LEVELS=0
+%   4,6,8); default ORDER=2. ORDER is the optional FOURTH argument to
+%   preserve the legacy DAUBECHIES_WAVELET(N,LEVELS,OUTPUT) interface.
+%   LEVELS defaults to log2(N); LEVELS=0
 %   returns the identity.
 %
 %   At a level of current size m, the row-index j=0:m/2-1 outputs are
@@ -30,19 +32,19 @@ maxlevels=round(log2(n));
 if 2^maxlevels~=n
     error('daubechies_wavelet:Order','N must be a power of two.');
 end
-if nargin<2||isempty(order),order=2;end
-validateattributes(order,{'numeric'}, ...
-    {'scalar','integer','finite'});
-if order<2 || order>4
-    error('daubechies_wavelet:Filter','ORDER must be 2, 3, or 4.');
-end
-if nargin<3||isempty(levels),levels=maxlevels;end
+if nargin<2||isempty(levels),levels=maxlevels;end
 validateattributes(levels,{'numeric'}, ...
     {'scalar','integer','finite'});
 if levels<0 || levels>maxlevels
     error('daubechies_wavelet:Levels','LEVELS must be between 0 and log2(N).');
 end
-if nargin<4||isempty(output),output='matrix';end
+if nargin<3||isempty(output),output='matrix';end
+if nargin<4||isempty(order),order=2;end
+validateattributes(order,{'numeric'}, ...
+    {'scalar','integer','finite'});
+if order<2 || order>4
+    error('daubechies_wavelet:Filter','ORDER must be 2, 3, or 4.');
+end
 if ~(ischar(output)||(isstring(output)&&isscalar(output)))
     error('daubechies_wavelet:Mode','OUTPUT must be a scalar string.');
 end

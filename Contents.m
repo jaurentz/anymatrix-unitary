@@ -36,6 +36,7 @@
 %   tensor_permutation  Orthogonal tensor-factor permutation matrix.
 %   entangled_reflection Maximally entangled rank-one unitary phase reflector.
 %   haar_wavelet         Orthogonal finite Haar wavelet analysis transform.
+%   daubechies_wavelet   Periodized orthogonal D4/db3/db4/db2 multilevel wavelet. (db2 default)
 %
 % Non-quantum signal-processing transforms:
 %   orthogonal_dct       Orthonormal DCT-I, II, III, IV finite transforms.
@@ -54,8 +55,12 @@
 %   blaschke_potapov    Rational inner / lossless rank-one product frequency response.
 %   orthogonal_butterfly Recursive real orthogonal butterfly (fast implicit action).
 %   complex_hadamard     Dita-deformed Fourier-block complex Hadamard matrices.
-%   krawtchouk_transform Orthogonal Krawtchouk polynomial transform (binomial weight).
-%   daubechies_wavelet  Periodic db2/db3/db4 orthonormal multilevel wavelet matrices.
+%   krawtchouk_transform Orthogonal binomial Krawtchouk polynomial transform.
+%   hahn_transform        Orthogonal Hahn transform via Jacobi difference operator.
+%   dual_hahn_transform   Dual Hahn quadratic-grid polynomial transform.
+%
+% Riemannian geometry:
+%   sphere_geodesic_transport  SO(n) lift of tangent geodesic parallel transport.
 %
 % Nonlinear unitary dynamics:
 %   lohe_matrix_flow     Coupled Lohe oscillators on U(d), geometric midpoint integration.
@@ -69,7 +74,7 @@
 %   dirac_automaton      Periodic 1D Dirac cellular automaton (size 2n).
 %   grover_operator      Grover reflections with exact degeneracies.
 %   quantum_baker        Balazs-Voros / Saraceno quantum baker map.
-%   quantum_cat          Hannay-Berry hyperbolic cat-map quantization (all orders).
+%   quantum_cat_map      Finite metaplectic quantization of hyperbolic toral map.
 %   kicked_harper        Finite-torus kicked Harper Floquet map.
 %   kicked_top           Spin-j quantum kicked top.
 %   extended_lipkin_propagator  Nuclear two-level boson phase-transition evolution.
