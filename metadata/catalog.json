@@ -1182,14 +1182,14 @@
       "status": "implemented",
       "category": "random_signal",
       "matrix_order": "n",
-      "representation": "periodized compactly supported D4 (db2) orthogonal multilevel wavelet",
-      "spectral_reference": "identity for zero levels; generic finite eigenphase law unknown",
+      "representation": "orthogonal periodic db2/db3/db4 or custom-QMF multilevel wavelet and wavelet-packet trees",
+      "spectral_reference": "identity for no split nodes; general finite eigenphase law unknown",
       "encyclopedia_references": [
         15
       ],
       "matrix_free_supported": true,
-      "operator_kernel": "um_daubechies_apply",
-      "operator_note": "Finite periodic two-channel four-tap filter, O(n) forward/adjoint action."
+      "operator_kernel": "um_daubechies_apply / um_wavelet_packet_apply",
+      "operator_note": "O(n*L*levels) multi-RHS forward/adjoint, arbitrary parent-closed packet splits and periodic short-block wraparound."
     },
     {
       "id": "hahn_transform",

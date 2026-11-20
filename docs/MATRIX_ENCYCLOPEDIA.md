@@ -2115,43 +2115,45 @@ first components.
 signal representations and discrete orthogonal polynomial transforms.
 **Reference:** [94], Feinsilver and Schott.
 
-### Periodized four-tap Daubechies transform — [`daubechies_wavelet.m`](../daubechies_wavelet.m)
+### Periodic Daubechies wavelets and wavelet-packet trees — [`daubechies_wavelet.m`](../daubechies_wavelet.m)
 
-The D4 (also known as db2, *two vanishing moments*) low-pass
-analysis coefficients are
-
-```math
-h=\frac{1}{4\sqrt 2}
-(1+\sqrt3,\ 3+\sqrt3,\ 3-\sqrt3,\ 1-\sqrt3).
-```
-
-The high-pass filter is g=(h_3,-h_2,h_1,-h_0) using
-zero-based coefficients. For an even-length *periodic* stage
-of length m, the low and high coefficients are
+**Order:** n=2^m, m>=0. The legacy four-argument function constructs
+periodized orthogonal multilevel approximation-only wavelets.
+ORDER=2,3,4 selects db2/db3/db4 (filter lengths 4,6,8), with db2
+the unchanged default. The analysis low-pass filter h uses the documented
+Daubechies reconstruction-tap convention; the high-pass filter is
+g(k)=(-1)^k*h(L-1-k). For each block of even length m,
 
 ```math
-a_j=\sum_{k=0}^3h_kx_{(2j+k)\bmod m},\qquad
-d_j=\sum_{k=0}^3g_kx_{(2j+k)\bmod m}.
+a_j=\sum_{k=0}^{L-1}h_k x_{(2j+k)\bmod m},\qquad
+d_j=\sum_{k=0}^{L-1}g_k x_{(2j+k)\bmod m}.
 ```
 
-The output ordering is [averages;details], and subsequent
-levels act only on the averages. For any power-of-two n,
-the number of levels can be zero (identity) through log2(n).
-The length-two final stage uses modulo indices, so its
-four taps alias pairwise to a valid orthogonal final split.
-The entire finite n-by-n matrix is therefore **real
-orthogonal with exact periodic boundary closure**.
+Optional fifth argument PACKET may be 'dwt' (the old transform), 'full'
+(split all bands), 'none' (identity), or a vector of binary-heap labels
+of internal split nodes. Label 1 is the root and children of node j
+are 2j, 2j+1. Every split node must also have its ancestors split.
+The coefficient ordering is a deterministic left-to-right dyadic
+leaf ordering, and arbitrary incomplete trees are allowed.
 
-Matrix-free forward and transpose actions require O(n)
-operations over all levels. Other boundary extensions
-(zero padding, reflection) would require different operators
-and are not silently identified with this finite transform.
-No generic analytic finite eigenphase law is asserted.
+Alternatively ORDER may be a finite real even-length low-pass QMF tap
+vector with unit norm, sum sqrt(2) and vanishing correlation with its
+positive even shifts. This condition supplies an orthogonal periodic
+two-channel analysis even when the filter wraps repeatedly on m=2
+or other short dyadic blocks. Each split stage is orthogonal, so all
+packet-tree products are orthogonal. The operator and its adjoint
+support complex, multi-RHS input with O(n L levels) arithmetic.
+Reflection/symmetric boundary extensions are not this family.
 
-**Applications:** periodized orthogonal filter banks,
-finite matrix-free normal spectral-density benchmarks and
-boundary-sensitive signal transforms. **Reference:** [15],
-Daubechies, *Ten Lectures on Wavelets*.
+The finite trace-eigenphase law of the resulting square matrix
+is *not* its filter frequency response and is generally unknown;
+the empty tree is I, with exact eigenphases all +1. These transforms
+serve as contrasting unitary spectral-density benchmarks for Haar,
+db2 and db4 packet trees, with exact finite orthogonality.
+
+**Application and reference:** finite multiresolution and
+wavelet-packet filter banks, Daubechies, *Ten Lectures on Wavelets*
+[15], https://doi.org/10.1137/1.9781611970104.
 
 
 ## Q. Hahn/dual Hahn transforms and spherical parallel transport (November 2026)
