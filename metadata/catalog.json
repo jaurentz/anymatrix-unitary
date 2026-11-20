@@ -1104,6 +1104,50 @@
       "matrix_free_supported": true,
       "operator_kernel": "um_butterfly_apply",
       "operator_note": "Factorized forward/adjoint action without materializing the N-by-N matrix."
+    },
+    {
+      "id": "complex_hadamard",
+      "status": "implemented",
+      "category": "random_signal",
+      "matrix_order": "n",
+      "representation": "Dita-deformed normalized Fourier block matrices",
+      "spectral_reference": "all entries equimodular; exact Fourier corner case only",
+      "encyclopedia_references": [
+        91,
+        92
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_hadamard_apply",
+      "operator_note": "Two-axis FFT plus diagonal phase action; O(n log n) memory-efficient."
+    },
+    {
+      "id": "unitary_rank_one_update",
+      "status": "implemented",
+      "category": "opuc",
+      "matrix_order": "n",
+      "representation": "multiplicative rank-one reflection of core-factorized unitary Hessenberg",
+      "spectral_reference": "generic finite counting law unknown; exact cyclic special case",
+      "encyclopedia_references": [
+        90,
+        5
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_rank_one_apply",
+      "operator_note": "O(n) unitary core action plus rank-one projector; default terminal-column update preserves Hessenberg."
+    },
+    {
+      "id": "etna_hessenberg",
+      "status": "implemented",
+      "category": "opuc",
+      "matrix_order": "n",
+      "representation": "seeded unitary Hessenberg core-factor benchmarks Type I / II / III",
+      "spectral_reference": "seeded unitary cores; no generally known finite trace law",
+      "encyclopedia_references": [
+        8
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_core_apply",
+      "operator_note": "O(n) core-factor action; Type III near-decoupled four-block structure."
     }
   ],
   "probability_measures": [
