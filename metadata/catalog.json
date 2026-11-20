@@ -1148,6 +1148,95 @@
       "matrix_free_supported": true,
       "operator_kernel": "um_core_apply",
       "operator_note": "O(n) core-factor action; Type III near-decoupled four-block structure."
+    },
+    {
+      "id": "gauss_hermite_transform",
+      "status": "implemented",
+      "category": "signal_processing",
+      "matrix_order": "n",
+      "representation": "dense orthogonal Gauss-Hermite evaluation",
+      "spectral_reference": "matrix eigenphases unknown; Gauss-Hermite nodes are NOT eigenvalues",
+      "encyclopedia_references": [
+        93,
+        98
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": null,
+      "operator_note": "Explicit eigendecomposition/exponential; no fast action claimed."
+    },
+    {
+      "id": "gauss_laguerre_transform",
+      "status": "implemented",
+      "category": "signal_processing",
+      "matrix_order": "n",
+      "representation": "dense orthogonal generalized Laguerre evaluation",
+      "spectral_reference": "matrix eigenphases unknown; Gauss-Laguerre nodes are NOT eigenvalues",
+      "encyclopedia_references": [
+        93,
+        95
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": null,
+      "operator_note": "Explicit eigendecomposition/exponential; no fast action claimed."
+    },
+    {
+      "id": "associated_legendre_transform",
+      "status": "implemented",
+      "category": "signal_processing",
+      "matrix_order": "n",
+      "representation": "dense orthogonal fixed-order associated-Legendre / Gauss-Jacobi block",
+      "spectral_reference": "conjugate-paired unit circle; Gauss-Jacobi nodes are NOT eigenvalues",
+      "encyclopedia_references": [
+        93,
+        95,
+        96
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": null,
+      "operator_note": "Explicit eigendecomposition/exponential; no fast action claimed."
+    },
+    {
+      "id": "wigner_rotation",
+      "status": "implemented",
+      "category": "signal_processing",
+      "matrix_order": "2*ell+1",
+      "representation": "dense spherical harmonic irreducible SO(3) representation",
+      "spectral_reference": "exact exp(-i*m*delta), m=-ell:ell",
+      "encyclopedia_references": [
+        97
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": null,
+      "operator_note": "Explicit eigendecomposition/exponential; no fast action claimed."
+    },
+    {
+      "id": "spherical_harmonic_rotation",
+      "status": "implemented",
+      "category": "signal_processing",
+      "matrix_order": "L^2",
+      "representation": "block-sparse direct sum of Wigner rotations",
+      "spectral_reference": "exact phase multiplicities L-|m|; exact Fejer-square moments and triangular scaling limit",
+      "encyclopedia_references": [
+        97
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": null,
+      "operator_note": "Explicit eigendecomposition/exponential; no fast action claimed."
+    },
+    {
+      "id": "periodic_sinc_shift",
+      "status": "implemented",
+      "category": "signal_processing",
+      "matrix_order": "n (odd)",
+      "representation": "real orthogonal circulant Dirichlet cardinal translation",
+      "spectral_reference": "exact centered Fourier phase multipliers",
+      "encyclopedia_references": [
+        1,
+        94
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_periodic_sinc_apply",
+      "operator_note": "O(n log n) FFT action, forward and adjoint; odd length."
     }
   ],
   "probability_measures": [
