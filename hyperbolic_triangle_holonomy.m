@@ -18,7 +18,7 @@ function [U,properties]=hyperbolic_triangle_holonomy(n,vertices,output)
 %   T. Needham, Visual Differential Geometry and Forms (2021),
 %   Gauss-Bonnet and holonomy; https://doi.org/10.1515/9780691219899
 %   J. Voight, Quaternion Algebras (2021), hyperbolic triangle area,
-%   Section 33.6; https://doi.org/10.1007/978-3-030-56694-4
+%   Section 33.6; https://doi.org/10.1007/978-3-030-56694-4_33
 properties={'square','unitary','normal','orthogonal','real', ...
             'scalable','parameter-dependent','eigenvalues'};
 if nargin==0,U=[];return;end
