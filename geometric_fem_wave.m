@@ -16,7 +16,7 @@ function [U,properties] = geometric_fem_wave(n,L,c,omega0,h,method,mode)
 %   Euclidean unitary. For Verlet, 'polynomial' returns the symmetric
 %   palindromic quadratic eigenvalue problem
 %       z^2*Mass+z*(H^2*K-2*Mass)+Mass.
-%   'spectral' returns the exact 2N eigenvalues from generalized
+%   'spectral' returns the standard exact finite trace descriptor from generalized
 %   finite-element sine-mode frequencies, without eig.
 %   'operator' returns O(X,FLAG), a fast DST-I matrix-free action.
 %
@@ -73,10 +73,7 @@ else
       polyval(fliplr(coeff),1i*h*w);
 end
 if strcmp(mode,'spectral')
-    U=struct('dimension',2*n,'kind','exact', ...
-        'eigenvalues',[z;conj(z)],'frequencies',w, ...
-        'method',method,'mass_eigenvalues',massvals, ...
-        'stiffness_eigenvalues',stiffvals);
+    U=um_geometric_spectral('geometric_fem_wave',z,w,massvals,stiffvals);
     return
 end
 if strcmp(mode,'operator')
