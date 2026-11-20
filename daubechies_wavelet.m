@@ -34,10 +34,7 @@ if 2^maxlevels~=n
 end
 if nargin<2||isempty(levels),levels=maxlevels;end
 validateattributes(levels,{'numeric'}, ...
-    {'scalar','integer','finite'});
-if levels<0 || levels>maxlevels
-    error('daubechies_wavelet:Levels','LEVELS must be between 0 and log2(N).');
-end
+    {'scalar','integer','>=',0,'<=',maxlevels,'finite'});
 if nargin<3||isempty(output),output='matrix';end
 if nargin<4||isempty(order),order=2;end
 validateattributes(order,{'numeric'}, ...
