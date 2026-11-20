@@ -3554,6 +3554,58 @@ statistics and symmetry-preserving numerical methods.
 **Reference:** [115] (Ipp and Müller).
 
 
+### Heterogeneous gyroscopic/Coriolis oscillators — [gyroscopic_oscillator.m](../gyroscopic_oscillator.m)
+
+**Order:** $2n$ real orthogonal ($n\geq2$ mechanical displacements). **Application:** conservative gyroscopic vibrations and rotating-structure models. This is a reproducible *benchmark specialization*, not experimental apparatus data.
+
+For $j=1,\ldots,n$, take diagonal positive $M$ with entries $m_j=1+0.2j/n+0.05\sin j$. Let $D$ be the forward-difference matrix with row $j$ equal to $e_{j+1}^T-e_j^T$, and let $E_{j+1,j}=1$ with all other entries zero. Define
+
+```math
+K=\omega_0^2M+\kappa D^TD+
+0.15\,\mathop{\mathrm{diag}}(1+0.1\cos j),\qquad
+C=\gamma(E-E^T).
+```
+
+Parameters are $\omega_0>0$, $\kappa\geq0$, $\gamma\geq0$, with $h>0$. For $\gamma>0$ the gyroscopic matrix is nonzero and skew-symmetric, both $M$ and $K$ are sparse SPD, and the mass and stiffness generally do not commute. The physical equation and its **continuous-time gyroscopic QEP** are
+
+```math
+M\ddot q+C\dot q+Kq=0,\qquad Q(\lambda)=\lambda^2M+\lambda C+K.
+```
+
+The continuous eigenvalues are imaginary and semisimple under the stated positive-energy assumptions. In velocity coordinates $x=(q,v)$,
+
+```math
+A_0=\begin{bmatrix}0&I\\-M^{-1}K&-M^{-1}C\end{bmatrix},
+\qquad G=\mathop{\mathrm{diag}}(K,M),
+\qquad A_0^TG+GA_0=0.
+```
+
+Implicit midpoint and two- and three-stage Gauss–Legendre steps use $S=R_s(hA_0)$, with $R_s(z)=P_s(z)/P_s(-z)$ and
+
+```math
+P_1(z)=1+z/2,\quad
+P_2(z)=1+z/2+z^2/12,\quad
+P_3(z)=1+z/2+z^2/10+z^3/120.
+```
+
+Consequently $S^TGS=G$, and with the upper Cholesky factor $T^TT=G$, the **returned matrix** $U=TST^{-1}$ is orthogonal. The **operator** mode applies $U$ and its transpose through the sparse rational step matrices, with sparse solves and Cholesky factors; fill-in and conditioning govern performance.
+
+The **pencil** mode exposes $(GS,G)$, the physical $S$, the metric $G$, normalized $U$, and $M,K,C$. Its generalized eigenvalues lie on the unit circle, but it is not in general a strict Euclidean-unitary coefficient pencil. The **quadratic** mode returns coefficients $(K,C,M)$; its continuous eigenvalues $\lambda$ must not be confused with the Gauss multipliers $R_s(h\lambda)$.
+
+The Lagrangian $L=\frac12v^TMv+\frac12v^TCq-\frac12q^TKq$ gives canonical momentum $p=Mv+Cq/2$. The change of coordinates
+
+```math
+B=\begin{bmatrix}I&0\\C/2&M\end{bmatrix},\qquad
+(BSB^{-1})^TJ(BSB^{-1})=J,\qquad
+J=\begin{bmatrix}0&I\\-I&0\end{bmatrix}
+```
+
+shows the correct canonical symplecticity. The energy-normalized matrix $U$ need **not** preserve the same standard $J$. Both metric and canonical symplecticity are independently tested.
+
+The generic finite eigenphase law is **unknown analytically**. Numerical QEP roots can provide independent checks; the $\gamma=0$ specialization is a non-gyroscopic limit overlapping the stiffness-only families.
+
+**References:** Qian–Lin [125] (gyroscopic QEP), Hairer–Lubich–Wanner [101] and Ohsawa [126] (geometric integration and quadratic invariants). Kuzmanović Ivičić–Miodragović [127] treat a different negative-stiffness gyroscopic-stabilization regime, not a justification for this positive-energy construction.
+
 ## Bibliography
 
 1. P. J. Davis, *Circulant Matrices*, Wiley, 1979. ISBN 9780471057710. [Library record](https://openlibrary.org/books/OL4407364M/Circulant_matrices).
@@ -3695,3 +3747,7 @@ statistics and symmetry-preserving numerical methods.
 123. A. Singer and H.-T. Wu, “Vector diffusion maps and the connection Laplacian,” *Communications on Pure and Applied Mathematics* **65** (2012), 1067–1144. [DOI](https://doi.org/10.1002/cpa.21395).
 
 124. F. Wilczek and A. Zee, “Appearance of Gauge Structure in Simple Dynamical Systems,” *Physical Review Letters* **52** (1984), 2111–2114. [DOI](https://doi.org/10.1103/PhysRevLett.52.2111).
+
+125. J. Qian and W.-W. Lin, “A numerical method for quadratic eigenvalue problems of gyroscopic systems,” *Journal of Sound and Vibration* **306** (2007), 284–296. [DOI](https://doi.org/10.1016/j.jsv.2007.05.009).
+126. T. Ohsawa, “Preservation of Quadratic Invariants by Semiexplicit Symplectic Integrators for Nonseparable Hamiltonian Systems,” *SIAM Journal on Numerical Analysis* **61** (2023), 1293–1315. [DOI](https://doi.org/10.1137/22M1517718).
+127. I. Kuzmanović Ivičić and S. Miodragović, “Perturbation bounds for stable gyroscopic systems in motion about an unstable equilibrium position,” *Journal of Computational and Applied Mathematics* **451** (2024), 116061. [DOI](https://doi.org/10.1016/j.cam.2024.116061).
