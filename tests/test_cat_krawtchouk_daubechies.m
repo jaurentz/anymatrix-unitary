@@ -47,7 +47,7 @@ verifyLessThan(testCase,norm(F(F(X,'notransp'),'transp')-X,'fro'),2e-9);
 end
 
 function test_cat_validation(testCase)
-verifyError(testCase,@()quantum_cat(5,0),'quantum_cat:BadS');
+verifyError(testCase,@()quantum_cat(5,0),'quantum_cat:Parameter');
 end
 
 function test_krawtchouk_tridiagonal_diagonalization(testCase)
@@ -86,8 +86,8 @@ verifyGreaterThan(testCase,norm(sort(real(z))-(0:8)'),1);
 end
 
 function test_krawtchouk_validation(testCase)
-verifyError(testCase,@()krawtchouk_transform(8,0),'MATLAB:expectedScalar');
-verifyError(testCase,@()krawtchouk_transform(8,1),'MATLAB:expectedScalar');
+verifyError(testCase,@()krawtchouk_transform(8,0),'krawtchouk_transform:Probability');
+verifyError(testCase,@()krawtchouk_transform(8,1),'krawtchouk_transform:Probability');
 verifyError(testCase,@()krawtchouk_transform(8,.5,'operator'), ...
     'krawtchouk_transform:Mode');
 end
@@ -135,9 +135,9 @@ end
 
 function test_daubechies_validation(testCase)
 verifyError(testCase,@()daubechies_wavelet(7),'daubechies_wavelet:Order');
-verifyError(testCase,@()daubechies_wavelet(8,1),'MATLAB:expectedScalar');
-verifyError(testCase,@()daubechies_wavelet(8,5),'MATLAB:expectedScalar');
-verifyError(testCase,@()daubechies_wavelet(8,2,4),'MATLAB:expectedScalar');
+verifyError(testCase,@()daubechies_wavelet(8,1),'daubechies_wavelet:Filter');
+verifyError(testCase,@()daubechies_wavelet(8,5),'daubechies_wavelet:Filter');
+verifyError(testCase,@()daubechies_wavelet(8,2,4),'daubechies_wavelet:Levels');
 verifyError(testCase,@()daubechies_wavelet(8,2,2,'invalid'),'daubechies_wavelet:Mode');
 F=daubechies_wavelet(8,2,[],'operator');
 verifyError(testCase,@()F(ones(7,1),'notransp'),'um_daubechies_apply:Dimension');
