@@ -782,6 +782,30 @@
       ],
       "permalink": "https://doi.org/10.3390/sym13112092",
       "alternate_permalink": ""
+    },
+    {
+      "number": 101,
+      "dois": [
+        "10.1006/aphy.1993.1093"
+      ],
+      "permalink": "https://doi.org/10.1006/aphy.1993.1093",
+      "alternate_permalink": ""
+    },
+    {
+      "number": 102,
+      "dois": [
+        "10.1007/s10444-023-10090-8"
+      ],
+      "permalink": "https://doi.org/10.1007/s10444-023-10090-8",
+      "alternate_permalink": "https://arxiv.org/abs/2011.13699"
+    },
+    {
+      "number": 103,
+      "dois": [
+        "10.1007/s00041-008-9013-5"
+      ],
+      "permalink": "https://doi.org/10.1007/s00041-008-9013-5",
+      "alternate_permalink": ""
     }
   ]
 }

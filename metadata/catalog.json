@@ -1289,6 +1289,49 @@
       "matrix_free_supported": true,
       "operator_kernel": "um_lie_transport_apply",
       "operator_note": "O(n^2) pair rotations with O(n^2) parameter storage"
+    },
+    {
+      "id": "stiefel_geodesic",
+      "status": "implemented",
+      "category": "geometry",
+      "matrix_order": "n",
+      "representation": "canonical Stiefel geodesic ambient unitary via 2p skew-Hermitian block",
+      "spectral_reference": "exact finite reduction to a 2p-by-2p skew-Hermitian eigenproblem",
+      "encyclopedia_references": [
+        97
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_stiefel_apply",
+      "operator_note": "O(np) action after precomputing the 2p-by-2p exponential"
+    },
+    {
+      "id": "grassmann_holonomy",
+      "status": "implemented",
+      "category": "geometry",
+      "matrix_order": "r (subspace rank), ambient frame dimension n",
+      "representation": "unitary polar overlap product for geodesic polygon in Gr(r,n)",
+      "spectral_reference": "exact scalar Bargmann/Pancharatnam phase at r=1; general r>=2 unknown analytically",
+      "encyclopedia_references": [
+        101,
+        102
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": "",
+      "operator_note": "Small dense r-by-r holonomy; no asymptotically cheaper matrix-free action claimed."
+    },
+    {
+      "id": "wigner_geodesic",
+      "status": "implemented",
+      "category": "geometry",
+      "matrix_order": "n = 2j+1",
+      "representation": "spin-j Wigner D rotation representation with sparse skew tridiagonal angular-momentum generator",
+      "spectral_reference": "exact eigenvalues exp(-i*m*theta) from SU(2) conjugacy angle",
+      "encyclopedia_references": [
+        103
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": "",
+      "operator_note": "Dense angular-momentum exponential; no fast implicit action claimed."
     }
   ],
   "probability_measures": [

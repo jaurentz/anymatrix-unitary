@@ -2387,6 +2387,62 @@ exp(tK) on the ambient n-dimensional complex space. The eigenphase-difference
 formula connects geometric transport to unitary conjugation but represents
 a different real action. See Lie-group parallel transport [99].
 
+### Stiefel geodesic ambient lift — [`stiefel_geodesic.m`](../stiefel_geodesic.m)
+
+**Order:** n>=2p. Orthonormal frames B=[Y,Q] (N-by-2p), skew-Hermitian
+p-by-p A, and arbitrary p-by-p R specify tangent H=YA+QR. With
+
+```math
+K=\begin{bmatrix}A&-R^*\\R&0\end{bmatrix},
+\qquad G(t)=I+B(e^{tK}-I)B^*,
+```
+
+the frame geodesic Y(t)=G(t)Y is canonical-metric Stiefel motion.
+This extends the Grassmann lift with a nonzero vertical rotation A,
+but does **not** model intrinsic Stiefel tangent-bundle parallel transport.
+The large unitary spectrum is known from a small 2p-by-2p skew-Hermitian
+eigenproblem and n-2p fixed eigenvalues. The generator computes this small
+eigenproblem for its spectral reference, not a full n-by-n eigensolve.
+Operator mode stores a 2p-by-2p exponential and applies the low-rank update
+in O(np) arithmetic. Edelman–Arias–Smith [97].
+
+### Non-Abelian Grassmannian loop holonomy — [`grassmann_holonomy.m`](../grassmann_holonomy.m)
+
+**Order:** r, from n-by-r orthonormal frames Y_j of a closed subspace
+polygon in complex Gr(r,n). On each unique shortest geodesic arc the
+canonical tautological-bundle transport, represented in frame coordinates,
+is the unitary polar factor of Y_(j+1)^*Y_j (provided this overlap is
+invertible). Multiplication in traversal order gives H in U(r).
+Changing each frame by an arbitrary gauge Q_j changes the closed
+holonomy by Q_1^* H Q_1: eigenphases remain gauge invariant.
+This is not Grassmannian Levi-Civita tangent-bundle holonomy.
+
+For r=1 the scalar phase is the normalized Bargmann-invariant product
+of pairwise overlaps and is provided exactly without eig. For general
+r>=2, the phases can be genuinely non-Abelian; no generic closed-form
+phase law is claimed. Source on geometric phases [97] and Grassmann
+geometry [102]. The code's default frame polygon is a reproducible
+complex test case, not extracted from an application dataset.
+
+### Wigner D rotation representation — [`wigner_geodesic.m`](../wigner_geodesic.m)
+
+**Order:** n=2j+1. Wigner D^j is a finite-dimensional unitary
+irreducible representation of SU(2) (and SO(3) when j is integer).
+Geodesics from identity on a compact rotation group with its bi-invariant
+metric reach any such rotation. Standard Z-Y-Z Euler parameters give
+
+```math
+D^j(\alpha,\beta,\gamma)
+=e^{-i\alpha J_z}e^{-i\beta J_y}e^{-i\gamma J_z}.
+```
+
+Let \(\theta=2\arccos(\cos(\beta/2)\cos((\alpha+\gamma)/2))\) in [0,2pi]
+with the SU(2) lift retained. The eigenvalues are e^{-im theta} for
+m=-j,...,j; half-integer j resolves the double cover. The real middle
+Wigner d block is formed by exponentiating a real skew-tridiagonal
+angular-momentum generator. The full output is dense; no fast operator
+mode is asserted. Source on SO(3) transforms [103].
+
 ## Bibliography
 
 1. P. J. Davis, *Circulant Matrices*, Wiley, 1979. ISBN 9780471057710. [Library record](https://openlibrary.org/books/OL4407364M/Circulant_matrices).
@@ -2496,3 +2552,6 @@ a different real action. See Lie-group parallel transport [99].
 98. K. Crane, M. Desbrun and P. Schröder, “Trivial connections on discrete surfaces,” *Comput. Graph. Forum* **29** (2010), 1525–1533. [DOI](https://doi.org/10.1111/j.1467-8659.2010.01761.x).
 99. Y. Ge, P. van Goor and R. Mahony, “A geometric perspective on fusing Gaussian distributions on Lie groups,” *IEEE Control Systems Letters* **8** (2024), 844–849. [DOI](https://doi.org/10.1109/LCSYS.2024.3405485); [preprint](https://arxiv.org/abs/2403.16411).
 100. S. Fiori, “Manifold Calculus in System Theory and Control—Fundamentals and First-Order Systems,” *Symmetry* **13** (2021), 2092. [DOI](https://doi.org/10.3390/sym13112092).
+101. N. Mukunda and R. Simon, “Quantum Kinematic Approach to the Geometric Phase. I. General Formalism,” *Ann. Phys.* **228** (1993), 205–268. [DOI](https://doi.org/10.1006/aphy.1993.1093).
+102. T. Bendokat, R. Zimmermann and P.-A. Absil, “A Grassmann manifold handbook: Basic geometry and computational aspects,” *Adv. Comput. Math.* **50** (2024), article 6. [DOI](https://doi.org/10.1007/s10444-023-10090-8). See published correction: [DOI](https://doi.org/10.1007/s10444-024-10115-w).
+103. P. J. Kostelec and D. N. Rockmore, “FFTs on the Rotation Group,” *J. Fourier Anal. Appl.* **14** (2008), 145–179. [DOI](https://doi.org/10.1007/s00041-008-9013-5).
