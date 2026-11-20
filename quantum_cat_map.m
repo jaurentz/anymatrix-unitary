@@ -2,7 +2,7 @@ function [U,properties]=quantum_cat_map(n,a,d,output)
 %QUANTUM_CAT_MAP Finite metaplectic quantization of a hyperbolic torus map.
 %   U=QUANTUM_CAT_MAP(N,A,D) quantizes the classical integral matrix
 %       S = [A 1; A*D-1 D] in SL(2,Z),
-%   with even positive A,D and A*D>4 (hyperbolic, checkerboard parity).
+%   with even positive A,D and A*D>=4 (hyperbolic, checkerboard parity).
 %   Default A=D=2 gives [2 1;3 2]. For position labels 0<=j,k<N,
 %      U(j+1,k+1) = exp(i*pi*(D*j^2-2*j*k+A*k^2)/N)/sqrt(N).
 %   This has a specified global phase equal to 1; metaplectic lifts
@@ -24,9 +24,9 @@ if nargin<2||isempty(a),a=2;end
 if nargin<3||isempty(d),d=2;end
 validateattributes(a,{'numeric'},{'scalar','integer','positive','finite'});
 validateattributes(d,{'numeric'},{'scalar','integer','positive','finite'});
-if mod(a,2)~=0||mod(d,2)~=0||double(a)*double(d)<=4
+if mod(a,2)~=0||mod(d,2)~=0||double(a)*double(d)<4
     error('quantum_cat_map:Classical', ...
-          'A and D must be positive even integers with A*D>4.');
+          'A and D must be positive even integers with A*D>=4.');
 end
 if nargin<4||isempty(output),output='matrix';end
 if ~(ischar(output)||(isstring(output)&&isscalar(output)))
