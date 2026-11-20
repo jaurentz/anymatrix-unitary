@@ -50,6 +50,7 @@ end
 if ~any(strcmp(output,{'matrix','explicit'}))
     error('krawtchouk_transform:Mode','Only matrix or spectral supported.');
 end
+if n==1,U=1;return;end
 x=(0:n-1)';
 diagonal=p*(n-1-x)+(1-p)*x;
 off=-sqrt(p*(1-p)*(1:n-1)'.*(n-(1:n-1)'));
