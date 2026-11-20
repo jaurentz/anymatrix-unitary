@@ -1676,6 +1676,21 @@
       "matrix_free_supported": true,
       "operator_kernel": "um_circuit_apply",
       "operator_note": "Shared local-gate statevector and adjoint actions, O(gates*2^q) arithmetic; no dense unitary in operator mode. Clifford finite phase structure does not imply CUE."
+    },
+    {
+      "id": "fibonacci_braid",
+      "status": "implemented",
+      "category": "quantum",
+      "matrix_order": "F_n for n tau anyons total tau; F_(n-1) for total vacuum (n=3..20); explicit fusion dimension <=512",
+      "representation": "Fibonacci fusion path fixed-charge braid group representation using F-moves and diagonal R-symbols; chiral variants and signed braid words",
+      "spectral_reference": "exact finite trace atoms and multiplicities for identity or a single signed braid generator; general braid-word finite eigenphase law unknown",
+      "encyclopedia_references": [
+        130,
+        131
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_fibonacci_braid_apply",
+      "operator_note": "Sparse neighboring-label recoupling matrices, at most 2 nonzeros per column; forward/adjoint words via ordered sparse factors, avoiding dense F_n by F_n for large n."
     }
   ],
   "probability_measures": [

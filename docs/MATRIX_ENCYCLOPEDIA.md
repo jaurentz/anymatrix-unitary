@@ -3682,6 +3682,97 @@ multiplicities in the table follow directly from the canonical
 gate matrices.
 
 
+
+## Fibonacci-anyon fixed-charge braid representations — [`fibonacci_braid.m`](../fibonacci_braid.m)
+
+**Application:** topological quantum computation, non-Abelian braid
+representations and structured unit-circle test matrices. This generator
+does **not** build an ordinary tensor product of qubits: it acts on
+the *fusion space* of n identical Fibonacci anyons, all of charge
+$\tau$, with a fixed total charge $\mathbf{1}$ (vacuum) or $\tau$.
+The fusion rule is $\tau\times\tau=\mathbf{1}+\tau$.
+In the left-associated fusion-tree basis, label the charges obtained
+after fusing the first j anyons by $a_j\in\{\mathbf1,\tau\}$,
+$a_1=\tau$, $a_n$ the selected total charge. Only admissible
+fusion paths are retained, ordered lexicographically with
+$\mathbf1=0,\tau=1$.
+
+For $n\ge3$ the **exact matrix dimensions** are $F_{n-1}$ in
+the vacuum sector and $F_n$ in the tau sector, where
+$F_1=F_2=1$. This count comes from the admissible fusion paths,
+not the ambient Hilbert space of n qubits. The generator
+supports $n\le20$; dense assembly is limited to fusion dimension
+at most 512.
+
+In the standard real F-gauge, with $\varphi=(1+\sqrt5)/2$,
+the nontrivial recoupling block and counterclockwise exchange
+phases are
+
+```math
+F=\begin{bmatrix}
+\varphi^{-1}&\varphi^{-1/2}\\
+\varphi^{-1/2}&-\varphi^{-1}
+\end{bmatrix},\quad
+R_{\mathbf1}^{\tau\tau}=e^{-4\pi i/5},\qquad
+R_{\tau}^{\tau\tau}=e^{3\pi i/5}.
+```
+
+The generator $\sigma_1$ is diagonal, its phase determined by
+the first two anyons' intermediate fusion charge $a_2$.
+For $\sigma_i$ with $i\ge2$, inspect the neighboring path
+labels $a_{i-1},a_{i+1}$: the only **two-dimensional** mixing
+case is $a_{i-1}=a_{i+1}=\tau$, where the block in
+$a_i\in\{\mathbf1,\tau\}$ is
+$F\mathop{\mathrm{diag}}(R_{\mathbf1},R_\tau)F$.
+All other admissible cases are scalar R-channel phases.
+The resulting sparse matrices satisfy the Artin braid relations:
+
+```math
+\sigma_i\sigma_{i+1}\sigma_i=
+\sigma_{i+1}\sigma_i\sigma_{i+1},\qquad
+\sigma_i\sigma_j=\sigma_j\sigma_i\quad(|i-j|\ge2).
+```
+
+A signed integer vector is a braid word: positive index i
+applies $\sigma_i$, negative index $-i$ applies
+$\sigma_i^*$, and the first entry acts first. The empty
+word is identity. Both ordinary and opposite chirality are
+supported; opposite chirality complex conjugates the R-phases
+and hence the braid matrices, **not** a mere basis gauge
+change. Any unitary gauge change of the fusion-tree basis
+conjugates the represented matrices and preserves each word's
+eigenvalues. The overall phase and handedness conventions
+must be retained when comparing sources.
+
+**Finite spectral annotation.** The identity has only eigenvalue
+$+1$ with multiplicity the sector dimension. Each single positive
+$\sigma_i$ has exactly the phases $R_{\mathbf1},R_\tau$
+with multiplicities equal to the counts of fusion paths whose
+$a_2$ label is respectively vacuum or tau. Single negative
+generators have the conjugate phases. A zero multiplicity
+channel is omitted. These facts give exact normalized trace
+moments without constructing a dense matrix. Arbitrary longer
+braid words are **not** assigned a generic closed-form finite
+phase law; Fibonacci braid images can be noncommuting and
+spectrally much richer than the finite Clifford circuit model.
+
+Each sparse generator has at most two nonzeros per column.
+The `operator` output applies braid factors chronologically
+and reverse-order adjoint factors using sparse matrix-vector
+products; it does not form the full dense product.
+The `generators` mode also exposes the complete fusion-path
+basis, F/R symbols, chirality and sparse $\sigma_i$ factors.
+Tests verify dimension recurrences, unitarity, nontrivial
+Yang–Baxter and distant-commutation relations, analytic
+three- and four-anyon blocks, exact single-generator
+spectral multiplicities, inverse words and the two chiralities.
+
+**References:** Trebst, Troyer, Wang and Ludwig [130] give
+the fusion, F and R constructions and braid matrices.
+Carnahan, Zeuch and Bonesteel [131] discuss multi-anyon
+braid words in topological quantum computation.
+
+
 ## Bibliography
 
 1. P. J. Davis, *Circulant Matrices*, Wiley, 1979. ISBN 9780471057710. [Library record](https://openlibrary.org/books/OL4407364M/Circulant_matrices).
@@ -3831,3 +3922,7 @@ gate matrices.
 
 128. J. Dehaene and B. De Moor, “Clifford group, stabilizer states, and linear and quadratic operations over GF(2),” *Physical Review A* **68** (2003), 042318. [DOI](https://doi.org/10.1103/PhysRevA.68.042318).
 129. D. Gross, S. Nezami and M. Walter, “Schur–Weyl duality for the Clifford group with applications: Property testing, a robust Hudson theorem, and de Finetti representations,” *Communications in Mathematical Physics* **385** (2021), 1325–1393. [DOI](https://doi.org/10.1007/s00220-021-04118-7).
+
+
+130. S. Trebst, M. Troyer, Z. Wang and A. W. W. Ludwig, “A short introduction to Fibonacci anyon models,” *Progress of Theoretical Physics Supplement* **176** (2008), 384–407. [DOI](https://doi.org/10.1143/PTPS.176.384); [preprint](https://arxiv.org/abs/0902.3275).
+131. C. Carnahan, D. Zeuch and N. E. Bonesteel, “Systematically generated two-qubit anyon braids,” *Physical Review A* **93** (2016), 052328. [DOI](https://doi.org/10.1103/PhysRevA.93.052328); [preprint](https://arxiv.org/abs/1511.00719).
