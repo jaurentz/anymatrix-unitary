@@ -4,7 +4,7 @@ A MATLAB collection of finite **unitary and orthogonal test matrices**, designed
 an external group for [Anymatrix](https://github.com/north-numerical-computing/anymatrix).
 The repository is organized around reproducible mathematical constructions,
 known spectral information, and executable regression tests. It contains
-73 generators; additional benchmark families are under development.
+76 generators; additional benchmark families are under development.
 
 **Status:** development collection with MATLAB-only tests. Automated MATLAB
 regression and Anymatrix integration tests run on GitHub Actions after every
@@ -47,7 +47,7 @@ assertSuccess(results)
 
 ## Matrix generator interfaces
 
-The collection currently has **73 public generators**. Each has a complete
+The collection currently has **76 public generators**. Each has a complete
 entry with formulas, spectral information, applications, parameter conventions,
 and references in the [matrix encyclopedia](docs/MATRIX_ENCYCLOPEDIA.md).
 The [mathematical notes](docs/MATHEMATICS.md) explain the shared OPUC engine.
@@ -56,9 +56,9 @@ The [vibron ESQPT example](examples/vibron_esqpt_sector_gaps.m) compares U(3) an
 | Category | Generators |
 |---|---|
 | Prescribed spectra and circulants | `cycle_shift`, `weighted_shift`, `diagonal_phase`, `phase_circulant`, `cycle_propagator`, `orthogonal_blocks` |
-| OPUC / Szegő / core matrices | `finite_cmv`, `opuc_matrix`, `jacobi_szego`, `bernstein_szego`, `circular_beta`, `circular_jacobi`, `rogers_szego`, `geronimus_cmv`, `periodic_cmv`, `bernstein_szego_finite`, `lee_yang_ising`, `scattering_zipper` |
+| OPUC / Szegő / core matrices | `finite_cmv`, `opuc_matrix`, `jacobi_szego`, `bernstein_szego`, `circular_beta`, `circular_jacobi`, `rogers_szego`, `geronimus_cmv`, `periodic_cmv`, `bernstein_szego_finite`, `lee_yang_ising`, `scattering_zipper`, `rational_opuc` |
 | Random and signal-processing | `haar_unitary`, `haar_orthogonal`, `haar_wavelet`, `haar_special_unitary`, `haar_unimodular_coe`, `haar_unimodular_cse`, `haar_tensor_power`, `haar_block_tensor_power` |
-| Signal-processing transforms | `orthogonal_dct`, `discrete_hartley`, `cazac_circulant`, `fresnel_transform`, `affine_fourier`, `finite_zak`, `time_frequency_shift`, `periodic_hilbert`, `discrete_fourier`, `discrete_sine`, `walsh_hadamard`, `dpss_transform`, `graph_fourier` |
+| Signal-processing transforms | `orthogonal_dct`, `discrete_hartley`, `cazac_circulant`, `fresnel_transform`, `affine_fourier`, `finite_zak`, `time_frequency_shift`, `periodic_hilbert`, `discrete_fourier`, `discrete_sine`, `walsh_hadamard`, `dpss_transform`, `graph_fourier`, `blaschke_potapov`, `orthogonal_butterfly` |
 | Quantum maps, walks, and algorithms | `split_step_walk`, `dirac_automaton`, `grover_operator`, `quantum_baker`, `kicked_harper`, `kicked_top`, `extended_lipkin_propagator`, `vibron_2d_esqpt`, `agassi_propagator`, `floquet_ising`, `selfdual_kicked_ising`, `driven_kitaev`, `kicked_rotor`, `dual_unitary_circuit`, `xxz_floquet`, `kicked_bose_hubbard`, `jaynes_cummings`, `chalker_coddington`, `unitary_almost_mathieu`, `szegedy_walk`, `coined_graph_walk`, `metric_quantum_graph` |
 | Matrix functions and dilations | `cayley_jacobi`, `polar_unitary`, `julia_unitary`, `entangled_reflection` |
 | Quantum group actions | `tensor_permutation` |
@@ -224,6 +224,38 @@ real terminal phase give real orthogonal matrices; otherwise the
 finite matrices are complex unitary. See the encyclopedia for support,
 weights, and literature provenance. The measure at the distinguished
 vector is not generally the equal-weight eigenvalue-counting measure.
+
+
+## Citation-led rational and butterfly additions (November 2026)
+
+Three new families complement polynomial OPUC, lossless filter-bank and
+real-orthogonal benchmarks.
+
+```matlab
+% Rational OPUC finite unitary model; exterior poles can include Inf.
+R = rational_opuc(24,[2*ones(22,1);Inf], ...
+    .2*ones(23,1),exp(1i*.3));
+S = rational_opuc(24,[],[],[],'spectral');
+
+% Small rational-inner matrix evaluated at a frequency on the circle.
+B = blaschke_potapov(12,[.2+.1i;-.3+.2i],[],.5);
+Bop = blaschke_potapov(12,[],[],[],[],'operator');
+
+% N-by-N real orthogonal butterfly with O(N log N) implicit action.
+Q = orthogonal_butterfly(64,2*pi*rand(63,1));
+Qop = orthogonal_butterfly(8192,[],'operator');
+```
+
+`rational_opuc` uses an operator Möbius transform of a finite unitary
+Hessenberg recurrence matrix. The exterior poles and recurrence parameters
+jointly define the rational construction; its finite trace law is generally
+unknown. `blaschke_potapov` returns a fixed-order matrix that is unitary
+**pointwise in frequency**, not a finite bank acting across a signal's
+frequency samples. `orthogonal_butterfly` uses a separate angle at each
+internal node of a recursive binary tree; random angles are not, in
+general, Haar random orthogonal matrices. The latter two support
+forward/adjoint matrix-free actions. See the encyclopedia for proofs,
+conventions and primary references.
 
 ## Install as an Anymatrix external group
 
