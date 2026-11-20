@@ -767,15 +767,15 @@
       "status": "implemented",
       "category": "eigenvalue_problems",
       "matrix_order": "n*q",
-      "representation": "sparse block-CMV from matrix Verblunsky coefficients",
-      "spectral_reference": "paraorthogonal matrix polynomial roots on unit circle",
+      "representation": "genuine sparse finite unitary matrix from noncommuting matrix Verblunsky coefficients; optional strict pencil and numerical block cyclic quadrature",
+      "spectral_reference": "generic analytic trace phase law unknown; numerical q-by-q first-block cyclic projector measures and scalar trace moments via quadrature",
       "encyclopedia_references": [
         59,
         67
       ],
-      "matrix_free_supported": false,
-      "operator_kernel": null,
-      "operator_note": "Standard numeric output is unitary U; terminal pencil mode returns a struct with A, B, U; spectral mode uses the established descriptor contract."
+      "matrix_free_supported": true,
+      "operator_kernel": "um_block_cmv_apply",
+      "operator_note": "O(n*q^2) per RHS using local adjoint block cores; no dense U; numerical eigenvector-derived q-by-q cyclic weights only in optional modest-order quadrature."
     },
     {
       "id": "floquet_factor_pencil",

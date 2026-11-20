@@ -1698,25 +1698,55 @@ Its circle spectrum consists of scalar paraorthogonal polynomial zeros;
 no duplicate generator is registered.
 **References:** [6, 7].
 
-### Block CMV / matrix paraorthogonal pencil — [`block_cmv_pencil.m`](../block_cmv_pencil.m)
+### Finite block-CMV matrix, matrix spectral measure and strict pencil — [`block_cmv_pencil.m`](../block_cmv_pencil.m)
 
-**Order:** `n*q`. Each interior matrix coefficient `alpha_j` is
-`q-by-q`, strictly contractive in spectral norm; the terminal
-`beta` is unitary. Build alternating sparse block factors from
+**Order:** N=nq. An independent q-by-q contractive matrix Verblunsky
+coefficient alpha_j is supplied for each of n-1 core interfaces.
+The q-by-q terminal beta is unitary. The alternating block factors
+L and M are products of two-fiber matrices
 
 ```math
-\Theta(\alpha)=
+\Theta(\alpha_j)=
 \begin{bmatrix}
-\alpha^*& (I-\alpha^*\alpha)^{1/2}\\
-(I-\alpha\alpha^*)^{1/2}&-\alpha
-\end{bmatrix}.
+\alpha_j^*&\rho_j^L\\
+\rho_j^R&-\alpha_j
+\end{bmatrix},\quad
+\rho_j^L=(I-\alpha_j^*\alpha_j)^{1/2},\quad
+\rho_j^R=(I-\alpha_j\alpha_j^*)^{1/2}.
 ```
 
-The `beta^*` terminal block produces a unitary closure `C=LM` and
-a strict pencil `M-zL^*`. It is a source of high-degree **matrix-valued**
-paraorthogonal problems with noncommuting coefficients. `q=1` agrees
-with the scalar implementation. Avoid interpreting the matrix-valued
-orthogonality measure as the finite trace measure. **References:** [59, 67].
+The two defect matrices are generally **not equal**, and
+noncommuting alpha_j cannot be simplified to scalar coefficients.
+The numeric default is already the **standalone finite unitary
+matrix U=L M**; this is not merely a generalized pencil.
+The strict pencil option gives (A,B)=(M,L^*) with B^{-1}A=U.
+No duplicate matrix generator is registered. q=1 agrees
+with `finite_cmv` using the identical boundary phase convention.
+
+The new `'operator'` output applies even then odd two-fiber cores
+and their boundary blocks in O(n q²) work per right-hand side;
+the adjoint reverses both factor layers and uses the
+Hermitian adjoints of the noncommuting cores. It supports
+multiple complex right-hand sides without constructing U.
+
+The `'quadrature'` mode (moderate N only) computes an eigendecomposition
+U V=V diag(z_j) and returns the **matrix-valued first-block
+cyclic spectral weights**
+
+```math
+W_j=V_{1:q,j}V_{1:q,j}^*,\qquad
+\sum_jW_j=I_q,\qquad
+\sum_jz_j^kW_j=E^*U^kE,\quad E=\begin{bmatrix}I_q\\0\end{bmatrix}.
+```
+
+These weights are positive semidefinite q-by-q matrices,
+not the scalar trace weights 1/(nq). The trace moments are
+(1/(nq))sum_j z_j^k. In a repeated-eigenvalue cluster,
+only the sum of the matrix weights across a full eigenspace
+is basis invariant. This optional **numerical quadrature**
+does not constitute an analytic closed-form trace phase law;
+the generic terminal `'spectral'` descriptor remains unknown.
+**References:** Damanik–Pushnitski–Simon [59], and [67].
 
 ### Floquet factor pencil — [`floquet_factor_pencil.m`](../floquet_factor_pencil.m)
 
