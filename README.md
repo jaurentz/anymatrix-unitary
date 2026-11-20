@@ -259,7 +259,7 @@ conventions and primary references.
 
 ## Hadamard, multiplicative perturbation, and ETNA QR benchmarks
 
-\`\`\`matlab
+```matlab
 % Diţă-deformed complex Hadamard; the modulus of every entry is 1/sqrt(N).
 H = complex_hadamard(24,4);
 Hf = complex_hadamard(8192,128,[],'operator');
@@ -273,7 +273,7 @@ E = etna_hessenberg(40,'I',2026);
 R = etna_hessenberg(40,'II',2026);
 C = etna_hessenberg(40,'III',2026,0.001);
 Co = etna_hessenberg(8192,'III',2026,1e-3,'operator');
-\`\`\`
+```
 
 Diţă's family uses a block Fourier tensor product with independent
 diagonal unit phases; its generic eigenphase distribution is not fixed.
@@ -283,7 +283,7 @@ Hessenberg shape, and a zero-interior-coefficient case has exact finite
 eigenphases. The ETNA Type III generator is a reproducible controlled
 four-block near-degeneracy variant of Example 7.4, **not** an exact
 recreation of a specific published random sample. All three expose
-terminal \`spectral\` mode and matrix-free \`operator\` mode. See
+terminal `spectral` mode and matrix-free `operator` mode. See
 [the encyclopedia](docs/MATRIX_ENCYCLOPEDIA.md) for references and
 precise constructions.
 
