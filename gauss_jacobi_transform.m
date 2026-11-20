@@ -13,6 +13,7 @@ function [U,properties]=gauss_jacobi_transform(n,alpha,beta)
 %   [104] https://doi.org/10.1090/S0025-5718-69-99647-1
 %   [105] https://doi.org/10.1093/imanum/drv060
 %   [106] https://www.cambridge.org/core/journals/acta-numerica/article/abs/fast-algorithms-using-orthogonal-polynomials/4FAD8C7C28EC20EE7583465C1A89AA3D
+%   [107] https://arxiv.org/abs/1705.05448
 properties={'square','unitary','normal','orthogonal','real', ...
     'scalable','parameter-dependent'};
 if nargin==0,U=[];return;end
