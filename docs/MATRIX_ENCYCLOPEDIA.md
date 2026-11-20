@@ -2308,6 +2308,176 @@ transport identity in the regression tests.
   Floquet Ising models, kicked tops, cat maps and interferometer meshes.
   Different symmetry sectors and truncations cannot be conflated. [26]
 
+## Geometric integration: positive-metric unit-circle pencils
+
+### Periodic coupled oscillators: Gauss–Legendre and Störmer–Verlet — [`geometric_oscillator.m`](../geometric_oscillator.m)
+
+**Order:** $2n$ real orthogonal-symplectic, for $n$ mechanical
+displacements. **Application:** vibrational lattice dynamics, periodic
+semidiscretizations of wave equations and structure-preserving integration.
+The physical positive-stiffness oscillator is
+
+```math
+q''+Kq=0,\qquad
+K=\omega_0^2 I+\kappa(2I-P-P^T),\qquad
+\omega_j^2=\omega_0^2+4\kappa\sin^2(\pi j/n),
+```
+
+with cyclic permutation $P$, $\omega_0>0$, $\kappa\geq0$ and
+$j=0,\ldots,n-1$. The $n=1,2$ periodic bond multiplicities follow
+the same algebraic definition. A time step $h>0$ produces a **physical**
+$2n$-by-$2n$ phase-space map $M$ in $x=(q,p)$, which generally
+is not Euclidean orthogonal. Nevertheless, it preserves a definite
+quadratic invariant,
+
+```math
+M^TJM=J,\quad M^TGM=G,\quad G=G^T\succ0,\qquad
+J=\begin{pmatrix}0&I\\-I&0\end{pmatrix}.
+```
+
+Define $T$ so that $G=T^TT$. The default Anymatrix output
+$U=TMT^{-1}$ is **real orthogonal and symplectic**, and its spectrum
+equals that of $M$. The chosen $T$ need not itself be symplectic.
+The terminal `'pencil'` mode returns $A=GM$, $B=G$, together
+with $M,G,T,U$. It obeys
+
+```math
+A^TB^{-1}A=B,\qquad
+Ax=\lambda Bx\ \Longrightarrow\ |\lambda|=1.
+```
+
+**Crucial distinction:** $B^{-1}A=M$ is generally *not* Euclidean
+orthogonal, and $AA^T=BB^T$ generally fails. Hence this is a
+`circle_spectrum_only` positive-metric pencil, not one of the
+repository's `strict_unitary_pencil` examples. No generalized pencil
+is passed to Anymatrix by default: the returned matrix $U$ is
+genuinely unitary.
+
+**Midpoint and Gauss methods.** The methods `'midpoint'`,
+`'gauss2'` and `'gauss3'` give the diagonal Padé stability
+functions $R_s(z)=P_s(z)/P_s(-z)$ of orders 2, 4, 6, respectively.
+For all $h>0$, they preserve the *original* quadratic energy,
+so $G=\mathop{\mathrm{diag}}(K,I)$ and
+
+```math
+\sigma(U)=\left\{
+R_s(-ih\omega_j),\ R_s(ih\omega_j):0\leq j<n
+\right\}.
+```
+
+**Stable Störmer–Verlet.** With $h\max_j\omega_j<2$, velocity
+Verlet preserves a *modified* quadratic energy
+
+```math
+G=\mathop{\mathrm{diag}}\left(K(I-h^2K/4),I\right)\succ0.
+```
+
+Its eigenvalues are $e^{\pm i\theta_j}$, with
+$\theta_j=2\arcsin(h\omega_j/2)$. An independent terminal
+`'polynomial'` mode provides the **real symmetric palindromic**
+quadratic eigenvalue problem from the position recurrence,
+
+```math
+P(\lambda)=\lambda^2I+\lambda(h^2K-2I)+I,\qquad
+P(\lambda)^T=\lambda^2P(\lambda^{-1}).
+```
+
+At the stability boundary the modified form loses strict positivity;
+above it the Verlet multipliers can leave the circle, so the generator
+rejects those step sizes. In particular, *symplecticity alone* never
+guarantees unimodular eigenvalues.
+
+**Spectral reference:** the finite multiset of $2n$ conjugate unit
+phases is exact for every permitted method, returned without `eig`
+by terminal `'spectral'` mode. The periodic chain diagonalizes in
+the Fourier basis. The explicit real representative is generally
+dense. The terminal `'operator'` mode already provides $O(n\log n)$
+FFT-based forward/adjoint actions (including complex multiple
+right-hand sides), using only $O(n)$ stored frequency samples. Its symmetric phase measure
+must be distinguished from the one-sided $n$-point complex
+representation of the positive frequencies. The formulas and
+normalization are specified benchmark specializations of established
+geometric-integration theory, not named distributions originating
+in [93, 94]. **References:** [93, 94].
+
+### One-dimensional finite-element wave equation with consistent mass — [`geometric_fem_wave.m`](../geometric_fem_wave.m)
+
+**Order:** $2n$ real orthogonal-symplectic, from a spatially
+discretized elastic/acoustic wave model with $n$ interior nodes.
+For the scalar model $q_{tt}-c^2q_{xx}+\omega_0^2q=0$ on $(0,L)$,
+use continuous piecewise-linear finite elements on a uniform grid
+with homogeneous Dirichlet endpoints, mesh width $d=L/(n+1)$,
+wave speed $c>0$ and $\omega_0\geq0$. The consistent finite-element
+mass and stiffness matrices are
+
+```math
+\mathrm{Mass}=\frac{d}{6}\mathop{\mathrm{tridiag}}(1,4,1),\qquad
+K=\frac{c^2}{d}\mathop{\mathrm{tridiag}}(-1,2,-1)+\omega_0^2\mathrm{Mass},
+```
+
+with boundary truncation of the off-diagonals. These matrices are
+symmetric positive definite and simultaneously diagonalized by the
+orthonormal DST-I basis. The *exact finite generalized frequencies*
+satisfy
+
+```math
+K v_j=\omega_j^2\mathrm{Mass}\,v_j,\quad
+\theta_j=\frac{j\pi}{n+1},\quad
+\omega_j^2=\omega_0^2+
+\frac{6c^2(1-\cos\theta_j)}{d^2(2+\cos\theta_j)},
+\quad j=1,\ldots,n.
+```
+
+The canonical physical Hamiltonian uses momentum $p=\mathrm{Mass}\,q_t$,
+
+```math
+H(q,p)=\frac12 q^TKq+\frac12 p^T\mathrm{Mass}^{-1}p.
+```
+
+Its midpoint, Gauss-4 and Gauss-6 steps preserve this original
+quadratic energy and are symplectic. Stable velocity Verlet
+($h\max_j\omega_j<2$) preserves the positive *modified* form
+
+```math
+G=\mathop{\mathrm{diag}}\left(
+K-\frac{h^2}{4}K\mathrm{Mass}^{-1}K,\,
+\mathrm{Mass}^{-1}\right).
+```
+
+The terminal `'pencil'` mode returns the *physical* phase-space
+one-step matrix $M$, $G$, $T$, $U=TMT^{-1}$, and
+$A=GM,B=G$. Its generalized eigenvalues lie on the unit circle,
+but it is not generally a strict Euclidean-unitary pencil.
+The default output is the genuinely orthogonal-symplectic $U$.
+
+Most importantly, the **Verlet position recurrence retains the mass
+matrix**. Terminal `'polynomial'` mode returns the real symmetric
+palindromic quadratic
+
+```math
+P(z)=z^2\mathrm{Mass}
++z(h^2K-2\mathrm{Mass})+\mathrm{Mass}.
+```
+
+The spectrum consists of $e^{\pm i\theta_j^{(h)}}$, where
+$\theta_j^{(h)}=2\arcsin(h\omega_j/2)$ for Verlet;
+for the Gauss methods, the phases are the diagonal-Padé images
+$R_s(\pm ih\omega_j)$. All eigenvalues are exactly characterized
+at finite dimension. `'spectral'` returns the frequencies and
+phase multiset without an eigensolve; `'operator'` supplies
+$O(n\log n)$ forward and adjoint DST-I actions with $O(n)$
+stored frequency samples, including multiple complex right-hand
+sides. The explicit $U$ is generally dense.
+
+Unlike the periodic oscillator in `geometric_oscillator`, this family
+has a **nonidentity consistent finite-element mass matrix**,
+Dirichlet boundary conditions, sine rather than Fourier modes,
+and a genuinely mass-weighted palindromic eigenvalue polynomial.
+The particular uniform Dirichlet test family is a mathematical
+specialization of standard finite-element and geometric-integrator
+constructions, not a claim of a novel scheme in [93, 95].
+**References:** [93, 95].
+
 ## Bibliography
 
 1. P. J. Davis, *Circulant Matrices*, Wiley, 1979. ISBN 9780471057710. [Library record](https://openlibrary.org/books/OL4407364M/Circulant_matrices).
@@ -2413,3 +2583,9 @@ transport identity in the regression tests.
 
 95. R. Koekoek, P. A. Lesky and R. F. Swarttouw, *Hypergeometric Orthogonal Polynomials and Their q-Analogues*, Springer Monographs in Mathematics, Springer, 2010. [DOI](https://doi.org/10.1007/978-3-642-05014-5); [DLMF duality](https://dlmf.nist.gov/18.21).
 96. P.-A. Absil, R. Mahony and R. Sepulchre, *Optimization Algorithms on Matrix Manifolds*, Princeton University Press, 2008. [DOI](https://doi.org/10.1515/9781400830244); [author's book website](https://sites.uclouvain.be/absil/amsbook/).
+
+97. E. Hairer, C. Lubich and G. Wanner, *Geometric Numerical Integration: Structure-Preserving Algorithms for Ordinary Differential Equations*, 2nd ed., Springer, 2006. [DOI](https://doi.org/10.1007/3-540-30666-8).
+
+98. E. Hairer, C. Lubich and G. Wanner, “Geometric numerical integration illustrated by the Störmer–Verlet method,” *Acta Numerica* **12** (2003), 399–450. [DOI](https://doi.org/10.1017/S0962492902000144).
+
+99. B. Cockburn, S. Du and M. A. Sánchez, “Combining finite element space-discretizations with symplectic time-marching schemes for linear Hamiltonian systems,” *Frontiers in Applied Mathematics and Statistics* **9** (2023). [DOI](https://doi.org/10.3389/fams.2023.1165371).
