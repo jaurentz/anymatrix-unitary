@@ -34,11 +34,13 @@ k=(0:n-1)';
 k(k>(n-1)/2)=k(k>(n-1)/2)-n;
 phase=exp(-2*pi*1i*k*delta/n);
 if ~(ischar(output)||isstring(output))
-    error('periodic_sinc_shift:Mode','Output must be matrix or operator.');
+    error('periodic_sinc_shift:Mode','Output must be matrix, operator or spectral.');
 end
 switch lower(char(output))
     case 'operator'
         U=@(X,flag)um_periodic_sinc_apply(X,flag,phase,n);
+    case 'spectral'
+        U=unitary_spectral_reference('periodic_sinc_shift',n,delta);
     case 'matrix'
         U=real(ifft(bsxfun(@times,phase,fft(eye(n),[],1)),[],1));
     otherwise
