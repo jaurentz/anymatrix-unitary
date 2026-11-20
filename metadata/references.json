@@ -718,6 +718,22 @@
       ],
       "permalink": "https://doi.org/10.1007/s11080-006-8220-2",
       "alternate_permalink": "https://arxiv.org/abs/quant-ph/0512154"
+    },
+    {
+      "number": 93,
+      "dois": [
+        "10.1016/0167-2789(80)90026-3"
+      ],
+      "permalink": "https://doi.org/10.1016/0167-2789(80)90026-3",
+      "alternate_permalink": ""
+    },
+    {
+      "number": 94,
+      "dois": [
+        "10.1007/s13373-018-0132-2"
+      ],
+      "permalink": "https://doi.org/10.1007/s13373-018-0132-2",
+      "alternate_permalink": ""
     }
   ]
 }

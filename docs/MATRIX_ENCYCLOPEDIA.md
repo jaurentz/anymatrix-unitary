@@ -2011,7 +2011,123 @@ eigenphase density is asserted.
 Hessenberg matrices, difficult clustered eigenvalues, and
 structure-preserving spectral approximation. **Reference:** [8].
 
-## P. Families reserved for future versions (not implemented)
+
+## P. Quantum cat, Krawtchouk and periodic Daubechies (November 2026)
+
+### Hyperbolic quantum cat map — [`quantum_cat_map.m`](../quantum_cat_map.m)
+
+The classical map is the integral hyperbolic torus automorphism
+
+```math
+S=\begin{bmatrix}a&1\\ad-1&d\end{bmatrix},
+\qquad a,d\in 2\mathbb Z_{>0},\quad ad\ge 4,\quad \det S=1.
+```
+
+The specific parity-compatible quantization, at Hilbert-space
+dimension n, is the chirp-Fourier-chirp propagator
+
+```math
+U_{jk}=\frac{1}{\sqrt n}\exp\left(
+\frac{i\pi}{n}(d j^2-2jk+a k^2)\right),\qquad 0\le j,k<n.
+```
+
+The default classical map is [2,1;3,2], rather than the
+standard textbook [2,1;1,1] with a different parity convention.
+For even diagonal a and d, the kernel is periodic under j or k
+shifts by n. The matrix is unitary: its phases are diagonal
+unimodular chirps surrounding the normalized DFT. Its overall
+metaplectic phase is fixed to 1, an explicit **projective phase
+convention**. Other global phases rotate the finite eigenphases
+even though they have identical adjoint dynamics.
+
+The implementation does not quantize arbitrary SL(2,Z) maps,
+nor does it assert a uniform finite eigenphase trace measure.
+In operator mode, both forward and adjoint matvecs use one FFT
+and O(n) chirp multiplications, hence O(n log n) complexity.
+
+**Application:** quantized hyperbolic dynamics, quantum chaos,
+semiclassical spectral statistics and unitary FFT-chirp benchmarks.
+**Reference:** [93], Hannay and Berry (1980).
+
+### Real orthogonal Krawtchouk polynomial transform — [`krawtchouk_transform.m`](../krawtchouk_transform.m)
+
+For n=N+1 and 0<p<1, define a real symmetric Jacobi matrix J,
+with x=0,...,N,
+
+```math
+J_{xx}=p(N-x)+(1-p)x,\qquad
+J_{x,x+1}=J_{x+1,x}=
+-\sqrt{p(1-p)(x+1)(N-x)}.
+```
+
+The eigenvalues of J are exactly 0,...,N. Order its
+real orthonormal eigenvectors by these eigenvalues and fix the
+signs by requiring a positive first-row component. Their matrix
+Q is the symmetric orthogonal Krawtchouk transform; its first
+column contains the square roots of the binomial probability
+weights. With the indicated sign/ordering convention,
+
+```math
+Q^T=Q,\quad Q^2=I,\quad
+\sigma(Q)=\{1,-1\},
+```
+
+with eigenvalue multiplicities ceil(n/2) for +1 and
+floor(n/2) for -1. Thus the **Jacobi nodes 0,...,N are
+NOT the eigenvalues of Q**. The finite normalized trace
+spectral measure of Q consists of two atoms at 0 and pi,
+not a smooth distribution on the circle.
+
+The first version forms Q by dense symmetric eigendecomposition
+at O(n^3) work. It does not claim a fast Krawtchouk algorithm.
+The first-component sign convention can become numerically
+delicate at high polynomial degrees or extreme binomial
+probability parameters; validation rejects unresolved zero
+first components.
+
+**Applications:** exact-moment unitary test problems, binomial
+signal representations and discrete orthogonal polynomial transforms.
+**Reference:** [94], Feinsilver and Schott.
+
+### Periodized four-tap Daubechies transform — [`daubechies_wavelet.m`](../daubechies_wavelet.m)
+
+The D4 (also known as db2, *two vanishing moments*) low-pass
+analysis coefficients are
+
+```math
+h=\frac{1}{4\sqrt 2}
+(1+\sqrt3,\ 3+\sqrt3,\ 3-\sqrt3,\ 1-\sqrt3).
+```
+
+The high-pass filter is g=(h_3,-h_2,h_1,-h_0) using
+zero-based coefficients. For an even-length *periodic* stage
+of length m, the low and high coefficients are
+
+```math
+a_j=\sum_{k=0}^3h_kx_{(2j+k)\bmod m},\qquad
+d_j=\sum_{k=0}^3g_kx_{(2j+k)\bmod m}.
+```
+
+The output ordering is [averages;details], and subsequent
+levels act only on the averages. For any power-of-two n,
+the number of levels can be zero (identity) through log2(n).
+The length-two final stage uses modulo indices, so its
+four taps alias pairwise to a valid orthogonal final split.
+The entire finite n-by-n matrix is therefore **real
+orthogonal with exact periodic boundary closure**.
+
+Matrix-free forward and transpose actions require O(n)
+operations over all levels. Other boundary extensions
+(zero padding, reflection) would require different operators
+and are not silently identified with this finite transform.
+No generic analytic finite eigenphase law is asserted.
+
+**Applications:** periodized orthogonal filter banks,
+finite matrix-free normal spectral-density benchmarks and
+boundary-sensitive signal transforms. **Reference:** [15],
+Daubechies, *Ten Lectures on Wavelets*.
+
+## Q. Families reserved for future versions (not implemented)
 
 - **Additional ETNA benchmark cases:** the exact Example 7.1 common-parameter
   and Example 7.5 inverse-eigenvalue presets are not yet implemented.
@@ -2023,8 +2139,8 @@ structure-preserving spectral approximation. **Reference:** [8].
 - **Other OPUC measures:** positive Pastro and generalized $q$-weight
   specializations, inverse spectral finite atomic measures, Aleksandrov
   families, skew-shift parameters, and matrix-valued/block CMV. [5, 12]
-- **Additional signal-processing matrices:** normalized DCT/DST variants,
-  Daubechies wavelets, paraunitary polyphase banks and lossless scattering.
+- **Additional signal-processing matrices:** other Daubechies orders,
+  wavelet packets, paraunitary polyphase banks and lossless scattering.
   Boundary and frequency conventions must be specified before admitting a
   finite matrix as unitary. [15]
 - **Larger quantum models:** Szegedy graph walks, quantum-graph scattering,
@@ -2130,3 +2246,6 @@ structure-preserving spectral approximation. **Reference:** [8].
 90. P. J. Forrester and E. M. Rains, “Jacobians and rank 1 perturbations relating to unitary Hessenberg matrices,” *Int. Math. Res. Not.* **2006** (2006), 48306. [DOI](https://doi.org/10.1155/IMRN/2006/48306); [preprint](https://arxiv.org/abs/math/0505552).
 91. P. Diţă, “Some results on the parametrization of complex Hadamard matrices,” *J. Phys. A* **37** (2004), 5355–5374. [DOI](https://doi.org/10.1088/0305-4470/37/20/008).
 92. W. Tadej and K. Życzkowski, “A concise guide to complex Hadamard matrices,” *Open Syst. Inf. Dyn.* **13** (2006), 133–177. [DOI](https://doi.org/10.1007/s11080-006-8220-2); [preprint](https://arxiv.org/abs/quant-ph/0512154).
+
+93. J. H. Hannay and M. V. Berry, “Quantization of linear maps on a torus—Fresnel diffraction by a periodic grating,” *Physica D* **1** (1980), 267–290. [DOI](https://doi.org/10.1016/0167-2789(80)90026-3).
+94. P. Feinsilver and R. Schott, “Krawtchouk transforms and convolutions,” *Advances in Applied Clifford Algebras* (2018). [DOI](https://doi.org/10.1007/s13373-018-0132-2).

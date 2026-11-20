@@ -1148,6 +1148,48 @@
       "matrix_free_supported": true,
       "operator_kernel": "um_core_apply",
       "operator_note": "O(n) core-factor action; Type III near-decoupled four-block structure."
+    },
+    {
+      "id": "quantum_cat_map",
+      "status": "implemented",
+      "category": "quantum",
+      "matrix_order": "n",
+      "representation": "chirp-DFT-chirp metaplectic torus map",
+      "spectral_reference": "unitary fixed-phase quantization; generic finite trace law unknown",
+      "encyclopedia_references": [
+        93
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_cat_apply",
+      "operator_note": "Two diagonal chirps and an FFT, O(n log n) action, including adjoint."
+    },
+    {
+      "id": "krawtchouk_transform",
+      "status": "implemented",
+      "category": "random_signal",
+      "matrix_order": "n",
+      "representation": "normalized binomial Krawtchouk functions via Jacobi eigendecomposition",
+      "spectral_reference": "involution with exact +/-1 eigenvalues; binomial grid Jacobi eigenvalues differ",
+      "encyclopedia_references": [
+        94
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": "none",
+      "operator_note": "Construction uses dense symmetric eigensolver O(n^3); no implicit fast transform asserted."
+    },
+    {
+      "id": "daubechies_wavelet",
+      "status": "implemented",
+      "category": "random_signal",
+      "matrix_order": "n",
+      "representation": "periodized compactly supported D4 (db2) orthogonal multilevel wavelet",
+      "spectral_reference": "identity for zero levels; generic finite eigenphase law unknown",
+      "encyclopedia_references": [
+        15
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_daubechies_apply",
+      "operator_note": "Finite periodic two-channel four-tap filter, O(n) forward/adjoint action."
     }
   ],
   "probability_measures": [

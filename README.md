@@ -4,7 +4,7 @@ A MATLAB collection of finite **unitary and orthogonal test matrices**, designed
 an external group for [Anymatrix](https://github.com/north-numerical-computing/anymatrix).
 The repository is organized around reproducible mathematical constructions,
 known spectral information, and executable regression tests. It contains
-79 generators; additional benchmark families are under development.
+82 generators; additional benchmark families are under development.
 
 **Status:** development collection with MATLAB-only tests. Automated MATLAB
 regression and Anymatrix integration tests run on GitHub Actions after every
@@ -47,7 +47,7 @@ assertSuccess(results)
 
 ## Matrix generator interfaces
 
-The collection currently has **79 public generators**. Each has a complete
+The collection currently has **82 public generators**. Each has a complete
 entry with formulas, spectral information, applications, parameter conventions,
 and references in the [matrix encyclopedia](docs/MATRIX_ENCYCLOPEDIA.md).
 The [mathematical notes](docs/MATHEMATICS.md) explain the shared OPUC engine.
@@ -57,9 +57,9 @@ The [vibron ESQPT example](examples/vibron_esqpt_sector_gaps.m) compares U(3) an
 |---|---|
 | Prescribed spectra and circulants | `cycle_shift`, `weighted_shift`, `diagonal_phase`, `phase_circulant`, `cycle_propagator`, `orthogonal_blocks` |
 | OPUC / Szegő / core matrices | `finite_cmv`, `opuc_matrix`, `jacobi_szego`, `bernstein_szego`, `circular_beta`, `circular_jacobi`, `rogers_szego`, `geronimus_cmv`, `periodic_cmv`, `bernstein_szego_finite`, `lee_yang_ising`, `scattering_zipper`, `rational_opuc`, `unitary_rank_one_update`, `etna_hessenberg` |
-| Random and signal-processing | `haar_unitary`, `haar_orthogonal`, `haar_wavelet`, `haar_special_unitary`, `haar_unimodular_coe`, `haar_unimodular_cse`, `haar_tensor_power`, `haar_block_tensor_power` |
-| Signal-processing transforms | `orthogonal_dct`, `discrete_hartley`, `cazac_circulant`, `fresnel_transform`, `affine_fourier`, `finite_zak`, `time_frequency_shift`, `periodic_hilbert`, `discrete_fourier`, `discrete_sine`, `walsh_hadamard`, `dpss_transform`, `graph_fourier`, `blaschke_potapov`, `orthogonal_butterfly`, `complex_hadamard` |
-| Quantum maps, walks, and algorithms | `split_step_walk`, `dirac_automaton`, `grover_operator`, `quantum_baker`, `kicked_harper`, `kicked_top`, `extended_lipkin_propagator`, `vibron_2d_esqpt`, `agassi_propagator`, `floquet_ising`, `selfdual_kicked_ising`, `driven_kitaev`, `kicked_rotor`, `dual_unitary_circuit`, `xxz_floquet`, `kicked_bose_hubbard`, `jaynes_cummings`, `chalker_coddington`, `unitary_almost_mathieu`, `szegedy_walk`, `coined_graph_walk`, `metric_quantum_graph` |
+| Random and signal-processing | `haar_unitary`, `haar_orthogonal`, `haar_wavelet`, `daubechies_wavelet`, `haar_special_unitary`, `haar_unimodular_coe`, `haar_unimodular_cse`, `haar_tensor_power`, `haar_block_tensor_power` |
+| Signal-processing transforms | `orthogonal_dct`, `discrete_hartley`, `cazac_circulant`, `fresnel_transform`, `affine_fourier`, `finite_zak`, `time_frequency_shift`, `periodic_hilbert`, `discrete_fourier`, `discrete_sine`, `walsh_hadamard`, `dpss_transform`, `graph_fourier`, `blaschke_potapov`, `orthogonal_butterfly`, `complex_hadamard`, `krawtchouk_transform` |
+| Quantum maps, walks, and algorithms | `split_step_walk`, `dirac_automaton`, `grover_operator`, `quantum_baker`, `quantum_cat_map`, `kicked_harper`, `kicked_top`, `extended_lipkin_propagator`, `vibron_2d_esqpt`, `agassi_propagator`, `floquet_ising`, `selfdual_kicked_ising`, `driven_kitaev`, `kicked_rotor`, `dual_unitary_circuit`, `xxz_floquet`, `kicked_bose_hubbard`, `jaynes_cummings`, `chalker_coddington`, `unitary_almost_mathieu`, `szegedy_walk`, `coined_graph_walk`, `metric_quantum_graph` |
 | Matrix functions and dilations | `cayley_jacobi`, `polar_unitary`, `julia_unitary`, `entangled_reflection` |
 | Quantum group actions | `tensor_permutation` |
 | Nonlinear unitary dynamical systems | `lohe_matrix_flow` |
@@ -286,6 +286,34 @@ recreation of a specific published random sample. All three expose
 terminal `spectral` mode and matrix-free `operator` mode. See
 [the encyclopedia](docs/MATRIX_ENCYCLOPEDIA.md) for references and
 precise constructions.
+
+
+## Quantum cat, Krawtchouk and periodic D4 wavelet matrices
+
+~~~matlab
+C = quantum_cat_map(37,2,2);                % hyperbolic torus map
+Cf = quantum_cat_map(4096,2,2,'operator');  % fast chirp-FFT-chirp
+K = krawtchouk_transform(33,.3);           % symmetric orthogonal
+Sk = krawtchouk_transform(33,.3,'spectral');% exact +/-1 eigenvalues
+D = daubechies_wavelet(64);                % periodic D4/db2
+Df = daubechies_wavelet(4096,[],'operator');% linear-time filter bank
+~~~
+
+The cat-map generator uses an even-diagonal classical hyperbolic
+automorphism [a,1;a*d-1,d], with positive even a,d and a*d>=4.
+This avoids parity issues with the common classical [2,1;1,1]
+matrix. Its global metaplectic phase is specified, and no
+generic analytic eigenphase law is claimed.
+
+The Krawtchouk transform is built from ordered, signed eigenvectors
+of a binomial Jacobi matrix. The Jacobi eigenvalues (grid nodes
+0:N-1) are NOT eigenvalues of the transform, which is a symmetric
+orthogonal involution. The construction uses a dense eigensolver
+rather than a fast polynomial recurrence.
+
+The Daubechies D4/db2 transform explicitly uses periodic boundary
+closure, including the length-2 final stage. It differs from Haar
+and provides O(n) forward/adjoint operations.
 
 ## Install as an Anymatrix external group
 
