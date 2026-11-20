@@ -107,7 +107,7 @@ for n=[1 2 3 7 14]
     z=S.finite.eigenvalues();
     verifyEqual(testCase,S.finite.kind,'exact');
     verifyEqual(testCase,numel(z),n);
-    verifyLessThan(testCase,max(arrayfun(@(x)min(abs(x-z)),eig(U))),2e-10*n);
+    verifyLessThan(testCase,max(arrayfun(@(x)min(abs(x-z)),eig(full(U)))),2e-10*n);
     for k=[-3 0 1 3 n]
         verifyLessThan(testCase,abs(S.finite.moments(k)-trace(U^k)/n),2e-10*n);
     end
