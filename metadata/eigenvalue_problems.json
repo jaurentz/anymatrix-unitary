@@ -211,6 +211,23 @@
       "root_relation": "for uniform Dirichlet piecewise-linear FE, exactly known generalized frequencies; Verlet P(z)=z^2*Mass+z*(h^2*K-2*Mass)+Mass",
       "generator": "geometric_fem_wave.m",
       "source_status": "Canonical uniform 1D Dirichlet continuous linear finite-element specialization of published symplectic wave semidiscretization"
+    },
+    {
+      "id": "gyroscopic_oscillator",
+      "classification": "circle_spectrum_only",
+      "problem_type": "positive_metric_pencil_and_continuous_gyroscopic_quadratic",
+      "status": "implemented",
+      "reference_ids": [
+        101,
+        125,
+        126,
+        127
+      ],
+      "pencil": "A=G*S, B=G, S=R_s(h*A0), S'*G*S=G, G=diag(K,M)>0",
+      "root_relation": "discrete eigenvalues z=R_s(h*lambda), continuous det(lambda^2*M+lambda*C+K)=0 with C=-C'",
+      "generator": "gyroscopic_oscillator.m",
+      "source_status": "reproducible heterogeneous nearest-neighbor benchmark derived from gyroscopic QEP and Gauss geometry; not measured apparatus",
+      "note": "The continuous QEP has imaginary roots under positive energy. The discrete pencil is circle-spectral, not generally strict unitary."
     }
   ]
 }

@@ -47,7 +47,7 @@ assertSuccess(results)
 
 ## Matrix generator interfaces
 
-The collection currently has **101 public generators**. Each has a complete
+The collection currently has **114 public generators**. Each has a complete
 entry with formulas, spectral information, applications, parameter conventions,
 and references in the [matrix encyclopedia](docs/MATRIX_ENCYCLOPEDIA.md).
 The [mathematical notes](docs/MATHEMATICS.md) explain the shared OPUC engine.
@@ -63,7 +63,7 @@ The [vibron ESQPT example](examples/vibron_esqpt_sector_gaps.m) compares U(3) an
 | Quantum maps, walks, and algorithms | `split_step_walk`, `dirac_automaton`, `grover_operator`, `quantum_baker`, `quantum_cat_map`, `kicked_harper`, `kicked_top`, `extended_lipkin_propagator`, `vibron_2d_esqpt`, `agassi_propagator`, `floquet_ising`, `selfdual_kicked_ising`, `driven_kitaev`, `kicked_rotor`, `dual_unitary_circuit`, `xxz_floquet`, `kicked_bose_hubbard`, `jaynes_cummings`, `chalker_coddington`, `unitary_almost_mathieu`, `szegedy_walk`, `coined_graph_walk`, `metric_quantum_graph` |
 | Matrix functions and dilations | `cayley_jacobi`, `polar_unitary`, `julia_unitary`, `entangled_reflection` |
 | Quantum group actions | `tensor_permutation` |
-| Geometric/symplectic integration | `geometric_oscillator` (periodic chain, FFT), `geometric_fem_wave` (Dirichlet FEM wave, DST); exact phase laws, positive-metric pencils, and a mass-weighted palindromic Verlet QEP |
+| Geometric/symplectic integration | `geometric_oscillator` (periodic chain, FFT), `geometric_fem_wave` (Dirichlet FEM wave, DST), `gyroscopic_oscillator` (Coriolis-coupled, sparse solves); exact phase laws for the first two only, positive-metric pencils, and a mass-weighted palindromic Verlet QEP |
 | Polynomial transforms and spherical rotations | `gauss_jacobi_transform` (includes associated Legendre), `gauss_hermite_transform`, `gauss_laguerre_transform`, `wigner_rotation`, `spherical_harmonic_rotation`, `periodic_sinc_shift` |
 | Nonlinear unitary dynamical systems | `lohe_matrix_flow` |
 | Strict unitary eigenvalue pencils | `mobius_unitary_pencil`, `unitary_delay_pencil`, `block_cmv_pencil`, `floquet_factor_pencil`, `cayley_hermitian_pencil`, `left_weighted_unitary_pencil` |

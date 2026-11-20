@@ -1644,6 +1644,23 @@
       "matrix_free_supported": true,
       "operator_kernel": "um_wilson_apply",
       "operator_note": "O(m r²) per-RHS products of computed polar links via existing um_wilson_apply; no dense r-by-r holonomy multiplication required, but O(m d r) frame storage and SVD setup."
+    },
+    {
+      "id": "gyroscopic_oscillator",
+      "status": "implemented",
+      "category": "eigenvalue_problems",
+      "matrix_order": "2n (n>=2)",
+      "representation": "heterogeneous real gyroscopic vibration model; Gauss-Legendre energy-normalized orthogonal step",
+      "spectral_reference": "generic finite phase law unknown; continuous QEP roots imaginary and Gauss multipliers on the circle",
+      "encyclopedia_references": [
+        101,
+        125,
+        126,
+        127
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_gyroscopic_oscillator_apply",
+      "operator_note": "Sparse rational actions with energy-metric Cholesky; physical circle-spectral pencil and continuous QEP separately exposed. Sparse solves may incur fill-in."
     }
   ],
   "probability_measures": [
