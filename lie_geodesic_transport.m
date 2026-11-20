@@ -11,7 +11,7 @@ function [Q,properties]=lie_geodesic_transport(n,kappa,t,output)
 %   This is left-trivialized transport, NOT tangent mapping in fixed
 %   ambient matrix coordinates.
 %   Bi-invariant canonical connection reference [95]:
-%   https://doi.org/10.1007/s12220-025-02172-4
+%   https://doi.org/10.1109/LCSYS.2024.3405485
 properties={'square','unitary','normal','orthogonal','real','sparse', ...
     'scalable','eigenvalues','parameter-dependent'};
 if nargin==0,Q=[];return;end
@@ -42,7 +42,7 @@ if strcmp(output,'spectral')
     Q.dimension=n*n;Q.finite.kind='exact';Q.finite.eigenvalues=@()ev;
     Q.finite.moments=@(ell)reshape(arrayfun(@(k) ...
         abs(sum(exp(.5i*k*t*kappa)))^2/n^2,ell(:)),size(ell));
-    Q.reference='Canonical Lie connection; doi:10.1007/s12220-025-02172-4';
+    Q.reference='Canonical Lie connection; doi:10.1109/LCSYS.2024.3405485';
     Q.notes='Exact eigenphase-difference law; left-trivialized real orthogonal transport.';
 elseif any(strcmp(output,{'operator','implicit'}))
     Q=@(X,flag)um_lie_transport_apply(X,flag,n,alpha);

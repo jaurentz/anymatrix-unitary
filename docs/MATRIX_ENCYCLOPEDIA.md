@@ -2122,7 +2122,7 @@ e^{i\ell t\kappa_j/2}\right|^2.
 This is a canonical-coordinate transport matrix, not multiplication by
 exp(tK) on the ambient n-dimensional complex space. The eigenphase-difference
 formula connects geometric transport to unitary conjugation but represents
-a different real action. See the bi-invariant connection [95].
+a different real action. See Lie-group parallel transport [95].
 
 ## Bibliography
 
@@ -2225,5 +2225,5 @@ a different real action. See the bi-invariant connection [95].
 92. W. Tadej and K. Życzkowski, “A concise guide to complex Hadamard matrices,” *Open Syst. Inf. Dyn.* **13** (2006), 133–177. [DOI](https://doi.org/10.1007/s11080-006-8220-2); [preprint](https://arxiv.org/abs/quant-ph/0512154).
 93. A. Edelman, T. A. Arias and S. T. Smith, “The geometry of algorithms with orthogonality constraints,” *SIAM J. Matrix Anal. Appl.* **20** (1998), 303–353. [DOI](https://doi.org/10.1137/S0895479895290954).
 94. K. Crane, M. Desbrun and P. Schröder, “Trivial connections on discrete surfaces,” *Comput. Graph. Forum* **29** (2010), 1525–1533. [DOI](https://doi.org/10.1111/j.1467-8659.2010.01761.x).
-95. “The Parallel Transport Map over Affine Symmetric Space,” *J. Geom. Anal.* (2025). [DOI](https://doi.org/10.1007/s12220-025-02172-4).
-96. “Manifold Calculus in System Theory and Control—Fundamentals and First-Order Systems,” *Symmetry* **13** (2021), 2092. [DOI](https://doi.org/10.3390/sym13112092).
+95. Y. Ge, P. van Goor and R. Mahony, “A geometric perspective on fusing Gaussian distributions on Lie groups,” *IEEE Control Systems Letters* **8** (2024), 844–849. [DOI](https://doi.org/10.1109/LCSYS.2024.3405485); [preprint](https://arxiv.org/abs/2403.16411).
+96. S. Fiori, “Manifold Calculus in System Theory and Control—Fundamentals and First-Order Systems,” *Symmetry* **13** (2021), 2092. [DOI](https://doi.org/10.3390/sym13112092).
