@@ -2031,6 +2031,133 @@ structure-preserving spectral approximation. **Reference:** [8].
   Floquet Ising models, kicked tops, cat maps and interferometer meshes.
   Different symmetry sectors and truncations cannot be conflated. [26]
 
+## Q. Quadrature-orthogonal transforms and spherical harmonic rotations (November 2026)
+
+**Scope and caveat.** The following are six mathematically unitary or real
+orthogonal finite matrices, not simply nonsingular polynomial coefficient
+conversions. The three Gauss transform generators are constructed through a
+dense Golub--Welsch symmetric eigensolver; this is *not* a claim that the
+current implementation has the fast matvec of Townsend/Slevinsky algorithms.
+
+### Gauss--Hermite transform — [`gauss_hermite_transform.m`](../gauss_hermite_transform.m)
+
+**Order:** n. **Construction:** For the normalized Gaussian weight
+`exp(-x^2)/sqrt(pi)` and orthonormal physicists' Hermite polynomials `p_k`,
+the weighted Gauss evaluation matrix is
+
+```math
+Q_{jk}=\sqrt{w_j}\,p_{k-1}(x_j),\qquad Q^TQ=I.
+```
+
+Here the quadrature weights `w_j` sum to one. Compute `Q` as the
+transpose of the first-component-positive eigenvector matrix of the
+symmetric Jacobi tridiagonal with zero diagonal and offdiagonal
+`sqrt(k/2)` for k=1,...,n-1. **Spectral properties:** conjugate-paired
+unit-circle eigenvalues; no general closed form for their angles.
+Gauss--Hermite nodes are eigenvalues of the *Jacobi* matrix, not of `Q`.
+**Computational cost:** O(n^3) setup and O(n^2) explicit multiply.
+**Applications:** Hermite spectral approximations and Gaussian quadrature. [93,98]
+
+### Generalized Gauss--Laguerre transform — [`gauss_laguerre_transform.m`](../gauss_laguerre_transform.m)
+
+**Order:** n. **Parameter:** alpha > -1. The normalized positive measure
+has density proportional to `x^alpha exp(-x)` on `[0,infinity)`.
+The Jacobi tridiagonal for the positive-leading orthonormal Laguerre
+polynomials has diagonal `2*k+alpha+1`, k=0,...,n-1, and offdiagonal
+`sqrt(k*(k+alpha))`, k=1,...,n-1. Its ordered eigenvectors yield
+the weighted Gauss evaluation matrix `Q` with `Q'*Q=I`.
+**Spectral properties:** conjugate eigenphase pairs; quadrature nodes
+are NOT eigenvalues of `Q`. **Applications:** radial numerical spectral
+methods. **Action:** explicit dense, not fast. [93,95]
+
+### Fixed-order associated Legendre block — [`associated_legendre_transform.m`](../associated_legendre_transform.m)
+
+**Order:** n. **Parameter:** nonnegative integer m. The associated Legendre
+functions with degrees ell=m,...,m+n-1 are the Jacobi(m,m) orthonormal
+polynomials multiplied by `(1-x^2)^(m/2)`, up to an overall phase/sign.
+The corresponding n-point Gauss--Jacobi quadrature gives a square real
+orthogonal matrix. Its Jacobi tridiagonal has zero diagonal and
+
+```math
+a_k=\sqrt{\frac{k(k+2m)}{(2k+2m)^2-1}},\quad k=1,\ldots,n-1.
+```
+
+**Boundary:** this fixed-m block is a square orthogonal transform.
+The usual all-degrees spherical harmonic transform on a
+Gauss--Legendre-longitude grid is generally rectangular. Fast
+butterfly/connection transforms are a related *algorithmic* topic;
+we do not claim a fast action here. [93,95,96]
+
+### Wigner degree-ell rotation — [`wigner_rotation.m`](../wigner_rotation.m)
+
+**Order:** 2*ell+1, ell=0,1,... . **Parameters:** z-y-z Euler angles
+(alpha,beta,gamma) in radians. With m=-ell,...,ell, the generator
+builds the complex spherical harmonic representation
+
+```math
+D^{(\ell)}(R)=e^{-i\alpha J_z}e^{-i\beta J_y}e^{-i\gamma J_z},
+\qquad J_z=\mathrm{diag}(-\ell,\ldots,\ell).
+```
+
+The middle factor is calculated by exponentiating the real
+skew-symmetric matrix representing `-i*Jy`. It is unitary without
+evaluating numerically unstable factorial Wigner sums.
+For rotation angle delta satisfying
+`cos(delta/2)=cos(beta/2)*cos((alpha+gamma)/2)`, the exact eigenvalues
+are `exp(-i*m*delta)`, m=-ell,...,ell. **Action:** explicit dense matrix
+constructed using `expm`; no fast rotation algorithm claimed. [97]
+
+### Degree-truncated spherical rotation — [`spherical_harmonic_rotation.m`](../spherical_harmonic_rotation.m)
+
+**Order:** L^2, with degrees ell=0,...,L-1. **Structure:** sparse block
+diagonal with `D^(ell)(R)` blocks. The phase `exp(-i*m*delta)`
+has multiplicity `L-abs(m)` for m=-(L-1),...,L-1, before merging
+coincident phases. An exact Fourier-moment identity is
+
+```math
+\mathrm{tr}(D_L(R)^k)=
+\left|\sum_{j=0}^{L-1}e^{-ikj\delta}\right|^2.
+```
+
+If delta=c/L for fixed 0<c<pi, the normalized eigenphase density
+converges to the triangular law `(1-|theta|/c)/c` for |theta|<=c,
+and zero elsewhere. This is a derived spectral benchmark, NOT
+a claim that the cited rotation paper states the limiting law.
+**Applications:** controlled gaps, clusters, exact moments, SO(3)
+representation structure. [97]
+
+### Periodic sinc/Dirichlet fractional shift — [`periodic_sinc_shift.m`](../periodic_sinc_shift.m)
+
+**Order:** positive ODD n. **Parameter:** real fractional grid shift tau.
+With the negative-exponent normalized DFT F and centered Fourier
+frequencies k=-(n-1)/2,...,(n-1)/2,
+
+```math
+U_n(\tau)=F^*\,\mathrm{diag}\bigl(e^{-2\pi i k\tau/n}\bigr)F,
+\qquad U_n(\tau)^TU_n(\tau)=I.
+```
+
+The matrix is real, orthogonal and circulant; its entries are
+translated periodic Dirichlet-cardinal kernel samples, with the
+exact displayed eigenphases. Composition obeys
+`U_n(tau)*U_n(sigma)=U_n(tau+sigma)`. A matrix-free FFT action
+provides O(n log n) multiplies and transposes. Even n is excluded:
+the unpaired Nyquist frequency needs an explicit real-orthogonal
+convention for noninteger shifts. **Applications:** periodic
+bandlimited interpolation, phase-density benchmarks. [1,94]
+
+### Not-yet-admitted related candidates
+
+**Hankel/Bessel** Bessel-zero discretizations often give only
+approximately orthogonal finite transform matrices; a fast DHT
+does not by itself ensure unitarity. **RBF** positive-definite Gram
+matrices are nonunitary and their square polar factors are usually
+the identity. **Zernike, disk, triangle, spherical Gauss--Laguerre**
+transforms require square and quadrature-exact sampling conventions:
+standard grids may instead define rectangular isometries.
+See Slevinsky's [FastTransforms](https://mikaelslevinsky.github.io/FastTransforms/)
+for related fast *algorithms*, not a blanket assertion of unitarity.
+
 ## Bibliography
 
 1. P. J. Davis, *Circulant Matrices*, Wiley, 1979. ISBN 9780471057710. [Library record](https://openlibrary.org/books/OL4407364M/Circulant_matrices).
@@ -2130,3 +2257,10 @@ structure-preserving spectral approximation. **Reference:** [8].
 90. P. J. Forrester and E. M. Rains, “Jacobians and rank 1 perturbations relating to unitary Hessenberg matrices,” *Int. Math. Res. Not.* **2006** (2006), 48306. [DOI](https://doi.org/10.1155/IMRN/2006/48306); [preprint](https://arxiv.org/abs/math/0505552).
 91. P. Diţă, “Some results on the parametrization of complex Hadamard matrices,” *J. Phys. A* **37** (2004), 5355–5374. [DOI](https://doi.org/10.1088/0305-4470/37/20/008).
 92. W. Tadej and K. Życzkowski, “A concise guide to complex Hadamard matrices,” *Open Syst. Inf. Dyn.* **13** (2006), 133–177. [DOI](https://doi.org/10.1007/s11080-006-8220-2); [preprint](https://arxiv.org/abs/quant-ph/0512154).
+
+93. G. H. Golub and J. H. Welsch, “Calculation of Gauss quadrature rules,” *Math. Comp.* **23** (1969), 221–230. [DOI](https://doi.org/10.1090/S0025-5718-69-99647-1).
+94. N. Hale and A. Townsend, “A fast FFT-based discrete Legendre transform,” *IMA J. Numer. Anal.* **36** (2016), 1670–1684. [DOI](https://doi.org/10.1093/imanum/drv060).
+95. S. Olver, R. M. Slevinsky and A. Townsend, “Fast algorithms using orthogonal polynomials,” *Acta Numerica* **29** (2020), 573–699. [Publisher](https://www.cambridge.org/core/journals/acta-numerica/article/abs/fast-algorithms-using-orthogonal-polynomials/4FAD8C7C28EC20EE7583465C1A89AA3D).
+96. R. M. Slevinsky, “Fast and backward stable transforms between spherical harmonic expansions and bivariate Fourier series,” *Appl. Comput. Harmon. Anal.* **47** (2019). [Preprint](https://arxiv.org/abs/1705.05448).
+97. Ž. Gimbutas and L. Greengard, “A fast and stable method for rotating spherical harmonic expansions,” *J. Comput. Phys.* **228** (2009), 5621–5627. [DOI](https://doi.org/10.1016/j.jcp.2009.05.014).
+98. M. D. Webb, “Stable Hermite transforms via the Golub--Welsch algorithm,” arXiv:2604.02041 (2026). [Preprint](https://arxiv.org/abs/2604.02041).
