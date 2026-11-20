@@ -132,6 +132,7 @@
 %   grassmann_geodesic        Grassmann geodesic ambient unitary lift.
 %   geodesic_holonomy         Closed spherical polygon parallel transport.
 %   connection_cycle          Sparse cyclic discrete-connection transport.
+%   bundle_transport          General block-permutation fiber holonomies.
 %   lie_geodesic_transport    Orthogonal Lie-algebra geodesic transport.
 %
 %   stiefel_geodesic         Canonical Stiefel geodesic ambient lift.

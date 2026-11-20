@@ -1469,6 +1469,20 @@
       "matrix_free_supported": true,
       "operator_kernel": "um_wilson_apply",
       "operator_note": "Factor-by-factor multiplication O(number-of-links*n^2) per RHS; user-defined unitary links, default SU(n)."
+    },
+    {
+      "id": "bundle_transport",
+      "status": "implemented",
+      "category": "geometry",
+      "matrix_order": "N*d",
+      "representation": "sparse block-permutation of unitary d-by-d fiber links",
+      "spectral_reference": "exact phase roots of d-by-d cycle holonomies; exact Fourier trace moments",
+      "encyclopedia_references": [
+        98
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_bundle_transport_apply",
+      "operator_note": "O(N*d^2) multi-RHS forward and adjoint actions; O(N*d^2) link storage"
     }
   ],
   "probability_measures": [
