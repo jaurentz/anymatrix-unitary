@@ -1691,6 +1691,22 @@
       "matrix_free_supported": true,
       "operator_kernel": "um_fibonacci_braid_apply",
       "operator_note": "Sparse neighboring-label recoupling matrices, at most 2 nonzeros per column; forward/adjoint words via ordered sparse factors, avoiding dense F_n by F_n for large n."
+    },
+    {
+      "id": "resonant_scattering",
+      "status": "implemented",
+      "category": "quantum",
+      "matrix_order": "n open flux-normalized asymptotic channels, with m<=n internal cavity states",
+      "representation": "Mahaux-Weidenmueller wide-band effective-Hamiltonian S(E)=I-2i W'*((E*I-H+i*W*W')\\W), H=H' and W full row rank; complex symmetric for real H,W",
+      "spectral_reference": "sample trace phases exactly computable for diagonal H and diagonal WW'; coupled generic finite phase laws unknown; complex resonances eig(H-iWW') are not eigenphases",
+      "encyclopedia_references": [
+        132,
+        133,
+        134
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": null,
+      "operator_note": "Dense n-by-n full on-shell S(E), n<=512. 'model' supplies poles and meromorphic continuation; 'time_delay' returns Hermitian positive semidefinite Wigner-Smith Q (not unitary). All channels retained; partial observations contractive."
     }
   ],
   "probability_measures": [
