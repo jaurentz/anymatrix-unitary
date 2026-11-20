@@ -11,9 +11,11 @@ for n=[1,2,6,11]
         U=geometric_fem_wave(n,2,1.4,.6,h,name);
         P=geometric_fem_wave(n,2,1.4,.6,h,name,'pencil');
         spec=geometric_fem_wave(n,2,1.4,.6,h,name,'spectral');
+        specEig=spec.finite.eigenvalues();
         verifyEqual(tc,size(U),[2*n,2*n]);
         verifyEqual(tc,spec.dimension,2*n);
-        verifyEqual(tc,spec.kind,'exact');
+        verifyEqual(tc,spec.finite.kind,'exact');
+        verifyLessThan(tc,abs(spec.finite.moments(0)-1),1e-13);
         verifyLessThan(tc,norm(U'*U-eye(2*n),'fro'),5e-10*n);
         J=[zeros(n),eye(n);-eye(n),zeros(n)];
         verifyLessThan(tc,norm(U'*J*U-J,'fro'),5e-10*n);
@@ -31,7 +33,7 @@ for n=[1,2,6,11]
             2e-10*max(1,max(w2)));
         eigs=eig(U);
         for j=1:2*n
-            verifyLessThan(tc,min(abs(eigs-spec.eigenvalues(j))),2e-8);
+            verifyLessThan(tc,min(abs(eigs-specEig(j))),2e-8);
         end
     end
 end
@@ -47,8 +49,9 @@ for n=[1,2,8]
     C=[zeros(n),eye(n);-eye(n),-full(R.A0\R.A1)];
     roots=eig(C);
     S=geometric_fem_wave(n,1,1,.5,h,'verlet','spectral');
+    SEig=S.finite.eigenvalues();
     for j=1:2*n
-        verifyLessThan(tc,min(abs(roots-S.eigenvalues(j))),1e-7);
+        verifyLessThan(tc,min(abs(roots-SEig(j))),1e-7);
     end
     P=geometric_fem_wave(n,1,1,.5,h,'verlet','pencil');
     Mass=full(P.mass);K=full(P.stiffness);
