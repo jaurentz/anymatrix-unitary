@@ -2011,7 +2011,119 @@ eigenphase density is asserted.
 Hessenberg matrices, difficult clustered eigenvalues, and
 structure-preserving spectral approximation. **Reference:** [8].
 
-## P. Families reserved for future versions (not implemented)
+## P. Quantized cat maps, Krawtchouk transforms, and compactly supported wavelets (November 2026)
+
+### Checkerboard Hannay--Berry quantum cat map — [quantum_cat.m](../quantum_cat.m)
+
+For each integer S>=1 the classical map of the two-dimensional torus is
+
+~~~math
+T_S=\begin{pmatrix}2S&1\\4S-1&2\end{pmatrix},
+\qquad \det T_S=1,\quad \operatorname{tr}T_S=2S+2>2.
+~~~
+
+The even/odd checkerboard pattern guarantees torus periodicity in both
+position and momentum representations for **all positive Hilbert-space
+dimensions N** in the Hannay--Berry quantization. The finite quantum
+propagator uses the explicit kernel (indices j,k=0,...,N-1)
+
+~~~math
+U_{jk}=\frac{e^{i\pi/4}}{\sqrt N}
+ \exp\left[\frac{2\pi i}{N}\left(j^2-jk+S k^2\right)\right].
+~~~
+
+This is a diagonal-chirp / normalized DFT / diagonal-chirp product.
+It is exactly unitary and has every entry of modulus 1/sqrt(N).
+The overall complex phase is a fixed choice of quantization convention.
+The operator performs O(N log N) matvecs by FFT, with the correct
+adjoint and multiple right-hand sides.
+
+**Important:** The familiar Arnold matrix [2,1;1,1] does *not*
+satisfy the conditions needed for this particular periodic
+quantization for all N. The implementation defaults instead to
+Hannay--Berry's explicitly quantized hyperbolic example [2,1;3,2]
+at S=1; it does not silently identify the two classical maps.
+Finite eigenphase multiplicities have arithmetic structure and
+are **not** assigned an unjustified smooth phase density.
+
+**Applications:** hyperbolic quantum dynamics, quantized linear torus
+automorphisms, arithmetic spectral degeneracies, finite unitary
+eigensolvers, and unit-circle spectral density estimators.
+**Reference:** [93], especially Eqs. (21)--(22).
+
+### Krawtchouk orthonormal polynomial transform — [krawtchouk_transform.m](../krawtchouk_transform.m)
+
+For matrix dimension n, let N=n-1 and 0<p<1. The symmetric Jacobi
+matrix J (degree index j=0,...,N) has recurrence coefficients
+
+~~~math
+J_{j,j}=Np+j(1-2p),\qquad
+J_{j,j+1}=\sqrt{p(1-p)(j+1)(N-j)}.
+~~~
+
+Its eigenvalues are exactly x=0,...,N, and the spectral weights at
+the first coordinate are the binomial weights
+
+~~~math
+w(x)=\binom{N}{x}p^x(1-p)^{N-x}.
+~~~
+
+Diagonalizing J and sorting its orthonormal eigenvectors by x gives
+a **real orthogonal n-by-n matrix Q** whose entries are normalized
+Krawtchouk polynomial functions, with signs chosen to make the first
+row nonnegative. The first row is sqrt(w(x)) in exact arithmetic.
+This is a full orthogonal change of basis, distinct from the Jacobi
+matrix itself. The code uses the real symmetric eigenvalue problem
+for robust moderate sizes; a stable O(n^2) recurrence and matrix-free
+Krawtchouk action remain future work.
+
+**Spectral warning:** The grid 0,...,N consists of eigenvalues of J,
+not eigenvalues of Q. In particular, the finite trace spectral
+measure of Q is supported on the unit circle and is not the
+binomial quadrature measure of J.
+
+**Applications:** finite orthogonal-polynomial expansions, binomial
+spectral weights, spin rotation models, signal/image transforms, and
+real orthogonal eigenvalue benchmarks. **Reference:** [94];
+NIST DLMF sections 18.19 and 18.22.
+
+### Periodized Daubechies wavelet transform — [daubechies_wavelet.m](../daubechies_wavelet.m)
+
+For order 2, 3 or 4, use the 2*order-tap extremal-phase orthonormal
+Daubechies reconstruction low-pass filter h. Choose the associated
+quadrature-mirror high-pass g_k=(-1)^k h_{L-1-k}. For a periodic stage
+of even length m, take
+
+~~~math
+a_j=\sum_{k=0}^{L-1} h_k\,x_{(2j+k)\bmod m},
+\qquad
+d_j=\sum_{k=0}^{L-1} g_k\,x_{(2j+k)\bmod m}.
+~~~
+
+The stage sends [x_0,...,x_{m-1}] to [a;d]. Applying the same
+operation recursively to a (up to the requested LEVELS) gives a
+real orthogonal n-by-n multilevel analysis matrix for n a power
+of two. The code supports db2, db3 and db4; LEVELS=0 is the identity.
+Both forward and inverse/adjoint operators use the periodic wrap
+and take O(n*order*levels) operations without an explicit matrix.
+
+**Convention:** This forward analysis formula uses the standard
+*reconstruction* low-pass coefficient ordering together with the
+derived QMF high-pass; it is a valid orthogonal wavelet transform,
+but row shifts/signs differ from the analysis order in certain
+libraries. Periodic wrap-around is essential: naive zero padding
+does not give an exactly orthogonal square transformation. The
+numerical coefficient values are the high-precision db2/db3/db4
+coefficients tabulated by PyWavelets, with independent perfect
+reconstruction tests. The transform eigenphases do not coincide
+with the continuous wavelet frequency response.
+
+**Applications:** wavelet-filter bank benchmarking, fast real
+orthogonal actions, matrix-free spectral estimators, compression,
+and multiresolution signal processing. **Reference:** [15];
+[PyWavelets filter coefficients](https://github.com/PyWavelets/pywt/blob/main/pywt/_extensions/c/wavelets_coeffs.template.h).
+
+## Q. Families reserved for future versions (not implemented)
 
 - **Additional ETNA benchmark cases:** the exact Example 7.1 common-parameter
   and Example 7.5 inverse-eigenvalue presets are not yet implemented.
@@ -2024,11 +2136,11 @@ structure-preserving spectral approximation. **Reference:** [8].
   specializations, inverse spectral finite atomic measures, Aleksandrov
   families, skew-shift parameters, and matrix-valued/block CMV. [5, 12]
 - **Additional signal-processing matrices:** normalized DCT/DST variants,
-  Daubechies wavelets, paraunitary polyphase banks and lossless scattering.
+  paraunitary polyphase banks and lossless scattering.
   Boundary and frequency conventions must be specified before admitting a
   finite matrix as unitary. [15]
 - **Larger quantum models:** Szegedy graph walks, quantum-graph scattering,
-  Floquet Ising models, kicked tops, cat maps and interferometer meshes.
+  Floquet Ising models, kicked tops and interferometer meshes.
   Different symmetry sectors and truncations cannot be conflated. [26]
 
 ## Bibliography
@@ -2130,3 +2242,6 @@ structure-preserving spectral approximation. **Reference:** [8].
 90. P. J. Forrester and E. M. Rains, “Jacobians and rank 1 perturbations relating to unitary Hessenberg matrices,” *Int. Math. Res. Not.* **2006** (2006), 48306. [DOI](https://doi.org/10.1155/IMRN/2006/48306); [preprint](https://arxiv.org/abs/math/0505552).
 91. P. Diţă, “Some results on the parametrization of complex Hadamard matrices,” *J. Phys. A* **37** (2004), 5355–5374. [DOI](https://doi.org/10.1088/0305-4470/37/20/008).
 92. W. Tadej and K. Życzkowski, “A concise guide to complex Hadamard matrices,” *Open Syst. Inf. Dyn.* **13** (2006), 133–177. [DOI](https://doi.org/10.1007/s11080-006-8220-2); [preprint](https://arxiv.org/abs/quant-ph/0512154).
+
+93. J. H. Hannay and M. V. Berry, “Quantization of linear maps on a torus—Fresnel diffraction by a periodic grating,” *Physica D* **1** (1980), 267–290. [DOI](https://doi.org/10.1016/0167-2789(80)90026-3); [author-hosted PDF](https://michaelberryphysics.wordpress.com/wp-content/uploads/2013/07/berry095.pdf).
+94. “Krawtchouk transforms and convolutions,” *Adv. Appl. Math.* (2018). [DOI](https://doi.org/10.1007/s13373-018-0132-2); [DLMF recurrence reference](https://dlmf.nist.gov/18.22).
