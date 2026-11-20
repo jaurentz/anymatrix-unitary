@@ -1227,7 +1227,8 @@
       "representation": "SO(n) ambient extension of Levi-Civita shortest-geodesic tangent transport",
       "spectral_reference": "exact conjugate pair exp(±i acos(x'*y)) plus n-2 ones",
       "encyclopedia_references": [
-        96
+        96,
+        100
       ],
       "matrix_free_supported": true,
       "operator_kernel": "um_geodesic_apply",
