@@ -109,15 +109,36 @@ switch family
 
     case 'periodic_sinc_shift'
         delta=param(varargin,2,.375);
+        variant=param(varargin,3,'real');
         validateattributes(n,{'numeric'},{'scalar','integer','positive','finite'});
-        if mod(n,2)==0
-            error('unitary_spectral_reference:Order','Periodic real sinc shift requires odd N.');
-        end
         validateattributes(delta,{'numeric'},{'scalar','real','finite'});
-        k=(-(n-1)/2:(n-1)/2)';
+        if ~(ischar(variant)||isstring(variant))
+            error('unitary_spectral_reference:Variant','Invalid variant.');
+        end
+        variant=lower(char(variant));
+        if mod(n,2)==1
+            if ~strcmp(variant,'real')
+                error('unitary_spectral_reference:Variant', ...
+                    'Complex and Nyquist-frozen variants require even N.');
+            end
+            k=(-(n-1)/2:(n-1)/2)';
+            S.notes='Exact centered-frequency phases of the real orthogonal odd-order fractional shift.';
+        else
+            k=(0:n-1)';
+            k(k>n/2)=k(k>n/2)-n;
+            switch variant
+                case 'complex'
+                    S.notes='Even-order complex unitary fractional shift with +N/2 Nyquist frequency; U(1) is the cyclic permutation.';
+                case 'nyquist-frozen'
+                    k(n/2+1)=0;
+                    S.notes='Even-order real orthogonal fractional shift; fixed +1 Nyquist eigenvalue means U(1) is not the cyclic permutation.';
+                otherwise
+                    error('unitary_spectral_reference:Order', ...
+                        'Even N requires an explicit valid variant.');
+            end
+        end
         S=exact_finite(S,@() exp(-2i*pi*k*delta/n));
-        S.reference='Periodic trigonometric interpolation / normalized DFT';
-        S.notes='Exact centered-frequency eigenvalues of the real circulant fractional shift.';
+        S.reference='Periodic trigonometric interpolation / normalized DFT; Puschel and Moura (2008)';
 
     case 'cycle_shift'
         S=exact_finite(S,@() exp(2i*pi*(0:n-1)'/n));
