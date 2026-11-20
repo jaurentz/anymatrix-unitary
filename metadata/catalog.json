@@ -1384,16 +1384,16 @@
       "id": "periodic_sinc_shift",
       "status": "implemented",
       "category": "signal_processing",
-      "matrix_order": "n (odd)",
-      "representation": "real orthogonal circulant Dirichlet cardinal translation",
-      "spectral_reference": "exact centered Fourier phase multipliers",
+      "matrix_order": "odd n by default; even n with explicit complex or nyquist-frozen variant",
+      "representation": "real orthogonal Dirichlet circulant (odd or Nyquist-frozen); complex unitary circulant (even)",
+      "spectral_reference": "exact Fourier phases, including even-order Nyquist convention",
       "encyclopedia_references": [
         1,
         52
       ],
       "matrix_free_supported": true,
-      "operator_kernel": "um_periodic_sinc_apply",
-      "operator_note": "O(n log n) FFT action, forward and adjoint; odd length."
+      "operator_kernel": "um_periodic_sinc_apply / um_fft_apply",
+      "operator_note": "O(n log n) FFT forward/adjoint, multiple right-hand sides; default odd-order real orthogonal shift, even-order complex unitary or real Nyquist-frozen modes. Even-order real path to full cyclic shift is topologically obstructed."
     },
     {
       "id": "gauss_jacobi_transform",
