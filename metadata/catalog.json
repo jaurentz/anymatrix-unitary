@@ -1497,6 +1497,20 @@
       "matrix_free_supported": false,
       "operator_kernel": null,
       "operator_note": "Dense Golub--Welsch eigensolver O(n^3) setup, O(n^2) multiplication; fast generic method not claimed."
+    },
+    {
+      "id": "fermionic_exterior_power",
+      "status": "implemented",
+      "category": "quantum",
+      "matrix_order": "binomial(d,p), 0<=p<=d",
+      "representation": "explicit exterior-power determinant minors for N<=256",
+      "spectral_reference": "exact p-element subset products from one-particle eigenvalues and O(d*p) moment recurrence",
+      "encyclopedia_references": [
+        116
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": null,
+      "operator_note": "Spectral mode avoids large lift via small d-by-d eigensolve and elementary symmetric moments; no true fast operator claimed."
     }
   ],
   "probability_measures": [

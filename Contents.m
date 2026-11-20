@@ -32,6 +32,7 @@
 %   haar_unimodular_coe Haar symmetric SU(n)/SO(n) circular ensemble.
 %   haar_unimodular_cse Haar self-dual SU(2n)/Sp(2n) circular ensemble.
 %   haar_tensor_power    Correlated repeated Haar tensor factors.
+%   fermionic_exterior_power  Number-conserving exterior-power unitary lift.
 %   haar_block_tensor_power Two independent Haar factors in tensor blocks.
 %   tensor_permutation  Orthogonal tensor-factor permutation matrix.
 %   entangled_reflection Maximally entangled rank-one unitary phase reflector.

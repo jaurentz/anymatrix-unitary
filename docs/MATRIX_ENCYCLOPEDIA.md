@@ -1720,6 +1720,32 @@ zero, whereas the product-state numerical range is the real interval
 `[1-2/d,1]`. This separation is informative for quantum certification but
 does not change the empirical trace spectral measure.
 
+### Fermionic exterior-power lift — [`fermionic_exterior_power.m`](../fermionic_exterior_power.m)
+
+Given V in U(d) and a number p of conserved fermions, 0<=p<=d,
+the exterior-power representation U=wedge^p V acts on the antisymmetric
+p-particle Hilbert space of dimension N=binomial(d,p). In the canonical
+increasing occupied-subset basis (I,J), the matrix element is the
+determinant of the p-by-p minor V(I,J). Antisymmetrization of the full
+tensor action proves U is strictly unitary, and Cauchy--Binet gives
+wedge^p(VW)=(wedge^p V)(wedge^p W). P=0 gives [1], p=1 gives V,
+and p=d gives [det(V)].
+
+Its exact finite trace-eigenphase multiset consists of products of
+p **distinct** one-particle eigenvalues, with multiplicities counted
+by p-element subsets. For integer k, the normalized trace moment is
+the elementary symmetric polynomial e_p(z_1^k,...,z_d^k)/N, which
+is computable in O(d*p) per k without constructing the large matrix.
+The `spectral` mode offers this exact reference, while the explicit
+minor construction is deliberately capped at N<=256. There is
+**no claimed fast matrix-free operator** for arbitrary V. This is a
+proper invariant subrepresentation, not `haar_tensor_power` on
+dimension d^p, and it excludes number-nonconserving Bogoliubov
+transformations. Application: fermionic optics and Slater determinants.
+
+S. Bravyi, "Lagrangian representation for fermionic linear optics,"
+*Quantum Information and Computation* **5** (2005), 216–238 [116].
+
 ### Repeated Haar tensor power — [`haar_tensor_power.m`](../haar_tensor_power.m)
 
 Given a Haar V in U(d), form `U=kron(V,...,V)` with t identical factors on
@@ -3077,3 +3103,5 @@ statistics and symmetry-preserving numerical methods.
 113. T. Needham, *Visual Differential Geometry and Forms: A Mathematical Drama in Five Acts*, Princeton University Press, 2021, especially its parallel-transport and holonomy treatment. [DOI](https://doi.org/10.1515/9780691219899); [publisher](https://press.princeton.edu/books/paperback/9780691203706/visual-differential-geometry-and-forms).
 114. J. Voight, “Hyperbolic plane,” Chapter 33 of *Quaternion Algebras*, Springer, 2021; Section 33.6 on hyperbolic area and Gauss–Bonnet. [DOI](https://doi.org/10.1007/978-3-030-56694-4_33).
 115. A. Ipp and D. Müller, “Implicit schemes for real-time lattice gauge theory,” *European Physical Journal C* **78** (2018), 884. [DOI](https://doi.org/10.1140/epjc/s10052-018-6323-x); [open access](https://pmc.ncbi.nlm.nih.gov/articles/PMC6315017/).
+
+116. S. Bravyi, “Lagrangian representation for fermionic linear optics,” *Quantum Information and Computation* **5** (2005), 216–238. [DOI](https://doi.org/10.26421/QIC5.3-3); [preprint](https://arxiv.org/abs/quant-ph/0404180).
