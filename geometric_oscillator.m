@@ -7,6 +7,11 @@ function [U,properties] = geometric_oscillator(n,h,omega0,kappa,method,mode)
 %   H=0.5, OMEGA0=1, KAPPA=1, METHOD='midpoint'.
 %   METHOD='midpoint', 'gauss2', 'gauss3' (s-stage Gauss-Legendre)
 %   or 'verlet' (velocity/Stoermer-Verlet, stable H*max(omega)<2).
+%   METHOD='euler_kick_drift' or 'euler_drift_kick' are the
+%   two distinct first-order symplectic-Euler physical updates.
+%   They preserve a positive quadratic energy with cross-block terms
+%   when H*max(omega)<2; their normalized orthogonal representative
+%   has the same exact phase multiset as Verlet, but not the same M,G.
 %
 %   The real physical step M is symplectic and preserves a positive
 %   quadratic form G: M'*G*M=G. The returned U=T*M/T is also
@@ -14,6 +19,8 @@ function [U,properties] = geometric_oscillator(n,h,omega0,kappa,method,mode)
 %   symplectic. The eigenvalues of U and of the physical step are the
 %   exact conjugate pairs [z;conj(z)], for frequencies omega_j:
 %       omega_j^2=OMEGA0^2+4*KAPPA*sin(pi*j/N)^2.
+%   The two Euler orderings and Verlet share the phase pairs
+%   exp(+/-2i*asin(H*omega_j/2)), but have different phase-space steps.
 %   Gauss: z=R_s(-1i*H*omega_j), R_s=P_s(z)/P_s(-z), the diagonal
 %   Pade approximant to exp(z). Verlet:
 %       z=1-(H*omega_j)^2/2 -1i*H*omega_j*sqrt(1-(H*omega_j)^2/4).
@@ -47,7 +54,8 @@ if ~(ischar(method)||isstring(method)) || ...
     error('geometric_oscillator:Mode','METHOD and MODE must be text.');
 end
 method=lower(char(method)); mode=lower(char(mode));
-if ~any(strcmp(method,{'midpoint','gauss2','gauss3','verlet'}))
+if ~any(strcmp(method,{'midpoint','gauss2','gauss3','verlet', ...
+        'euler_kick_drift','euler_drift_kick'}))
     error('geometric_oscillator:Method','Unknown integration method.');
 end
 if ~any(strcmp(mode,{'matrix','operator','pencil','polynomial','spectral'}))
@@ -59,10 +67,10 @@ if strcmp(mode,'polynomial') && ~strcmp(method,'verlet')
 end
 j=(0:n-1)';
 w=sqrt(omega0^2+4*kappa*sin(pi*j/n).^2);
-if strcmp(method,'verlet')
+if any(strcmp(method,{'verlet','euler_kick_drift','euler_drift_kick'}))
     if h*max(w)>=2
         error('geometric_oscillator:Stability', ...
-            'Verlet requires h*max(omega_j)<2 for a positive metric.');
+            'Verlet and symplectic Euler require h*max(omega_j)<2 for a positive metric.');
     end
     x=h*w;
     z=(1-0.5*x.^2)-1i*x.*sqrt(1-0.25*x.^2);
@@ -99,20 +107,44 @@ C=real(first(ind)); S=-imag(first(ind));
 U=[C,S;-S,C];
 if strcmp(mode,'matrix'), return; end
 % In canonical phase-space coordinates x=[q;p], G=diag(Gq,I).
-if strcmp(method,'verlet')
-    Gq=K*(speye(n)-0.25*h*h*K);  % modified energy
-    D=full(speye(n)-0.5*h*h*K);
-    M=[D,h*eye(n);-h*full(Gq),D];
-    tcoeff=w.*sqrt(1-0.25*(h*w).^2);
+if any(strcmp(method,{'euler_kick_drift','euler_drift_kick'}))
+    % For symplectic Euler, G has genuine q-p cross terms. The
+    % symmetric positive square root gives the canonical oriented
+    % 2-by-2 phase rotation in each Fourier stiffness mode.
+    I=eye(n); K=full(K);
+    if strcmp(method,'euler_kick_drift')
+        % Kick p_+=p-hKq, then drift q_+=q+h*p_+.
+        M=[I-h*h*K,h*I;-h*K,I];
+        C=-0.5*h*K;
+    else
+        % Drift q_+=q+hp, then kick p_+=p-hKq_+.
+        M=[I,h*I;-h*K,I-h*h*K];
+        C=0.5*h*K;
+    end
+    G=[K,C;C,I];
+    [V,D]=eig(G);
+    diagonal=real(diag(D));
+    if any(diagonal<=0)
+        error('geometric_oscillator:Metric','Expected a positive Euler metric.');
+    end
+    T=V*diag(sqrt(diagonal))*V';
+    T=real((T+T')/2);  % symmetric positive square root
 else
-    Gq=K;                         % original physical energy
-    tcoeff=w;
-end
-Tq=real(ifft(tcoeff));
-T=blkdiag(Tq(ind),eye(n));        % G=T'*T (up to rounding)
-G=blkdiag(full(Gq),eye(n));
-if ~strcmp(method,'verlet')
-    M=T\(U*T);                    % the Gauss physical step in (q,p)
+    if strcmp(method,'verlet')
+        Gq=K*(speye(n)-0.25*h*h*K);  % modified energy
+        D=full(speye(n)-0.5*h*h*K);
+        M=[D,h*eye(n);-h*full(Gq),D];
+        tcoeff=w.*sqrt(1-0.25*(h*w).^2);
+    else
+        Gq=K;                         % original physical energy
+        tcoeff=w;
+    end
+    Tq=real(ifft(tcoeff));
+    T=blkdiag(Tq(ind),eye(n));        % G=T'*T (up to rounding)
+    G=blkdiag(full(Gq),eye(n));
+    if ~strcmp(method,'verlet')
+        M=T\(U*T);                    % the Gauss physical step in (q,p)
+    end
 end
 A=G*M; B=G;
 U=struct('A',A,'B',B,'M',M,'G',G,'T',T,'U',U, ...

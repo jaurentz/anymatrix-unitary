@@ -2440,6 +2440,41 @@ a different real action. See Lie-group parallel transport [99].
 
 ## Geometric integration: positive-metric unit-circle pencils
 
+### Symplectic-Euler oscillator steps within `geometric_oscillator.m`
+
+The periodic oscillator generator supports two physical first-order
+symplectic-Euler schemes: `euler_kick_drift` and
+`euler_drift_kick`, with canonical state x=(q,p), symmetric
+positive K and h^2*lambda_max(K)<4.
+
+For kick--drift, the physical step and its quadratic invariant are
+
+```math
+M_{KD}=\begin{bmatrix}I-h^2K&hI\\-hK&I\end{bmatrix},
+\qquad G_{KD}=\begin{bmatrix}K&-hK/2\\-hK/2&I\end{bmatrix}.
+```
+
+For drift--kick,
+
+```math
+M_{DK}=\begin{bmatrix}I&hI\\-hK&I-h^2K\end{bmatrix},
+\qquad G_{DK}=\begin{bmatrix}K&hK/2\\hK/2&I\end{bmatrix}.
+```
+
+Both physical maps satisfy M^T J M=J and M^T G M=G.
+The `'pencil'` mode returns A=GM, B=G, M, G, the
+symmetric energy square root T=G^(1/2), and U=T*M*T^(-1).
+The generalized eigenvalues lie exactly on the unit circle.
+
+The Euler orderings differ from velocity Verlet in their physical
+steps and cross-term metrics, although their exact phase pairs
+coincide: exp(±2i asin(h*omega_j/2)). The default normalized
+representative is real orthogonal. `'operator'` reuses the
+O(n log n) FFT diagonalization of the periodic stiffness.
+For a generic positive metric normalization, do **not** claim
+standard-J symplecticity without additional structure.
+See Hairer, Lubich and Wanner [101,102].
+
 ### Periodic coupled oscillators: Gauss–Legendre and Störmer–Verlet — [`geometric_oscillator.m`](../geometric_oscillator.m)
 
 **Order:** $2n$ real orthogonal-symplectic, for $n$ mechanical
