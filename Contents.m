@@ -34,6 +34,7 @@
 %   haar_tensor_power    Correlated repeated Haar tensor factors.
 %   fermionic_exterior_power  Number-conserving exterior-power unitary lift.
 %   bosonic_symmetric_power  Bosonic Fock-sector symmetric-power lift.
+%   optical_mesh            Lossless triangular/rectangular photonic coupler meshes.
 %   haar_block_tensor_power Two independent Haar factors in tensor blocks.
 %   tensor_permutation  Orthogonal tensor-factor permutation matrix.
 %   entangled_reflection Maximally entangled rank-one unitary phase reflector.
