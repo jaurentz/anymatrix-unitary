@@ -119,7 +119,7 @@
 % Unitary eigenvalue problems (strict generalized pencils):
 %   mobius_unitary_pencil       Mobius-transformed cyclic unitary pencil.
 %   unitary_delay_pencil        Lossless integer-delay secular polynomial lift.
-%   block_cmv_pencil           Block-CMV with matrix Verblunsky coefficients.
+%   block_cmv_pencil           True unitary matrix with matrix-valued CMV cores, operator and pencil.
 %   floquet_factor_pencil      Two-layer split-step orthogonal pencil.
 %   cayley_hermitian_pencil    Sparse Cayley pencil of a real Jacobi matrix.
 %   left_weighted_unitary_pencil  Ill-scaled coefficient pair with unitary quotient.
