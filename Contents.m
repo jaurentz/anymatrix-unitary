@@ -107,6 +107,7 @@
 %   agassi_propagator     Fermionic nuclear pairing and particle-hole unitary dynamics.
 %   floquet_ising        Integrable kicked transverse-field Ising chain.
 %   selfdual_kicked_ising Self-dual kicked Ising with longitudinal fields.
+%   cluster_floquet      Z2xZ2 cluster-spin drive with exact pi edge pairing.
 %   driven_kitaev        Two-step driven Kitaev BdG operator.
 %   kicked_rotor         Quantum kicked rotor (Fourier grid and kinetic phases).
 %   dual_unitary_circuit Dual-unitary two-qubit brickwork Floquet circuit.

@@ -1044,6 +1044,30 @@
       ],
       "permalink": "https://doi.org/10.1007/s00023-021-01085-6",
       "alternate_permalink": "https://arxiv.org/abs/1911.05112"
+    },
+    {
+      "number": 135,
+      "dois": [
+        "10.1103/PhysRevX.6.041001"
+      ],
+      "permalink": "https://doi.org/10.1103/PhysRevX.6.041001",
+      "alternate_permalink": "https://arxiv.org/abs/1602.05194"
+    },
+    {
+      "number": 136,
+      "dois": [
+        "10.1103/PhysRevB.93.201103"
+      ],
+      "permalink": "https://doi.org/10.1103/PhysRevB.93.201103",
+      "alternate_permalink": "https://arxiv.org/abs/1602.04804"
+    },
+    {
+      "number": 137,
+      "dois": [
+        "10.1038/s41586-022-04854-3"
+      ],
+      "permalink": "https://doi.org/10.1038/s41586-022-04854-3",
+      "alternate_permalink": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9300455/"
     }
   ]
 }
