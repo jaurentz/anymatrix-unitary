@@ -1525,6 +1525,21 @@
       "matrix_free_supported": false,
       "operator_kernel": null,
       "operator_note": "Explicit small permanent matrices only; spectral mode avoids lift using d-by-d eigensolve and O(d*p) per-moment recurrence; no generic fast action."
+    },
+    {
+      "id": "optical_mesh",
+      "status": "implemented",
+      "category": "quantum",
+      "matrix_order": "n",
+      "representation": "lossless nearest-neighbor Reck triangular or Clements rectangular optical core mesh",
+      "spectral_reference": "unknown general trace eigenphase law; exact diagonal (zero-coupler) sample phases",
+      "encyclopedia_references": [
+        118,
+        119
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_optical_mesh_apply",
+      "operator_note": "O(n^2) adjacent 2x2 core products for n(n-1)/2 couplers, O(n^2) parameter storage and O(n*nrhs) state storage."
     }
   ],
   "probability_measures": [

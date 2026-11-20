@@ -1720,6 +1720,49 @@ zero, whereas the product-state numerical range is the real interval
 `[1-2/d,1]`. This separation is informative for quantum certification but
 does not change the empirical trace spectral measure.
 
+### Lossless optical interferometer meshes — [`optical_mesh.m`](../optical_mesh.m)
+
+**Order:** n optical modes. The Reck triangular geometry and the
+Clements rectangular geometry use n(n-1)/2 consecutive two-port,
+nearest-neighbor lossless couplers. Their adjacency schedules are
+exposed by selecting `layout='reck'` or `layout='clements'`.
+For a selected pair (j,j+1), the core is
+
+```math
+G_j(\theta,\phi)=
+\begin{bmatrix}
+e^{i\phi}\cos\theta&-\sin\theta\\
+e^{i\phi}\sin\theta&\cos\theta
+\end{bmatrix},
+\qquad 0\leq\theta\leq\pi/2.
+```
+
+For parameters in application order, the complete transfer matrix
+is `U=D G_M ... G_1`, where `D=diag(exp(i*external))`
+is the output phase-shifter bank. The Reck implementation applies
+sequential descending adjacent pairs in triangular sweeps; the
+Clements implementation uses n alternating disjoint odd/even
+nearest-neighbor columns. Every factor is strictly unitary.
+These topologies describe *ideal lossless* finite-mode models; no
+claims about scattering loss, experimental error or gain are made.
+
+The `'operator'` mode retains the O(n^2) coupler parameters and
+multiplies vectors or multiple right-hand sides in O(n^2) arithmetic
+per right-hand side, with the exact reversed core order on the adjoint.
+At `theta=pi/4` each coupler is 50:50, and `theta=pi/2` gives
+phase-signed routing/permutation matrices. Arbitrary input parameters
+give exactly unitary products but an **unknown general analytical
+trace eigenphase law**. With all couplings turned off, U is diagonal
+and the `'spectral'` mode supplies its exact phase multiset and moments.
+The spectrum of a local beamsplitter must not be mistaken for that
+of the full network, nor should lossy networks be called unitary.
+
+This provides photonic-core structure absent from a generic
+`haar_unitary` or `complex_hadamard` matrix; no stable
+decomposition of an arbitrary target unitary is claimed by the
+parameterized forward model. References:
+Reck et al. (1994) [118], Clements et al. (2016) [119].
+
 ### Bosonic symmetric-power lift — [`bosonic_symmetric_power.m`](../bosonic_symmetric_power.m)
 
 For a one-particle V in U(d) and p indistinguishable bosons in d
@@ -3177,3 +3220,6 @@ statistics and symmetry-preserving numerical methods.
 116. S. Bravyi, “Lagrangian representation for fermionic linear optics,” *Quantum Information and Computation* **5** (2005), 216–238. [DOI](https://doi.org/10.26421/QIC5.3-3); [preprint](https://arxiv.org/abs/quant-ph/0404180).
 
 117. S. Scheel, “Permanents in linear optical networks,” arXiv:quant-ph/0406127 (2004). [Preprint](https://arxiv.org/abs/quant-ph/0406127).
+
+118. M. Reck, A. Zeilinger, H. J. Bernstein and P. Bertani, “Experimental realization of any discrete unitary operator,” *Phys. Rev. Lett.* **73** (1994), 58–61. [DOI](https://doi.org/10.1103/PhysRevLett.73.58).
+119. W. R. Clements, P. C. Humphreys, B. J. Metcalf, W. S. Kolthammer and I. A. Walmsley, “Optimal design for universal multiport interferometers,” *Optica* **3** (2016), 1460–1465. [DOI](https://doi.org/10.1364/OPTICA.3.001460).

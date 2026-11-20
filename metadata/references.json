@@ -910,6 +910,22 @@
       "dois": [],
       "permalink": "https://arxiv.org/abs/quant-ph/0406127",
       "alternate_permalink": ""
+    },
+    {
+      "number": 118,
+      "dois": [
+        "10.1103/PhysRevLett.73.58"
+      ],
+      "permalink": "https://doi.org/10.1103/PhysRevLett.73.58",
+      "alternate_permalink": ""
+    },
+    {
+      "number": 119,
+      "dois": [
+        "10.1364/OPTICA.3.001460"
+      ],
+      "permalink": "https://doi.org/10.1364/OPTICA.3.001460",
+      "alternate_permalink": ""
     }
   ]
 }
