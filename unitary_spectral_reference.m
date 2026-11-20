@@ -25,7 +25,14 @@ if ~(ischar(family)||isstring(family)) || isempty(varargin)
 end
 family=char(family);
 n=varargin{1};
-validateattributes(n,{'numeric'},{'scalar','integer','finite','nonnegative'});
+if strcmp(family,'wigner_rotation')
+    validateattributes(n,{'numeric'},{'scalar','real','finite','nonnegative'});
+    if 2*n~=round(2*n)
+        error('unitary_spectral_reference:Spin','Wigner spin must be an integer or half-integer.');
+    end
+else
+    validateattributes(n,{'numeric'},{'scalar','integer','finite','nonnegative'});
+end
 if n==0 && ~any(strcmp(family,{'jaynes_cummings','wigner_rotation'}))
     error('unitary_spectral_reference:Dimension','N must be positive.');
 end

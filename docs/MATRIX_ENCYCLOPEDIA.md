@@ -2715,6 +2715,48 @@ standard grids may instead define rectangular isometries.
 See Slevinsky's [FastTransforms](https://mikaelslevinsky.github.io/FastTransforms/)
 for related fast *algorithms*, not a blanket assertion of unitarity.
 
+### Stiefel geodesic ambient lift — [`stiefel_geodesic.m`](../stiefel_geodesic.m)
+
+**Order:** n>=2p. Orthonormal frames B=[Y,Q] (N-by-2p), skew-Hermitian
+p-by-p A, and arbitrary p-by-p R specify tangent H=YA+QR. With
+
+```math
+K=\begin{bmatrix}A&-R^*\\R&0\end{bmatrix},
+\qquad G(t)=I+B(e^{tK}-I)B^*,
+```
+
+the frame geodesic Y(t)=G(t)Y is canonical-metric Stiefel motion.
+This extends the Grassmann lift with a nonzero vertical rotation A,
+but does **not** model intrinsic Stiefel tangent-bundle parallel transport.
+The large unitary spectrum is known from a small 2p-by-2p skew-Hermitian
+eigenproblem and n-2p fixed eigenvalues. The generator computes this small
+eigenproblem for its spectral reference, not a full n-by-n eigensolve.
+Operator mode stores a 2p-by-2p exponential and applies the low-rank update
+in O(np) arithmetic. Edelman–Arias–Smith [97].
+
+### Non-Abelian Grassmannian loop holonomy — [`grassmann_holonomy.m`](../grassmann_holonomy.m)
+
+**Order:** r, from n-by-r orthonormal frames Y_j of a closed subspace
+polygon in complex Gr(r,n). On each unique shortest geodesic arc the
+canonical tautological-bundle transport, represented in frame coordinates,
+is the unitary polar factor of Y_(j+1)^*Y_j (provided this overlap is
+invertible). Multiplication in traversal order gives H in U(r).
+Changing each frame by an arbitrary gauge Q_j changes the closed
+holonomy by Q_1^* H Q_1: eigenphases remain gauge invariant.
+This is not Grassmannian Levi-Civita tangent-bundle holonomy.
+
+For r=1 the scalar phase is the normalized Bargmann-invariant product
+of pairwise overlaps and is provided exactly without eig. For general
+r>=2, the phases can be genuinely non-Abelian; no generic closed-form
+phase law is claimed. Source on geometric phases [110] and Grassmann
+geometry [111]. The code's default frame polygon is a reproducible
+complex test case, not extracted from an application dataset.
+
+### Wigner rotations: canonical spin extension — [`wigner_rotation.m`](../wigner_rotation.m)
+
+The existing Wigner generator also covers half-integer SU(2) spins and the nontrivial 2pi double-cover sign. Its integer-spin version factors through SO(3); both use the same angular-momentum construction, now cross-referenced to Kostelec–Rockmore [112]. No `wigner_geodesic` generator is added.
+
+
 ## Bibliography
 
 1. P. J. Davis, *Circulant Matrices*, Wiley, 1979. ISBN 9780471057710. [Library record](https://openlibrary.org/books/OL4407364M/Circulant_matrices).
@@ -2833,3 +2875,6 @@ for related fast *algorithms*, not a blanket assertion of unitarity.
 107. R. M. Slevinsky, “Fast and backward stable transforms between spherical harmonic expansions and bivariate Fourier series,” *Appl. Comput. Harmon. Anal.* **47** (2019). [Preprint](https://arxiv.org/abs/1705.05448).
 108. Ž. Gimbutas and L. Greengard, “A fast and stable method for rotating spherical harmonic expansions,” *J. Comput. Phys.* **228** (2009), 5621–5627. [DOI](https://doi.org/10.1016/j.jcp.2009.05.014).
 109. M. D. Webb, “Stable Hermite transforms via the Golub--Welsch algorithm,” arXiv:2604.02041 (2026). [Preprint](https://arxiv.org/abs/2604.02041).
+110. N. Mukunda and R. Simon, “Quantum Kinematic Approach to the Geometric Phase. I. General Formalism,” *Ann. Phys.* **228** (1993), 205–268. [DOI](https://doi.org/10.1006/aphy.1993.1093).
+111. T. Bendokat, R. Zimmermann and P.-A. Absil, “A Grassmann manifold handbook: Basic geometry and computational aspects,” *Adv. Comput. Math.* **50** (2024), article 6. [DOI](https://doi.org/10.1007/s10444-023-10090-8). See published correction: [DOI](https://doi.org/10.1007/s10444-024-10115-w).
+112. P. J. Kostelec and D. N. Rockmore, “FFTs on the Rotation Group,” *J. Fourier Anal. Appl.* **14** (2008), 145–179. [DOI](https://doi.org/10.1007/s00041-008-9013-5).

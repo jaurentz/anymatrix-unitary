@@ -14,10 +14,15 @@ function [U,properties]=wigner_rotation(ell,alpha,beta,gamma,output)
 %   This is a dense O((2*ELL+1)^3) setup, not a fast rotation kernel.
 %   Reference: Gimbutas and Greengard, JCP 228 (2009), 5621-5627.
 %   [108] https://doi.org/10.1016/j.jcp.2009.05.014
+%   [112] https://doi.org/10.1007/s00041-008-9013-5
+%   Integer spin factors through SO(3); half-integer spin represents SU(2).
 properties={'square','unitary','normal','scalable','parameter-dependent'};
 if nargin==0,U=[];return;end
 validateattributes(ell,{'numeric'}, ...
-    {'scalar','integer','nonnegative','finite'});
+    {'scalar','real','nonnegative','finite'});
+if 2*ell~=round(2*ell)
+    error('wigner_rotation:Spin','Spin must be a nonnegative integer or half-integer.');
+end
 if nargin<2||isempty(alpha),alpha=.3;end
 if nargin<3||isempty(beta),beta=.7;end
 if nargin<4||isempty(gamma),gamma=.4;end

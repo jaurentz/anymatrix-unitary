@@ -1358,7 +1358,8 @@
       "representation": "dense spherical harmonic irreducible SO(3) representation",
       "spectral_reference": "exact exp(-i*m*delta), m=-ell:ell",
       "encyclopedia_references": [
-        108
+        108,
+        112
       ],
       "matrix_free_supported": false,
       "operator_kernel": null,
@@ -1409,6 +1410,35 @@
       "matrix_free_supported": false,
       "operator_kernel": null,
       "operator_note": "Explicit Golub-Welsch eigendecomposition; fast DLT algorithms not yet implemented."
+    },
+    {
+      "id": "stiefel_geodesic",
+      "status": "implemented",
+      "category": "geometry",
+      "matrix_order": "n",
+      "representation": "canonical Stiefel geodesic ambient unitary via 2p skew-Hermitian block",
+      "spectral_reference": "exact finite reduction to a 2p-by-2p skew-Hermitian eigenproblem",
+      "encyclopedia_references": [
+        97
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_stiefel_apply",
+      "operator_note": "O(np) action after precomputing the 2p-by-2p exponential"
+    },
+    {
+      "id": "grassmann_holonomy",
+      "status": "implemented",
+      "category": "geometry",
+      "matrix_order": "r (subspace rank), ambient frame dimension n",
+      "representation": "unitary polar overlap product for geodesic polygon in Gr(r,n)",
+      "spectral_reference": "exact scalar Bargmann/Pancharatnam phase at r=1; general r>=2 unknown analytically",
+      "encyclopedia_references": [
+        110,
+        111
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": "",
+      "operator_note": "Small dense r-by-r holonomy; no asymptotically cheaper matrix-free action claimed."
     }
   ],
   "probability_measures": [

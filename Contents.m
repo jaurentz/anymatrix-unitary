@@ -134,4 +134,7 @@
 %   connection_cycle          Sparse cyclic discrete-connection transport.
 %   lie_geodesic_transport    Orthogonal Lie-algebra geodesic transport.
 %
+%   stiefel_geodesic         Canonical Stiefel geodesic ambient lift.
+%   grassmann_holonomy       Non-Abelian tautological geodesic-loop holonomy.
+%
 % Test runner: test_run. See docs/MATRIX_ENCYCLOPEDIA.md for references.

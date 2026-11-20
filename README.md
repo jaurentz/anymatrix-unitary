@@ -4,7 +4,7 @@ A MATLAB collection of finite **unitary and orthogonal test matrices**, designed
 an external group for [Anymatrix](https://github.com/north-numerical-computing/anymatrix).
 The repository is organized around reproducible mathematical constructions,
 known spectral information, and executable regression tests. It contains
-97 generators; additional benchmark families are under development.
+99 generators; additional benchmark families are under development.
 
 **Status:** development collection with MATLAB-only tests. Automated MATLAB
 regression and Anymatrix integration tests run on GitHub Actions after every
@@ -47,7 +47,7 @@ assertSuccess(results)
 
 ## Matrix generator interfaces
 
-The collection currently has **97 public generators**. Each has a complete
+The collection currently has **99 public generators**. Each has a complete
 entry with formulas, spectral information, applications, parameter conventions,
 and references in the [matrix encyclopedia](docs/MATRIX_ENCYCLOPEDIA.md).
 The [mathematical notes](docs/MATHEMATICS.md) explain the shared OPUC engine.
@@ -531,6 +531,17 @@ connection angles, not a built-in mesh geometry solver. See
 and finite-spectrum qualifications.
 
 The canonical `daubechies_wavelet` generator supports periodized db2, db3 and db4 wavelets. Its historical `daubechies_wavelet(n,levels,output)` call remains valid (db2); request higher orders with `daubechies_wavelet(n,levels,output,order)`. The single implementation preserves the cited wavelet construction and does not duplicate `quantum_cat_map` or `krawtchouk_transform`.
+
+### Further geometry: Stiefel frames and Grassmann holonomy
+
+The canonical `stiefel_geodesic` is an ambient square unitary lift of the canonical Stiefel geodesic, with a compact O(np) action. The separate `grassmann_holonomy` computes non-Abelian tautological-bundle holonomy from polar-overlap links (not Levi-Civita tangent transport). The existing `wigner_rotation` now accepts integer and half-integer spin j; no second Wigner implementation is registered. The original Mukunda–Simon, Bendokat–Zimmermann–Absil, and Kostelec–Rockmore references are retained.
+
+```matlab
+S = stiefel_geodesic(128,3,[],[],[],1,'spectral');
+H = grassmann_holonomy(8,2);
+W = wigner_rotation(10,.3,.7,-.4);   % integer SO(3)
+V = wigner_rotation(9.5,.3,.7,-.4);  % half-integer SU(2)
+```
 
 ## Automatic tests
 
