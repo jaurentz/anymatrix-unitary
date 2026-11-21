@@ -28,15 +28,26 @@ function [U,properties]=spherical_slepian(L,cap,output)
 %          'parameters': struct with K,Q,eigenvalues, basis labels;
 %          'spectral': unknown eigenphases of Q', with concentration
 %                      factors explicitly identified as a DIFFERENT law.
-%   No generic polygon/mask region or fast structured operator is
-%   claimed: those require separate accuracy and complexity studies.
+%   OUTPUT 'operator': orthogonal O(L^3) per-RHS fixed-order block
+%          action from the EXACT commuting Grunbaum tridiagonal,
+%          without forming the dense L^2-by-L^2 concentration matrix.
+%          Supports forward, adjoint, transpose and multiple RHS.
+%   OUTPUT 'commuting': tridiagonal block data and concentration
+%          Rayleigh factors; its Grunbaum eigenvalues are NOT the
+%          concentration eigenvalues and NOT analysis eigenphases.
+%   'operator'/'commuting' support L<=64; dense modes remain L<=24.
+%   Block setup uses dense eig of each tridiagonal and Gaussian
+%   quadrature Rayleigh quotients, O(L^4) arithmetic and O(L^3)
+%   storage; O(L^3) action per right-hand side. This is NOT a
+%   specialized O(L^2) tridiagonal eigensolver or fast SHT.
+%   No generic polygon/mask region is claimed.
 %
 %   [156] Simons, Dahlen, Wieczorek, SIAM Rev. 48 (2006), 504--536.
 %   https://doi.org/10.1137/S0036144504445765
 properties={'square','unitary','orthogonal','real','normal', ...
     'scalable','parameter-dependent'};
 if nargin==0,U=[];return;end
-validateattributes(L,{'numeric'},{'scalar','integer','positive','finite','<=',24});
+validateattributes(L,{'numeric'},{'scalar','integer','positive','finite','<=',64});
 if nargin<2||isempty(cap),cap=pi/3;end
 validateattributes(cap,{'numeric'},{'scalar','real','finite','>=',0,'<=',pi});
 if nargin<3||isempty(output),output='matrix';end
@@ -45,10 +56,14 @@ if ~(ischar(output)||(isstring(output)&&isscalar(output)))
 end
 output=lower(char(output));
 if ~any(strcmp(output,{'matrix','analysis','basis','concentration', ...
-        'parameters','spectral'}))
+        'parameters','spectral','operator','commuting'}))
     error('spherical_slepian:Mode','Unknown output mode.');
 end
 n=L^2;
+if any(strcmp(output,{'matrix','analysis','basis','concentration','parameters'})) && L>24
+    error('spherical_slepian:DenseOrder', ...
+        'Dense cap modes support L<=24; use operator or commuting.');
+end
 if strcmp(output,'spectral')
     U=unitary_spectral_reference('spherical_slepian',n);
     U.bandlimit=L;U.cap=cap;
@@ -56,6 +71,15 @@ if strcmp(output,'spectral')
     U.notes=['Orthogonal Slepian analysis eigenbasis; its eigenphases ' ...
         'are generally unknown. Concentration eigenvalues of K are ' ...
         'NOT eigenvalues of this orthogonal matrix.'];
+    return
+end
+if strcmp(output,'operator') || strcmp(output,'commuting')
+    C=um_spherical_cap_commuting(L,cap);
+    if strcmp(output,'operator')
+        U=@(X,flag)um_spherical_cap_slepian_apply(X,flag,C);
+    else
+        U=C;
+    end
     return
 end
 K=zeros(n);Q=zeros(n);lambda=zeros(n,1);
