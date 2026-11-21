@@ -93,6 +93,8 @@ several families; other families have ensemble laws, limiting densities, or
 no universal law. The encyclopedia distinguishes these cases. Do not infer a
 limiting eigenphase distribution from unitarity alone.
 
+**Spectral distribution atlas:** see the [illustrated taxonomy](docs/SPECTRAL_DISTRIBUTION_ATLAS.md) for atomic, uniform, smooth, gapped, singular-edge, mixed and singular-continuous target classes, application references, and monochrome circular visualizations (Poisson smoothing `r=0.94`). The atlas distinguishes finite trace measures, limiting laws, ensemble means and OPUC vector measures.
+
 ### Orthogonal-polynomial and rotation constructions
 
 Six additional matrix families are available. The Gauss–Jacobi evaluation matrix also covers the fixed-order associated-Legendre block by setting `alpha=beta=m`; no duplicate Legendre generator is registered. Hermite and Laguerre use the shared Golub–Welsch basis engine. The Wigner irreducible representation and its degree-truncated block sum have distinct dimensions and spectral multiplicities. The periodic sinc shift is a named real circulant specialization with an FFT action. The original Townsend/Slevinsky, Golub–Welsch, and spherical-harmonic sources remain in the bibliography. The current Gauss transforms are explicit, not fast transform implementations.
