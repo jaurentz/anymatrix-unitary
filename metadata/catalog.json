@@ -237,9 +237,9 @@
         17,
         18
       ],
-      "matrix_free_supported": false,
-      "operator_kernel": "builtin-sparse",
-      "operator_note": "Already O(n) sparse; custom action not needed."
+      "matrix_free_supported": true,
+      "operator_kernel": "um_dirac_apply",
+      "operator_note": "Default matrix is O(N)-nonzero sparse; optional um_dirac_apply handles O(N) forward/adjoint multiple-RHS actions without assembling it. Matrix order N=2n."
     },
     {
       "id": "grover_operator",

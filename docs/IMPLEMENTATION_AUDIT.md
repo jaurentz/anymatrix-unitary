@@ -1,7 +1,8 @@
 # Matrix-free implementation audit
 
-**Revision:** 13 November 2026. This inventory accompanies the matrix-free
-function-handle refactor. It distinguishes fast **operator actions** from
+**Revision:** 21 November 2026. This inventory accompanies the matrix-free
+function-handle refactor and subsequent generator additions. It distinguishes
+implemented `'operator'` availability from fast **operator actions**, and both from
 structured mathematical descriptions that do not themselves yield fast
 actions. MATLAB numeric matrices remain the default Anymatrix output.
 
@@ -9,7 +10,7 @@ actions. MATLAB numeric matrices remain the default Anymatrix output.
 
 | Matrix families | Kernel | Memory without explicit matrix | Action per column |
 | --- | --- | --- | --- |
-| All ten OPUC / Verblunsky variants (CMV, Hessenberg, inverse, twisted) | `um_core_apply` | O(n) | O(n) |
+| OPUC / Verblunsky coefficient variants (CMV, Hessenberg, inverse, twisted) | `um_core_apply` | O(n) | O(n) |
 | `phase_circulant`, `cycle_propagator`, `kicked_harper`, `kicked_rotor`, `quantum_baker` | `um_fft_apply` | O(n) | O(n log n) |
 | `cycle_shift`, `weighted_shift`, `diagonal_phase` | `um_monomial_apply` | O(n) | O(n) |
 | `grover_operator` | `um_reflection_apply` | O(n) | O(n) |
@@ -20,6 +21,25 @@ actions. MATLAB numeric matrices remain the default Anymatrix output.
 | `kicked_bose_hubbard`, `kicked_top` | `um_kick_tridiag_apply` + `um_tridiag_exp_apply` (`expmv`/fallback) | O(n) coefficient data and O(n·RHS) workspace | O(n·m·RHS), m is Chebyshev truncation order |
 | `jaynes_cummings` | `um_jaynes_apply` | O(n) excitation block coefficients | O(n·RHS) |
 | `chalker_coddington` | `um_cc_geometry` + `um_scattering_apply` | O(n) scattering ports, phases, and blocks | O(n·RHS) |
+| `dirac_automaton` | `um_dirac_apply` | O(N) state, constant local parameters | O(N·RHS) |
+| `discrete_fourier`, `orthogonal_dct`, `discrete_sine`, `discrete_hartley`, `walsh_hadamard`, `affine_fourier`, `finite_zak` | Shared FFT, DCT/DST, Walsh, chirp and Zak kernels | O(N) or less operator data, O(N) FFT workspace | O(N log N·RHS) |
+| `orthogonal_butterfly` | `um_butterfly_apply` | O(N) rotation angles | O(N log N·RHS) |
+| `haar_tensor_power`, `haar_block_tensor_power`, `fourier_laguerre_ball`, `tensor_permutation` | `um_tensor_apply` / `um_tensor_permute_apply` | Small factors/permutation; full state O(N) | Factor-size dependent; O(N) for permutation |
+| `daubechies_wavelet` | `um_daubechies_apply` / `um_wavelet_packet_apply` | Fixed taps, levels/tree | O(N·RHS) for standard decimated wavelets; packet tree dependent |
+| `gauss_jacobi_transform` at alpha=beta=+/-1/2 **only** | `um_gauss_jacobi_cheb_apply` | O(N) workspace/signs | O(N log N·RHS) |
+| `unitary_hessenberg_pencil` (strict unitary case) | `um_hessenberg_pencil_apply` | O(N) cores and diagonal phases | O(N·RHS) |
+| `optical_mesh` (full universal mesh) | `um_optical_mesh_apply` | O(N^2) couplers | O(N^2·RHS), **not a fast full mesh** |
+
+The table is a summary, not an exhaustive list. In this document `N`
+denotes the actual order of the unitary matrix, while physical dimensions,
+qubit counts, ranks, and local block sizes are stated separately.
+A few operators have restricted parameter domains: in particular,
+`gauss_jacobi_transform` rejects `'operator'` outside the two Chebyshev
+cases. `optical_mesh` implements an operator handle, but full universality
+retains quadratic work and parameters. The source of truth for **registered**
+operator availability is [metadata/catalog.json](../metadata/catalog.json).
+No fast claim follows from the flag alone; the corresponding MATLAB source,
+forward/adjoint tests, and parameter conditions must be checked.
 
 The final `'operator'` argument returns `@(X,flag) ...`; valid flags are
 `'notransp'`, `'transp'` (conjugate transpose), `'ctransp'`,
@@ -40,12 +60,27 @@ Jaynes–Cummings and Chalker–Coddington retain their sparse numeric defaults.
 `orthogonal_blocks`, `split_step_walk`, `dirac_automaton`,
 `jaynes_cummings` and `chalker_coddington` have O(n) nonzeros. There is no compelling memory advantage from replacing
 their normal sparse return values. Their sparse adjoints already use MATLAB
-`A'` correctly.
+`A'` correctly. Unlike `orthogonal_blocks` and `split_step_walk`,
+`dirac_automaton` also exposes a separate O(N) forward/adjoint
+`'operator'` action; its catalog flag must remain true.
 
 CMV is also five-diagonal in its usual representation, but the same OPUC
 coefficients may generate structurally full Hessenberg or snake-shaped
 matrices. These are served by the same shared core kernel rather than
 a CMV-only implementation.
+
+## Dense or restricted cases without a verified fast full operator
+
+Full DPSS and arbitrary graph-Fourier eigenvector matrices are dense and
+have no verified generic fast complete-basis operator in this repository.
+A fast leading-Slepian-subspace projection or a special graph topology
+must not be confused with a generic fast complete eigenvector transform.
+The general Gauss--Jacobi, Gauss--Hermite, Gauss--Laguerre and
+associated-Legendre evaluation matrices use dense algorithms here;
+**only** the two Gauss--Chebyshev specializations noted above have
+FFT-fast operator actions. For details see
+[STRUCTURED_OPERATORS.md](STRUCTURED_OPERATORS.md) and
+[MATRIX_FREE.md](MATRIX_FREE.md).
 
 ## Deferred specialized operators
 

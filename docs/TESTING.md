@@ -38,8 +38,8 @@ pull requests and manually dispatched workflows.
 | `test_signal_processing` | Exact identities, spectra, autocorrelations, multi-RHS forward/adjoint, implicit matrix materialization and large-order actions |
 | `test_eigenvalue_problems` | Strict pencil Gram identities, numerical quotients, nonlinear secular determinants, exact spectra, block-CMV consistency and input validation |
 | `test_polynomial_rotation_transforms` | Gauss quadrature identities, Wigner exact characters, spherical blocks and FFT-sinc adjoints |
-| `test_catalog` | Catalog/documentation completeness and consistency of Anymatrix property declarations |
-| `test_math_markup` | GitHub display-math fence consistency and guards against bare dollar delimiters / unsupported notation |
+| `test_catalog` | Catalog/documentation completeness, Anymatrix property declarations, and cross-checks for the Dirac operator API and catalog flag |
+| `test_math_markup` | GitHub math-fence checks, guards against unsupported macros, malformed inline delimiters and nonstandard little-o complexity claims |
 
 ## Accuracy versus identity
 
@@ -150,7 +150,6 @@ O(n) core application. The auxiliary
 `tests/test_hessenberg_unitary_generalized.m` tests the broader
 Hessenberg–unitary-Hessenberg pencil with fixed poles but demonstrably
 nonunitary numerator and quotient; this remains outside the matrix catalog.
-
 
 `tests/test_real_spherical_harmonic_rotation.m` checks the
 Condon–Shortley complex-to-real unitary basis, exact real

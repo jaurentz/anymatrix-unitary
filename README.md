@@ -3,8 +3,9 @@
 A MATLAB collection of finite **unitary and orthogonal test matrices**, designed as
 an external group for [Anymatrix](https://github.com/north-numerical-computing/anymatrix).
 The repository is organized around reproducible mathematical constructions,
-known spectral information, and executable regression tests. It contains
-101 generators; additional benchmark families are under development.
+known spectral information, and executable regression tests. The authoritative public generator inventory is maintained in
+[metadata/catalog.json](metadata/catalog.json); additional benchmark families
+are under development.
 
 **Status:** development collection with MATLAB-only tests. Automated MATLAB
 regression and Anymatrix integration tests run on GitHub Actions after every
@@ -47,9 +48,10 @@ assertSuccess(results)
 
 ## Matrix generator interfaces
 
-The collection currently has **127 public generators**. Each has a complete
-entry with formulas, spectral information, applications, parameter conventions,
-and references in the [matrix encyclopedia](docs/MATRIX_ENCYCLOPEDIA.md).
+The current public generators are listed in [the catalog](metadata/catalog.json).
+Each has an entry with formulas, spectral information, applications, parameter
+conventions, and references in the [matrix encyclopedia](docs/MATRIX_ENCYCLOPEDIA.md).
+The category table below is illustrative rather than a complete or fixed-count inventory.
 The [mathematical notes](docs/MATHEMATICS.md) explain the shared OPUC engine.
 The [vibron ESQPT example](examples/vibron_esqpt_sector_gaps.m) compares U(3) angular-momentum and U(2) Lipkin parity gaps.
 
@@ -101,7 +103,11 @@ limiting eigenphase distribution from unitarity alone.
 
 ### Orthogonal-polynomial and rotation constructions
 
-Six additional matrix families are available. The Gauss–Jacobi evaluation matrix also covers the fixed-order associated-Legendre block by setting `alpha=beta=m`; no duplicate Legendre generator is registered. Hermite and Laguerre use the shared Golub–Welsch basis engine. The Wigner irreducible representation and its degree-truncated block sum have distinct dimensions and spectral multiplicities. The periodic sinc shift is a named real circulant specialization with an FFT action. The original Townsend/Slevinsky, Golub–Welsch, and spherical-harmonic sources remain in the bibliography. The current Gauss transforms are explicit, not fast transform implementations.
+Six additional matrix families are available. The Gauss–Jacobi evaluation matrix also covers the fixed-order associated-Legendre block by setting `alpha=beta=m`; no duplicate Legendre generator is registered. Hermite and Laguerre use the shared Golub–Welsch basis engine. The Wigner irreducible representation and its degree-truncated block sum have distinct dimensions and spectral multiplicities. The periodic sinc shift is a named real circulant specialization with an FFT action. The original Townsend/Slevinsky, Golub–Welsch, and spherical-harmonic sources remain in the bibliography. The general Gauss--Jacobi, Gauss--Hermite and Gauss--Laguerre
+transforms remain dense implementations. Only the Gauss--Chebyshev I and II
+specializations of `gauss_jacobi_transform` have verified
+`O(n log n)` FFT-based `'operator'` actions; for other Jacobi parameters
+that mode is explicitly rejected. See [matrix-free coverage](docs/MATRIX_FREE.md).
 
 ## Eigenvalue-problem subclass
 
@@ -159,7 +165,11 @@ A = U(eye(4096),'notransp'); % only if the explicit matrix fits memory
 The group uses one shared core kernel for the Verblunsky-based models, one
 FFT kernel for Fourier-factor models, and shared local-gate kernels for
 many-body circuits, and the kicked top, Bose-Hubbard dimer, Jaynes-Cummings blocks and Chalker-Coddington network. Default numeric output and legacy argument ordering
-remain unchanged. See [operator convention and coverage](docs/MATRIX_FREE.md).
+remain unchanged. See [operator convention and coverage](docs/MATRIX_FREE.md)
+and [the structural taxonomy](docs/STRUCTURED_OPERATORS.md). A supported
+`'operator'` output does not necessarily imply a fast action: the universal
+`optical_mesh` has `O(n^2)` couplers and multiplication, and the full DPSS
+and arbitrary-graph Fourier bases have no generic fast operator mode.
 
 ## Measure-first Jacobi--Szegő construction
 
