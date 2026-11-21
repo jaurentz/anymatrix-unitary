@@ -4056,6 +4056,205 @@ misidentified as exact verbatim equations or disorder
 protocols taken from those papers.
 
 
+
+## Moser–Veselov rigid-body increments in SO(n) — [`moser_veselov.m`](../moser_veselov.m)
+
+**Application and mathematical distinction.** This family represents
+the implicit **discrete Euler–Arnold equations** for a generalized
+free rigid body, not merely a prescribed orthogonal path, an ordinary
+polar factor or a Cayley transform of a chosen skew matrix. Its output
+is a *dynamics-determined* real special-orthogonal body increment of
+order $n\ge3$ [138,139]. An independent 2022 high-order
+polar-decomposition variational integrator [140] is a distinct
+construction and is **not implemented** by this generator.
+
+**Exact convention for attitude, body increment and momentum.**
+Let $J=J^T\succ0$ be the positive-definite generalized inertia
+matrix, $M_k^T=-M_k$ the body angular momentum, $Q_k\in SO(n)$
+the orientation matrix, and $h>0$ the physical step parameter.
+In the body-increment convention of Moser–Veselov [138]
+and its numerical study by Cardoso–Miraldo [139], solve
+
+```math
+\begin{aligned}
+hM_k &= F_k^T J-JF_k, \qquad F_k\in SO(n),\\
+M_{k+1}&=F_kM_kF_k^T,\\
+Q_{k+1}&=Q_kF_k^T.
+\end{aligned}
+```
+
+The literature commonly absorbs the factor $h$ into the
+discrete momentum variable. The equation as printed in [139]
+is $M=F^T J-JF$ **without an explicit h**. Here the user-supplied
+M is a step-scaled physical-momentum convention and is multiplied
+by h so that the increment approaches identity as $h\to0$.
+This rescaling is a declared interface convention, not a
+change to the published discrete matrix equation.
+
+The orientation update **must** be compatible with the chosen
+transpose: if one denotes $X=F^T$ instead, the implicit equation
+is $hM=XJ-JX^T$, the momentum update is $M_+=X^TMX$,
+and the attitude update is $Q_+=QX$. Using one formula from
+each convention without the corresponding transposes is
+incorrect.
+
+**Unitary matrix structure and a discrete Noether invariant.**
+Since $F_k\in SO(n)$, the returned numerical matrix
+satisfies $F_k^TF_k=I$ and $\det F_k=1$. For real F,
+complex eigenvalues lie in conjugate pairs on the unit circle,
+and for odd n there is at least one eigenvalue $+1$.
+In particular $SO(3)$ has a mandatory $+1$ eigenvalue,
+so nontrivial higher-dimensional test matrices
+($SO(4),SO(5),\ldots$) are included.
+
+The angular momentum is advanced by orthogonal conjugation.
+Thus its characteristic polynomial and all trace Casimirs
+are invariant; in particular $\|M_{k+1}\|_F=\|M_k\|_F$.
+The spatial momentum follows from the consistent pair of updates:
+
+```math
+Q_{k+1}M_{k+1}Q_{k+1}^T
+=Q_kF_k^TF_kM_kF_k^TF_kQ_k^T
+=Q_kM_kQ_k^T.
+```
+
+This is a strong independent test of the dynamics.
+Crucially, **orthogonality of an orientation increment does not
+mean the full map on the cotangent bundle is represented by
+an orthogonal Euclidean matrix**. Variational
+symplecticity of the full discrete mechanical flow [138]
+and Euclidean orthogonality of its configuration factor are
+different assertions. The generator does not compute or
+claim a full phase-space Jacobian.
+
+**Full Moser–Veselov/Manakov Lax invariants.**
+Beyond the conjugacy invariants of M, the original paper [138]
+derives an isospectral deformation of a matrix polynomial.
+For an arbitrary (real or complex) scalar $z$, define
+
+```math
+L_k(z)=hM_k+zJ^2,\qquad A_k(z)=F_k-zJ.
+```
+
+The implicit equation and the momentum conjugation law imply
+the **exact discrete Lax intertwining relation**
+
+```math
+L_{k+1}(z)\,A_k(z)=A_k(z)\,L_k(z).
+```
+
+Where $A_k(z)$ is nonsingular, the two matrices
+$L_k(z)$ and $L_{k+1}(z)$ are similar; as an algebraic
+identity, the entire characteristic polynomial in the
+spectral variable is invariant from step to step.
+This is a particularly useful **structured matrix pencil**
+associated with the rigid-body map, but it is **not**
+a generally unitary matrix or a unit-circle eigenvalue
+problem. The `model` mode exposes
+`lax(z)`, `next_lax(z)`
+and `lax_intertwiner(z)`. The tests verify the
+Lax residual and the first four trace moments of $L_k(z)$
+at real and complex z, independently of the SO(n)
+orientation invariants. The scaled variable hM is used
+consistently with our physical-step convention.
+
+
+**Numerical solution and branch policy.**
+Solving $F^TJ-JF=hM$ is a genuine nonlinear matrix problem.
+It need not admit an admissible solution for arbitrary inertia
+and momentum, and solutions need not be globally unique
+[138,139]. The implementation is intentionally restricted to
+$n=3,\ldots,16$ for reproducible dense Newton arithmetic
+and uses a **near-identity Cayley coordinate chart**:
+write $X=F^T$ and $K^T=-K$, with
+
+```math
+X(K)=(I-K)^{-1}(I+K),\quad
+R(K)=X(K)J-JX(K)^T-hM,
+```
+
+```math
+dX=(I-K)^{-1}(dK)(I+X),\qquad
+dR=(dX)J-J(dX)^T.
+```
+
+The first-order approximation
+$KJ+JK\approx hM/2$ yields a Sylvester-equation
+initialization, solved in an orthonormal eigenbasis of J.
+Newton solves for independent strict-upper entries of K
+using the displayed **analytic Jacobian** and backtracking.
+Every trial Cayley iterate is in $SO(n)$, subject to roundoff,
+and an unacceptably large residual, numerical singularity,
+or inability to decrease the residual causes a
+**NoSolution** exception. This is **our local analytic-Newton
+solver**, not a claim of implementing the Bregman or Riemannian
+gradient algorithms compared in [139].
+
+A useful necessary solvability bound is
+$\|hM\|_2\le2\|J\|_2$. The solver rejects inputs violating
+this bound before attempting Newton; satisfying the bound
+is not sufficient to guarantee a solution. At $M=0$, it
+returns the **identity** branch, although other remote
+solutions to the nonlinear equation may exist.
+
+**Independent benchmarks.** For a principal-axis $SO(3)$
+rotation $F=\mathop{\mathrm{diag}}(R(\phi),1)$ and diagonal
+$J=\mathop{\mathrm{diag}}(j_1,j_2,j_3)$, the displayed
+published implicit equation reduces algebraically to
+
+```math
+hM_{12}=(j_1+j_2)\sin\phi,\qquad
+M_{13}=M_{23}=0.
+```
+
+The regression test takes $j_1=0.8,j_2=1.3,j_3=2$,
+$h=0.24,\phi=0.18$ and recovers the independently
+computed rotation with small residual. These
+**numbers are a manufactured specialization** of the
+published $SO(3)$ Moser–Veselov equation, **not**
+a numerical table transcribed from [138] or [139].
+Additional tests generate admissible $SO(4)$–$SO(6)$
+momenta from independently constructed exact rotations
+and recover those rotations without passing them to
+the numerical generator. Twelve-step full trajectories
+test $Q_kM_kQ_k^T$ and the Casimir $\|M_k\|_F$.
+The standard default inertia is a deterministic
+positive tridiagonal matrix, and the default body
+momentum is a deterministic skew banded matrix;
+neither is a claimed measured physical apparatus.
+
+**Modes and trace spectral data.** The default
+`matrix` output is the first n-by-n increment,
+`model` exposes the verified first step and
+its momenta and residuals, and `trajectory`
+returns the sequence of increments, body momenta,
+orientations and equation residuals.
+For generic parameters there is **no asserted exact finite
+trace eigenphase multiset**, and `spectral`
+reports it as analytically unknown, recording only
+general $SO(n)$ conjugate pairing and the odd-n $+1$
+eigenvalue. The zero-body-momentum near-identity branch
+has $F=I$, so its finite normalized trace measure
+is exactly one atom at $1$ (multiplicity n) and every
+trace Fourier moment is 1.
+
+Dense nonlinear solves do not admit a genuinely
+matrix-free speedup merely by wrapping the computed
+F in a matrix-vector handle; this family deliberately
+reports `matrix_free_supported=false`.
+The spectra of these configuration increments should
+not be conflated with characteristic multipliers of
+the **full** rigid-body phase-space flow, or with the
+eigenvalues of its (generally nonorthogonal) Jacobian.
+
+**References:** [138] is the original Moser–Veselov
+discrete Euler–Arnold system, [139] analyzes solvability
+and numerical solution of the nonlinear orthogonality-
+constrained equation, and [140] presents a
+**distinct** high-order polar/Galerkin variational
+SO(n) method, retained for future independent work.
+
+
 ## Bibliography
 
 1. P. J. Davis, *Circulant Matrices*, Wiley, 1979. ISBN 9780471057710. [Library record](https://openlibrary.org/books/OL4407364M/Circulant_matrices).
@@ -4219,3 +4418,8 @@ protocols taken from those papers.
 135. A. C. Potter, T. Morimoto and A. Vishwanath, “Classification of Interacting Topological Floquet Phases in One Dimension,” *Physical Review X* **6** (2016), 041001. [DOI](https://doi.org/10.1103/PhysRevX.6.041001); [preprint](https://arxiv.org/abs/1602.05194).
 136. D. V. Else and C. Nayak, “Classification of topological phases in periodically driven interacting systems,” *Physical Review B* **93** (2016), 201103(R). [DOI](https://doi.org/10.1103/PhysRevB.93.201103); [preprint](https://arxiv.org/abs/1602.04804).
 137. X. Zhang, W. Jiang, J. Deng et al., “Digital quantum simulation of Floquet symmetry-protected topological phases,” *Nature* **607** (2022), 468–473. [DOI](https://doi.org/10.1038/s41586-022-04854-3); [open access](https://pmc.ncbi.nlm.nih.gov/articles/PMC9300455/).
+
+
+138. J. Moser and A. P. Veselov, “Discrete versions of some classical integrable systems and factorization of matrix polynomials,” *Communications in Mathematical Physics* **139** (1991), 217–243. [DOI](https://doi.org/10.1007/BF02352494); [full text](https://projecteuclid.org/journals/communications-in-mathematical-physics/volume-139/issue-2/Discrete-versions-of-some-classical-integrable-systems-and-factorization-of/cmp/1104203302.full).
+139. J. R. Cardoso and P. Miraldo, “Solving the discrete Euler–Arnold equations for the generalized rigid body motion,” *Journal of Computational and Applied Mathematics* **402** (2022), 113814. [DOI](https://doi.org/10.1016/j.cam.2021.113814); [preprint](https://arxiv.org/abs/2109.00505).
+140. X. Shen, K. Tran and M. Leok, “High-order symplectic Lie group methods on SO(n) using the polar decomposition,” *Journal of Computational Dynamics* **9** (2022), 529–551. [DOI](https://doi.org/10.3934/jcd.2022003); [preprint](https://arxiv.org/abs/2201.10768).

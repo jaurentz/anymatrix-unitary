@@ -1068,6 +1068,30 @@
       ],
       "permalink": "https://doi.org/10.1038/s41586-022-04854-3",
       "alternate_permalink": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9300455/"
+    },
+    {
+      "number": 138,
+      "dois": [
+        "10.1007/BF02352494"
+      ],
+      "permalink": "https://doi.org/10.1007/BF02352494",
+      "alternate_permalink": "https://projecteuclid.org/journals/communications-in-mathematical-physics/volume-139/issue-2/Discrete-versions-of-some-classical-integrable-systems-and-factorization-of/cmp/1104203302.full"
+    },
+    {
+      "number": 139,
+      "dois": [
+        "10.1016/j.cam.2021.113814"
+      ],
+      "permalink": "https://doi.org/10.1016/j.cam.2021.113814",
+      "alternate_permalink": "https://arxiv.org/abs/2109.00505"
+    },
+    {
+      "number": 140,
+      "dois": [
+        "10.3934/jcd.2022003"
+      ],
+      "permalink": "https://doi.org/10.3934/jcd.2022003",
+      "alternate_permalink": "https://arxiv.org/abs/2201.10768"
     }
   ]
 }
