@@ -4,7 +4,10 @@ function [U,properties] = geronimus_cmv(n,a,representation,beta,twists,output)
 %   measure -> Verblunsky -> terminal phase -> core factorization pipeline.
 %   Supported forms: cmv (default), hessenberg, inverse_hessenberg, twisted.
 %   Interior coefficients must lie in the open disk; |BETA|=1 closes.
-%   See documentation and the corresponding SZEGO_*_MEASURE function.
+%   See SZEGO_GERONIMUS_MEASURE for the exact infinite e1 continuous
+%   arc density, optional atom and Poisson smoothing. Terminal 'spectral'
+%   mode exposes these only in S.underlying, NOT as a finite trace law.
+%   Source: https://doi.org/10.1007/s00220-021-04072-4
 %   Verified reference identifiers (see docs/MATRIX_ENCYCLOPEDIA.md):
 %   [147] https://doi.org/10.1007/s00220-021-04072-4
 %   General numerical spectral-measure methodology only; this paper

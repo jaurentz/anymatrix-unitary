@@ -512,7 +512,7 @@
       "category": "opuc",
       "matrix_order": "n",
       "representation": "core product; CMV, Hessenberg, inverse, twisted",
-      "spectral_reference": "constant Schur coefficients; arc support and possible point mass",
+      "spectral_reference": "Infinite constant-Verblunsky e1 measure: exact absolutely continuous arc density, optional point mass of weight max(0,2(Re(a)+|a|^2)/|1+a|^2) at 2 arg(1+conj(a)), exact Poisson smoothing; finite CMV has purely atomic cyclic/trace measures and separately unknown finite eigenphases",
       "encyclopedia_references": [
         5,
         7,
@@ -520,7 +520,7 @@
       ],
       "matrix_free_supported": true,
       "operator_kernel": "um_core_apply",
-      "operator_note": "O(n) adjacent core sequence; sparse CMV still available by default."
+      "operator_note": "O(n) adjacent core sequence; sparse CMV still available by default. Analytic infinite e1 law is distinct from the finite trace density, and boundary phase affects finite nodes."
     },
     {
       "id": "periodic_cmv",
