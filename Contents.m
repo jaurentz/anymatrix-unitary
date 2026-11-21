@@ -86,7 +86,7 @@
 %   hermite_oscillator    Finite GH harmonic oscillator; exact fractional phase flow.
 %   gauss_laguerre_transform Generalized Laguerre basis, stable Sturm signs/log weights.
 %   fourier_laguerre_ball  3D radial-zonal Fourier-Laguerre, exact square tensor and rectangular sampling.
-%   wigner_rotation         Irreducible SO(3) unitary representation.
+%   wigner_rotation         SO(3)/SU(2); exact sparse axis Euler and O(n) actions.
 %   spherical_harmonic_rotation Complex Wigner direct sum; O(L^3) cached block operator.
 %   so3_peter_weyl_transform Fixed-pair orthogonal Wigner-Jacobi; rectangular SO3 FFT isometry.
 %   spin_spherical_harmonic_transform Fixed spin/m orthogonal Gauss-Jacobi, rectangular FFT sampling.
