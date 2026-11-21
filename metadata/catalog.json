@@ -1770,6 +1770,21 @@
       "matrix_free_supported": true,
       "operator_kernel": "um_nonuniform_fem_apply",
       "operator_note": "Cache sparse LU of complex-conjugate generalized Padé/Cayley factors and Cholesky triangular energy whitening; no dense mass inverse, FFT, or DST. Physical canonical symplectic step and positive metric pencil in 'pencil' mode; normalized U preserves transformed symplectic form, generally not standard J. Reject condest>1e12."
+    },
+    {
+      "id": "hyperbolic_tangent_holonomy",
+      "status": "implemented",
+      "category": "geometry",
+      "matrix_order": "n real tangent-space SO(n) holonomy of geodesic polygon in genuine H^n, n=2..40",
+      "representation": "Lorentz hyperboloid vertices, canonical tangent frames, exact Levi-Civita leg transport via proper orthochronous Lorentz boosts, SO(n) base-tangent endomorphism",
+      "spectral_reference": "exact single hyperbolic triangle Gauss-Bonnet area eigenpair exp(±i area) and n-2 fixed eigendirections; generic non-coplanar polygon finite phase laws unknown",
+      "encyclopedia_references": [
+        113,
+        142
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": null,
+      "operator_note": "Small dense real tangent-fiber SO(n), Lorentz SO+(1,n) boosts and frames exposed separately; no false ambient Euclidean unitarity or identity padding; generic polygon spectra not called exact."
     }
   ],
   "probability_measures": [

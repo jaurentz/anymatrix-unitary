@@ -67,6 +67,7 @@
 %   dual_hahn_transform   Dual Hahn quadratic-grid polynomial transform.
 %
 % Riemannian geometry:
+%   hyperbolic_tangent_holonomy Genuine H^n tangent SO(n) Levi-Civita polygon holonomy.
 %   sphere_geodesic_transport  SO(n) lift of tangent geodesic parallel transport.
 %   berry_wilson_loop     Polar-overlap Berry/Wilczek-Zee from moving frames.
 %   graph_connection_propagator  exp(-itL) of a general graph connection Laplacian.
