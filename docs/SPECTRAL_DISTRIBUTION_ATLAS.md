@@ -244,6 +244,8 @@ A genuine point mass is **not** an infinite value of $\rho_{\rm ac}$; it belongs
 
 **Editorial warning.** Do not label a current finite-matrix plot as singular continuous merely because it looks jagged or self-similar.
 
+**Figure reproduction.** Run `python docs/figures/plot_spectral_atlas.py --out atlas_plots` with NumPy and Matplotlib to regenerate equivalent PNG/SVG plotting studies from the specified exact finite formulas and analytic circle measures. The checked-in SVGs are curated vector artwork based on the same mathematical data and settings, so the Python output is not byte-for-byte identical. This helper is documentation-only and introduces no new MATLAB runtime dependency.
+
 ## Curated gallery candidates already represented in the repository
 
 The entries below identify **which measure is being classified** and how strong the evidence is. These are not claims that every candidate has a closed-form limiting trace density.
