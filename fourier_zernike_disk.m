@@ -49,7 +49,8 @@ function [U,properties]=fourier_zernike_disk(nRad,nPhi,mode)
 %
 %   nRad<=128, 2<=nPhi<=64, nRad*nPhi<=4096 for operator;
 %   no genuinely fast arbitrary Jacobi radial transform is claimed.
-%   [174] Janssen (2014) DOI 10.1364/JOSAA.31.001604.
+%   [174] Janssen (2014):
+%         https://doi.org/10.1364/JOSAA.31.001604
 %   [175] Slevinsky, FastTransforms Zernike/disk, official documentation.
 %         https://mikaelslevinsky.github.io/FastTransforms/transforms.html
 properties={'square','unitary','normal','complex','scalable', ...
