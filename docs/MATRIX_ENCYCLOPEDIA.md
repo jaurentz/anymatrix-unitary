@@ -4463,6 +4463,207 @@ formulas are elementary deductions from this
 special constant-coefficient rectangular model.
 
 
+
+## Nonuniform finite-element wave equations with noncommuting mass and stiffness — [`nonuniform_fem_wave.m`](../nonuniform_fem_wave.m)
+
+**Why this family differs from existing 1D/DST and tensor-product
+wave generators.** This is a genuine 1D heterogeneous
+piecewise-linear finite-element model with a **nonuniform mesh**
+and/or **spatially variable wave speed**, so its positive-definite
+consistent physical mass $M$ and stiffness $K$ generically
+satisfy $MK\ne KM$. A uniform consistent-mass Dirichlet chain has
+commuting Toeplitz mass and stiffness and exact DST-I frequencies,
+but a nonuniform mesh or variable material coefficients destroys
+that simultaneous Euclidean diagonalization. Applying the
+homogeneous DST formulas to the heterogeneous case would be wrong.
+
+The physical PDE model is
+$u_{tt}-\partial_x(c(x)^2u_x)+\omega_0^2u=0$ on $(0,L)$ with
+homogeneous Dirichlet boundaries. There are $n\ge2$ interior
+continuous piecewise-linear nodal degrees of freedom. Let the
+$n+1$ element lengths be $\ell_e>0$, $\sum_e\ell_e=L$, and
+piecewise-constant positive wave speeds $c_e$. The **exact
+Galerkin element matrices** are
+
+```math
+M_e=\frac{\ell_e}{6}
+\begin{bmatrix}2&1\\1&2\end{bmatrix},\qquad
+K_e=\frac{c_e^2}{\ell_e}
+\begin{bmatrix}1&-1\\-1&1\end{bmatrix}.
+```
+
+After standard assembly and elimination of Dirichlet boundary
+unknowns, include the onsite term $\omega_0^2 M$ in $K$. Both
+physical matrices are sparse, real symmetric, and positive
+definite. The generator supplies reproducible nonuniform element
+lengths and spatially varying speeds by default, or accepts
+user-specified positive element vectors through `opts`.
+The `coefficients` mode returns the assembled matrices,
+geometry, speed array and measured Frobenius commutator norm.
+The independently assembled test confirms the mesh physics
+and $\|MK-KM\|_F>0$ for the standard heterogeneous cases.
+
+**Canonical Hamiltonian form and the two separate structures.**
+For physical displacement $q$ and canonical momentum
+$p=M\dot q$, use $x=[q;p]$. Define
+
+```math
+\begin{aligned}
+H(x)&=\tfrac12 q^T Kq+\tfrac12 p^TM^{-1}p,\\
+A_0&=\begin{bmatrix}0&M^{-1}\\-K&0\end{bmatrix},
+\quad
+G=\begin{bmatrix}K&0\\0&M^{-1}\end{bmatrix}\succ0,\\
+J_c&=\begin{bmatrix}0&I\\-I&0\end{bmatrix}.
+\end{aligned}
+```
+
+For this **constant** Hamiltonian matrix, two separate
+skew-adjointness identities hold:
+
+```math
+A_0^TG+GA_0=0,\qquad A_0^TJ_c+J_cA_0=0.
+```
+
+Midpoint and the 2-/3-stage Gauss–Legendre methods are
+symplectic Runge–Kutta integrators; their rational stability
+maps $S_h=R_s(hA_0)$ preserve all quadratic invariants of
+this linear conservative problem [101,103]. In particular,
+
+```math
+S_h^TGS_h=G,\qquad S_h^TJ_cS_h=J_c.
+```
+
+These statements concern the **physical canonical phase-space
+step** $S_h$. They do not say that $S_h$ is Euclidean
+orthogonal, nor that the mass and stiffness commute.
+
+**Positive-metric orthogonal normalization.** Take Cholesky
+factors $R_K^TR_K=K$ and $R_M^TR_M=M$ and define
+
+```math
+T=\mathop{\mathrm{diag}}(R_K,R_M^{-T}),\qquad
+G=T^TT,\qquad U=TS_hT^{-1}.
+```
+
+The returned default real $2n$-by-$2n$ U satisfies
+$U^TU=I$, so it is also unitary and has all its
+eigenvalues on the unit circle. Its **correct transported
+symplectic form** is
+
+```math
+\widetilde J=T^{-T}J_cT^{-1},\qquad
+U^T\widetilde J U=\widetilde J.
+```
+
+There is **no generic claim** that $U^TJ_cU=J_c$:
+the chosen energy whitening T is not generally
+symplectic. The tests include an explicit numerical
+noncommuting counterexample exhibiting the discrepancy,
+as well as both true invariants of the physical S.
+The `pencil` mode exposes $A=GS_h$, $B=G$,
+so $B^{-1}A=S_h$ is a **positive-metric circle-spectral
+pencil**, satisfying $A^TB^{-1}A=B$. It is not
+necessarily a strict Euclidean-unitary pencil.
+
+**Sparse implicit midpoint and Gauss higher-order actions.**
+The canonical generator $A_0$ contains an inverse of M,
+but forming $M^{-1}$ explicitly would destroy sparsity.
+Instead introduce the **sparse generalized first-order
+form**
+
+```math
+E=\mathop{\mathrm{diag}}(M,I),\quad
+L_0=\begin{bmatrix}0&I\\-K&0\end{bmatrix},\quad
+A_0=E^{-1}L_0.
+```
+
+For $s=1,2,3$ the Gauss stability function has a
+diagonal Padé representation, $R_s(z)=P_s(z)/P_s(-z)$,
+with $P_1(z)=1+z/2$,
+$P_2(z)=1+z/2+z^2/12$, and
+$P_3(z)=1+z/2+z^2/10+z^3/120$.
+Factor $P_s(z)=\prod_{j=1}^s(1+\alpha_j z)$
+using its exact-degree scalar polynomial roots. One
+Gauss step is the commuting product of sparse
+generalized Cayley factors
+
+```math
+S_h=\prod_{j=1}^{s}
+\left(E-\alpha_j hL_0\right)^{-1}
+\left(E+\alpha_j hL_0\right).
+```
+
+The `operator` mode caches sparse LU
+factorizations of the needed generalized factors,
+and Cholesky triangular factors for the *energy*
+normalization; the adjoint action reverses the
+factors and uses their inverses. Complex-conjugate
+factors combine to a real map, with no false
+interpretation of their intermediate complex matrices
+as physical time steps. No dense $M^{-1}$ is
+constructed in operator mode; no FFT/DST is
+assumed for the heterogeneous mesh. Sparse LU
+can still fill in, and neither preprocessing
+nor arithmetic is promised to be linear in n.
+Dense `matrix`/`pencil` modes are limited
+to $n\le128$, while operator and sparse coefficient
+modes extend to $n\le5000$ with a numerical SPD
+conditioning guard. This is a sparse-solve
+benchmark, not a matrix-free FFT diagonalization.
+
+**Finite trace spectra, numerical conditioning, and uniform
+consistency check.** In a general heterogeneous problem,
+a generalized $K v=\omega^2 M v$ calculation can
+approximate the frequencies numerically, and the
+Padé map then gives numerical unit-circle phases.
+This is **not** a known analytical closed form:
+`spectral` returns a standardized
+`finite.kind='unknown'` record. By contrast,
+if all element lengths equal $L/(n+1)$ and all
+wave speeds equal the nominal c, the original
+commuting 1D finite-element benchmark is recovered.
+Its generalized sine-mode frequencies are
+
+```math
+\omega_j^2=\omega_0^2+
+\frac{(2c^2/\Delta x)(1-\cos\theta_j)}
+     {(\Delta x/3)(2+\cos\theta_j)},\qquad
+\theta_j=\frac{\pi j}{n+1}.
+```
+
+The uniform `spectral` branch reuses the
+standard exact finite trace eigenvalue/moment
+descriptor `um_geometric_spectral`, rather
+than assuming an analytical law for the heterogeneous
+case. All modes obey real conjugate eigenphase
+pairing. The tests verify that both zero
+inhomogeneity parameters recover the uniform
+mass/stiffness and exact finite phases.
+
+As $G$ becomes severely ill conditioned, the
+normalization $U=TS_hT^{-1}$ is numerically
+sensitive even when the underlying physical
+dynamics is well defined. A conservative
+`condest` guard for M and K (threshold
+$10^{12}$) rejects extreme grading instead of
+silently reporting a machine-precision orthogonal
+matrix. Tests include an explicit near-degenerate
+element mesh and a controlled exception.
+
+**Sources:** Hairer, Lubich and Wanner [101]
+establish symplectic Gauss collocation, rational
+linear-flow maps, and quadratic-invariant
+preservation; Cockburn, Du and Sánchez [103]
+discuss finite-element Hamiltonian
+semidiscretizations and symplectic time marching.
+The particular sinusoidal nonuniform nodal
+geometry and elementwise speed pattern here are
+deterministic reproducible *specializations*, not
+published experimental data. Equations and
+identities above follow directly from assembled
+Galerkin matrices and the cited Gauss methodology.
+
+
 ## Bibliography
 
 1. P. J. Davis, *Circulant Matrices*, Wiley, 1979. ISBN 9780471057710. [Library record](https://openlibrary.org/books/OL4407364M/Circulant_matrices).
