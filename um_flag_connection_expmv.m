@@ -55,7 +55,7 @@ if ~isfinite(m)||m>4096
 end
 h=tau/m;
 upper=sub2ind([n n],ii,jj);
-lower=sub2ind([n n],jj,ii);
+indicesLower=sub2ind([n n],jj,ii);
 for step=1:m
     V=Y;
     Z=Y;
@@ -71,7 +71,7 @@ end
         for rhs=1:size(V,2)
             E=zeros(n,n,'like',V);
             E(upper)=V(:,rhs);
-            E(lower)=-V(:,rhs);
+            E(indicesLower)=-V(:,rhs);
             C=K*E-E*K;
             W(:,rhs)=-.5*C(upper);
         end
