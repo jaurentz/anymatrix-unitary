@@ -133,6 +133,37 @@ verifyError(tc,@()spherical_polygon_slepian(3,flat), ...
     'um_spherical_polygon_geometry:Collinear');
 end
 
+function test_complementary_region_is_exact_algebraic_complement(tc)
+% Complement is defined by whole-sphere harmonic orthonormality,
+% not by a second non-certified quadrature or an eigenvector polar step.
+V=unit_north([-.72 -.46;.56 -.44;.15 -.1;.67 .54;-.61 .51]);
+for L=[1 2 4 6]
+    n=L^2;
+    P=spherical_polygon_slepian(L,V,1e-9,'parameters');
+    C=spherical_polygon_slepian(L,V,1e-9,'complement_parameters');
+    Kc=spherical_polygon_slepian(L,V,1e-9,'complement');
+    Qc=spherical_polygon_slepian(L,V,1e-9,'complement_basis');
+    Ac=spherical_polygon_slepian(L,V,1e-9,'complement_analysis');
+    I=eye(n);
+    verifyLessThan(tc,norm(P.concentration+Kc-I,'fro'),5e-14*n);
+    verifyLessThan(tc,norm(C.concentration-Kc,'fro'),5e-14*n);
+    verifyLessThan(tc,norm(Qc-C.basis,'fro'),5e-14*n);
+    verifyLessThan(tc,norm(Ac-Qc','fro'),5e-14*n);
+    verifyLessThan(tc,norm(Qc'*Qc-I,'fro'),3e-10*n);
+    verifyLessThan(tc,norm(Qc'*Kc*Qc ...
+        -diag(C.concentration_eigenvalues),'fro'),3e-9*n);
+    verifyLessThan(tc,norm(C.concentration_eigenvalues ...
+        -(1-flipud(P.concentration_eigenvalues))),5e-14*n);
+    verifyLessThan(tc,abs(C.geometric_area+P.geometric_area-4*pi), ...
+        4e-14);
+    verifyLessThan(tc,abs(C.shannon_number+P.shannon_number-n), ...
+        4e-14*n);
+    verifyLessThan(tc,abs(trace(Kc)-C.shannon_number),5e-9*n);
+    verifyTrue(tc,C.quadrature_converged);
+    verifyFalse(tc,C.quadrature_certified);
+end
+end
+
 function V=unit_north(P)
 V=[P,ones(size(P,1),1)];
 V=V./sqrt(sum(V.^2,2));
