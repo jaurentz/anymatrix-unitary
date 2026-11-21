@@ -109,7 +109,7 @@ A genuine point mass is **not** an infinite value of $\rho_{\rm ac}$; it belongs
 
 **Important references.**
 - J. W. Cooley and J. W. Tukey, “An algorithm for the machine calculation of complex Fourier series,” *Math. Comp.* 19 (1965), 297–301.
-- L. K. Grover, “A fast quantum mechanical algorithm for database search,” *STOC* (1996), 212–219.
+- L. K. Grover, “A fast quantum mechanical algorithm for database search,” *STOC* (1996), 212–219. [DOI](https://doi.org/10.1145/237814.237866).
 - N. J. Higham, *Functions of Matrices*, SIAM, 2008, for matrix-function and transform contexts.
 
 **Database note.** This class is ideal for testing whether smoothing preserves small masses or obscures multiplicities.
@@ -128,7 +128,7 @@ A genuine point mass is **not** an infinite value of $\rho_{\rm ac}$; it belongs
 - Uniform phase benchmarks for randomized numerical linear algebra.
 
 **Important references.**
-- F. Mezzadri, “How to generate random matrices from the classical compact groups,” *Notices AMS* 54 (2007), 592–604.
+- F. Mezzadri, “How to generate random matrices from the classical compact groups,” *Notices AMS* 54 (2007), 592–604. [arXiv](https://arxiv.org/abs/math-ph/0609050).
 - M. L. Mehta, *Random Matrices*, 3rd ed., Elsevier, 2004.
 - P. Diaconis and M. Shahshahani, “The subgroup algorithm for generating uniform random variables,” *Prob. Engrg. Inform. Sci.* 1 (1987), 15–32.
 
@@ -146,8 +146,8 @@ A genuine point mass is **not** an infinite value of $\rho_{\rm ac}$; it belongs
 - Random matrix weights, Toeplitz determinants, and Coulomb-gas models.
 
 **Important references.**
-- B. Simon, *Orthogonal Polynomials on the Unit Circle*, Parts 1–2, AMS, 2005.
-- P. Bourgade, A. Nikeghbali, and A. Rouault, “Circular Jacobi ensembles and deformed Verblunsky coefficients,” *Int. Math. Res. Not.* 2009.
+- B. Simon, *Orthogonal Polynomials on the Unit Circle*, Parts 1–2, AMS, 2005. [Part 1](https://doi.org/10.1090/coll054.1), [Part 2](https://doi.org/10.1090/coll/054.2).
+- P. Bourgade, A. Nikeghbali, and A. Rouault, “Circular Jacobi ensembles and deformed Verblunsky coefficients,” *Int. Math. Res. Not.* 2009, 4357–4394. [DOI](https://doi.org/10.1093/imrn/rnp092).
 - M. J. Colbrook, “Computing spectral measures and spectral types,” *Commun. Math. Phys.* 384 (2021), 433–501.
 
 **Database note.** These measures are especially useful for testing bias in smoothed estimators without the complication of genuine spectral gaps.
@@ -170,6 +170,8 @@ A genuine point mass is **not** an infinite value of $\rho_{\rm ac}$; it belongs
 - P. J. Davis, *Circulant Matrices*, 2nd ed., AMS Chelsea, 1994.
 - Repository spectral reference for `cycle_propagator`: wrapped arcsine law and Bessel moments.
 
+**Theoretical caution.** The illustrated circular contour is a Poisson-regularized measure: it is not a plot of the unsmoothed density itself at singular endpoints, and a smoothed contour can appear in a true gap.
+
 ### 5. Multiband and gapped continuous laws
 
 **Main shapes.** Two or more arcs separated by genuine gaps; often with symmetry pairing.
@@ -184,8 +186,8 @@ A genuine point mass is **not** an infinite value of $\rho_{\rm ac}$; it belongs
 - Periodic CMV operators and transfer-matrix models.
 
 **Important references.**
-- A. Bisio, G. M. D’Ariano, and A. Tosini, “Quantum field as a quantum cellular automaton: The Dirac free evolution in one dimension,” *Ann. Phys.* 354 (2015), 244–264.
-- B. Simon, *Orthogonal Polynomials on the Unit Circle, Part 2*, AMS, 2005, periodic coefficients and band structure.
+- A. Bisio, G. M. D’Ariano, and A. Tosini, “Quantum field as a quantum cellular automaton: The Dirac free evolution in one dimension,” *Ann. Phys.* 354 (2015), 244–264. [DOI](https://doi.org/10.1016/j.aop.2014.12.016).
+- B. Simon, *Orthogonal Polynomials on the Unit Circle, Part 2*, AMS, 2005, periodic coefficients and band structure. [DOI](https://doi.org/10.1090/coll/054.2).
 - Broader Floquet/topological-walk literature provides the application context; specific quasienergy laws depend on the chosen model.
 
 ### 6. Singular and soft-edge behavior
@@ -202,7 +204,7 @@ A genuine point mass is **not** an infinite value of $\rho_{\rm ac}$; it belongs
 - Weighted orthogonal polynomial systems and endpoint-sensitive quadrature.
 
 **Important references.**
-- Z. Gimbutas and L. Greengard, “A fast and stable method for rotating spherical harmonic expansions,” *J. Comput. Phys.* 228 (2009), 5621–5627.
+- Z. Gimbutas and L. Greengard, “A fast and stable method for rotating spherical harmonic expansions,” *J. Comput. Phys.* 228 (2009), 5621–5627. [DOI](https://doi.org/10.1016/j.jcp.2009.05.014).
 - B. Simon, *Orthogonal Polynomials on the Unit Circle*, AMS, 2005.
 - M. J. Colbrook, *Commun. Math. Phys.* 384 (2021), especially the Geronimus and related density examples.
 
@@ -237,7 +239,7 @@ A genuine point mass is **not** an infinite value of $\rho_{\rm ac}$; it belongs
 - Spectral-type classification problems beyond one-point density estimation.
 
 **Important references.**
-- J. Fillman and D. C. Ong, “Purely singular continuous spectrum for limit-periodic CMV operators with applications to quantum walks,” *J. Funct. Anal.* 272 (2017), 5107–5143.
+- J. Fillman and D. C. Ong, “Purely singular continuous spectrum for limit-periodic CMV operators with applications to quantum walks,” *J. Funct. Anal.* 272 (2017), 5107–5143. [DOI](https://doi.org/10.1016/j.jfa.2017.01.021).
 - D. Damanik’s monographs and surveys on quasiperiodic/aperiodic spectral theory provide the broader context.
 
 **Editorial warning.** Do not label a current finite-matrix plot as singular continuous merely because it looks jagged or self-similar.
@@ -320,7 +322,7 @@ The classification plate and the companion edge gallery are embedded above as ve
 
 ## Further primary references
 
-1. B. Simon, *Orthogonal Polynomials on the Unit Circle*, Parts 1–2, AMS, 2005. [Part 1](https://doi.org/10.1090/coll054.1), [Part 2](https://doi.org/10.1090/coll/054.2).
+1. B. Simon, *Orthogonal Polynomials on the Unit Circle*, Parts 1–2, AMS, 2005. [Part 1](https://doi.org/10.1090/coll054.1), [Part 2](https://doi.org/10.1090/coll/054.2). [Part 1](https://doi.org/10.1090/coll054.1), [Part 2](https://doi.org/10.1090/coll/054.2).
 2. M. J. Colbrook, “Computing spectral measures and spectral types,” *Commun. Math. Phys.* **384** (2021), 433–501. [DOI](https://doi.org/10.1007/s00220-021-04072-4). Includes continuous-and-atomic Geronimus illustrations.
 3. J. Fillman and D. C. Ong, “Purely singular continuous spectrum for limit-periodic CMV operators with applications to quantum walks,” *J. Funct. Anal.* **272** (2017), 5107–5143. [Preprint](https://arxiv.org/abs/1610.06159).
 4. A. Bisio, G. M. D’Ariano, and A. Tosini, “Quantum field as a quantum cellular automaton: The Dirac free evolution in one dimension,” *Ann. Phys.* **354** (2015), 244–264. [DOI](https://doi.org/10.1016/j.aop.2014.12.016).
