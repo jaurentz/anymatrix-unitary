@@ -408,6 +408,109 @@ quasienergy branches and potential gaps. The current periodic uniform-coin
 version has no physical edge, so **edge states require a separate open or
 interface construction**. **Reference:** [16].
 
+### Flat-torus finite-difference spin-Dirac propagator — [`flat_torus_spin_dirac.m`](../flat_torus_spin_dirac.m)
+
+**Order:** $N=2n_xn_y$, with two spinor components at each
+site of an $n_x$-by-$n_y$ periodic Cartesian grid,
+$n_x,n_y\ge3$. The grid models a **flat 2-torus**, i.e.,
+an oriented two-dimensional closed surface, not a generic
+curved triangulated surface. This provides a rigorously
+solvable control problem for discrete spin-Dirac evolution
+and an independent non-1D example relative to
+`dirac_automaton`.
+
+In the interleaved site-spin basis, define the positive
+cyclic shifts $T_x,T_y$, acting as $f(x,y)\mapsto f(x+1,y)$
+and $f(x,y)\mapsto f(x,y+1)$. Their closing links have
+unimodular boundary factors $e^{i\beta_x}$,
+$e^{i\beta_y}$ (arguments in radians). The four
+choices $\beta_j\in\{0,\pi\}$ give the four
+periodic/antiperiodic **spin structures** of the flat
+torus; arbitrary other $\beta$ are additional flat
+$U(1)$ twists rather than new spin structures.
+
+Put $P_j=(T_j-T_j^*)/(2i)$, which is Hermitian, and let
+$\sigma_x,\sigma_y,\sigma_z$ be the Pauli matrices.
+The **naive centered finite-difference spin-Dirac**
+Hamiltonian is
+
+```math
+H=P_x\otimes\sigma_x+P_y\otimes\sigma_y
++mI\otimes\sigma_z,\qquad H^*=H,
+\qquad U(t)=e^{-itH},\quad U(t)^*U(t)=I_N.
+```
+
+Here $m$ is a physical mass parameter, distinct from
+the site metric below; the grid spacing is fixed to one.
+The exact finite momenta are
+$p_x=(2\pi k+\beta_x)/n_x$ and
+$p_y=(2\pi j+\beta_y)/n_y$. The twisted Fourier
+transform diagonalizes each shift, reducing $H$ to
+two-by-two momentum blocks
+
+```math
+H_{k,j}=\begin{bmatrix}
+m&\sin p_x-i\sin p_y\\
+\sin p_x+i\sin p_y&-m
+\end{bmatrix},\quad
+E_{k,j}=\sqrt{m^2+\sin^2p_x+\sin^2p_y}.
+```
+
+Thus the finite propagator's eigenvalues are
+$\exp(\pm itE_{k,j})$, with **exact, uniformly
+weighted matrix-trace moments** obtained by averaging
+these phase factors. This is different from infinite-volume
+Dirac spectra or the spectrum of a curved mesh operator.
+At zero mass and both periodic twists, finite constant-spinor
+zero modes are present. The centered difference also exhibits
+**fermion doubling**: for even grid dimensions, additional
+Nyquist modes occur. This is an intentional benchmark
+pathology, not a Wilson/staggered/tangent-fermion cure.
+
+The `operator` mode applies the same mathematical $U(t)$
+using two twisted FFTs, independent two-by-two unitary
+momentum actions, and inverse FFTs; per-RHS complexity
+$O(n_xn_y\log(n_xn_y))$, storage $O(n_xn_y)$,
+with forward, adjoint and ordinary transpose supported
+and independent complex multiple-right-hand-side tests.
+An explicit dense `matrix` is available for
+$n_xn_y\le196$, along with an independently assembled
+sparse Hermitian $H$ in `model`. The explicit mode is
+checked against a **separate dense `expm(-itH)`**,
+and the FFT modes against the explicit matrix.
+No truncated Krylov exponential is claimed unitary.
+
+**Positive site metric normalization.** For any supplied
+positive site weights $w_s$, let $M$ be diagonal with
+the weight repeated for both spin components. Define
+the *physical-coordinate* operator $D$ and propagator
+$V$ by
+
+```math
+D=M^{-1/2}HM^{1/2},\qquad D^*M=MD,\\
+V=M^{-1/2}U(t)M^{1/2},\qquad V^*MV=M.
+```
+
+Here **$V$ need not be Euclidean unitary**, whereas the
+public matrix $U(t)$ always is. The weights model an
+arbitrary positive coordinate metric: they are **not**
+a consistent mass matrix derived from the intrinsic
+surface discretization in Ye et al. [170].
+No geometric mesh-gauge covariance or discrete surface
+spin-connection equivalence is claimed.
+
+**Source qualification:** the continuum flat-torus Dirac
+spin-structure setting is classical. Donís Vela and
+Beenakker [169] discuss two-dimensional lattice Dirac
+dispersions, fermion doubling, and a **different**
+tangent-fermion discretization; this code does not
+implement their single-cone edge construction.
+Ye et al. [170] provide an intrinsic/extrinsic
+**triangle-mesh** Dirac approach, which likewise is
+**not** implemented here. Issue #59 remains open for
+that genuinely mesh-derived construction, orientation,
+connection and gauge-covariance tests.
+
 ### 16. Periodic Dirac quantum cellular automaton — [`dirac_automaton.m`](../dirac_automaton.m)
 
 **Order:** $N=2n$ for $n$ sites. **Structure:** sparse complex unitary.
@@ -6865,3 +6968,7 @@ Background [104,108,166,167].
 167. Z. Khalid, S. Durrani, R. A. Kennedy, Y. Wiaux and J. D. McEwen, “Gauss–Legendre Sampling on the Rotation Group,” *IEEE Signal Processing Letters* **23** (2016), 207–211. [DOI](https://doi.org/10.1109/LSP.2015.2503295); [preprint](https://arxiv.org/abs/1508.03353).
 
 168. D. Nguyen and S. Sommer, “Parallel Transport on Matrix Manifolds and Exponential Action,” *SIAM J. Matrix Anal. Appl.* **46** (2025). [DOI](https://doi.org/10.1137/24M1684189); [preprint](https://arxiv.org/abs/2408.06054).
+
+169. A. Donís Vela and C. W. J. Beenakker, “Single-cone Dirac edge states on a lattice,” *Journal of Physics A: Mathematical and Theoretical* **58** (2025), 105302. [DOI](https://doi.org/10.1088/1751-8121/adbac7); [preprint](https://arxiv.org/abs/2411.11564).
+
+170. Z. Ye, O. Diamanti, C. Tang, L. Guibas and T. Hoffmann, “A Unified Discrete Framework for Intrinsic and Extrinsic Dirac Operators for Geometry Processing,” *Computer Graphics Forum* **37** (2018). [DOI](https://doi.org/10.1111/cgf.13494).
