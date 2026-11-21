@@ -34,6 +34,23 @@ for nu=[0 1 2]
 end
 end
 
+function test_half_integer_exact_dst_i_specialization(tc)
+% J_{1/2}(x)=sqrt(2/(pi*x))*sin(x), so its first positive zeros
+% are k*pi and the same Bessel-zero normalization is exactly DST-I.
+% This is an existing orthogonal transform, not a new Bessel family.
+nu=.5;
+for n=[3 5 8]
+    a=pi*(1:n)';
+    c=(n+1)*pi;
+    d=abs(besselj(nu+1,a));
+    T=(2/c)*besselj(nu,(a*a.')/c)./(d*d.');
+    j=(1:n)';
+    DST=sqrt(2/(n+1))*sin(pi*(j*j.')/(n+1));
+    verifyLessThan(tc,norm(T-DST,'fro'),2e-12);
+    verifyLessThan(tc,norm(T'*T-eye(n),'fro'),2e-12);
+end
+end
+
 function test_small_order_reproducible_defect(tc)
 T=raw_bessel_zero_dht(5,0);
 % Independent scipy.special.jn_zeros / jv evaluation gives
