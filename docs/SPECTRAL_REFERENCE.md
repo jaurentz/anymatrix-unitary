@@ -165,3 +165,11 @@ EXACT finite eigenphase nodes and uniform 1/n **trace** weights, separately
 from the supplied positive e1 **cyclic** weights. The auxiliary
 n-by-(n-1) Hessenberg recurrence pencil is not itself square/unitary;
 only the full finite similarity closure Q'*diag(nodes)*Q is unitary.
+
+
+`gauss_jacobi_transform(n,alpha,beta,'spectral')` labels the finite
+orthogonal **transform** eigenphases as unknown in general.
+The real quadrature nodes are eigenvalues of the Jacobi tridiagonal
+recurrence, NOT of the Gauss evaluation matrix. The two FFT-fast
+Chebyshev variants act on the same mathematical orthogonal matrices
+as the original dense generator; no distinct spectral law is inferred.
