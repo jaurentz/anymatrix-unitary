@@ -7848,3 +7848,5 @@ Background [104,108,166,167].
 176. D. N. Arnold, R. S. Falk and R. Winther, “Finite element exterior calculus, homological techniques, and applications,” *Acta Numerica* **15** (2006), 1–155. [DOI](https://doi.org/10.1017/S0962492906210018).
 
 177. N. Butt, S. Catterall, A. Pradhan and G. C. Toga, “Anomalies and symmetric mass generation for Kähler-Dirac fermions,” *Phys. Rev. D* **104** (2021), 094504. [DOI](https://doi.org/10.1103/PhysRevD.104.094504); [preprint](https://arxiv.org/abs/2101.01026).
+
+178. G. Strang, “The Discrete Cosine Transform,” *SIAM Review* **41** (1999), 135–147, especially §5 on DCT-VIII and mixed endpoint boundary conditions. [DOI](https://doi.org/10.1137/S0036144598336745); [author PDF](https://math.mit.edu/~gs/papers/dct.pdf).
