@@ -1,6 +1,6 @@
 # Spectral Distribution Atlas for Unitary Matrices
 
-**Status:** Classification draft (21 November 2026). This is a taxonomy and a set of candidates for a future illustrated atlas. No figures are claimed to be present yet. The classification distinguishes proven/implemented analytic references from proposed or exploratory cases.
+**Status:** Illustrated taxonomy and application-reference draft (21 November 2026). Classifications distinguish implemented analytic spectral references from exploratory candidates. Some illustrative hairlines are quantiles, not finite matrix eigenvalues.
 
 ## Purpose and mathematical conventions
 
@@ -78,6 +78,170 @@ A genuine point mass is **not** an infinite value of $\rho_{\rm ac}$; it belongs
 - `parameter-transition`: band closure, gap opening, an atom entering/leaving the spectrum, or a change of spectral type under parameter variation.
 - `level-correlated`: a statistical property **not determined by the one-point density** (e.g. CUE repulsion versus independently distributed uniform points).
 
+## Illustrative figures
+
+### Figure 1. Classification plate
+
+![Illustrative classification plate](figures/spectral_distribution_classification_plate.svg)
+
+**Caption.** The atlas plate uses the current preferred visualization style: centered eigenphase hairlines, an extended polar grid beyond the unit circle, and an outward Poisson-smoothed density contour with default parameter $r=0.94$. Panels D, H, and I use deterministic quantile positions for the specified infinite OPUC vector measure, not finite CMV eigenvalues; panels A–C and E–G use exact finite phases (some with multiplicities). Contours smooth the correct reference measure, not necessarily a sample histogram. Different panels have independently scaled radial displacements.
+
+### Figure 2. Edge and singularity gallery
+
+![Edge and singularity gallery](figures/spectral_distribution_edge_gallery.svg)
+
+**Caption.** Supplementary panels for one-band and two-band inverse-square-root edges, a soft-edge triangular trace limit, and a continuous Geronimus arc with a point mass. Positive Poisson smoothing does not preserve exact spectral gaps.
+
+## Spectral classes with application references
+
+### 1. Atomic and concentrated-point spectra
+
+**Main shapes.** Finite support, often with multiplicity or a dominant atom; may include a few outlier phases.
+
+**Representative generators.** `discrete_fourier`, `grover_operator`, `orthogonal_blocks`, synthetic `diagonal_phase` benchmarks.
+
+**Illustrative panels.** Figure 1A–B.
+
+**Applications.**
+- Fourier and transform-based signal processing.
+- Quantum search and amplitude amplification.
+- Structured orthogonal/unitary building blocks in fast transforms.
+
+**Important references.**
+- J. W. Cooley and J. W. Tukey, “An algorithm for the machine calculation of complex Fourier series,” *Math. Comp.* 19 (1965), 297–301.
+- L. K. Grover, “A fast quantum mechanical algorithm for database search,” *STOC* (1996), 212–219.
+- N. J. Higham, *Functions of Matrices*, SIAM, 2008, for matrix-function and transform contexts.
+
+**Database note.** This class is ideal for testing whether smoothing preserves small masses or obscures multiplicities.
+
+### 2. Uniform full-circle laws
+
+**Main shapes.** Support fills the full unit circle with nearly flat angular mass.
+
+**Representative generators.** `cycle_shift` (limiting trace), `haar_unitary` and `circular_beta` (ensemble mean), `haar_orthogonal` (asymptotically uniform counting law).
+
+**Illustrative panel.** Figure 1C.
+
+**Applications.**
+- Random matrix models of quantum chaos.
+- Baseline test cases for spectral-density estimators.
+- Uniform phase benchmarks for randomized numerical linear algebra.
+
+**Important references.**
+- F. Mezzadri, “How to generate random matrices from the classical compact groups,” *Notices AMS* 54 (2007), 592–604.
+- M. L. Mehta, *Random Matrices*, 3rd ed., Elsevier, 2004.
+- P. Diaconis and M. Shahshahani, “The subgroup algorithm for generating uniform random variables,” *Prob. Engrg. Inform. Sci.* 1 (1987), 15–32.
+
+### 3. Smooth nonuniform full-circle laws
+
+**Main shapes.** Support is the whole circle, but the density has one or more broad peaks rather than being flat.
+
+**Representative generators.** `bernstein_szego`, `rogers_szego`, `circular_jacobi`, `jacobi_szego` (all as underlying analytic laws); synthetic `diagonal_phase` or `phase_circulant` can also realize prescribed smooth angular profiles.
+
+**Illustrative panels.** Figure 1D and 1H.
+
+**Applications.**
+- OPUC/CMV models and spectral approximation.
+- Circular statistics and wrapped distributions.
+- Random matrix weights, Toeplitz determinants, and Coulomb-gas models.
+
+**Important references.**
+- B. Simon, *Orthogonal Polynomials on the Unit Circle*, Parts 1–2, AMS, 2005.
+- P. Bourgade, A. Nikeghbali, and A. Rouault, “Circular Jacobi ensembles and deformed Verblunsky coefficients,” *Int. Math. Res. Not.* 2009.
+- M. J. Colbrook, “Computing spectral measures and spectral types,” *Commun. Math. Phys.* 384 (2021), 433–501.
+
+**Database note.** These measures are especially useful for testing bias in smoothed estimators without the complication of genuine spectral gaps.
+
+### 4. One-band continuous laws with hard gaps
+
+**Main shapes.** Density occupies one proper arc of the circle, vanishing identically on its complement.
+
+**Representative generators.** `cycle_propagator`; in suitable parameter scalings also `spherical_harmonic_rotation` gives one-band support with soft rather than singular edges.
+
+**Illustrative panels.** Figure 1E and Figure 2 (leftmost).
+
+**Applications.**
+- Propagation on periodic lattices and cycle graphs.
+- Discrete wave and Schrödinger flows on periodic grids.
+- Phase wrapping of simple dispersion relations.
+
+**Important references.**
+- L. N. Trefethen and M. Embree, *Spectra and Pseudospectra*, Princeton, 2005, for circulant propagation and phase pictures.
+- P. J. Davis, *Circulant Matrices*, 2nd ed., AMS Chelsea, 1994.
+- Repository spectral reference for `cycle_propagator`: wrapped arcsine law and Bessel moments.
+
+### 5. Multiband and gapped continuous laws
+
+**Main shapes.** Two or more arcs separated by genuine gaps; often with symmetry pairing.
+
+**Representative generators.** `dirac_automaton`, `periodic_cmv`, `split_step_walk`, some Floquet and quantum-walk families.
+
+**Illustrative panels.** Figure 1F and Figure 2 (second panel).
+
+**Applications.**
+- Discrete-time quantum walks and quantum cellular automata.
+- Floquet topological phases and quasienergy band theory.
+- Periodic CMV operators and transfer-matrix models.
+
+**Important references.**
+- A. Bisio, G. M. D’Ariano, and A. Tosini, “Quantum field as a quantum cellular automaton: The Dirac free evolution in one dimension,” *Ann. Phys.* 354 (2015), 244–264.
+- B. Simon, *Orthogonal Polynomials on the Unit Circle, Part 2*, AMS, 2005, periodic coefficients and band structure.
+- Broader Floquet/topological-walk literature provides the application context; specific quasienergy laws depend on the chosen model.
+
+### 6. Singular and soft-edge behavior
+
+**Main shapes.** Integrable divergences at support endpoints, soft decay to zero at an endpoint, or interior power-law cusps.
+
+**Representative generators.** `cycle_propagator`, `dirac_automaton`, `spherical_harmonic_rotation` (special scaling limit), `jacobi_szego`, `circular_jacobi`.
+
+**Illustrative panels.** Figure 1G–H and Figure 2.
+
+**Applications.**
+- Band-edge phenomena and van Hove singularities.
+- Computational harmonic analysis on the sphere.
+- Weighted orthogonal polynomial systems and endpoint-sensitive quadrature.
+
+**Important references.**
+- Z. Gimbutas and L. Greengard, “A fast and stable method for rotating spherical harmonic expansions,” *J. Comput. Phys.* 228 (2009), 5621–5627.
+- B. Simon, *Orthogonal Polynomials on the Unit Circle*, AMS, 2005.
+- M. J. Colbrook, *Commun. Math. Phys.* 384 (2021), especially the Geronimus and related density examples.
+
+**Database note.** These examples are central for testing how the chosen smoothing parameter blunts or preserves sharp features.
+
+### 7. Mixed continuous–atomic laws
+
+**Main shapes.** A continuous background supported on one or more arcs together with one or several isolated atoms.
+
+**Representative generators.** `geronimus_cmv` as an underlying OPUC law; synthetic `diagonal_phase` can also be used to blend a smooth background with macroscopic atoms.
+
+**Illustrative panel.** Figure 1I and Figure 2 (rightmost).
+
+**Applications.**
+- OPUC/CMV models with distinguished spectral masses.
+- Defect or impurity states coupled to a propagating background.
+- Stress tests for estimators that must detect both broad bands and isolated eigenphases.
+
+**Important references.**
+- B. Simon, *Orthogonal Polynomials on the Unit Circle*, AMS, 2005.
+- M. J. Colbrook, “Computing spectral measures and spectral types,” *Commun. Math. Phys.* 384 (2021), 433–501.
+
+### 8. Singular-continuous and fractal-support targets
+
+**Main shapes.** No point masses and no density with respect to Lebesgue measure; support may be Cantor-like or highly perforated.
+
+**Current repository status.** This is still more of a **target class** than a fully represented verified benchmark class. `unitary_almost_mathieu` and related quasiperiodic/limit-periodic families are promising, but finite periodic closures do not prove the infinite-model spectral type.
+
+**Applications.**
+- Limit-periodic quantum walks.
+- Quasiperiodic and hierarchical unitary dynamics.
+- Spectral-type classification problems beyond one-point density estimation.
+
+**Important references.**
+- J. Fillman and D. C. Ong, “Purely singular continuous spectrum for limit-periodic CMV operators with applications to quantum walks,” *J. Funct. Anal.* 272 (2017), 5107–5143.
+- D. Damanik’s monographs and surveys on quasiperiodic/aperiodic spectral theory provide the broader context.
+
+**Editorial warning.** Do not label a current finite-matrix plot as singular continuous merely because it looks jagged or self-similar.
+
 ## Curated gallery candidates already represented in the repository
 
 The entries below identify **which measure is being classified** and how strong the evidence is. These are not claims that every candidate has a closed-form limiting trace density.
@@ -123,7 +287,7 @@ Infinite-dimensional CMV and quantum-walk literature contains examples of purely
 
 Use the existing `diagonal_phase` or `phase_circulant` generators to construct, with documented size-dependent sampling, (i) several sharply separated clusters, (ii) an absolutely continuous background plus a macroscopic atom, (iii) near-colliding atoms, (iv) uniform angular density on one or multiple arcs, and (v) continuous density plus a small isolated mass. These are valuable reference shapes but must be marked **synthetic**, not as established application-derived limit laws.
 
-## Figure specification for the eventual illustrated atlas
+## Figure specification and next-generation additions
 
 Our current experimental style is the standard default, unless modified for a particular mathematical feature:
 
@@ -152,7 +316,7 @@ z_cycle = Scycle.finite.eigenvalues();
 
 The eventual renderer should take these reference descriptors as inputs; for a Haar sample, construct a seeded `haar_unitary(144, seed)` and use `eig` on that particular sample if the finite eigenphases are desired.
 
-The atlas should first offer a **one-page classification plate** with representative examples, followed by one section per class with parameter values, a reproducible generator invocation, analytic reference formulas where known, and cautions about spectral type. Actual rendered figures are deferred to the next stage of this draft.
+The classification plate and the companion edge gallery are embedded above as vector images. The next additions should include parameter-sweep comparisons and separate finite-versus-limit analytic overlays, with precise reference type and parameters recorded for every figure.
 
 ## Further primary references
 
