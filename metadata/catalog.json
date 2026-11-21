@@ -602,7 +602,7 @@
       "category": "signal_processing",
       "matrix_order": "n",
       "representation": "real dense DCT-I--IV or DCT-VIII (odd-period mixed boundary)",
-      "spectral_reference": "parameter-dependent eigenphases",
+      "spectral_reference": "DCT-VIII exact two-atom ±1 spectrum (ceil(n/2), floor(n/2)); DCT-I--IV existing order-dependent information",
       "encyclopedia_references": [
         52,
         178
