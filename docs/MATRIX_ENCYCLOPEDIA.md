@@ -3598,20 +3598,43 @@ uses the exact beta-distribution variance formula, avoiding removable
 0/0 for alpha+beta=-1. The eigenvalues of the real Jacobi tridiagonal
 are quadrature *nodes*, NOT eigenvalues of the orthogonal evaluation
 matrix. Generic construction O(N^3); dense multiplication O(N^2).
-For the two *exact* Chebyshev specializations, a new **true FFT
-operator** returns the very same mathematically defined Gauss evaluation
-matrix, **without** constructing or caching it:
-`Q_I=DCTIII*diag((-1).^k)` at alpha=beta=-1/2, and
-`Q_II=DSTI*diag((-1).^k)` at alpha=beta=+1/2. The alternating signs
-follow ascending-node ordering (x_j=-cos(j*pi/(n+1)) for second kind)
-and positive-leading polynomial normalization. These forward/adjoint
-operators cost O(N log N) per vector and O(n) workspace, via the existing
-FFT DCT/DST kernels; roundoff means their explicit numerical products
-need only agree to tolerance. For all other Jacobi parameters, including
-Legendre alpha=beta=0, `'operator'` is **rejected**, not implemented
-using a hidden dense matrix or mislabeled as fast. Genuine Hale--Townsend
-or Slevinsky fast connection algorithms remain issue #39. Matrix
-eigenphases are unknown, unrelated to Gauss nodes. [104,105,106]
+For all **four** exact Chebyshev parameter pairs, `'operator'` returns
+the same finite mathematical Gauss evaluation matrix, **without**
+constructing or caching it. For I and II, the existing
+`Q_I=DCTIII*diag((-1).^k)` at alpha=beta=-1/2 and
+`Q_II=DSTI*diag((-1).^k)` at alpha=beta=+1/2
+retain the required alternating signs from ascending-node ordering.
+
+For III at $(\alpha,\beta)=(-1/2,+1/2)$ and IV at
+$(+1/2,-1/2)$, put $M=2N+1$. In ascending node order,
+take $j=N,N-1,\ldots,1$, $k=0,\ldots,N-1$, with
+$\theta^{(III)}_j=(2j-1)\pi/M$ and
+$\theta^{(IV)}_j=2j\pi/M$. Then
+
+```math
+Q^{(III)}_{jk}=\frac{2}{\sqrt{M}}
+ \cos((k+\tfrac12)\theta^{(III)}_j),
+\qquad
+Q^{(IV)}_{jk}=\frac{2}{\sqrt{M}}
+ \sin((k+\tfrac12)\theta^{(IV)}_j).
+```
+
+These entries follow from positive-leading Chebyshev V/W orthogonal
+polynomials and their exact Gaussian weights, not from an arbitrary
+orthogonalization. A length-$8N+4$ FFT applies either matrix or
+its adjoint in O(N log N) per RHS, with O(N) scratch storage and
+complex-linear multi-RHS support. Neither operator assembles an
+$N\times N$ matrix; floating-point roundoff still applies.
+The [DLMF Chebyshev table](https://dlmf.nist.gov/18.3) and
+[Gaussian quadrature formulas](https://dlmf.nist.gov/3.5)
+provide the weight and node conventions.
+
+For all **other** Jacobi parameters, including Legendre alpha=beta=0,
+`'operator'` is rejected rather than hiding dense work.
+General Hale--Townsend and Slevinsky fast connection algorithms
+remain issue #39; no general Jacobi speedup is claimed.
+Transform matrix eigenphases are unknown and unrelated to the
+quadrature nodes. [104,105,106]
 
 ### Gauss--Hermite transform — [`gauss_hermite_transform.m`](../gauss_hermite_transform.m)
 
