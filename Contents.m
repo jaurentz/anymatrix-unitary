@@ -148,7 +148,9 @@
 %   szego_bernstein_measure  Explicit Poisson/Bernstein-Szego measure.
 %   szego_circular_jacobi_measure  Generalized Jacobi circle weight.
 %   szego_rogers_measure   Wrapped-normal measure.
-%   szego_geronimus_measure Constant-coefficient OPUC measure.
+%   szego_geronimus_measure Constant-coefficient OPUC mixed arc/atom measure.
+%   js_geronimus_density   Exact infinite e1 continuous arc density.
+%   js_geronimus_poisson   Exact Poisson smoothing including an atom.
 %   szego_periodic_measure Periodic Verblunsky OPUC measure.
 %   szego_bernstein_finite_measure General rational Bernstein-Szego weight.
 %   szego_verblunsky        Measure -> interior Schur coefficients.
