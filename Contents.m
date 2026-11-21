@@ -25,6 +25,7 @@
 %   periodic_cmv         Periodic real or complex Verblunsky coefficients.
 %   bernstein_szego_finite  General finite Bernstein-Szego rational circle weight.
 %   rational_opuc       Pole-parameterized finite rational OPUC unitary model.
+%   rational_arnoldi_circle Full weighted rational Arnoldi basis, rectangular pencil and unitary closure.
 %   unitary_rank_one_update Multiplicative unitary rank-one Hessenberg update.
 %   etna_hessenberg     Type I/II/III and ETNA 2015 Examples 7.1/7.5 Hessenberg benchmarks.
 %   lee_yang_ising      Sparse twisted Floquet-CMV for Ising Lee-Yang zeros.

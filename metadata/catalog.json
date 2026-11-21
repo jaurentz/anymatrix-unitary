@@ -1970,6 +1970,21 @@
       "matrix_free_supported": false,
       "operator_kernel": null,
       "operator_note": "O(n^3) parity-block symmetric eigensolver setup, O(n^2) dense basis storage and application; no fictitious FFT-fast matrix-free operator. Full matrix strictly unitary in exact arithmetic and F(1)=normalized DFT; distinct from Gauss-Hermite oscillator."
+    },
+    {
+      "id": "rational_arnoldi_circle",
+      "status": "implemented",
+      "category": "opuc",
+      "matrix_order": "n (1<=n<=128), exact finite unitary completion; auxiliary rectangular n-by-(n-1) Hessenberg pencil",
+      "representation": "two-pass orthonormal rational Arnoldi on the N-point unit-circle discrete positive measure (nodes z_j and weights w_j), with interior/exterior/Inf poles; finite multiplication closure U=Q'*diag(z)*Q and Hessenberg recurrence U*K=H",
+      "spectral_reference": "exact finite trace eigenphases z_j and equal trace weights 1/n; distinct e1 cyclic spectral weights w_j from chosen measure; exact finite moments of both measures",
+      "encyclopedia_references": [
+        9,
+        162
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": null,
+      "operator_note": "O(n^3) basis/matrix setup and O(n^2) dense Q storage; H,K are a rectangular rational Arnoldi pencil, not unitary. No invented matrix-free operator. Detects rational breakdown and accepts polynomial infinity and off-circle interior/exterior poles."
     }
   ],
   "probability_measures": [

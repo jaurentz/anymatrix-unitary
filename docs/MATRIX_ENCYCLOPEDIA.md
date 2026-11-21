@@ -6156,6 +6156,67 @@ This is distinct from the existing Gauss-Hermite quadrature oscillator
 and fractional Fourier integrals computed by approximate chirp FFTs.
 Reference [161], Section III, Equations (9), (15), (22) and Table IV.
 
+## Finite positive-measure rational Arnoldi on the circle — [`rational_arnoldi_circle.m`](../rational_arnoldi_circle.m)
+
+For distinct prescribed nodes z_j on the unit circle with strictly
+positive normalized weights w_j, let Z=diag(z_j) and q_1=sqrt(w).
+Unlike `rational_opuc`, whose model is an operator Möbius transform
+of a unitary Hessenberg Schur recurrence, this family constructs a
+discrete-measure orthonormal rational Krylov basis Q explicitly.
+
+At step j, with arbitrary pole p_j outside the circle, inside the
+circle, or at infinity, use the stable normalized rational step
+
+```math
+v_j=\begin{cases}
+Zq_j, & p_j=\infty,\\
+Z(I-Z/p_j)^{-1}q_j, & |p_j|>1,\\
+(Z-p_jI)^{-1}q_j, & |p_j|<1.
+\end{cases}
+```
+
+Two-pass modified Gram–Schmidt constructs the complete full N-vector
+orthonormal system Q. Every finite step is a rational function of Z;
+poles on the unit circle are excluded. If a mixed sequence returns to
+an already generated subspace, an explicit rational Arnoldi breakdown
+is reported rather than silently completing by arbitrary vectors.
+
+The exact full-space **unitary matrix** is
+
+```math
+U=Q^*ZQ, \qquad U^*U=I.
+```
+
+Its eigenphases are precisely the prescribed nodes z_j, with
+**uniform trace weights** 1/N. The e1-cyclic spectral weights are
+the distinct initial w_j: Q(:,1)=sqrt(w) exactly. The true
+weighted-sample rational functions are Q(j,k)/sqrt(w_j).
+
+The auxiliary rational Arnoldi Hessenberg pencil H,K has dimensions
+N-by-(N-1) and satisfies U K = H. With h_j defined by
+v_j=Q*h_j, the recurrence column is respectively
+
+```math
+\begin{array}{c|cc}
+\mathrm{pole} & H_j & K_j\\\hline
+\infty & h_j & e_j\\
+|p_j|>1 & h_j & e_j+h_j/p_j\\
+|p_j|<1 & e_j+p_jh_j & h_j
+\end{array}
+```
+
+Thus H,K are **rectangular** recurrence matrices, not individually
+unitary, and the conventional reduced n-1 order rational compression
+does not have to be unitary. The full Q'*Z*Q closure is unitary
+because the entire finite discrete L2 measure space is represented.
+An infinite-measure orthogonal-rational-function recurrence or
+arbitrary structured square-pencil completion is not claimed.
+
+Modes 'matrix', 'basis'/'parameters', 'pencil' and 'spectral' expose
+the true distinctions and exact finite trace/cyclic measures.
+No 'operator' mode is claimed since forming Q is O(n^3) and caching
+it requires O(n^2) storage. Sources [9,162].
+
 ## Bibliography
 
 1. P. J. Davis, *Circulant Matrices*, Wiley, 1979. ISBN 9780471057710. [Library record](https://openlibrary.org/books/OL4407364M/Circulant_matrices).
@@ -6358,3 +6419,5 @@ Reference [161], Section III, Equations (9), (15), (22) and Table IV.
 160. M. Gekhtman and I. Nenciu, “Multi-Hamiltonian structure for the finite defocusing Ablowitz-Ladik equation,” *Proceedings of the American Mathematical Society* **136** (2008), 2785–2792. [Preprint](https://arxiv.org/abs/0706.2428).
 
 161. Ç. Candan, M. A. Kutay and H. M. Ozaktas, “The discrete fractional Fourier transform,” *IEEE Transactions on Signal Processing* **48** (2000), 1329–1337. [DOI](https://doi.org/10.1109/78.839980); [full paper](https://www.ee.bilkent.edu.tr/~haldun/publications/ozaktas166.pdf).
+
+162. N. Van Buggenhout, M. Van Barel and R. Vandebril, “Generation of orthogonal rational functions by procedures for structured matrices,” *Numerical Algorithms* **89** (2022). [DOI](https://doi.org/10.1007/s11075-021-01125-6); [preprint](https://arxiv.org/abs/2103.04788).
