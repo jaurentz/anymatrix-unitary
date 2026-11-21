@@ -6872,7 +6872,7 @@ orthonormal angular DFT. The finite matrix is
 
 ```math
 U=(F_\phi^*\otimes I_{n_r})
-\operatorname{blockdiag}(Q_{m_0},\ldots,Q_{m_{n_\phi-1}}),
+\mathrm{blockdiag}(Q_{m_0},\ldots,Q_{m_{n_\phi-1}}),
 \qquad U^*U=I_N.
 ```
 
