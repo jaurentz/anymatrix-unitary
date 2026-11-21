@@ -19,7 +19,9 @@ for L=[1 2 3 7 12]
         verifyLessThanOrEqual(tc,max(lambda),1+4e-12);
         verifyLessThan(tc,abs(trace(K)-n*(1-cos(theta))/2), ...
             2e-10*n);
-        verifyLessThanOrEqual(tc,max(diff(lambda)),4e-12);
+        if n>1
+            verifyLessThanOrEqual(tc,max(diff(lambda)),4e-12);
+        end
         verifyEqual(tc,numel(par.degree),n);
         verifyEqual(tc,numel(par.azimuthal_order),n);
         for j=1:n
