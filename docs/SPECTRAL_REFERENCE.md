@@ -185,3 +185,12 @@ are prescribed **poles**, NOT eigenphases. The separate
 `um_hessenberg_unitary_generalized` helper deforms A
 without changing the pole ratios, and its spectrum is in
 general **not** circle-supported.
+
+
+`real_spherical_harmonic_rotation(L,alpha,beta,gamma,'spectral')`
+has exactly the same finite trace phase multiset and moments
+as the complex SO(3) direct sum, with exp(-i*m*delta) of
+multiplicity L-|m| for all m=-(L-1),...,L-1. All eigenphases
+occur in conjugate pairs as demanded by a REAL orthogonal
+representation; the physical rotation angle delta is independent
+of the axis and does not depend on the real/complex basis.

@@ -460,3 +460,20 @@ Numbers below are local to this note. Existing family-specific references remain
 21. I. V. Oseledets, “Tensor-train decomposition,” *SIAM J. Sci. Comput.* **33** (2011), 2295–2317. [DOI](https://doi.org/10.1137/090752286).
 
 *Scope note:* This is a taxonomy of efficient representations and literature **not** a claim that each general matrix structure defines a unitary matrix family, nor that each technique is implemented in MATLAB here. Exactness and complexity are representation- and parameter-dependent.
+
+### Verified blockwise SO(3) real/complex spherical-harmonic actions
+
+`spherical_harmonic_rotation` and the new
+`real_spherical_harmonic_rotation` both expose a block direct-sum
+`'operator'` on degrees 0,...,L-1. The latter uses an exact
+Condon–Shortley complex-to-real harmonic basis transform,
+so every degree block is real orthogonal rather than the
+nonorthogonal entrywise real part of complex Wigner D.
+For N=L^2, per-matvec work/storage is O(L^3)=O(N^(3/2)).
+The important caveat is O(L^4) *dense* per-degree setup and
+O(ell^2) per-degree application. This is NOT the asymptotically
+fast Wigner or spherical rotation algorithm of
+[Gimbutas–Greengard (2009)](https://doi.org/10.1016/j.jcp.2009.05.014)
+or the later S2FFT family. The new matrix-free label refers
+to the full block direct sum only, not to a sparse or fast
+single-irrep Wigner factor. Issue #41 retains that research task.

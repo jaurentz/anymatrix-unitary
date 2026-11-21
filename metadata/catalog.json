@@ -1373,14 +1373,14 @@
       "status": "implemented",
       "category": "signal_processing",
       "matrix_order": "L^2",
-      "representation": "block-sparse direct sum of Wigner rotations",
+      "representation": "complex Wigner-D direct sum for all degrees 0..L-1, sparse block diagonal; optional cached blockwise operator",
       "spectral_reference": "exact phase multiplicities L-|m|; exact Fejer-square moments and triangular scaling limit",
       "encyclopedia_references": [
         108
       ],
-      "matrix_free_supported": false,
-      "operator_kernel": null,
-      "operator_note": "Explicit eigendecomposition/exponential; no fast action claimed."
+      "matrix_free_supported": true,
+      "operator_kernel": "um_wigner_direct_sum_apply",
+      "operator_note": "O(L^3)=O(N^(3/2)) per RHS/storage after O(L^4) dense per-degree exponential precomputation for N=L^2. This is subquadratic action for the FULL direct sum but not asymptotically fast for a single Wigner degree, and not the Gimbutas-Greengard pseudospectral rotation."
     },
     {
       "id": "periodic_sinc_shift",
@@ -2000,6 +2000,21 @@
       "matrix_free_supported": true,
       "operator_kernel": "um_hessenberg_pencil_apply",
       "operator_note": "Two O(n) adjacent-core actions and one O(n) diagonal phase, adjoint and multi-RHS. Dense A,B upper Hessenberg but O(n) parameter storage. Projective zero/Inf poles imply one reducible factor; finite proper poles restricted to 1e-4..1e4 for double-precision resolvability. Separate um_hessenberg_unitary_generalized helper is explicitly nonunitary and not in matrix catalog."
+    },
+    {
+      "id": "real_spherical_harmonic_rotation",
+      "status": "implemented",
+      "category": "signal_processing",
+      "matrix_order": "L^2, positive integer L<=128; sparse explicit L<=72",
+      "representation": "real orthogonal direct sum of Condon-Shortley real spherical harmonic Wigner blocks, each C_l'*D_l*C_l with exact unitary complex-to-real basis C_l; m<0 sine and m>0 cosine",
+      "spectral_reference": "exact finite SO(3) phase multiplicities L-|m| for m=-(L-1)..L-1, real conjugate pairing; same trace eigenphases and character as complex representation",
+      "encyclopedia_references": [
+        108,
+        112
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_wigner_direct_sum_apply",
+      "operator_note": "Per-degree precomputed dense real orthogonal blocks cost O(L^3) storage and O(L^3)=O(N^(3/2)) per RHS action, after O(L^4) setup via matrix exponentials. Not O(L^2 log L) fast Wigner-D. Real matrix verified from exact Condon-Shortley complex-to-real basis and never from entrywise real(D)."
     }
   ],
   "probability_measures": [

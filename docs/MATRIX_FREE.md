@@ -191,3 +191,19 @@ A,B and the unitary quotient for modest n. The related
 `um_hessenberg_unitary_generalized` helper returns a
 **nonunitary** generalized problem and MUST NOT be treated
 as a unitary matrix-free generator.
+
+## Wigner direct-sum SO(3) rotations: blockwise, not fully fast
+
+For `spherical_harmonic_rotation(L,alpha,beta,gamma,'operator')`
+and `real_spherical_harmonic_rotation(...,'operator')`,
+`um_wigner_direct_sum_apply` caches one independently computed
+unitary/real orthogonal matrix of order 2*ell+1 per degree ell<L.
+The full representation has order N=L^2; blockwise forward,
+adjoint and complex multi-RHS applications need O(L^3)=O(N^(3/2))
+operations and the same order of operator storage, rather than
+O(N^2) for a generic dense full matrix. **Setup still costs O(L^4)**
+via dense per-block matrix exponentials, and this does NOT implement
+a fast O(ell log ell) single-degree Wigner D. The real basis is
+unitarily conjugated from complex Condon–Shortley harmonics using
+`um_wigner_real_basis`, not `real(D)`. The real family also
+provides `'basis'` changes and `'spectral'` exact phase counts.

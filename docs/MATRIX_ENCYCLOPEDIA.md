@@ -6284,6 +6284,48 @@ iterations themselves or claim all RQR problems have unitary
 quotients. The separate nonunitary helper is registered as a
 generalized problem in `metadata/eigenvalue_problems.json`.
 
+## Real spherical-harmonic SO(3) rotations — [`real_spherical_harmonic_rotation.m`](../real_spherical_harmonic_rotation.m)
+
+**Exactly real orthogonal (in arithmetic), not entrywise real(Wigner D).**
+The repository's existing [`wigner_rotation.m`](../wigner_rotation.m)
+uses the complex harmonics Y_l^m, ordered m=-l,...,l with
+Condon–Shortley phases Y_l^(-m)=(-1)^m conj(Y_l^m).
+For m>0, the associated REAL harmonics have the convention
+
+```math
+R_l^{m}=(Y_l^{-m}+(-1)^mY_l^m)/\sqrt2,
+\quad R_l^{-m}=(Y_l^{-m}-(-1)^mY_l^m)/(i\sqrt2).
+```
+
+Define a sparse unitary basis change C_l, one dense but simple
+two-column unitary 2-by-2 block for each pair +/-m plus the
+unchanged m=0 harmonic. The real degree-l rotation is
+
+```math
+D_l^{\mathrm{real}}=C_l^*D_l^{\mathrm{complex}}C_l.
+```
+
+This matrix is REAL and orthogonal in exact arithmetic, and
+its conjugate spectral pairs and trace characters coincide
+with D_l^complex. The new real generator contains all degrees
+l=0,...,L-1 in the direct sum (order N=L^2), with exact phases
+exp(-i*m*delta) and multiplicities L-|m|, independent of axis.
+The real basis convention and complex representation composition
+were independently tested through arbitrary 3D Euler products.
+
+For **both** complex `spherical_harmonic_rotation` and the new
+real counterpart, `output='operator'` precomputes the per-degree
+blocks and applies them without assembling an L^2-by-L^2 matrix.
+Per RHS application/storage is O(sum_l (2l+1)^2)=O(L^3)
+=O(N^(3/2)), compared with O(N^2)=O(L^4) generic dense action.
+However, the present individual degree-l blocks are **still
+formed by dense matrix exponentials**. The total precomputation
+is O(sum_l (2l+1)^3)=O(L^4), and one irrep's dense multiply
+still costs O(l^2); we do NOT claim to implement the
+Gimbutas–Greengard pseudospectral fast rotation or S2FFT
+Wigner algorithms. Issue #41 remains open for that work.
+Source [108,112].
+
 ## Bibliography
 
 1. P. J. Davis, *Circulant Matrices*, Wiley, 1979. ISBN 9780471057710. [Library record](https://openlibrary.org/books/OL4407364M/Circulant_matrices).

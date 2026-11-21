@@ -150,3 +150,12 @@ O(n) core application. The auxiliary
 `tests/test_hessenberg_unitary_generalized.m` tests the broader
 Hessenberg–unitary-Hessenberg pencil with fixed poles but demonstrably
 nonunitary numerator and quotient; this remains outside the matrix catalog.
+
+`tests/test_real_spherical_harmonic_rotation.m` checks the
+Condon–Shortley complex-to-real unitary basis, exact real
+SO(3) orthogonality and inverse, arbitrary Euler-angle group
+composition, singular Euler limits, spectral multiplicities
+L-|m| and trace characters, and blockwise matrix-free
+forward/adjoint actions for complex and real harmonics with
+multiple RHS. Sparse explicit matrices are independently
+compared to the cached O(L^3) block operators.
