@@ -50,8 +50,8 @@ for n=[1 2 4 8 12 16 20 25]
     end
     if mod(n,4)==0
         ev=B.oscillator_eigenvalues;
-        verifyEqual(tc,sum(abs(ev)<1e-9),2);
-        zeroidx=find(abs(ev)<1e-9);
+        verifyEqual(tc,sum(abs(ev+4)<1e-9),2);
+        zeroidx=find(abs(ev+4)<1e-9);
         verifyEqual(tc,sort(B.parity(zeroidx)),[-1;1]);
     end
 end
