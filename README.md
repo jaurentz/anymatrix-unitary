@@ -564,6 +564,18 @@ W = wigner_rotation(10,.3,.7,-.4);   % integer SO(3)
 V = wigner_rotation(9.5,.3,.7,-.4);  % half-integer SU(2)
 ```
 
+### Periodic Gaussian RBF spectral propagators
+
+`periodic_rbf_propagator(n,ell,t,'operator')` converts the positive
+definite (but **not unitary**) equispaced periodic Gaussian kernel
+into the genuinely complex unitary $\exp(itK)$. The Fourier eigenvalues
+of $K$ provide exact finite propagator phases, with a separate
+`kernel` output to prevent classification confusion. Symmetric
+circulant structure gives $O(n\log n)$ FFT forward/adjoint/transpose
+action with $O(n)$ storage. The construction specializes
+`phase_circulant`, not a universal fast Gaussian RBF method;
+see [source and proof](docs/MATRIX_ENCYCLOPEDIA.md).
+
 ### Exact Wigner axis rotations
 
 `wigner_rotation(j,alpha,beta,gamma,'operator')`
