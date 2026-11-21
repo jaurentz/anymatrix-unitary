@@ -48,7 +48,8 @@ end
 end
 
 function test_finite_cmv_cyclic_convergence_not_trace(tc)
-a=.8;beta=-1;r=.72;
+% beta=+1 avoids exponentially close finite nodes near the gap atom.
+a=.8;beta=1;r=.72;
 theta=linspace(-pi,pi,301)';
 target=js_geronimus_poisson(theta,a,r);
 errs=zeros(3,1);
