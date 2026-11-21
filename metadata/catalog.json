@@ -1785,6 +1785,22 @@
       "matrix_free_supported": false,
       "operator_kernel": null,
       "operator_note": "Small dense real tangent-fiber SO(n), Lorentz SO+(1,n) boosts and frames exposed separately; no false ambient Euclidean unitarity or identity padding; generic polygon spectra not called exact."
+    },
+    {
+      "id": "hermite_oscillator",
+      "status": "implemented",
+      "category": "quantum",
+      "matrix_order": "n=1..256 finite Hermite-quadrature sample-space unitary; n distinct/aliased oscillator energy phases",
+      "representation": "Q diag(exp(-i theta(k+offset))) Q' with Q orthogonal Gauss-Hermite quadrature evaluation, k=0..n-1, offset=0 or 1/2",
+      "spectral_reference": "exact finite harmonic oscillator eigenphase multiset exp(-i theta(k+offset)) and Fourier trace moments; global zero-point phase; not DFT-compatible FrFT",
+      "encyclopedia_references": [
+        104,
+        143,
+        144
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": null,
+      "operator_note": "Reuses dense Golub-Welsch real GH basis (O(n^3) setup); exact symmetric sample-space Hamiltonian and quadrature-node basis modes; no unsupported FFT/matrix-free claim."
     }
   ],
   "probability_measures": [
