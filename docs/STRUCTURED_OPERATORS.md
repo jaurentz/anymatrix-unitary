@@ -545,6 +545,20 @@ metadata reports momentwise absolute and scaled errors, including
 stress tests as Laguerre $\alpha\downarrow-1$.
 This is a diagnostic of the **real-line measure**, not an
 eigenphase-moment estimator for the orthogonal evaluation matrix.
+**New low-memory Gaussian-data access:** Hermite and generalized
+Laguerre now have a separate nodes_weights output.
+Sturm LDL-inertia bisection finds the n real Jacobi
+eigenvalues in O(n^2 log(1/u)) work at machine target
+precision u, with O(n) storage. A rescaled Christoffel
+three-term recurrence returns logweights and moments
+without building the orthogonal polynomial evaluation Q.
+This is useful when **Gaussian nodes and quadrature weights**
+are required, not application of the dense matrix Q.
+The user receives numerical endpoint brackets and
+measured moments; the brackets are not interval-arithmetic
+certificates, and the positive unitary-matrix eigenphases
+remain unknown.
+
 The quadrature nodes and weights do NOT provide
 an FFT-fast action of the full coefficient transform.
 The explicit Q remains O(N^3) setup, O(N^2) storage and apply,

@@ -25,6 +25,15 @@ function [U,properties]=gauss_laguerre_transform(n,alpha,output)
 %   physical function samples are a second orthogonal matrix.
 %   This distinction matters near alpha=-1 and in far Gaussian tails.
 %
+%   'nodes_weights' is an EIGENVECTOR-FREE Gaussian cubature-only
+%   mode: Sturm bisection on the symmetric Jacobi tridiagonal
+%   gives nodes with O(N^2 log(1/u)) work and O(N) storage;
+%   the scaled log-Christoffel recurrence yields normalized
+%   weights and the analytic moment audit. This constructs
+%   NO full orthogonal coefficient transform Q and exposes
+%   NO Q action. Numerical Sturm brackets are NOT certified
+%   error intervals.
+%
 %   'spectral' returns UNKNOWN matrix eigenphases; real Gaussian
 %   nodes belong to the Jacobi tridiagonal, not to Q's eigenphases.
 %   Full dense O(N^3) Golub-Welsch setup remains; no fast
@@ -49,16 +58,26 @@ if strcmp(output,'spectral')
         'eigenvalues, NOT eigenphases of the real orthogonal Q.'];
     return
 end
-if ~any(strcmp(output,{'matrix','quadrature'}))
+if ~any(strcmp(output,{'matrix','quadrature','nodes_weights'}))
     error('gauss_laguerre_transform:Mode', ...
-        'Use matrix, quadrature or spectral; no fast operator exists.');
+        'Use matrix, quadrature, nodes_weights or spectral; no fast Q action exists.');
 end
 k=(0:n-1)';j=(1:n-1)';
 d=2*k+alpha+1;e=sqrt(j.*(j+alpha));
 if strcmp(output,'matrix')
     U=um_gauss_basis(d,e);
 else
-    [~,U]=um_gauss_basis(d,e);
+    if strcmp(output,'nodes_weights')
+        [x,sturm]=um_gauss_sturm_nodes(d,e);
+        logw=um_gauss_log_weights(x,d,e);
+        U=struct('nodes',x,'normalized_weights',exp(logw), ...
+            'log_normalized_weights',logw, ...
+            'sturm_diagnostics',sturm, ...
+            'dense_transform_constructed',false, ...
+            'quadrature_only',true);
+    else
+        [~,U]=um_gauss_basis(d,e);
+    end
     U.family='gauss_laguerre_transform';
     U.alpha=alpha;
     U.moment_diagnostics=um_gauss_moment_diagnostics( ...

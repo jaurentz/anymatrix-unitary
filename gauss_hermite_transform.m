@@ -27,6 +27,15 @@ function [U,properties]=gauss_hermite_transform(n,output)
 %   'log_function_scaling' without exponentiating large factors.
 %   It does not define an additional unitary matrix.
 %
+%   'nodes_weights' is an EIGENVECTOR-FREE Gaussian cubature-only
+%   mode: Sturm bisection on the symmetric Jacobi tridiagonal
+%   gives nodes with O(N^2 log(1/u)) work and O(N) storage;
+%   the scaled log-Christoffel recurrence yields normalized
+%   weights and the analytic moment audit. This constructs
+%   NO full orthogonal coefficient transform Q and exposes
+%   NO Q action. Numerical Sturm brackets are NOT certified
+%   error intervals.
+%
 %   'spectral' returns UNKNOWN matrix eigenphases. Gaussian nodes
 %   are the real Jacobi eigenvalues, NOT eigenphases of Q.
 %   Full Q still requires dense O(N^3) eigensolver setup and
@@ -48,15 +57,25 @@ if strcmp(output,'spectral')
         'NOT eigenphases of the orthogonal transform.'];
     return
 end
-if ~any(strcmp(output,{'matrix','quadrature'}))
+if ~any(strcmp(output,{'matrix','quadrature','nodes_weights'}))
     error('gauss_hermite_transform:Mode', ...
-        'Use matrix, quadrature or spectral; no fast operator exists.');
+        'Use matrix, quadrature, nodes_weights or spectral; no fast Q action exists.');
 end
 d=zeros(n,1);e=sqrt((1:n-1)'/2);
 if strcmp(output,'matrix')
     U=um_gauss_basis(d,e);
 else
-    [~,U]=um_gauss_basis(d,e);
+    if strcmp(output,'nodes_weights')
+        [x,sturm]=um_gauss_sturm_nodes(d,e);
+        logw=um_gauss_log_weights(x,d,e);
+        U=struct('nodes',x,'normalized_weights',exp(logw), ...
+            'log_normalized_weights',logw, ...
+            'sturm_diagnostics',sturm, ...
+            'dense_transform_constructed',false, ...
+            'quadrature_only',true);
+    else
+        [~,U]=um_gauss_basis(d,e);
+    end
     U.family='gauss_hermite_transform';
     U.moment_diagnostics=um_gauss_moment_diagnostics( ...
         U.nodes,U.log_normalized_weights,'hermite');
