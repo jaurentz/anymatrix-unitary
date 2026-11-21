@@ -8,7 +8,8 @@ function [U,properties]=discrete_fractional_fourier(n,alpha,mode)
 %   diagonalizes the DFT F and the real symmetric discrete oscillator
 %       S = periodic_shift + periodic_shift' +
 %           diag(2*cos(2*pi*j/N)-4),  j=0,...,N-1.
-%   S has a doubly degenerate zero eigenvalue when N is divisible by 4.
+%   S has a doubly degenerate eigenvalue -4 when N is divisible by 4.
+%   Equivalently S+4I has a doubly degenerate ZERO eigenvalue.
 %   The basis is therefore obtained from *separate even and odd parity
 %   blocks* (not from a generic eig(S) call). Descending eigenvalue
 %   ordering in each parity block gives the zero-crossing index:
