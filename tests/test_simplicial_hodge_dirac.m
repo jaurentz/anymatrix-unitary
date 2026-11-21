@@ -38,6 +38,12 @@ verifyEmpty(tc,S.finite.eigenvalues);
 verifyEqual(tc,S.guaranteed_unit_eigenvalues,2);
 verifyEqual(tc,S.known_zero_modes,2);
 verifyEqual(tc,S.betti,[1 0 1]);
+% Topological zero-mode phase count is a LOWER bound only:
+% at t=0 every cochain state has phase 1, not merely the Betti modes.
+S0=simplicial_hodge_dirac([],[],0,'spectral');
+verifyEqual(tc,S0.guaranteed_unit_eigenvalues,2);
+U0=simplicial_hodge_dirac([],[],0);
+verifyLessThan(tc,norm(U0-eye(N),'fro'),2e-13);
 U=simplicial_hodge_dirac([],[],.67);
 verifyLessThan(tc,norm(U-M.U,'fro'),2e-13);
 end
