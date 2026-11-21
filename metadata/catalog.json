@@ -1863,8 +1863,7 @@
       ],
       "matrix_free_supported": true,
       "operator_kernel": "um_electric_walk_apply",
-      "operator_note": "Sparse O(n) forward, ordinary transpose and adjoint multiple-RHS action. cmv_gauge returns exact O(n)-sparse boundary-matched, scalar-multiplied finite cyclic CMV similarity, finite Verblunsky data and monodromy; distinct from formal infinite-lattice coefficients. Generic eigenphases still unknown.",
-      "finite_cmv_gauge_supported": true
+      "operator_note": "Sparse O(n) forward, ordinary transpose and adjoint multiple-RHS action. cmv_gauge returns exact O(n)-sparse boundary-matched, scalar-multiplied finite cyclic CMV similarity, finite Verblunsky data and monodromy; distinct from formal infinite-lattice coefficients. Generic eigenphases still unknown."
     },
     {
       "id": "schur_hessenberg_flow",
