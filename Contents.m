@@ -11,6 +11,8 @@
 % Orthogonal polynomials on the unit circle:
 %   finite_cmv           Five-diagonal CMV; terminal 'pencil' mode for factors A,B.
 %   inverse_opuc         Inverse eigenphases/positive cyclic weights to finite CMV.
+%   schur_hessenberg_flow Isospectral Hessenberg QR/Schur flow, evolving cyclic weights.
+%   discrete_schur_cmv   Positive finite CMV weight-step spectral trajectory.
 %   circle_polynomial_unitary Unit-circle polynomial to strict unitary core realization.
 %   opuc_matrix          General finite unitary twisted-core matrix.
 %   jacobi_szego         Jacobi-Szego/Geronimus family, four representations.
@@ -128,6 +130,7 @@
 %
 % Matrix functions, polar factors and unitary extensions:
 %   cayley_jacobi        Cayley image of a Jacobi recurrence matrix.
+%   toda_cayley          Finite Jacobi Toda QR flow and symmetric unitary Cayley image.
 %   polar_unitary        Unitary polar factor of nonsingular matrix.
 %   julia_unitary        Finite Julia/Halmos unitary of a contraction.
 %
