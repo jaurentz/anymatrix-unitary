@@ -46,8 +46,10 @@ function [Q,properties]=koopman_mpedmd(n,PX,PY,weights,mode)
 %   MODE='edmd': return G\A, NOT necessarily unitary.
 %   MODE='spectral': EXACT finite eigenphases/moments for the
 %       built-in invariant Fourier/rotation example ONLY; else
-%       UNKNOWN analytical finite phase law, despite the ability
-%       to compute numerical eig(Q). No universal Koopman density.
+%       UNKNOWN analytical finite phase law. An observable_measure(c)
+%       callback returns NUMERICAL finite phase angles and normalized
+%       cyclic weights for coefficient c in the G metric, separately
+%       from equal-weight trace spectra. No universal Koopman density.
 %
 %   An invertible measure-preserving transformation induces a
 %   unitary infinite-dimensional Koopman operator. A noninvertible
@@ -182,5 +184,6 @@ Q=struct('family','koopman_mpedmd','dimension',n, ...
     'normalization','probability (density with respect to dtheta)', ...
     'finite',finite,'limit',blank,'ensemble',blank,'underlying',blank, ...
     'reference','Colbrook, mpEDMD, SIAM J. Numer. Anal. 61 (2023)', ...
-    'notes',notes,'cross_rank',rankCross);
+    'notes',notes,'cross_rank',rankCross, ...
+    'observable_measure',@(c)um_koopman_cyclic_measure(Q,H,c));
 end
