@@ -119,6 +119,7 @@
 %   unitary_almost_mathieu  Magnetic quasiperiodic two-state quantum walk.
 %   dirac_automaton      Periodic 1D Dirac cellular automaton (size 2n).
 %   flat_torus_spin_dirac Exact 2D flat spin-Dirac FFT propagator and metric model.
+%   mesh_spin_dirac        Ye 2018 quaternion face-spinor Dirac on oriented triangle meshes.
 %   simplicial_hodge_dirac Hodge–de Rham/Kähler–Dirac on triangle cochains; NOT spin Dirac.
 %   grover_operator      Grover reflections with exact degeneracies.
 %   quantum_baker        Balazs-Voros / Saraceno quantum baker map.
