@@ -9,6 +9,12 @@ function F=um_moser_veselov_solve(h,J,M)
 n=size(J,1);
 I=eye(n);
 target=h*M;
+% Norm bound is necessary for any real orthogonal solution, regardless
+% of branch: ||F'*J-J*F||_2 <= 2*||J||_2.
+if norm(target,2)>2*norm(J,2)*(1+1e-12)
+    error('um_moser_veselov_solve:NoSolution', ...
+        'No orthogonal solution satisfies this necessary norm bound.');
+end
 [V,D]=eig(J);
 d=real(diag(D));
 T=V'*target*V;
