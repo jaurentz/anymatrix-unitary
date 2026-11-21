@@ -227,6 +227,21 @@
       "operator_note": "Already O(n) sparse; custom action not needed."
     },
     {
+      "id": "flat_torus_spin_dirac",
+      "status": "implemented",
+      "category": "geometry",
+      "matrix_order": "2*n_x*n_y complex unitary; n_x,n_y>=3; explicit n_x*n_y<=196; FFT operator up to n_x*n_y<=1e6",
+      "representation": "2D periodic/antiperiodic spin-Dirac finite differences on flat torus, Hermitian sparse Pauli Hamiltonian and Euclidean-normalized exp(-itH), FFT modal blocks",
+      "spectral_reference": "exact finite +/- sine-dispersion energy pairs and propagator eigenphases, including physical spin-structure twists and naive-fermion zero-mode doubling",
+      "encyclopedia_references": [
+        169,
+        170
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_flat_torus_spin_dirac_apply",
+      "operator_note": "Exact O(n log n) twisted-FFT forward/adjoint/transpose multiple-RHS action. Positive diagonal site metric M yields physical M-selfadjoint D and M-unitary V, while returned U is Euclidean unitary; not Ye et al. arbitrary triangle-mesh discretization."
+    },
+    {
       "id": "dirac_automaton",
       "status": "implemented",
       "category": "quantum",
