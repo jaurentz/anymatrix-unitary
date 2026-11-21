@@ -1723,6 +1723,22 @@
       "matrix_free_supported": true,
       "operator_kernel": "um_circuit_apply",
       "operator_note": "Reuses local-gate CZ/X rotations in O(n*2^n) per state vector and adjoint; phase pairing guaranteed only in ideal open limit; exact finite spectral moments independent of eig(U)."
+    },
+    {
+      "id": "moser_veselov",
+      "status": "implemented",
+      "category": "geometry",
+      "matrix_order": "n=3..16 real SO(n) body increments; trajectory of n-by-n orientations and skew momentum",
+      "representation": "nonlinear Moser-Veselov discrete Euler-Arnold F'*J-J*F=h*M with J real SPD, M real skew; damped Newton in skew Cayley coordinates near identity; M_next=F*M*F', Q_next=Q*F'",
+      "spectral_reference": "zero momentum has exact n-fold unit eigenvalue on near-identity branch; generic finite SO(n) phase multiset unknown; conjugate pairing and odd-n +1 eigenvalue",
+      "encyclopedia_references": [
+        138,
+        139,
+        140
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": null,
+      "operator_note": "Full dense n-by-n implicit Newton solve with analytic Jacobian; nonunique/nonexistent branches flagged; no unsupported matrix-free speedup or full phase-space Euclidean orthogonality; Shen/Tran/Leok polar Galerkin method cited as distinct NOT implemented."
     }
   ],
   "probability_measures": [

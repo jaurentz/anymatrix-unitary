@@ -83,6 +83,7 @@
 % Geometric and symplectic integration:
 %   geometric_oscillator  Periodic symplectic oscillator; exact phases and metric pencil.
 %   gyroscopic_oscillator Conservative gyroscopic QEP, Gauss step, circle pencil.
+%   moser_veselov      Implicit Moser-Veselov SO(n) rigid-body increment and trajectory.
 %   time_skew_magnus    Noncommuting time-dependent orthogonal midpoint/Cayley flow.
 %   geometric_fem_wave    Finite-element Dirichlet wave; mass-weighted palindromic QEP.
 %
