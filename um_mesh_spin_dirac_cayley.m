@@ -1,4 +1,4 @@
-function Y=um_mesh_spin_dirac_cayley(X,flag,N,steps,plus,minus)
+function Y=um_mesh_spin_dirac_cayley(X,flag,N,steps,plus,minus,plusMatrix,minusMatrix)
 %UM_MESH_SPIN_DIRAC_CAYLEY Sparse rational mesh spin Dirac evolution.
 %   For Hermitian H and h=t/steps, C=(I+i*h*H/2)\(I-i*h*H/2)
 %   is unitary in mathematical arithmetic and C^steps approximates
@@ -23,9 +23,9 @@ end
 Y=full(X);
 for k=1:steps
     if strcmp(flag,'ctransp')
-        Y=minus\(plus*Y);
+        Y=minus\(plusMatrix*Y);
     else
-        Y=plus\(minus*Y);
+        Y=plus\(minusMatrix*Y);
     end
 end
 end
