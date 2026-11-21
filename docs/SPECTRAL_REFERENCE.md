@@ -84,7 +84,9 @@ rather than fabricating spectral formulas or silently calling eig().
 
 ## Mathematical distinctions
 
-For U of order N, the finite empirical measure is
+For a unitary $U\in\mathbb C^{N\times N}$, the finite empirical measure is
+written using uppercase $N$, the actual matrix order (not necessarily a
+physical parameter named $n$):
 
 ```math
  \mu_N=\frac{1}{N}\sum_{j=1}^{N}\delta_{\arg\lambda_j},
@@ -216,7 +218,6 @@ unitary/orthogonal transform eigenvalues. Its auxiliary
 L(2L-1)-by-(L²-s²) rectangular isometry rather than a
 square matrix, hence there is no unitary finite trace
 eigenphase counting law for that sampling matrix.
-
 
 `so3_peter_weyl_transform(L,m,n,'spectral')` reports
 UNKNOWN finite matrix eigenphases for the STRICT SQUARE
