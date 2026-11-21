@@ -62,7 +62,7 @@ The [vibron ESQPT example](examples/vibron_esqpt_sector_gaps.m) compares U(3) an
 | Random and signal-processing | `haar_unitary`, `haar_orthogonal`, `haar_wavelet`, `daubechies_wavelet`, `haar_special_unitary`, `haar_unimodular_coe`, `haar_unimodular_cse`, `haar_tensor_power`, `haar_block_tensor_power` |
 | Signal-processing transforms | `orthogonal_dct`, `discrete_hartley`, `cazac_circulant`, `fresnel_transform`, `affine_fourier`, `finite_zak`, `time_frequency_shift`, `periodic_hilbert`, `discrete_fourier`, `discrete_sine`, `walsh_hadamard`, `dpss_transform`, `graph_fourier`, `blaschke_potapov`, `orthogonal_butterfly`, `complex_hadamard`, `krawtchouk_transform`, `hahn_transform`, `dual_hahn_transform` |
 | Riemannian geometry | `sphere_geodesic_transport` |
-| Quantum maps, walks, and algorithms | `split_step_walk`, `dirac_automaton`, `grover_operator`, `quantum_baker`, `quantum_cat_map`, `finite_koopman_torus`, `koopman_mpedmd`, `kicked_harper`, `kicked_top`, `extended_lipkin_propagator`, `vibron_2d_esqpt`, `agassi_propagator`, `floquet_ising`, `selfdual_kicked_ising`, `cluster_floquet`, `driven_kitaev`, `kicked_rotor`, `dual_unitary_circuit`, `clifford_circuit`, `fibonacci_braid`, `xxz_floquet`, `kicked_bose_hubbard`, `jaynes_cummings`, `chalker_coddington`, `unitary_almost_mathieu`, `electric_quantum_walk`, `szegedy_walk`, `coined_graph_walk`, `metric_quantum_graph`, `resonant_scattering` |
+| Quantum maps, walks, and algorithms | `split_step_walk`, `dirac_automaton`, `flat_torus_spin_dirac`, `grover_operator`, `quantum_baker`, `quantum_cat_map`, `finite_koopman_torus`, `koopman_mpedmd`, `kicked_harper`, `kicked_top`, `extended_lipkin_propagator`, `vibron_2d_esqpt`, `agassi_propagator`, `floquet_ising`, `selfdual_kicked_ising`, `cluster_floquet`, `driven_kitaev`, `kicked_rotor`, `dual_unitary_circuit`, `clifford_circuit`, `fibonacci_braid`, `xxz_floquet`, `kicked_bose_hubbard`, `jaynes_cummings`, `chalker_coddington`, `unitary_almost_mathieu`, `electric_quantum_walk`, `szegedy_walk`, `coined_graph_walk`, `metric_quantum_graph`, `resonant_scattering` |
 | Matrix functions and dilations | `cayley_jacobi`, `polar_unitary`, `julia_unitary`, `entangled_reflection` |
 | Quantum group actions | `tensor_permutation` |
 | Geometric/symplectic integration | `geometric_oscillator` (periodic chain, FFT), `geometric_fem_wave` (Dirichlet FEM wave, DST), `nonuniform_fem_wave` (nonuniform/heterogeneous 1D continuous FEM, noncommuting Mass and K, sparse Gauss solves), `tensor_fem_wave` (separable 2D/3D bilinear/trilinear consistent FEM, multidimensional DST), `gyroscopic_oscillator` (Coriolis-coupled, sparse solves), `moser_veselov` (implicit SO(n) generalized rigid-body increments and momentum trajectories); exact phase laws for the first two only, positive-metric pencils, and a mass-weighted palindromic Verlet QEP |
@@ -563,6 +563,22 @@ H = grassmann_holonomy(8,2);
 W = wigner_rotation(10,.3,.7,-.4);   % integer SO(3)
 V = wigner_rotation(9.5,.3,.7,-.4);  % half-integer SU(2)
 ```
+
+### Finite two-dimensional spin-Dirac propagation
+
+`flat_torus_spin_dirac(nx,ny,t,mass,twist,weights,output)` adds a
+square **unitary propagator** on a periodic Cartesian discretization
+of a flat 2-torus, with two spinor components per site. Positive
+metric weights also expose the *physical* M-unitary representation,
+distinguished from the Euclidean-normalized unitary U. The independent
+sparse Hermitian Hamiltonian and exact momentum-sector eigenphases
+permit direct dense-`expm` regression; the operator applies the same
+finite matrix through an **O(N log N) twisted FFT**, including adjoint
+and ordinary transpose for multiple right-hand sides. Four spin
+structures (periodic/antiperiodic axes), finite zero modes and the
+naive fermion-doubling artifact are tested. This reference does
+**not** implement the curved triangular-mesh spin-Dirac operator;
+that remains research issue #59.
 
 ## Hyperbolic and gauge holonomy
 
