@@ -185,3 +185,15 @@ are prescribed **poles**, NOT eigenphases. The separate
 `um_hessenberg_unitary_generalized` helper deforms A
 without changing the pole ratios, and its spectrum is in
 general **not** circle-supported.
+
+
+`gauss_hermite_transform(n,'spectral')` and
+`gauss_laguerre_transform(n,alpha,'spectral')` mark the
+eigenphases of the real orthogonal weighted-Gauss polynomial
+evaluation matrices as UNKNOWN. Their independently available
+`'quadrature'` nodes and logarithmic weights are spectral
+information for the real *Jacobi tridiagonal recurrence*,
+not for the unitary/orthogonal sample-evaluation matrix Q.
+The additional `log_function_scaling` maps rows to physical
+Hermite/Laguerre L2 function samples; it does not change
+the finite spectral law of Q.
