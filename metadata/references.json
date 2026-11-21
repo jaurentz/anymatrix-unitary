@@ -2,7 +2,7 @@
   "schema_version": "1.0.0",
   "updated": "2026-11-21",
   "bibliography": "docs/MATRIX_ENCYCLOPEDIA.md",
-  "notes": "Publication DOIs validated against Crossref metadata, arXiv preprint DOI in reference 14 is DataCite registered (not a journal-article DOI), and non-DOI items use stable publisher/library/archival links. The 2021 AFDM conference paper (reference 50) is distinct from the 2022 arXiv article formerly linked. References 58-68 add eigenvalue-problem literature; external nonlinear benchmarks are categorized separately from public unitary matrix generators. References 77-83 review the seven quantum-information publications, including two references retained as context-only; 84-85 support unimodular circular ensembles and efficient Haar eigenvalue sampling. References 86-87 document the original Lohe U(d) matrix synchronization flow and geometric time-discretizations; the later Schrödinger–Lohe wavefunction study is not needed for the matrix generator. References 145–147 add the Colbrook–Horning–Townsend spectral-measure and Koopman literature; 148 adds Colbrook's mpEDMD structure-preserving Koopman approximation as the primary finite-matrix construction reference.",
+  "notes": "Publication DOIs validated against Crossref metadata, arXiv preprint DOI in reference 14 is DataCite registered (not a journal-article DOI), and non-DOI items use stable publisher/library/archival links. The 2021 AFDM conference paper (reference 50) is distinct from the 2022 arXiv article formerly linked. References 58-68 add eigenvalue-problem literature; external nonlinear benchmarks are categorized separately from public unitary matrix generators. References 77-83 review the seven quantum-information publications, including two references retained as context-only; 84-85 support unimodular circular ensembles and efficient Haar eigenvalue sampling. References 86-87 document the original Lohe U(d) matrix synchronization flow and geometric time-discretizations; the later Schrödinger–Lohe wavefunction study is not needed for the matrix generator. References 145–147 add the Colbrook–Horning–Townsend spectral-measure and Koopman literature; 148 adds Colbrook's mpEDMD structure-preserving Koopman approximation as the primary finite-matrix construction reference. References 151–155 support the three finite isospectral Toda/Schur QR and positive measure-step benchmark generators.",
   "references": [
     {
       "number": 1,
@@ -1170,6 +1170,44 @@
       ],
       "permalink": "https://doi.org/10.1007/s11005-025-01934-z",
       "alternate_permalink": "https://arxiv.org/abs/2408.12724"
+    },
+    {
+      "number": 151,
+      "dois": [],
+      "permalink": "https://calhoun.nps.edu/bitstream/handle/10945/30447/Ammar_Gragg_Schur.pdf?sequence=3",
+      "alternate_permalink": ""
+    },
+    {
+      "number": 152,
+      "dois": [
+        "10.1070/SM2006v197n08ABEH003792"
+      ],
+      "permalink": "https://doi.org/10.1070/SM2006v197n08ABEH003792",
+      "alternate_permalink": "https://arxiv.org/abs/math/0511269"
+    },
+    {
+      "number": 153,
+      "dois": [
+        "10.1016/0167-2789(82)90069-0"
+      ],
+      "permalink": "https://doi.org/10.1016/0167-2789(82)90069-0",
+      "alternate_permalink": ""
+    },
+    {
+      "number": 154,
+      "dois": [
+        "10.1016/S0377-0427(01)00388-0"
+      ],
+      "permalink": "https://doi.org/10.1016/S0377-0427(01)00388-0",
+      "alternate_permalink": ""
+    },
+    {
+      "number": 155,
+      "dois": [
+        "10.1016/j.aim.2016.03.042"
+      ],
+      "permalink": "https://doi.org/10.1016/j.aim.2016.03.042",
+      "alternate_permalink": "https://arxiv.org/abs/1503.05003"
     }
   ]
 }

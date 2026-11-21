@@ -5901,6 +5901,61 @@ truncations.
 
 
 
+
+## Finite integrable isospectral trajectories (November 2026)
+
+### Hessenberg QR/Schur flow — [`schur_hessenberg_flow.m`](../schur_hessenberg_flow.m)
+
+Start with an unreduced unitary upper-Hessenberg matrix with prescribed distinct
+circle eigenvalues `z_j` and strictly positive e1 spectral weights `w_j(0)`.
+The positive-diagonal QR factorization of `exp(t H0)` defines
+`H(t)=Q(t)'*H0*Q(t)`. The exact mathematical flow is unitary,
+upper-Hessenberg, and isospectral. Its cyclic weights evolve as
+`w_j(t) ∝ w_j(0)*exp(2*t*real(z_j))`. The trace weights remain `1/n`.
+Direct QR, inverse OPUC Hessenberg reconstruction, and cross-representation
+finite CMV output are exposed separately; the CMV model is *not* claimed to
+be the direct Hessenberg QR similarity. Real conjugate-paired input
+nodes/equal conjugate-pair weights give an orthogonal subclass. The direct
+matrix path uses a dense exponential and QR with potential large-time
+loss of accuracy, whereas the operator path uses existing core actions.
+This is a finite isospectral benchmark, not a claim of a new spectral
+distribution. Sources [5, 151, 152].
+
+### Positive discrete CMV spectral-weight steps — [`discrete_schur_cmv.m`](../discrete_schur_cmv.m)
+
+For distinct fixed support `z_j` on the circle, choose `0<h<1/2` and
+integer `k>=0` and multiply every strictly positive weight by
+`(1+2*h*real(z_j))^k`, followed by normalization. A finite inverse
+CMV construction yields a genuine five-diagonal unitary with *unchanged*
+eigenvalues at every step. Evolving e1 cyclic weights must not be
+confused with equal-mass trace weights. With `h→0`, `k*h→t`,
+the weights approach the continuous Schur-measure deformation
+`w_j(t) ∝ w_j(0)*exp(2*t*real(z_j))`. Unlike the documented
+Mukaihira–Nakamura integrable discretization, this particular
+positive-measure step is **only a separately justified benchmark**;
+its integrable Lax/auxiliary-variable formulation is not claimed.
+All finite measures remain atomic, including when limiting OPUC
+measures have continuous densities. Sources [5, 154, 155].
+
+### Toda Jacobi QR flow and symmetric Cayley-unitary matrices — [`toda_cayley.m`](../toda_cayley.m)
+
+For a real symmetric irreducible tridiagonal Jacobi matrix `J0`,
+factor `exp(tau*J0)=Q(tau)*R(tau)` with positive diagonal R and set
+`J(tau)=Q(tau)'*J0*Q(tau)`. The exact finite nonperiodic Toda
+solution remains Jacobi and isospectral. For an *independent*
+Cayley scale `gamma>0` set
+`U(tau,gamma)=(J(tau)-i*gamma*I)/(J(tau)+i*gamma*I)`.
+The unitary is complex symmetric, with fixed eigenvalues
+`(x_j-i*gamma)/(x_j+i*gamma)` for `x_j=eig(J0)`.
+The normalized trace measure is fixed but the distinguished e1
+weights are `w_j(tau) ∝ w_j(0)*exp(2*tau*x_j)`.
+The constructor accepts classical Jacobi recurrence parameters or
+an arbitrary positive-subdiagonal tridiagonal recurrence. Dense
+QR setup is distinct from cached sparse Cayley solves in operator
+mode; numerical large-time QR rank breakdown is detected. This
+is a nonlinear isospectral deformation, **not** `exp(i*tau*J0)`.
+Sources [23, 153].
+
 ## Bibliography
 
 1. P. J. Davis, *Circulant Matrices*, Wiley, 1979. ISBN 9780471057710. [Library record](https://openlibrary.org/books/OL4407364M/Circulant_matrices).
@@ -6087,3 +6142,9 @@ truncations.
 
 149. C. Cedzich and A. H. Werner, “Anderson Localization for Electric Quantum Walks and Skew-Shift CMV Matrices,” *Communications in Mathematical Physics* **387** (2021), 1257–1279. [DOI](https://doi.org/10.1007/s00220-021-04204-w); [preprint](https://arxiv.org/abs/1906.11931).
 150. F. Yang, “Interval Spectrum for Electric Quantum Walk and Related Skew-Shift CMV Matrices,” *Letters in Mathematical Physics* **115** (2025), article 49. [DOI](https://doi.org/10.1007/s11005-025-01934-z); [preprint](https://arxiv.org/abs/2408.12724).
+
+151. G. S. Ammar and W. B. Gragg, *Schur Flows for Orthogonal Hessenberg Matrices* (1993), Naval Postgraduate School report. [Full text](https://calhoun.nps.edu/bitstream/handle/10945/30447/Ammar_Gragg_Schur.pdf?sequence=3).
+152. L. B. Golinskii, “Schur flows and orthogonal polynomials on the unit circle,” *Sbornik: Mathematics* **197** (2006), 1145–1165. [DOI](https://doi.org/10.1070/SM2006v197n08ABEH003792).
+153. W. W. Symes, “The QR algorithm and scattering for the finite nonperiodic Toda lattice,” *Physica D* **4** (1982), 275–280. [DOI](https://doi.org/10.1016/0167-2789(82)90069-0).
+154. A. Mukaihira and Y. Nakamura, “Schur flow for orthogonal polynomials on the unit circle and its integrable discretization,” *J. Comput. Appl. Math.* **139** (2002), 75–94. [DOI](https://doi.org/10.1016/S0377-0427(01)00388-0).
+155. M. J. Cantero et al., “Darboux transformations for CMV matrices,” *Adv. Math.* (2016). [DOI](https://doi.org/10.1016/j.aim.2016.03.042).

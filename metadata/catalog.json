@@ -1864,6 +1864,53 @@
       "matrix_free_supported": true,
       "operator_kernel": "um_electric_walk_apply",
       "operator_note": "Sparse O(n) forward, ordinary transpose and adjoint multiple-RHS action; exact cyclic even/odd CMV-factor model with formal infinite-lattice skew-shift Verblunsky data. Standard cyclic CMV exact at zero field/offset/twist; generic field periodic boundary gauge not falsely equated to infinite CMV."
+    },
+    {
+      "id": "schur_hessenberg_flow",
+      "status": "implemented",
+      "category": "opuc",
+      "matrix_order": "n (1<=n<=512)",
+      "representation": "positive-diagonal QR of exp(t H0) on finite upper-Hessenberg unitary; alternative inverse-OPUC Hessenberg or CMV model",
+      "spectral_reference": "exact fixed trace eigenphases and moments from prescribed nodes; e1 cyclic weights proportional to w_j exp(2 t Re z_j)",
+      "encyclopedia_references": [
+        5,
+        151,
+        152
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_core_apply",
+      "operator_note": "O(n) core factors for inverse-spectral operator; dense O(n^3) QR expm only in matrix/parameters QR mode; no generic QR-flow large-time stability promise."
+    },
+    {
+      "id": "discrete_schur_cmv",
+      "status": "implemented",
+      "category": "opuc",
+      "matrix_order": "n",
+      "representation": "finite positive Laurent/Christoffel reweighting (1+2h Re z)^k, inverse spectral CMV five-diagonal core product",
+      "spectral_reference": "exact fixed finite trace nodes/moments and changing positive cyclic weights; h->0, k*h->t continuous Schur weight limit",
+      "encyclopedia_references": [
+        5,
+        154,
+        155
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_core_apply",
+      "operator_note": "Core-product O(n) apply; O(n^2) inverse OPUC coefficient setup. Not claimed to implement Mukaihira-Nakamura integrable discretization."
+    },
+    {
+      "id": "toda_cayley",
+      "status": "implemented",
+      "category": "matrix_function",
+      "matrix_order": "n (1<=n<=256)",
+      "representation": "finite nonperiodic Jacobi Toda QR evolution, real symmetric tridiagonal J(t), complex symmetric unitary scaled Cayley map",
+      "spectral_reference": "exact fixed Cayley images of eig(J0) and moments; e1 weights proportional to w_j exp(2 tau x_j)",
+      "encyclopedia_references": [
+        23,
+        153
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_cayley_apply",
+      "operator_note": "O(n^3) initial expm/QR setup, then O(n) cached shifted tridiagonal solves per RHS; time and Cayley scale distinct."
     }
   ],
   "probability_measures": [
