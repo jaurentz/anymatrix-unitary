@@ -6839,6 +6839,87 @@ framework follows Simons--Dahlen--Wieczorek [156];
 the lune's particular quadrature split is independently
 derived for this implementation.
 
+## Fourier–Zernike disk modal-radius unitary hybrid — [`fourier_zernike_disk.m`](../fourier_zernike_disk.m)
+
+**Order:** $N=n_r n_\phi$, with $1\le n_r\le128$ and
+$2\le n_\phi\le64$. Zernike disk functions have the classical
+radial structure [174,175]
+
+```math
+R_{m+2k}^{|m|}(r)=r^{|m|}P_k^{(0,|m|)}(2r^2-1),
+\qquad 0\le r\le1.
+```
+
+The normalized physical radial functions
+$\sqrt{2(2k+|m|+1)}R_{|m|+2k}^{|m|}(r)$
+are orthonormal for fixed $m$ in
+$L^2([0,1],r\,dr)$. Indeed
+$\int_0^1 R_{|m|+2k}^{|m|}(r)^2r\,dr=1/[2(2k+|m|+1)]$. Under
+$x=2r^2-1$, the radial weight becomes
+$(1+x)^{|m|}$; the $n_r$-point
+Gauss–Jacobi rule with $(\alpha,\beta)=(0,|m|)$
+therefore gives a **square real orthogonal**
+positive-leading radial matrix $Q_m$,
+$Q_m^T Q_m=I_{n_r}$ in exact arithmetic.
+
+Arrange the coefficient vector as an $n_r\times n_\phi$
+array $C(k,m)$, radial index fastest. Its angular
+FFT modes $m$ follow indices $0,1,\ldots,n_\phi-1$,
+interpreting indices beyond $\lfloor n_\phi/2\rfloor$
+as negative signed modes. Let $F_\phi$ denote the
+orthonormal angular DFT. The finite matrix is
+
+```math
+U=(F_\phi^*\otimes I_{n_r})
+\mathrm{blockdiag}(Q_{m_0},\ldots,Q_{m_{n_\phi-1}}),
+\qquad U^*U=I_N.
+```
+
+This has a genuine FFT angular action. Dense
+`matrix` output is limited to $N\le512$.
+The `operator` caches the distinct radial
+Gauss–Jacobi matrices (Golub–Welsch setup
+$O(n_\phi n_r^3)$, storage
+$O(n_\phi n_r^2)$) and uses
+$O(n_\phi n_r^2+n_r n_\phi\log n_\phi)$
+work per RHS, with complex forward, adjoint
+and transpose actions. The full finite
+eigenphase distribution is **unknown**; Jacobi
+quadrature nodes are not complex eigenphases.
+
+**Sampling caveat (essential):** for each $m$,
+the radial Gaussian nodes are
+$r_{j,m}=\sqrt{(x_{j,m}+1)/2}$ and
+$d\widetilde w_{j,m}$ depends on $|m|$.
+Thus a fixed radial row $j$ of the angularly
+synthesized output combines *different physical
+radii* across modes: it is a **modal-radius hybrid**,
+**not values on a common tensor-product disk grid**.
+Any interpolation to a common disk grid would
+change the operator and generally destroy exact
+unitarity. In particular, ordinary common-grid
+Fourier–Zernike evaluation is not asserted unitary.
+This construction is a distinct finite Fourier
+synthesis of the Zernike Jacobi blocks, rather than
+a mere alias for a single `gauss_jacobi_transform`.
+
+The `model` output exposes each signed Fourier
+mode, its radial nodes, its physical disk
+radial-function weights
+$w_{j,m}^{\mathrm{phys}}=w_{j,m}^{\mathrm{norm}}/[2(|m|+1)r_{j,m}^{2|m|}]$,
+its radial degrees and the cached blocks.
+The weights **depend on the angular mode** and
+are not a universal quadrature for arbitrary
+disk functions. Independent tests use the
+finite binomial Jacobi formula, physical Zernike
+normalizations and direct angular Fourier
+columns, in addition to $U^*U=I$ and operator
+roundtrips. This does **not** implement the
+fast general radial Jacobi connection algorithm
+described by Slevinsky [175], nor the nonuniform
+physical disk transform. Issue #29 remains open
+for Hankel and other unresolved transforms.
+
 ## Square axisymmetric Fourier-Laguerre transforms on the ball — [`fourier_laguerre_ball.m`](../fourier_laguerre_ball.m)
 
 Leistedt–McEwen's Fourier-Laguerre approach uses radial functions
@@ -7554,3 +7635,7 @@ Background [104,108,166,167].
 172. Y. Li and X. Jiao, “ARPIST: Provably accurate and stable numerical integration over spherical triangles,” *Journal of Computational and Applied Mathematics* **420** (2023), 114822. [DOI](https://doi.org/10.1016/j.cam.2022.114822); [preprint](https://arxiv.org/abs/2201.00261).
 
 173. A. Sommariva and M. Vianello, “Numerical cubature and hyperinterpolation over spherical polygons,” *Applied Mathematics and Computation* **495** (2025), 129335. [DOI](https://doi.org/10.1016/j.amc.2025.129335); [preprint](https://arxiv.org/abs/2403.05733).
+
+174. A. J. E. M. Janssen, “Zernike expansion of derivatives and Laplacians of the Zernike circle polynomials,” *J. Opt. Soc. Am. A* **31** (2014), 1604–1613. [DOI](https://doi.org/10.1364/JOSAA.31.001604).
+
+175. R. M. Slevinsky, *FastTransforms*, reference documentation for real orthonormal generalized Zernike polynomials and disk transforms. [Official transform documentation](https://mikaelslevinsky.github.io/FastTransforms/transforms.html).

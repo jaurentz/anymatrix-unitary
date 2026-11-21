@@ -1346,6 +1346,20 @@
       ],
       "permalink": "https://doi.org/10.1016/j.amc.2025.129335",
       "alternate_permalink": "https://arxiv.org/abs/2403.05733"
+    },
+    {
+      "number": 174,
+      "dois": [
+        "10.1364/JOSAA.31.001604"
+      ],
+      "permalink": "https://doi.org/10.1364/JOSAA.31.001604",
+      "alternate_permalink": "https://research.tue.nl/en/publications/zernike-expansion-of-derivatives-and-laplacians-of-the-zernike-ci/"
+    },
+    {
+      "number": 175,
+      "dois": [],
+      "permalink": "https://mikaelslevinsky.github.io/FastTransforms/transforms.html",
+      "alternate_permalink": "https://mikaelslevinsky.github.io/FastTransforms/"
     }
   ]
 }

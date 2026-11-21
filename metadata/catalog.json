@@ -2029,6 +2029,21 @@
       "operator_note": "Structured commuting-tridiagonal setup O(L^4) via dense per-block eig plus Gaussian Rayleigh quotients, storage and action O(L^3), matrix-free multiple-RHS forward/adjoint. Analytical Grünbaum eigenvalues are NOT concentration factors or orthogonal analysis eigenphases. Dense original K modes still available L<=24."
     },
     {
+      "id": "fourier_zernike_disk",
+      "status": "implemented",
+      "category": "signal_processing",
+      "matrix_order": "nRad*nPhi, 1<=nRad<=128, 2<=nPhi<=64; dense N<=512, mode-block FFT operator N<=4096",
+      "representation": "Exact finite unitary modal-radius hybrid: per-signed-Fourier-mode positive-leading Jacobi Gauss (alpha=0,beta=abs(m)) radial orthogonal blocks combined with normalized angular inverse DFT. Distinct m-dependent radius nodes: NOT common physical disk samples.",
+      "spectral_reference": "Unknown finite eigenphases of full complex unitary Fourier-Zernike hybrid; Gauss-Jacobi radial nodes and physical Zernike polynomial degrees are unrelated to its unit-circle trace phases.",
+      "encyclopedia_references": [
+        174,
+        175
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_fourier_zernike_apply",
+      "operator_note": "Precompute distinct Jacobi radial blocks O(nPhi*nRad^3); cached O(nPhi*nRad^2) storage and O(nPhi*nRad^2+nRad*nPhi log nPhi) matvec, multi-RHS forward/adjoint/transpose. Angular FFT genuinely fast; general radial Jacobi application still quadratic. No unitary common-grid collocation claim."
+    },
+    {
       "id": "fourier_laguerre_ball",
       "status": "implemented",
       "category": "signal_processing",

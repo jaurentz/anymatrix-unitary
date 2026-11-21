@@ -564,6 +564,19 @@ W = wigner_rotation(10,.3,.7,-.4);   % integer SO(3)
 V = wigner_rotation(9.5,.3,.7,-.4);  % half-integer SU(2)
 ```
 
+### Fourier–Zernike modal-radius unitary disk transform
+
+`fourier_zernike_disk(nRad,nPhi,'operator')` implements an
+exact finite unitary matrix combining normalized Gauss–Jacobi
+radial blocks for each azimuthal Zernike order with an FFT
+angular synthesis. Its output is a **modal-radius hybrid**:
+the Gauss–Jacobi nodes depend on the Fourier order, so the
+result is **not physical disk values on a common radius grid**.
+The implementation caches radial blocks and accelerates the
+angular Fourier step, but makes no claim of a subquadratic
+general Jacobi radial algorithm. See
+[the detailed construction](docs/MATRIX_ENCYCLOPEDIA.md).
+
 ### Periodic Gaussian RBF spectral propagators
 
 `periodic_rbf_propagator(n,ell,t,'operator')` converts the positive
