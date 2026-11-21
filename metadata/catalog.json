@@ -1415,6 +1415,21 @@
       "operator_note": "TRUE O(n log n) FFT application with O(n) workspace (and no dense matrix) ONLY for alpha=beta=-1/2 or +1/2; both coincide mathematically with the dense positive-leading Gauss-Jacobi basis. For all other Jacobi parameters, including associated-Legendre m>=0, the operator mode explicitly throws; existing O(n^3) dense setup remains. Exact eigenphases of the orthogonal transform are unknown."
     },
     {
+      "id": "stiefel_parallel_transport",
+      "status": "implemented",
+      "category": "geometry",
+      "matrix_order": "d=n*p-p*(p+1)/2, real canonical Stiefel tangent dimension",
+      "representation": "orthonormal moving tangent-coordinate matrix exp(-t*ad_K_horizontal/2), intrinsic Levi-Civita isometry on SO(n)/SO(n-p)",
+      "spectral_reference": "finite eigenphases generic unknown; exact orthogonal property from projected Lie bracket; p=1 identity in moving frame",
+      "encyclopedia_references": [
+        97,
+        168
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": null,
+      "operator_note": "Dense d-by-d projected Lie bracket connection, O(d^2) generator setup and O(d^3) expm, O(d^2) storage/application; small n/d prototype, not Nguyen-Sommer fast exponential action."
+    },
+    {
       "id": "stiefel_geodesic",
       "status": "implemented",
       "category": "geometry",

@@ -3440,6 +3440,72 @@ eigenproblem for its spectral reference, not a full $N\times N$ eigensolve (here
 Operator mode stores a 2p-by-2p exponential and applies the low-rank update
 in O(np) arithmetic. Edelman–Arias–Smith [97].
 
+### Intrinsic canonical Stiefel tangent transport — [`stiefel_parallel_transport.m`](../stiefel_parallel_transport.m)
+
+**Order:** $N=np-p(p+1)/2$, the *real tangent-space dimension*
+of `St(p,n)`, for `1<=p<=n`. This is a **genuinely different
+square matrix** from the ambient `n`-by-`n` Stiefel geodesic
+lift above. The source and target are different tangent spaces;
+the matrix is represented in canonical **orthonormal moving frames**.
+
+The round canonical Stiefel metric and geodesic generator are
+
+```math
+g_Y(V,W)=\mathrm{tr}(V^T(I-YY^T/2)W),\qquad
+K=\begin{bmatrix}A&-B^T\\B&0\end{bmatrix},
+\quad Y(t)=e^{tK}\begin{bmatrix}I_p\\0\end{bmatrix},
+```
+
+where `A` is real skew-symmetric `p`-by-`p` and `B` is
+`(n-p)`-by-`p`. The quotient `SO(n)/SO(n-p)` carries
+the normal-homogeneous metric induced by half the Frobenius
+form on `so(n)`. Its horizontal space comprises skew
+matrices whose lower-right `(n-p)` block is zero.
+
+Use the orthonormal horizontal basis `F_ij=e_i e_j^T-e_j e_i^T`,
+for `1<=i<=p, i<j<=n`. At `Y(t)`, the tangent basis vectors
+are `e^{tK}F_ij Y(0)`; their canonical metric Gram matrix is
+exactly the identity. The quotient Levi–Civita connection, in
+these moving coordinates, has constant real skew generator
+
+```math
+S_{(i,j),(a,b)}=-\tfrac12\big([K,F_{ab}]\big)_{ij},
+\qquad Q(t)=e^{tS},\quad Q(t)^TQ(t)=I_d.
+```
+
+The sign follows by projecting the bi-invariant group
+connection `E'(t)+[K,E(t)]/2` onto the horizontal space.
+Thus `Q(t)` **is intrinsic parallel transport**, not a
+tangent retraction, ambient rotation, or arbitrary
+orthogonal polar factor. Arbitrary initial orthogonal
+frames are obtained by left `SO(n)` equivariance.
+
+**Special cases:** for `p=1`, `[m,m]` is vertical, so
+`S=0`: spherical transport is the identity in the moving
+geodesic frame. For `p=n`, the quotient has no vertical
+subspace and `S=-ad_K/2`, recovering the bi-invariant
+orthogonal-group parallel transport. For general `p`,
+the geodesic velocity is a fixed vector in these transported
+coordinates because `[K,K]=0`.
+
+**Algorithms and scope.** The implementation forms all
+`d`-by-`d` structure constants and evaluates a **dense
+matrix exponential**, `O(d²)` generator setup,
+`O(d³)` exponential, `O(d²)` storage and multiplication
+per right-hand side. It is limited to `n<=64,d<=256`.
+The improved `O(np²)` small-time and `O(tp³)`
+large-time exponential-action method of Nguyen–Sommer [168],
+general flag-manifold transport and other Stiefel metrics
+are **not** implemented by this prototype.
+
+The tests compare its intrinsic tangent vectors against
+an **independently integrated ambient canonical
+Levi–Civita ODE**, check tangent constraints,
+isometry, time reversal, and parallel geodesic velocity.
+Generic eigenphases of the finite **transport** matrix are
+not assigned a closed law; the `spectral` mode returns
+`unknown`. [97,168]
+
 ### Non-Abelian Grassmannian loop holonomy — [`grassmann_holonomy.m`](../grassmann_holonomy.m)
 
 **Order:** $N=r$, from n-by-r orthonormal frames Y_j of a closed subspace
@@ -6797,3 +6863,5 @@ Background [104,108,166,167].
 
 166. J. D. McEwen, M. Büttner, B. Leistedt, H. V. Peiris and Y. Wiaux, “A Novel Sampling Theorem on the Rotation Group,” *IEEE Signal Processing Letters* **22** (2015), 2425–2429. [DOI](https://doi.org/10.1109/LSP.2015.2490676); [preprint](https://arxiv.org/abs/1508.03101).
 167. Z. Khalid, S. Durrani, R. A. Kennedy, Y. Wiaux and J. D. McEwen, “Gauss–Legendre Sampling on the Rotation Group,” *IEEE Signal Processing Letters* **23** (2016), 207–211. [DOI](https://doi.org/10.1109/LSP.2015.2503295); [preprint](https://arxiv.org/abs/1508.03353).
+
+168. D. Nguyen and S. Sommer, “Parallel Transport on Matrix Manifolds and Exponential Action,” *SIAM J. Matrix Anal. Appl.* **46** (2025). [DOI](https://doi.org/10.1137/24M1684189); [preprint](https://arxiv.org/abs/2408.06054).
