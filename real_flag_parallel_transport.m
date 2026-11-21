@@ -26,10 +26,19 @@ function [Q,properties]=real_flag_parallel_transport(blockSizes,K,t,mode)
 %   otherwise. Neither geodesic generator eigenvalues nor principal
 %   angles are misidentified as Q eigenphases.
 %
-%   This is an explicit dense prototype, 3<=n<=32, D<=256.
-%   S assembly O(D^2), exponential O(D^3), Q storage/action O(D^2).
-%   Not a Nguyen-Sommer low-rank matrix exponential-action algorithm,
-%   not the embedded non-normal metric, and not complex flags.
+%   Dense matrix/model: 3<=n<=32,d<=256; explicit S O(d^2),
+%   dense expm O(d^3), action/storage O(d^2).
+%   Operator mode: 3<=n<=256,d<=32768, O(n^2) working storage
+%   and O(n^3) arithmetic PER projected commutator action by
+%   applying S*E=-1/2 P_m[K,E] to n-by-n off-block skew matrices.
+%   The degree-24 scaled Taylor action takes O(24*m*n^3) arithmetic
+%   with m=max(1,ceil(abs(t)*||K||_F)), at most 4096 steps.
+%   Its exact-arithmetic truncation error is bounded by
+%   m*eps*(1+eps)^(m-1), eps=exp(1)/25!. The underlying
+%   exp(t*S) is exactly orthogonal, the truncated polynomial
+%   action is NOT; ordinary floating roundoff also remains.
+%   This is not an optimized Nguyen-Sommer long-time algorithm,
+%   a non-normal metric, or a complex flag construction.
 %
 %   [168] Nguyen and Sommer, SIAM J. Matrix Anal. Appl. (2025)
 %   https://doi.org/10.1137/24M1684189
@@ -45,15 +54,15 @@ if ~(isnumeric(blockSizes)&&isreal(blockSizes) ...
 end
 blockSizes=double(blockSizes(:)');
 n=sum(blockSizes);
-if n<3||n>32
+if n<3||n>256
     error('real_flag_parallel_transport:Order', ...
-        'The prototype requires 3<=sum(BLOCKS)<=32.');
+        'Require 3<=sum(BLOCKS)<=256.');
 end
 r=numel(blockSizes);
 d=(n^2-sum(blockSizes.^2))/2;
-if d<1||d>256
+if d<1||d>32768
     error('real_flag_parallel_transport:Order', ...
-        'Tangent dimension must be at most 256.');
+        'Tangent dimension must be at most 32768.');
 end
 labels=zeros(n,1);
 pos=0;
@@ -103,9 +112,13 @@ if ~(ischar(mode)||(isstring(mode)&&isscalar(mode)))
         'MODE must be scalar text.');
 end
 mode=lower(char(mode));
-if ~any(strcmp(mode,{'matrix','model','spectral'}))
+if ~any(strcmp(mode,{'matrix','model','spectral','operator'}))
     error('real_flag_parallel_transport:Mode', ...
-        'Only matrix, model, or spectral is supported.');
+        'Only matrix, model, spectral or operator is supported.');
+end
+if any(strcmp(mode,{'matrix','model'}))&&(n>32||d>256)
+    error('real_flag_parallel_transport:DenseOrder', ...
+        'Explicit flag connection requires n<=32 and d<=256.');
 end
 if strcmp(mode,'spectral')
     Q=unitary_spectral_reference('real_flag_parallel_transport',d);
@@ -123,6 +136,11 @@ if strcmp(mode,'spectral')
             'generic finite orthogonal eigenphase law unknown. ', ...
             'Geodesic K eigenvalues are unrelated to Q phases.'];
     end
+    return
+end
+if strcmp(mode,'operator')
+    Q=@(X,flag)um_flag_connection_expmv(X,flag,K,t, ...
+        pairI,pairJ,r==2);
     return
 end
 S=zeros(d);
