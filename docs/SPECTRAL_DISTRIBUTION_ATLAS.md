@@ -10,7 +10,7 @@ For a unitary $N\times N$ matrix $U_N$, write $\lambda_j=e^{i\theta_j}$, $\theta
 
 $$
 \mu_N=\frac1N\sum_{j=1}^N\delta_{\theta_j},\qquad
-m_k=\int e^{ik\theta}\,d\mu_N(\theta)=\frac{\operatorname{tr}(U_N^k)}{N}.
+m_k=\int e^{ik\theta}\,d\mu_N(\theta)=\frac{\mathrm{tr}(U_N^k)}{N}.
 $$
 
 **Every finite-dimensional measure $\mu_N$ is atomic.** Continuous distributions in this document refer to (i) a verified or derived large-$N$ weak limit of $\mu_N$, (ii) an ensemble average, or (iii) an infinite-dimensional operator's spectral measure at a distinguished vector. These are different quantities and **must not** be exchanged without justification. In particular, a finite CMV matrix's uniform trace weights differ from its Gauss–Szegő quadrature weights and from the infinite OPUC measure.
@@ -18,10 +18,10 @@ $$
 For a general Borel probability measure $\mu$ on the circle, the Lebesgue decomposition is
 
 $$
- d\mu(\theta)=\rho_{\rm ac}(\theta)\,d\theta+\sum_j w_j\,\delta_{\theta_j}+d\mu_{\rm sc}(\theta).
+ d\mu(\theta)=\rho_{\mathrm{ac}}(\theta)\,d\theta+\sum_j w_j\,\delta_{\theta_j}+d\mu_{\mathrm{sc}}(\theta).
 $$
 
-Here $\mu_{\rm sc}$ is **singular continuous**: it has no atoms but is singular relative to angular Lebesgue measure. The nonnegative density $\rho_{\rm ac}$ need not integrate to one when atoms or a singular-continuous component are present. Throughout, a density is defined **with respect to $d\theta$**, not $d\theta/(2\pi)$; the uniform density is $1/(2\pi)$.
+Here $\mu_{\mathrm{sc}}$ is **singular continuous**: it has no atoms but is singular relative to angular Lebesgue measure. The nonnegative density $\rho_{\mathrm{ac}}$ need not integrate to one when atoms or a singular-continuous component are present. Throughout, a density is defined **with respect to $d\theta$**, not $d\theta/(2\pi)$; the uniform density is $1/(2\pi)$.
 
 The repository's authoritative interfaces are [`docs/SPECTRAL_REFERENCE.md`](SPECTRAL_REFERENCE.md), [`unitary_spectral_reference.m`](../unitary_spectral_reference.m), and [`metadata/catalog.json`](../metadata/catalog.json). Descriptors `S.finite`, `S.limit`, `S.ensemble`, and `S.underlying` must remain distinct.
 
@@ -60,14 +60,14 @@ On the circle, arcs meeting across $-\pi$ and $\pi$ are **connected**; the choic
 | `constant` | $\rho\equiv 1/(2\pi)$ on the full circle. | Flat baseline. |
 | `smooth-peaked` | Smooth positive, nonuniform density; possibly multimodal. | Peak width and small secondary modes. |
 | `hard-gap` | Exactly zero density on an open arc. | Smoothing fills the gap artificially. |
-| `inverse-sqrt-edge` | $\rho(\theta)\sim C/\sqrt{|\theta-\theta_*|}$ near a band edge, on the occupied side. | Integrable divergence; evaluate analytic reference away from endpoints. |
+| `inverse-sqrt-edge` | $\rho(\theta)\sim C/\sqrt{\lvert \theta-\theta_*\rvert }$ near a band edge, on the occupied side. | Integrable divergence; evaluate analytic reference away from endpoints. |
 | `soft-edge` | $\rho\to0$ toward a band endpoint, with some positive power. | Peak-free end of support, unlike inverse-square-root. |
 | `cusp-or-power-law` | A zero, divergence, or nondifferentiability at an interior/special phase. | Distinguish algebraic behavior from a narrow smooth peak. |
 | `multimodal` | Two or more separated local maxima, with or without gaps. | Multiple peaks need not mean separate support bands. |
 | `localized-cluster` | Finite samples concentrate strongly in small angular regions. | Finite-size feature; do not assert an atom in the limit. |
 | `degenerate` | Exactly repeated phases. | Count or annotate multiplicity; coincident hairlines are invisible. |
 
-A genuine point mass is **not** an infinite value of $\rho_{\rm ac}$; it belongs in the atomic component. Conversely, a narrow but smooth Poisson/Bernstein–Szegő peak is not an atom.
+A genuine point mass is **not** an infinite value of $\rho_{\mathrm{ac}}$; it belongs in the atomic component. Conversely, a narrow but smooth Poisson/Bernstein–Szegő peak is not an atom.
 
 ### Axis 4 — Additional spectral organization
 
@@ -260,13 +260,13 @@ The entries below identify **which measure is being classified** and how strong 
 | [`haar_special_unitary`](../haar_special_unitary.m), finite $N$ | Ensemble-mean density | `ensemble:ac`, `full-circle`, finite-size angular modulation | Repository cites Nishigaki's exact finite-$N$ expectation; not the same law as unrestricted Haar U($N$). |
 | [`bernstein_szego`](../bernstein_szego.m), $a=0.6$ | Underlying infinite OPUC vector measure | `underlying:ac`, `full-circle`, `smooth-peaked` | Poisson-type positive rational circle density. **Not** generally the finite-CMV trace density. |
 | [`rogers_szego`](../rogers_szego.m), $q=0.6$ | Underlying infinite OPUC vector measure | `underlying:ac`, `full-circle`, `smooth-peaked` | Wrapped Gaussian-type law; not a finite trace limit claim. |
-| [`cycle_propagator`](../cycle_propagator.m), $t=0.8$ | Limiting trace | `limit:ac`, `one-band`, `hard-gap`, `inverse-sqrt-edge` | Wrapped arcsine law; for $2|t|<\pi$ its occupied arc is $[-2|t|,2|t|]$. |
+| [`cycle_propagator`](../cycle_propagator.m), $t=0.8$ | Limiting trace | `limit:ac`, `one-band`, `hard-gap`, `inverse-sqrt-edge` | Wrapped arcsine law; for $2\lvert t\rvert <\pi$ its occupied arc is $[-2\lvert t\rvert ,2\lvert t\rvert ]$. |
 | [`cycle_propagator`](../cycle_propagator.m), $t>\pi/2$ | Limiting trace | `limit:ac`, `wrapped`, `multimodal`; potentially overlapping branch singularities | The same arcsine distribution folds modulo $2\pi$; support and edge locations depend on $t$. |
 | [`dirac_automaton`](../dirac_automaton.m), $0<m<1$, e.g. $m=0.55$ | Limiting trace | `limit:ac`, `multi-band` (two arcs), `hard-gap`, `inverse-sqrt-edge`, `conjugate-symmetric` | Exact two-band density derived from the dispersion relation; at $m=0$ uniform and at $m=1$ two atoms. |
-| [`spherical_harmonic_rotation`](../spherical_harmonic_rotation.m), rotation angle $\delta=c/L$, $0<c<\pi$ | Limiting trace for **size-dependent** parameters | `limit:ac`, `one-band`, `soft-edge`, piecewise linear | Triangular $\rho(\theta)=(1-|\theta|/c)/c$ on $|\theta|\le c$. Not a limit claim for fixed Euler angles. |
+| [`spherical_harmonic_rotation`](../spherical_harmonic_rotation.m), rotation angle $\delta=c/L$, $0<c<\pi$ | Limiting trace for **size-dependent** parameters | `limit:ac`, `one-band`, `soft-edge`, piecewise linear | Triangular $\rho(\theta)=(1-\lvert \theta\rvert /c)/c$ on $\lvert \theta\rvert \le c$. Not a limit claim for fixed Euler angles. |
 | [`jacobi_szego`](../jacobi_szego.m), vary Jacobi exponents $a,b>-1$ | Underlying infinite OPUC vector measure | `underlying:ac`, `full-circle`, `soft-edge` / `cusp-or-power-law` at $0,\pi$ | Explicit symmetric Szegő lift. For exponent choices, density can vanish or diverge integrably at special phases. |
 | [`circular_jacobi`](../circular_jacobi.m), $a\ne0$ | Underlying infinite OPUC vector measure | `underlying:ac`, `full-circle`, `cusp-or-power-law`; asymmetric for nonzero $\eta$ | Generalized circular Jacobi weight. A density zero at one phase does **not** imply an open gap. |
-| [`geronimus_cmv`](../geronimus_cmv.m), constant coefficient $a=0.3+0.2i$ | Underlying infinite OPUC vector measure | `underlying:mixed`, `one-band`, `hard-gap`, `isolated-atom`, `soft-edge` (depending on location/parameters) | `szego_geronimus_measure.m` records an arc density and an atom if $\Re a+|a|^2>0$. **Not** a finite trace-density assertion. |
+| [`geronimus_cmv`](../geronimus_cmv.m), constant coefficient $a=0.3+0.2i$ | Underlying infinite OPUC vector measure | `underlying:mixed`, `one-band`, `hard-gap`, `isolated-atom`, `soft-edge` (depending on location/parameters) | `szego_geronimus_measure.m` records an arc density and an atom if $\Re a+\lvert a\rvert ^2>0$. **Not** a finite trace-density assertion. |
 | [`periodic_cmv`](../periodic_cmv.m), nonconstant period | Infinite periodic background / support | `multi-band`, `hard-gap`, parameter transitions | Known periodic spectral-band support; generic finite trace density is **not** supplied analytically by the repository. Finite CMV boundary conditions matter. |
 | [`orthogonal_blocks`](../orthogonal_blocks.m), custom angles | Finite trace | `conjugate-symmetric`, optional `degenerate` or `localized-cluster` | Exact paired phases and possibly $\pm1$. Symmetry is an additional tag, not a measure type. |
 | [`unitary_almost_mathieu`](../unitary_almost_mathieu.m) | Finite trace; infinite model needs separate analysis | `unknown` at finite generic parameters; research target for fractal/singular measures | Finite periodic-window closure does **not** automatically inherit infinite irrational-flux spectral-type statements. |
@@ -324,7 +324,7 @@ The classification plate and the companion edge gallery are embedded above as ve
 
 ## Further primary references
 
-1. B. Simon, *Orthogonal Polynomials on the Unit Circle*, Parts 1–2, AMS, 2005. [Part 1](https://doi.org/10.1090/coll054.1), [Part 2](https://doi.org/10.1090/coll/054.2). [Part 1](https://doi.org/10.1090/coll054.1), [Part 2](https://doi.org/10.1090/coll/054.2).
+1. B. Simon, *Orthogonal Polynomials on the Unit Circle*, Parts 1–2, AMS, 2005. [Part 1](https://doi.org/10.1090/coll054.1), [Part 2](https://doi.org/10.1090/coll/054.2).
 2. M. J. Colbrook, “Computing spectral measures and spectral types,” *Commun. Math. Phys.* **384** (2021), 433–501. [DOI](https://doi.org/10.1007/s00220-021-04072-4). Includes continuous-and-atomic Geronimus illustrations.
 3. J. Fillman and D. C. Ong, “Purely singular continuous spectrum for limit-periodic CMV operators with applications to quantum walks,” *J. Funct. Anal.* **272** (2017), 5107–5143. [Preprint](https://arxiv.org/abs/1610.06159).
 4. A. Bisio, G. M. D’Ariano, and A. Tosini, “Quantum field as a quantum cellular automaton: The Dirac free evolution in one dimension,” *Ann. Phys.* **354** (2015), 244–264. [DOI](https://doi.org/10.1016/j.aop.2014.12.016).
