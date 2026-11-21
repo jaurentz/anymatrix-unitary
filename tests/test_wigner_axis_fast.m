@@ -86,11 +86,12 @@ for ell=[512 2048.5]
 end
 end
 
-function test_non_axis_rejected_without_approximation(tc)
-verifyError(tc,@()wigner_rotation(2,.17,.3,-.2,'operator'), ...
-    'wigner_rotation:Operator');
-verifyError(tc,@()wigner_rotation(2,.17,pi+1e-8,-.2,'operator'), ...
-    'wigner_rotation:Operator');
+function test_non_axis_uses_approximate_skew_exponential_action(tc)
+for beta=[.3 pi+1e-8]
+    F=wigner_rotation(2,.17,beta,-.2,'operator');
+    D=wigner_rotation(2,.17,beta,-.2);
+    verifyLessThan(tc,norm(F(eye(5),'notransp')-D,'fro'),1e-11);
+end
 verifyError(tc,@()wigner_rotation(3,.17,[],[],'wrong'), ...
     'wigner_rotation:Mode');
 O=wigner_rotation(3,.2,pi,.4,'operator');

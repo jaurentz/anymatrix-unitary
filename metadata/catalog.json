@@ -1403,29 +1403,29 @@
       "status": "implemented",
       "category": "signal_processing",
       "matrix_order": "2*ell+1",
-      "representation": "irreducible SO(3) integer/ SU(2) half-integer spin Wigner representation; exact diagonal/anti-diagonal monomial Euler beta=k*pi, generic beta dense expm",
+      "representation": "Irreducible SO(3) integer/SU(2) half-integer Wigner D; exact monomial special beta=k*pi, general beta mathematically unitary via real skew tridiagonal exp(beta K), dense matrix or scaled Taylor matrix-free action",
       "spectral_reference": "exact exp(-i*m*delta), m=-ell:ell",
       "encyclopedia_references": [
         108,
         112
       ],
       "matrix_free_supported": true,
-      "operator_kernel": "um_wigner_axis_apply",
-      "operator_note": "For EXACT beta=k*pi (including half spin SU2 2pi sign), matrix and operator use O(ell) storage/application, forward/adjoint/ordinary transpose for multiple RHS. General beta remains dense expm setup O(ell^3) and O(ell^2) action; operator rejects it."
+      "operator_kernel": "um_wigner_axis_apply / um_wigner_skew_expmv",
+      "operator_note": "At exactly represented beta=k*pi use O(ell) exact algebraic monomial forward/adjoint/transpose actions. For generic beta, degree-32 scaled Taylor exponential action of real skew tridiagonal K with ||K||_2=ell, 4pi SU2 angle reduction, O(ell^2) work at fixed beta, O(ell) transient memory per RHS and no dense setup; truncation norm bound exp(2)*2^33/33! per scaled step. Approximate in floating-point, not exactly isometric. Generic explicit matrix still uses O(ell^3) dense expm; not a high-degree Wigner FFT."
     },
     {
       "id": "spherical_harmonic_rotation",
       "status": "implemented",
       "category": "signal_processing",
       "matrix_order": "L^2",
-      "representation": "complex Wigner-D direct sum for all degrees 0..L-1, sparse block diagonal; optional cached blockwise operator",
+      "representation": "Complex Wigner-D direct sum for degrees 0..L-1; sparse explicit block matrix or matrix-free handles to per-degree skew tridiagonal exponential action",
       "spectral_reference": "exact phase multiplicities L-|m|; exact Fejer-square moments and triangular scaling limit",
       "encyclopedia_references": [
         108
       ],
       "matrix_free_supported": true,
-      "operator_kernel": "um_wigner_direct_sum_apply",
-      "operator_note": "O(L^3)=O(N^(3/2)) per RHS/storage after O(L^4) dense per-degree exponential precomputation for N=L^2. This is subquadratic action for the FULL direct sum but not asymptotically fast for a single Wigner degree, and not the Gimbutas-Greengard pseudospectral rotation."
+      "operator_kernel": "um_wigner_direct_sum_apply / um_wigner_axis_apply / um_wigner_skew_expmv",
+      "operator_note": "No O(L^4) dense expm setup for operator: per-degree matrix-free handles, O(L^3) arithmetic per RHS at fixed beta, O(L^2) parameters and workspace across all irreps for N=L^2. Forward, plain transpose, conjugate adjoint are distinct as appropriate for complex SO3. Truncated Taylor actions approximate in floating point; true faster Wigner recurrences/FFT remain open."
     },
     {
       "id": "periodic_sinc_shift",
@@ -2139,15 +2139,15 @@
       "status": "implemented",
       "category": "signal_processing",
       "matrix_order": "L^2, positive integer L<=128; sparse explicit L<=72",
-      "representation": "real orthogonal direct sum of Condon-Shortley real spherical harmonic Wigner blocks, each C_l'*D_l*C_l with exact unitary complex-to-real basis C_l; m<0 sine and m>0 cosine",
+      "representation": "Real orthogonal Condon-Shortley SO3 direct sum; sparse 4ell+1 entry unitary real/complex basis conversion C_l followed by matrix-free angular-momentum exp action, or explicit blocks",
       "spectral_reference": "exact finite SO(3) phase multiplicities L-|m| for m=-(L-1)..L-1, real conjugate pairing; same trace eigenphases and character as complex representation",
       "encyclopedia_references": [
         108,
         112
       ],
       "matrix_free_supported": true,
-      "operator_kernel": "um_wigner_direct_sum_apply",
-      "operator_note": "Per-degree precomputed dense real orthogonal blocks cost O(L^3) storage and O(L^3)=O(N^(3/2)) per RHS action, after O(L^4) setup via matrix exponentials. Not O(L^2 log L) fast Wigner-D. Real matrix verified from exact Condon-Shortley complex-to-real basis and never from entrywise real(D)."
+      "operator_kernel": "um_wigner_direct_sum_apply / um_wigner_real_block_apply / um_wigner_axis_apply / um_wigner_skew_expmv",
+      "operator_note": "Matrix-free real basis conversion C_l'*D_l*C_l, using exactly 4ell+1 sparse basis nonzeros and tridiagonal Wigner Taylor actions. Fixed-angle O(L^3) per RHS across N=L^2, O(L^2) storage/setup instead of old O(L^4) dense expm setup. No source-specific fast Wigner FFT; floating-point Taylor action approximate. Explicit real matrix still computes dense blocks and is mathematically real orthogonal."
     },
     {
       "id": "spin_spherical_harmonic_transform",

@@ -13,12 +13,15 @@ function [U,properties]=real_spherical_harmonic_rotation(L,alpha,beta,gamma,outp
 %       matrix, explicit O(L^3) stored entries and O(L^4) dense
 %       block-exponential setup (not FFT-fast construction).
 %       Dense assembly limited to L<=72 to bound cubic storage.
-%   OUTPUT='operator': precomputes the separate real Wigner blocks
-%       and applies them to multiple RHS in O(L^3) arithmetic per
-%       vector after O(L^4) setup, versus O(L^4) generic full dense
-%       multiplication. O(L^3)=O(N^(3/2)) stored block entries for
-%       N=L^2. This is a *blockwise* matrix-free global action,
-%       NOT an asymptotically fast single-degree Wigner D transform.
+%   OUTPUT='operator': sparse real-to-complex Condon--Shortley
+%       basis conversions around matrix-free skew-tridiagonal Wigner
+%       exponential actions, with no precomputed dense degree blocks.
+%       For fixed beta this is O(L^3) work per RHS, O(L^2) stored
+%       data and O(L^2) setup, compared with O(L^4) dense expm
+%       setup in 'matrix'. The action is approximate in floating
+%       point and NOT a subquadratic single-degree Wigner FFT.
+%       Real inputs yield real outputs (up to discarded roundoff),
+%       complex multiple RHS remain complex-linear.
 %   OUTPUT='spectral': exact finite phase multiset/trace moments
 %       inherited from the equivalent complex SO(3) representation.
 %       At physical angle delta, e^(-im*delta) has multiplicity L-|m|.
@@ -68,6 +71,16 @@ if strcmp(output,'basis')
     for ell=0:L-1,U{ell+1}=um_wigner_real_basis(ell);end
     return
 end
+if strcmp(output,'operator')
+    blocks=cell(L,1);
+    for ell=0:L-1
+        C=um_wigner_real_basis(ell);
+        D=wigner_rotation(ell,alpha,beta,gamma,'operator');
+        blocks{ell+1}=@(X,flag)um_wigner_real_block_apply(X,flag,C,D);
+    end
+    U=@(X,flag)um_wigner_direct_sum_apply(X,flag,blocks,L^2);
+    return
+end
 blocks=cell(L,1);
 for ell=0:L-1
     C=um_wigner_real_basis(ell);
@@ -80,10 +93,6 @@ for ell=0:L-1
     blocks{ell+1}=real(Dr);
 end
 N=L^2;
-if strcmp(output,'operator')
-    U=@(X,flag)um_wigner_direct_sum_apply(X,flag,blocks,N);
-    return
-end
 nz=sum((2*(0:L-1)+1).^2);
 U=spalloc(N,N,nz);
 offset=0;

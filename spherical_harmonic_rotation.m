@@ -10,11 +10,13 @@ function [U,properties]=spherical_harmonic_rotation(L,alpha,beta,gamma,output)
 %       tr(U^k)=|sum(j=0:L-1,exp(-i*k*j*delta))|^2.
 %   In the special regime delta=c/L, 0<c<pi, the empirical
 %   eigenphase density tends to (1-|theta|/c)/c on |theta|<=c.
-%   'operator' uses precomputed unitary Wigner blocks: O(L^3)
-%   memory and O(L^3) multiplies per RHS for N=L^2, versus
-%   O(N^2)=O(L^4) for unstructured dense multiplication. Its
-%   block setup still uses O(L^4) dense matrix exponentials, and
-%   it is NOT the Gimbutas-Greengard or S2FFT fast Wigner algorithm.
+%   'operator' uses NO dense degree blocks: each Wigner D is applied
+%   by an O(ell) storage degree-32 scaled Taylor action of its real
+%   skew tridiagonal generator. Fixed reduced beta costs O(ell^2)
+%   per degree and O(L^3) for all L blocks, O(L^2) total stored
+%   angular-momentum data, WITHOUT O(L^4) dense expm setup.
+%   It is approximate in floating point, NOT a Gimbutas-Greengard
+%   O(L^2 log L) Wigner transform. Transpose and ADJOINT flags differ.
 %   For a real-orthogonal counterpart use the separate generator
 %   REAL_SPHERICAL_HARMONIC_ROTATION with explicit Condon-Shortley
 %   complex-to-real basis changes (not entrywise real(D)).
@@ -41,7 +43,7 @@ if nargin>=5 && ~isempty(output)
         case 'operator'
             blocks=cell(L,1);
             for ell=0:L-1
-                blocks{ell+1}=wigner_rotation(ell,alpha,beta,gamma);
+                blocks{ell+1}=wigner_rotation(ell,alpha,beta,gamma,'operator');
             end
             U=@(X,flag)um_wigner_direct_sum_apply(X,flag,blocks,L^2);
             return
