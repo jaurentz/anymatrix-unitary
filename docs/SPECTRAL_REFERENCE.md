@@ -139,3 +139,9 @@ matrix returned in `concentration` mode.
 eigenphases for the P*L square radial-zonal orthogonal matrix. The Gaussian
 radial and polar quadrature nodes do NOT represent matrix eigenvalues;
 `'sampling'` gives a separate rectangular full-spherical isometry.
+
+`abl_ladik_cmv` exposes fixed *finite trace* eigenphases and moments via
+`S.finite` and varying finite *cyclic-vector* spectral weights in `S.cyclic`.
+For each harmonic k, `S.flow.generator_values` describes the exact
+Nenciu/Gekhtman-Nenciu isospectral weight evolution; no continuous
+finite spectral density is inferred from the atomic measure.

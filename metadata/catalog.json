@@ -1940,6 +1940,22 @@
       "matrix_free_supported": true,
       "operator_kernel": "um_tensor_apply",
       "operator_note": "Tensor modewise action O(P*L*(P+L)) per RHS after O(P^3+L^3) eigensolver setup; stores O(P^2+L^2) factors. Full spherical 3D weighted sampling is a separately labeled rectangular isometry, not counted as unitary."
+    },
+    {
+      "id": "abl_ladik_cmv",
+      "status": "implemented",
+      "category": "opuc",
+      "matrix_order": "n even, 4<=n<=128; finite five-diagonal unitary CMV with terminal Verblunsky coefficient -1",
+      "representation": "exact inverse-spectral solution of Nenciu finite defocusing Ablowitz–Ladik Schur hierarchy H_k=2 Im Tr(C^k)/k with fixed circle nodes and cyclic weights w_j(t) proportional to w_j(0) exp(-2t Re z_j^k), k=1..8; lax diagnostic Cdot=[C,B], B=(C^k)_+ - ((C^k)_+)^*",
+      "spectral_reference": "exact fixed finite trace eigenphases with equal weights 1/n; separate time-dependent exact e1 cyclic spectral weights and moments",
+      "encyclopedia_references": [
+        5,
+        159,
+        160
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_core_apply",
+      "operator_note": "O(n) memory/time core-product apply after O(n^2) inverse Szego setup, dense Lax diagnostic only; exact-in-mathematics isospectral flow with numerical limits for clustered nodes/large time, not an arbitrary ODE integrator."
     }
   ],
   "probability_measures": [
