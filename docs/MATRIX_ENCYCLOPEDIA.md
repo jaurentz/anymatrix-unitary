@@ -485,6 +485,140 @@ quasienergy branches and potential gaps. The current periodic uniform-coin
 version has no physical edge, so **edge states require a separate open or
 interface construction**. **Reference:** [16].
 
+### Simplicial Hodge–Dirac/Kähler–Dirac propagator — [`simplicial_hodge_dirac.m`](../simplicial_hodge_dirac.m)
+
+**Order:** $N=n_0+n_1+n_2$, the total number
+of oriented vertices, edges and triangular faces
+of a simplicial surface. This is a **Hodge–de Rham
+or Kähler–Dirac** construction on the full
+cochain complex $C^0\oplus C^1\oplus C^2$.
+It is **not** the spinor Dirac operator of
+Ye–Diamanti–Tang–Guibas–Hoffmann [170],
+and it does **not** finish the curved spin-Dirac
+work required in issue #59. Its independent
+mathematical background comes from finite
+element exterior calculus [176] and
+discrete Kähler–Dirac fermions [177].
+
+Choose a coherent orientation of the triangles
+and orient every edge from the smaller to the
+larger vertex index. The sparse coboundaries
+$d_0:C^0\to C^1$ and $d_1:C^1\to C^2$
+then satisfy $d_1d_0=0$ **exactly in
+integer arithmetic**, irrespective of the
+curved embedding. Faces may meet one or two
+per edge (surfaces with boundary or closed
+oriented surfaces); nonmanifold edge degrees
+and inconsistent face orientation are rejected.
+
+The implementation uses the explicit **positive
+diagonal lumped cochain inner product**
+
+```math
+M=\mathrm{diag}(M_0,M_1,M_2),
+\quad
+(M_0)_{vv}=\sum_{f\ni v}\frac{A_f}{3},
+\quad
+(M_1)_{ee}=\sum_{f\ni e}\frac{A_f}{3\ell_e^2},
+\quad
+(M_2)_{ff}=\frac{1}{A_f}.
+```
+
+These deliberately chosen weights are **not the
+full Whitney mass matrix or the circumcentric
+DEC Hodge star**; no theorem of mesh-refinement
+convergence for this particular lumping is
+claimed. They are strictly positive on the
+validated nondegenerate simplicial mesh.
+
+Let $d$ combine $d_0,d_1$ with other blocks
+zero. The physical and normalized Dirac
+operators are
+
+```math
+D=d+M^{-1}d^T M,\qquad D^T M=MD;
+\qquad
+H=M^{1/2}DM^{-1/2}
+=M^{1/2}dM^{-1/2}+
+(M^{1/2}dM^{-1/2})^T=H^T.
+```
+
+The returned **exact mathematical unitary**
+is $U(t)=\exp(-itH)$, evaluated by a dense
+matrix exponential when $N\le256$.
+The physical cochain propagator
+$V(t)=M^{-1/2}U(t)M^{1/2}$ is
+$M$-unitary, not generally Euclidean unitary.
+The normalized generator $H$ is sparse
+with $O(n_0+n_1+n_2)$ nonzeros on
+regular bounded-degree triangle meshes;
+`generator` exposes it for order $N\le20000$.
+
+**Chiral and topological structure.**
+The even/odd cochain grading
+$\Gamma=\mathrm{diag}(I_0,-I_1,I_2)$
+gives $\Gamma H\Gamma=-H$.
+Hence nonzero $H$ eigenvalues occur as
+$\pm\lambda$ pairs and finite $U$ eigenphases
+occur as $e^{\mp it\lambda}$ conjugate pairs.
+The *exact* zero-mode multiplicity of
+$H$ is the sum of the simplicial Betti
+numbers $b_0+b_1+b_2$, computable by
+connected-component, boundary and Euler
+characteristic data for the supported
+oriented triangulations:
+
+```math
+b_0-b_1+b_2=\chi=n_0-n_1+n_2.
+```
+
+For the default closed octahedral sphere
+$(b_0,b_1,b_2)=(1,0,1)$: precisely two
+zero modes. A closed torus has $(1,2,1)$:
+precisely four zero modes. These imply
+**at least** two or four eigenvalues equal
+to $1$ for $U(t)$, respectively; accidental
+extra unit eigenvalues can occur through
+$t\lambda=2\pi k$. The *general exact
+finite eigenphase law remains unknown*.
+
+A separate `cayley_operator` mode uses
+sparse LU factorizations cached at setup:
+its $s$ repeated rational factors are
+
+```math
+C_h=(I+ihH/2)^{-1}(I-ihH/2),\quad h=t/s.
+```
+
+Each factor and its $s$-fold product is
+**exactly unitary in mathematical arithmetic**
+because $H$ is Hermitian. However,
+$C_h^s$ is **not** the exact exponential;
+its fixed-$t$ error is $O(s^{-2})$,
+verified independently against the dense
+exponential for multiple step counts.
+Forward, adjoint, ordinary transpose and
+complex multi-RHS are supported. This
+is not mislabeled as an exact sparse
+exponential action. Tests also check
+$D^TM=MD$, $V^*MV=M$, chirality,
+full spectral pairing, exact cochain
+identity $d^2=0$, sphere/disk/torus
+Betti values, coherent orientation
+changes, rigid-motion invariance and
+geometric scaling $H(\rho V)=H(V)/\rho$.
+
+The resulting unitary family has a
+first-order topological generator and
+zero-mode information absent from the
+existing graph connection-Laplacian
+$\exp(-itL)$. That does **not** make
+it equivalent to a local curved
+spin-connection Dirac Hamiltonian.
+Reference [176,177]; the remaining
+spin structure/edge spin connection
+tasks stay open under issue #59.
+
 ### Flat-torus finite-difference spin-Dirac propagator — [`flat_torus_spin_dirac.m`](../flat_torus_spin_dirac.m)
 
 **Order:** $N=2n_xn_y$, with two spinor components at each
@@ -7639,3 +7773,7 @@ Background [104,108,166,167].
 174. A. J. E. M. Janssen, “Zernike expansion of derivatives and Laplacians of the Zernike circle polynomials,” *J. Opt. Soc. Am. A* **31** (2014), 1604–1613. [DOI](https://doi.org/10.1364/JOSAA.31.001604).
 
 175. R. M. Slevinsky, *FastTransforms*, reference documentation for real orthonormal generalized Zernike polynomials and disk transforms. [Official transform documentation](https://mikaelslevinsky.github.io/FastTransforms/transforms.html).
+
+176. D. N. Arnold, R. S. Falk and R. Winther, “Finite element exterior calculus, homological techniques, and applications,” *Acta Numerica* **15** (2006), 1–155. [DOI](https://doi.org/10.1017/S0962492906210018).
+
+177. N. Butt, S. Catterall, A. Pradhan and G. C. Toga, “Anomalies and symmetric mass generation for Kähler-Dirac fermions,” *Phys. Rev. D* **104** (2021), 094504. [DOI](https://doi.org/10.1103/PhysRevD.104.094504); [preprint](https://arxiv.org/abs/2101.01026).
