@@ -9,7 +9,7 @@ The atlas groups the spectral **measures and density shapes** occurring among th
 For a unitary $N\times N$ matrix $U_N$, write $\lambda_j=e^{i\theta_j}$, $\theta_j\in[-\pi,\pi)$. The finite *normalized trace counting measure* is
 
 $$
-\mu_N=\frac1N\sum_{j=1}^N\delta_{\theta_j},\qquad
+\mu_N=\frac{1}{N}\sum_{j=1}^N\delta_{\theta_j},\qquad
 m_k=\int e^{ik\theta}\,d\mu_N(\theta)=\frac{\mathrm{tr}(U_N^k)}{N}.
 $$
 
@@ -60,7 +60,7 @@ On the circle, arcs meeting across $-\pi$ and $\pi$ are **connected**; the choic
 | `constant` | $\rho\equiv 1/(2\pi)$ on the full circle. | Flat baseline. |
 | `smooth-peaked` | Smooth positive, nonuniform density; possibly multimodal. | Peak width and small secondary modes. |
 | `hard-gap` | Exactly zero density on an open arc. | Smoothing fills the gap artificially. |
-| `inverse-sqrt-edge` | $\rho(\theta)\sim C/\sqrt{\lvert \theta-\theta_*\rvert }$ near a band edge, on the occupied side. | Integrable divergence; evaluate analytic reference away from endpoints. |
+| `inverse-sqrt-edge` | $\rho(\theta)\sim C/\sqrt{\lvert \theta-\theta_*\rvert}$ near a band edge, on the occupied side. | Integrable divergence; evaluate analytic reference away from endpoints. |
 | `soft-edge` | $\rho\to0$ toward a band endpoint, with some positive power. | Peak-free end of support, unlike inverse-square-root. |
 | `cusp-or-power-law` | A zero, divergence, or nondifferentiability at an interior/special phase. | Distinguish algebraic behavior from a narrow smooth peak. |
 | `multimodal` | Two or more separated local maxima, with or without gaps. | Multiple peaks need not mean separate support bands. |
@@ -260,13 +260,13 @@ The entries below identify **which measure is being classified** and how strong 
 | [`haar_special_unitary`](../haar_special_unitary.m), finite $N$ | Ensemble-mean density | `ensemble:ac`, `full-circle`, finite-size angular modulation | Repository cites Nishigaki's exact finite-$N$ expectation; not the same law as unrestricted Haar U($N$). |
 | [`bernstein_szego`](../bernstein_szego.m), $a=0.6$ | Underlying infinite OPUC vector measure | `underlying:ac`, `full-circle`, `smooth-peaked` | Poisson-type positive rational circle density. **Not** generally the finite-CMV trace density. |
 | [`rogers_szego`](../rogers_szego.m), $q=0.6$ | Underlying infinite OPUC vector measure | `underlying:ac`, `full-circle`, `smooth-peaked` | Wrapped Gaussian-type law; not a finite trace limit claim. |
-| [`cycle_propagator`](../cycle_propagator.m), $t=0.8$ | Limiting trace | `limit:ac`, `one-band`, `hard-gap`, `inverse-sqrt-edge` | Wrapped arcsine law; for $2\lvert t\rvert <\pi$ its occupied arc is $[-2\lvert t\rvert ,2\lvert t\rvert ]$. |
+| [`cycle_propagator`](../cycle_propagator.m), $t=0.8$ | Limiting trace | `limit:ac`, `one-band`, `hard-gap`, `inverse-sqrt-edge` | Wrapped arcsine law; for $2\lvert t\rvert<\pi$ its occupied arc is $[-2\lvert t\rvert,2\lvert t\rvert]$. |
 | [`cycle_propagator`](../cycle_propagator.m), $t>\pi/2$ | Limiting trace | `limit:ac`, `wrapped`, `multimodal`; potentially overlapping branch singularities | The same arcsine distribution folds modulo $2\pi$; support and edge locations depend on $t$. |
 | [`dirac_automaton`](../dirac_automaton.m), $0<m<1$, e.g. $m=0.55$ | Limiting trace | `limit:ac`, `multi-band` (two arcs), `hard-gap`, `inverse-sqrt-edge`, `conjugate-symmetric` | Exact two-band density derived from the dispersion relation; at $m=0$ uniform and at $m=1$ two atoms. |
-| [`spherical_harmonic_rotation`](../spherical_harmonic_rotation.m), rotation angle $\delta=c/L$, $0<c<\pi$ | Limiting trace for **size-dependent** parameters | `limit:ac`, `one-band`, `soft-edge`, piecewise linear | Triangular $\rho(\theta)=(1-\lvert \theta\rvert /c)/c$ on $\lvert \theta\rvert \le c$. Not a limit claim for fixed Euler angles. |
+| [`spherical_harmonic_rotation`](../spherical_harmonic_rotation.m), rotation angle $\delta=c/L$, $0<c<\pi$ | Limiting trace for **size-dependent** parameters | `limit:ac`, `one-band`, `soft-edge`, piecewise linear | Triangular $\rho(\theta)=(1-\lvert \theta\rvert/c)/c$ on $\lvert \theta\rvert\le c$. Not a limit claim for fixed Euler angles. |
 | [`jacobi_szego`](../jacobi_szego.m), vary Jacobi exponents $a,b>-1$ | Underlying infinite OPUC vector measure | `underlying:ac`, `full-circle`, `soft-edge` / `cusp-or-power-law` at $0,\pi$ | Explicit symmetric Szegő lift. For exponent choices, density can vanish or diverge integrably at special phases. |
 | [`circular_jacobi`](../circular_jacobi.m), $a\ne0$ | Underlying infinite OPUC vector measure | `underlying:ac`, `full-circle`, `cusp-or-power-law`; asymmetric for nonzero $\eta$ | Generalized circular Jacobi weight. A density zero at one phase does **not** imply an open gap. |
-| [`geronimus_cmv`](../geronimus_cmv.m), constant coefficient $a=0.3+0.2i$ | Underlying infinite OPUC vector measure | `underlying:mixed`, `one-band`, `hard-gap`, `isolated-atom`, `soft-edge` (depending on location/parameters) | `szego_geronimus_measure.m` records an arc density and an atom if $\Re a+\lvert a\rvert ^2>0$. **Not** a finite trace-density assertion. |
+| [`geronimus_cmv`](../geronimus_cmv.m), constant coefficient $a=0.3+0.2i$ | Underlying infinite OPUC vector measure | `underlying:mixed`, `one-band`, `hard-gap`, `isolated-atom`, `soft-edge` (depending on location/parameters) | `szego_geronimus_measure.m` records an arc density and an atom if $\Re a+\lvert a\rvert^2>0$. **Not** a finite trace-density assertion. |
 | [`periodic_cmv`](../periodic_cmv.m), nonconstant period | Infinite periodic background / support | `multi-band`, `hard-gap`, parameter transitions | Known periodic spectral-band support; generic finite trace density is **not** supplied analytically by the repository. Finite CMV boundary conditions matter. |
 | [`orthogonal_blocks`](../orthogonal_blocks.m), custom angles | Finite trace | `conjugate-symmetric`, optional `degenerate` or `localized-cluster` | Exact paired phases and possibly $\pm1$. Symmetry is an additional tag, not a measure type. |
 | [`unitary_almost_mathieu`](../unitary_almost_mathieu.m) | Finite trace; infinite model needs separate analysis | `unknown` at finite generic parameters; research target for fractal/singular measures | Finite periodic-window closure does **not** automatically inherit infinite irrational-flux spectral-type statements. |
