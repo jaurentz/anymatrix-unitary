@@ -63,6 +63,20 @@
       "operator_note": "O(n log n) Fourier-factor actions; operator stores O(n) phases."
     },
     {
+      "id": "periodic_rbf_propagator",
+      "status": "implemented",
+      "category": "signal_processing",
+      "matrix_order": "n equispaced sites on unit circle; dense n<=2048, FFT n<=1e6",
+      "representation": "unitary time evolution exp(i*t*K) of real symmetric SPD periodic Gaussian RBF Gram K, exactly circulant/FFT diagonalizable with Bessel-positive Fourier spectrum",
+      "spectral_reference": "exact finite trace phases exp(i*t*mu_k) where mu_k=FFT of exp(-2 sin^2(pi*r/n)/ell^2); kernel mu are real NOT unitary eigenphases; general limit unspecified",
+      "encyclopedia_references": [
+        171
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_periodic_rbf_apply",
+      "operator_note": "O(n log n) FFT forward/adjoint/transpose multiple RHS, O(n) phase storage and setup. K itself SPD nonunitary, U complex symmetric unitary; specializes phase_circulant, does not claim generic nonuniform RBF fast exponential."
+    },
+    {
       "id": "cycle_propagator",
       "status": "implemented",
       "category": "prescribed",
