@@ -1154,6 +1154,22 @@
       ],
       "permalink": "https://doi.org/10.1137/22M1521407",
       "alternate_permalink": "https://arxiv.org/abs/2209.02244"
+    },
+    {
+      "number": 149,
+      "dois": [
+        "10.1007/s00220-021-04204-w"
+      ],
+      "permalink": "https://doi.org/10.1007/s00220-021-04204-w",
+      "alternate_permalink": "https://arxiv.org/abs/1906.11931"
+    },
+    {
+      "number": 150,
+      "dois": [
+        "10.1007/s11005-025-01934-z"
+      ],
+      "permalink": "https://doi.org/10.1007/s11005-025-01934-z",
+      "alternate_permalink": "https://arxiv.org/abs/2408.12724"
     }
   ]
 }

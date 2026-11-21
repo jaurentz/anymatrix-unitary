@@ -100,6 +100,7 @@
 %   coined_graph_walk   Flip-flop coins on an arbitrary weighted graph.
 %   metric_quantum_graph  Bond-scattering U(k), arbitrary metric edge lengths.
 %   resonant_scattering    Open-channel flux-normalized unitary S(E), cavity poles/delay.
+%   electric_quantum_walk  Finite electric two-state ring, exact cyclic CMV factors.
 %   unitary_almost_mathieu  Magnetic quasiperiodic two-state quantum walk.
 %   dirac_automaton      Periodic 1D Dirac cellular automaton (size 2n).
 %   grover_operator      Grover reflections with exact degeneracies.
