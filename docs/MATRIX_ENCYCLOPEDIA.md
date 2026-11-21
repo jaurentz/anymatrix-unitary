@@ -3245,7 +3245,21 @@ alpha=beta=lambda-1/2 gives Gegenbauer. The first Jacobi offdiagonal
 uses the exact beta-distribution variance formula, avoiding removable
 0/0 for alpha+beta=-1. The eigenvalues of the real Jacobi tridiagonal
 are quadrature *nodes*, NOT eigenvalues of the orthogonal evaluation
-matrix. Construction O(n^3); multiplication O(n^2). [104,105,106]
+matrix. Generic construction O(n^3); dense multiplication O(n^2).
+For the two *exact* Chebyshev specializations, a new **true FFT
+operator** returns the very same mathematically defined Gauss evaluation
+matrix, **without** constructing or caching it:
+`Q_I=DCTIII*diag((-1).^k)` at alpha=beta=-1/2, and
+`Q_II=DSTI*diag((-1).^k)` at alpha=beta=+1/2. The alternating signs
+follow ascending-node ordering (x_j=-cos(j*pi/(n+1)) for second kind)
+and positive-leading polynomial normalization. These forward/adjoint
+operators cost O(n log n) per vector and O(n) workspace, via the existing
+FFT DCT/DST kernels; roundoff means their explicit numerical products
+need only agree to tolerance. For all other Jacobi parameters, including
+Legendre alpha=beta=0, `'operator'` is **rejected**, not implemented
+using a hidden dense matrix or mislabeled as fast. Genuine Hale--Townsend
+or Slevinsky fast connection algorithms remain issue #39. Matrix
+eigenphases are unknown, unrelated to Gauss nodes. [104,105,106]
 
 ### Gauss--Hermite transform — [`gauss_hermite_transform.m`](../gauss_hermite_transform.m)
 

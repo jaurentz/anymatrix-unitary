@@ -413,3 +413,21 @@ Numbers below are local to this note. Existing family-specific references remain
 21. I. V. Oseledets, “Tensor-train decomposition,” *SIAM J. Sci. Comput.* **33** (2011), 2295–2317. [DOI](https://doi.org/10.1137/090752286).
 
 *Scope note:* This is a taxonomy of efficient representations and literature **not** a claim that each general matrix structure defines a unitary matrix family, nor that each technique is implemented in MATLAB here. Exactness and complexity are representation- and parameter-dependent.
+
+
+### Verified FFT subset of Gauss-Jacobi evaluation matrices (2026-11-21)
+
+The existing `gauss_jacobi_transform` now provides a **genuine fast
+matrix-free action** for the exact positive-leading, ascending-node
+Gauss-Chebyshev I and II matrices:
+`Q_I=DCTIII*diag((-1).^k)` at (alpha,beta)=(-1/2,-1/2),
+and `Q_II=DSTI*diag((-1).^k)` at (+1/2,+1/2).
+Both share verified O(n log n) FFT kernels for forward and adjoint,
+with O(n) operator description/workspace; no n-by-n matrix is stored.
+The full Gauss-Jacobi and fixed-order associated-Legendre cases
+still use O(n^3) Golub-Welsch setup, O(n^2) multiplication, and
+**do not claim** a fast operator. This specialization is a consequence
+of exact Chebyshev trigonometric identities and standard DCT/DST,
+*not* a claimed implementation of the general Hale--Townsend
+or Slevinsky fast Jacobi-conversion algorithms.
+Source background: [Hale--Townsend (2016)](https://doi.org/10.1093/imanum/drv060).

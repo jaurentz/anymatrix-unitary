@@ -80,7 +80,7 @@
 %
 % Orthogonal polynomial and spherical-harmonic transforms:
 %   gauss_recurrence_transform  Orthogonal Gaussian transform from any positive Jacobi recurrence.
-%   gauss_jacobi_transform   Jacobi/Legendre/Chebyshev/Gegenbauer/associated Legendre.
+%   gauss_jacobi_transform   Jacobi transforms; true FFT operator for Chebyshev I/II.
 %   gauss_hermite_transform  Hermite Gauss-quadrature orthogonal basis.
 %   hermite_oscillator    Finite GH harmonic oscillator; exact fractional phase flow.
 %   gauss_laguerre_transform Generalized Laguerre quadrature basis.

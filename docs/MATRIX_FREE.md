@@ -133,3 +133,21 @@ factors. Applying its P*L orthogonal tensor costs O(P*L*(P+L)) per RHS and
 stores O(P^2+L^2) coefficients after O(P^3+L^3) setup; there is no claim
 of a linear- or FFT-time algorithm. Its separately exposed full-spherical
 sampling output is rectangular rather than unitary.
+
+## Gauss-Jacobi: exact FFT subset only
+
+`gauss_jacobi_transform(n,alpha,beta,'operator')` supplies a real
+O(n log n) FFT-based, complex-linear forward/adjoint **only** for
+alpha=beta=-1/2 (Gauss-Chebyshev I) and alpha=beta=+1/2
+(Gauss-Chebyshev II). At ascending Gaussian quadrature nodes,
+their positive-leading orthonormal polynomial evaluation matrices
+are precisely `DCTIII*diag((-1).^k)` and
+`DSTI*diag((-1).^k)`, respectively. The shared
+`um_gauss_jacobi_cheb_apply` composes existing FFT kernels with
+O(n)-storage alternating signs. The default dense generator remains
+unchanged and is used as the independent numerical reference.
+For **all other** Jacobi exponents, the operator mode fails explicitly;
+a cached dense eigensystem is not a fast matrix-free implementation.
+The exact transform is orthogonal in arithmetic; the floating-point FFT
+round trip is numerically approximate. See issue #39 for general fast
+Jacobi and associated-Legendre transforms.

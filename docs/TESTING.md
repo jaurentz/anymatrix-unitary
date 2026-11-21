@@ -125,3 +125,14 @@ the n-by-(n-1) Hessenberg pencil identity U*K=H, infinity/polynomial
 reductions, inside/outside finite poles, nearly coincident poles,
 conjugate-reciprocal pole pairs, positive e1 weights versus uniform
 trace phases, multiple node orders and explicit rational breakdown.
+
+
+`tests/test_gauss_jacobi_fast_subsets.m` compares FFT-based Gauss-
+Chebyshev I (DCT-III) and II (DST-I) forward and adjoint operations
+with the dense positive-leading Golub-Welsch transform for small
+odd/even n, checks independent trigonometric reference matrices,
+multi-RHS and complex-vector round trips, and uses n=16384 to
+verify that the operator supports large sizes without a dense n-by-n
+setup. General Jacobi and associated-Legendre parameters are explicitly
+tested to reject the unsupported fast mode, not silently fall back to
+quadratic/cubic operations.
