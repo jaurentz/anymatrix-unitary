@@ -104,3 +104,10 @@ commutator against independent time differences for harmonics k=1,2,3,
 real Schur/dmKdV coefficient ODE reduction, fixed boundary phase, operator
 forward/adjoint and multiple RHS. Normalized finite trace moments and
 cyclic-vector moments are tested separately.
+
+`tests/test_etna_historical_examples.m` verifies ETNA §7.1 common-draw
+core columns, terminal factor, complex and real seeded realizations and
+matrix-free adjoints. The modern §7.5 inverse-OPUC analogue is tested
+against prescribed equispaced eigenphases, forward construction residual,
+real conjugate-paired weights and finite trace/cyclic measures. This
+is not a bitwise reproduction of the historical Fortran test setup.

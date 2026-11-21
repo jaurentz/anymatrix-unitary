@@ -145,3 +145,11 @@ radial and polar quadrature nodes do NOT represent matrix eigenvalues;
 For each harmonic k, `S.flow.generator_values` describes the exact
 Nenciu/Gekhtman-Nenciu isospectral weight evolution; no continuous
 finite spectral density is inferred from the atomic measure.
+
+`etna_hessenberg(n,'7.1',...)` provides no closed-form trace eigenphase
+law; its common core parameters are sampled once per realization.
+`etna_hessenberg(n,'7.5',...)` is a **modern inverse-OPUC analogue**,
+with prescribed equispaced eigenphases and positive cyclic weights;
+its `parameters.maximum_forward_node_error` is computed separately
+for n<=64, rather than interpreting the *target* spectrum as the
+measured floating-point eigenvalues.
