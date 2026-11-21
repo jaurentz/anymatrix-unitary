@@ -86,3 +86,8 @@ constant-Verblunsky Geronimus e1 decomposition (continuous arc and possible
 point mass), Poisson smoothing through the Schur/Carathéodory function,
 finite-CMV weighted versus equal-mass trace differences, and smooth
 Rogers–Szegő controls. These are not finite continuous spectral densities.
+
+Spherical-cap Slepian tests (`tests/test_spherical_slepian.m`) verify real
+orthogonality, analytic degree-one cap integrals, addition-theorem Shannon
+trace, eigenvector ordering/signs, cap boundary cases, and the separation
+between concentration factors and orthogonal-matrix eigenphases.
