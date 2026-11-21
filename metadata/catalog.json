@@ -1925,6 +1925,21 @@
       "matrix_free_supported": false,
       "operator_kernel": null,
       "operator_note": "Dense blockwise cap eigenbasis; no fast operator claimed. Separate concentration output K is symmetric positive semidefinite, not unitary; basis output Q."
+    },
+    {
+      "id": "fourier_laguerre_ball",
+      "status": "implemented",
+      "category": "signal_processing",
+      "matrix_order": "P*L real square orthogonal radial-zonal (axisymmetric m=0) Fourier-Laguerre transform, P,L<=128; separate full-sphere rectangular sampling P*L*(2L-1) by P*L^2",
+      "representation": "orthonormal damped generalized Laguerre (alpha=2) radial functions in L2(r^2 dr), Gauss-Laguerre radial quadrature; zonal Legendre Gauss-Legendre angular quadrature; Kronecker Qa kron Qr",
+      "spectral_reference": "Unknown eigenphases of orthogonal square transform; radial/Legendre quadrature nodes are NOT transform eigenvalues, and radial scale changes physical nodes but not normalized square U",
+      "encyclopedia_references": [
+        157,
+        158
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_tensor_apply",
+      "operator_note": "Tensor modewise action O(P*L*(P+L)) per RHS after O(P^3+L^3) eigensolver setup; stores O(P^2+L^2) factors. Full spherical 3D weighted sampling is a separately labeled rectangular isometry, not counted as unitary."
     }
   ],
   "probability_measures": [

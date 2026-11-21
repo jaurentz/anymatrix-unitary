@@ -134,3 +134,8 @@ finite CMV eigenphases and cyclic weights must be computed separately.
 `spherical_slepian` reports an unknown orthogonal-matrix trace phase law;
 concentration eigenvalues belong instead to the distinct symmetric cap
 matrix returned in `concentration` mode.
+
+`fourier_laguerre_ball(P,L,tau,'spectral')` reports unknown finite trace
+eigenphases for the P*L square radial-zonal orthogonal matrix. The Gaussian
+radial and polar quadrature nodes do NOT represent matrix eigenvalues;
+`'sampling'` gives a separate rectangular full-spherical isometry.

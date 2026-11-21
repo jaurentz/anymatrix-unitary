@@ -6023,6 +6023,36 @@ caps return the canonical Q=I; `parameters` includes K, eigenvalues and
 real-harmonic basis labels. No general polygon/mask or fast matrix-free
 mode is claimed. The family is distinct from 1D DPSS and Wigner rotations.
 Source [156].
+## Square axisymmetric Fourier-Laguerre transforms on the ball — [`fourier_laguerre_ball.m`](../fourier_laguerre_ball.m)
+
+Leistedt–McEwen's Fourier-Laguerre approach uses radial functions
+K_p(r) = sqrt(p!/(p+2)!)*tau^(-3/2)*exp(-r/(2*tau))*L_p^(2)(r/tau),
+orthonormal in L2([0,infinity),r^2 dr), and spherical harmonics in angle.
+The P generalized Gauss-Laguerre nodes x_j of parameter 2 give radii
+r_j=tau*x_j. If w_j integrates x^2 exp(-x), the physical radial
+quadrature weights are tau^3 exp(x_j) w_j; weighted radial samples of
+K_p give the square orthogonal Qr. The (-1)^p sign converts the existing
+positive-leading Gauss-Laguerre transform to conventional L_p^(2).
+
+In the exactly axisymmetric subspace m=0, the L Gauss-Legendre polar
+nodes and analytically integrated azimuth give another square orthogonal
+Qa with entries sqrt(2*pi*wtheta_j)*Y_(ell,0)(theta_j). The new square
+family U=kron(Qa,Qr) has order P*L and exact U'*U=I in mathematical
+arithmetic, with radial index fastest. The 'operator' interface applies
+the tensor factors without materializing U (cost O(P*L*(P+L)) per RHS
+after dense P/L factor setup); it is tensor matrix-free, not FFT-fast.
+
+The 'sampling' mode is a DISTINCT full-sphere tensor grid using L
+Gauss-Legendre colatitudes and 2L-1 azimuths, returning a rectangular
+weighted matrix A of order [P*L*(2L-1),P*L^2]. Quadrature gives A'*A=I;
+except L=1 it is NOT square unitary. The sampling mode is an ancillary
+isometric output, not a second public square generator. The full exact
+Fourier–Laguerre sampling theorem has no automatic square interpretation.
+
+The radial physical scale tau rescales radii and weights but not the
+normalized square matrix. The quadrature nodes are not its eigenphases;
+its unit-circle trace spectral law is unknown. This family is not the
+Gaussian-weight spherical Gauss–Laguerre (SGL) transform. Sources [157,158].
 ## Bibliography
 
 1. P. J. Davis, *Circulant Matrices*, Wiley, 1979. ISBN 9780471057710. [Library record](https://openlibrary.org/books/OL4407364M/Circulant_matrices).
@@ -6217,3 +6247,6 @@ Source [156].
 155. M. J. Cantero et al., “Darboux transformations for CMV matrices,” *Adv. Math.* (2016). [DOI](https://doi.org/10.1016/j.aim.2016.03.042).
 
 156. F. J. Simons, F. A. Dahlen and M. A. Wieczorek, “Spatiospectral Concentration on a Sphere,” *SIAM Review* **48** (2006), 504–536. [DOI](https://doi.org/10.1137/S0036144504445765); [preprint](https://arxiv.org/abs/math/0408424).
+
+157. B. Leistedt and J. D. McEwen, “Exact Wavelets on the Ball,” *IEEE Transactions on Signal Processing* **60** (2012). [DOI](https://doi.org/10.1109/TSP.2012.2215030); [preprint](https://arxiv.org/abs/1205.0792).
+158. J. D. McEwen and B. Leistedt, “Fourier-Laguerre Transform, Convolution and Wavelets on the Ball,” *Sampling Theory and Applications (SampTA)* (2013), 329–332. [Preprint](https://arxiv.org/abs/1307.1307).
