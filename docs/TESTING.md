@@ -98,6 +98,13 @@ r^2dr quadrature normalization, zonal Legendre angular quadrature, square
 radial-zonal Kronecker orthogonality, multi-RHS matrix-free forward/adjoint
 and full-spherical rectangular sampling isometries, including P=L=1.
 
+The finite Ablowitz–Ladik suite (`tests/test_abl_ladik_cmv.m`) tests exact
+prescribed eigenphases, e1 weight evolution, the analytic finite Lax
+commutator against independent time differences for harmonics k=1,2,3,
+real Schur/dmKdV coefficient ODE reduction, fixed boundary phase, operator
+forward/adjoint and multiple RHS. Normalized finite trace moments and
+cyclic-vector moments are tested separately.
+
 `tests/test_etna_historical_examples.m` verifies ETNA §7.1 common-draw
 core columns, terminal factor, complex and real seeded realizations and
 matrix-free adjoints. The modern §7.5 inverse-OPUC analogue is tested

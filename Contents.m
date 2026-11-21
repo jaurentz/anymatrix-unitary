@@ -13,6 +13,7 @@
 %   inverse_opuc         Inverse eigenphases/positive cyclic weights to finite CMV.
 %   schur_hessenberg_flow Isospectral Hessenberg QR/Schur flow, evolving cyclic weights.
 %   discrete_schur_cmv   Positive finite CMV weight-step spectral trajectory.
+%   abl_ladik_cmv       Exact finite defocusing Ablowitz-Ladik Lax isospectral CMV.
 %   circle_polynomial_unitary Unit-circle polynomial to strict unitary core realization.
 %   opuc_matrix          General finite unitary twisted-core matrix.
 %   jacobi_szego         Jacobi-Szego/Geronimus family, four representations.

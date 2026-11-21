@@ -6053,6 +6053,36 @@ The radial physical scale tau rescales radii and weights but not the
 normalized square matrix. The quadrature nodes are not its eigenphases;
 its unit-circle trace spectral law is unknown. This family is not the
 Gaussian-weight spherical Gauss–Laguerre (SGL) transform. Sources [157,158].
+## Finite defocusing Ablowitz–Ladik / CMV Lax hierarchy — [`abl_ladik_cmv.m`](../abl_ladik_cmv.m)
+
+Nenciu's finite-dimensional CMV Lax pair is an exact unitary,
+structure-preserving evolution rather than an arbitrary discretized ODE.
+Choose n even, distinct unimodular nodes z_j constrained to give terminal
+Verblunsky coefficient -1, and strictly positive e1 weights w_j(0).
+For the k-th real Hamiltonian H_k=2 Im Tr(C^k)/k, the exact spectral
+solution is w_j(t) proportional to w_j(0)*exp(-2*t*Re(z_j^k)).
+The eigenphases z_j and equal-mass trace moments stay fixed, whereas
+cyclic spectral weights and interior Verblunsky coefficients evolve.
+
+With X_+ equal to strictly upper triangular part plus half the diagonal,
+the finite CMV matrix satisfies dC/dt = [C,B_k] for
+B_k=(C^k)_+ - ((C^k)_+)^*. The skew-Hermitian generator ensures
+isospectrality through a unitary similarity, and inverse finite OPUC
+reconstruction ensures five-diagonal CMV structure at every sampled time.
+The 'lax' mode exposes the instantaneous matrix, B, and commutator,
+which are independently tested against symmetric time differences.
+The k=1 conjugate-symmetric real subclass obeys the scalar Schur
+(discrete modified KdV) flow: alpha_j'=(1-|alpha_j|^2)
+*(alpha_(j-1)-alpha_(j+1)), with endpoint alphas -1.
+
+Output modes matrix, operator, parameters, spectral and lax all respect
+the same prescribed finite spectral data. The operator uses existing
+CMV core actions; the Lax diagnostic explicitly materializes dense C^k.
+This is not an identification of the real Schur flow with the
+complex NLS-type AL Hamiltonian 2 Re Tr(C), nor does it claim
+stability of the inverse construction for arbitrarily clustered nodes.
+Sources [5, 159, 160]; especially Nenciu (2005), Theorem 3 and
+Gekhtman–Nenciu (2008), Eq. (5.7)-(5.8).
 ## ETNA 2015 Section 7 reproducible examples — [`etna_hessenberg.m`](../etna_hessenberg.m)
 
 Alongside existing Type I/II/controlled Type III, `kind='7.1'`
@@ -6281,3 +6311,6 @@ pp. 335–336, §7, reference [8].
 
 157. B. Leistedt and J. D. McEwen, “Exact Wavelets on the Ball,” *IEEE Transactions on Signal Processing* **60** (2012). [DOI](https://doi.org/10.1109/TSP.2012.2215030); [preprint](https://arxiv.org/abs/1205.0792).
 158. J. D. McEwen and B. Leistedt, “Fourier-Laguerre Transform, Convolution and Wavelets on the Ball,” *Sampling Theory and Applications (SampTA)* (2013), 329–332. [Preprint](https://arxiv.org/abs/1307.1307).
+
+159. I. Nenciu, “Lax pairs for the Ablowitz-Ladik system via orthogonal polynomials on the unit circle,” *International Mathematics Research Notices* **2005** (2005), 647–686. [DOI](https://doi.org/10.1155/IMRN.2005.647); [preprint](https://arxiv.org/abs/math-ph/0412047).
+160. M. Gekhtman and I. Nenciu, “Multi-Hamiltonian structure for the finite defocusing Ablowitz-Ladik equation,” *Proceedings of the American Mathematical Society* **136** (2008), 2785–2792. [Preprint](https://arxiv.org/abs/0706.2428).
