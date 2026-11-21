@@ -151,6 +151,7 @@
 %   opuc_christoffel         Positive finite-circle measure transform, inverse CMV.
 %
 % Geometry, geodesics, and parallel transport:
+%   grassmann_tangent_holonomy Intrinsic real/complex Grassmann Levi-Civita tangent transport.
 %   grassmann_geodesic        Grassmann geodesic ambient unitary lift.
 %   geodesic_holonomy         Closed spherical polygon parallel transport.
 %   connection_cycle          Sparse cyclic discrete-connection transport.

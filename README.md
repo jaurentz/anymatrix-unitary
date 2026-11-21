@@ -47,7 +47,7 @@ assertSuccess(results)
 
 ## Matrix generator interfaces
 
-The collection currently has **123 public generators**. Each has a complete
+The collection currently has **124 public generators**. Each has a complete
 entry with formulas, spectral information, applications, parameter conventions,
 and references in the [matrix encyclopedia](docs/MATRIX_ENCYCLOPEDIA.md).
 The [mathematical notes](docs/MATHEMATICS.md) explain the shared OPUC engine.
@@ -534,7 +534,7 @@ The canonical `daubechies_wavelet` generator supports periodized db2, db3 and db
 
 ### Further geometry: Stiefel frames and Grassmann holonomy
 
-The canonical `stiefel_geodesic` is an ambient square unitary lift of the canonical Stiefel geodesic, with a compact O(np) action. The separate `grassmann_holonomy` computes non-Abelian tautological-bundle holonomy from polar-overlap links (not Levi-Civita tangent transport). The existing `wigner_rotation` now accepts integer and half-integer spin j; no second Wigner implementation is registered. The original Mukunda–Simon, Bendokat–Zimmermann–Absil, and Kostelec–Rockmore references are retained.
+The canonical `stiefel_geodesic` is an ambient square unitary lift of the canonical Stiefel geodesic, with a compact O(np) action. The separate `grassmann_holonomy` computes non-Abelian tautological-bundle holonomy from polar-overlap links (not Levi-Civita tangent transport). `grassmann_tangent_holonomy(n,r,frames,field,mode)` instead computes intrinsic **Levi–Civita tangent holonomy** in real Gr(r,n) (orthogonal) or complex Gr(r,n) (unitary), on the correct square tangent fiber r(n-r). Complex CP¹ tangent holonomy is exactly the inverse-square of the Berry line phase, while CP² has noncommuting U(2) tangent loops. Generic analytic finite spectra unknown; no matrix-free acceleration claimed. The existing `wigner_rotation` now accepts integer and half-integer spin j; no second Wigner implementation is registered. The original Mukunda–Simon, Bendokat–Zimmermann–Absil, and Kostelec–Rockmore references are retained.
 
 ```matlab
 S = stiefel_geodesic(128,3,[],[],[],1,'spectral');

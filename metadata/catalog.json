@@ -1803,6 +1803,22 @@
       "matrix_free_supported": false,
       "operator_kernel": null,
       "operator_note": "Reuses dense Golub-Welsch real GH basis (O(n^3) setup); exact symmetric sample-space Hamiltonian and quadrature-node basis modes; no unsupported FFT/matrix-free claim."
+    },
+    {
+      "id": "grassmann_tangent_holonomy",
+      "status": "implemented",
+      "category": "geometry",
+      "matrix_order": "d=r(n-r) intrinsic real orthogonal or complex unitary tangent map, n=2..16, 1<=r<n",
+      "representation": "minimizing Grassmann geodesic principal-angle horizontal log; intrinsic Levi-Civita parallel field exp(t Omega) V; tangent-coordinate link kron(conj(polar(Z'*Y)),Qend'*exp(Omega)*Qstart), polygon composition",
+      "spectral_reference": "complex CP1: exact inverse-square of rank-one Bargmann/Berry tautological line phase; generic real/complex Grassmann including CP2 unknown analytic finite holonomy spectrum",
+      "encyclopedia_references": [
+        97,
+        110,
+        111
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": null,
+      "operator_note": "Dense O(n^3) principal-angle SVD/expm per leg and r(n-r)-dimensional intrinsic Kronecker tangent links; not ambient n-by-n geodesic nor tautological rank-r transport; CP2 non-Abelian U(2) verified; independent Levi-Civita connection ODE tests."
     }
   ],
   "probability_measures": [
