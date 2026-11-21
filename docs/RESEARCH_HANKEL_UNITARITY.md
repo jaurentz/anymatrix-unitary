@@ -50,7 +50,12 @@ T_{jk}=\frac{2}{\sqrt{2n+1}}
 This is precisely the **DCT-VIII** (not DCT-IV): Strang's
 odd-period cosine basis with period $n+1/2$. Its exact finite
 orthogonality follows from the mixed-boundary symmetric second-difference
-eigenvectors or finite cosine sums. The newly supported
+eigenvectors or finite cosine sums. As a symmetric orthogonal matrix it
+is an involution. A completed quadratic Gauss sum of the diagonal
+cosines shows that its trace is $n\bmod 2$ and hence that the eigenvalue
+$+1$ has multiplicity $\lceil n/2\rceil$, while $-1$ has
+multiplicity $\lfloor n/2\rfloor$. The generator's spectral
+reference now records this **exact finite two-atom measure**. The newly supported
 `orthogonal_dct(n,8)` and its FFT operator in `um_dct_apply`
 supply this special case without introducing a redundant generic
 Bessel generator; `tests/test_dct_viii_bessel.m` independently
