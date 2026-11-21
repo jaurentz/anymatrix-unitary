@@ -83,6 +83,36 @@ for n=[2 3 4]
 end
 end
 
+function test_full_orthogonal_group_independent_half_adjoint_formula(tc)
+% For p=n the canonical Stiefel metric is bi-invariant on SO(n).
+% Along G(t)=exp(t*A), the moving-frame parallel Lie coordinates are
+% E(t)=exp(-t*A/2)*F*exp(t*A/2): this is an independent closed-form
+% analytical reference for the projected Lie connection implementation.
+for n=[3 4 5]
+    R=reshape(sin(1:n*n)+.21*cos(1:n*n),n,n);
+    A=.23*(R-R');
+    t=.73;
+    M=stiefel_parallel_transport(n,n,A,zeros(0,n),t,'model');
+    H=expm(t*A/2);
+    G=expm(t*A);
+    d=n*(n-1)/2;
+    reference=zeros(d);
+    for col=1:d
+        F=horizontal_core(n,M.basis_row(col),M.basis_col(col));
+        E=H'*F*H;
+        reference(:,col)=E(sub2ind([n n], ...
+            M.basis_row,M.basis_col));
+        % Physical transported tangent: G*E = H*F*H, as required
+        % for the group bi-invariant Levi-Civita connection.
+        verifyLessThan(tc,norm(G*E-H*F*H,'fro'),2e-12);
+    end
+    verifyLessThan(tc,norm(M.U-reference,'fro'),2e-11*d);
+    verifyLessThan(tc,norm(M.U'*M.U-eye(d),'fro'),2e-11*d);
+    Uback=stiefel_parallel_transport(n,n,A,zeros(0,n),-t);
+    verifyLessThan(tc,norm(Uback*M.U-eye(d),'fro'),2e-11*d);
+end
+end
+
 function test_independent_ambient_levi_civita_ode(tc)
 % Independently discretize the canonical-metric Levi-Civita equation,
 % NOT the homogeneous connection generator used in the implementation.
