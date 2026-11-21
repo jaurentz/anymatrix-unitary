@@ -104,6 +104,7 @@
 %   dirac_automaton      Periodic 1D Dirac cellular automaton (size 2n).
 %   grover_operator      Grover reflections with exact degeneracies.
 %   quantum_baker        Balazs-Voros / Saraceno quantum baker map.
+%   koopman_mpedmd        Weighted snapshot data -> Gram-Procrustes unitary Q.
 %   finite_koopman_torus   Classical finite torus Koopman permutation; exact cycles.
 %   quantum_cat_map      Finite metaplectic quantization of hyperbolic toral map.
 %   kicked_harper        Finite-torus kicked Harper Floquet map.

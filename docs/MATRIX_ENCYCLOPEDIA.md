@@ -5467,6 +5467,156 @@ Koopman spectral problem on
 infinite-dimensional spaces.
 
 
+## Data-derived metric-unitary mpEDMD Koopman models — [`koopman_mpedmd.m`](../koopman_mpedmd.m)
+
+**Physical origin.** A bijective measure-preserving transformation
+$T$ induces a unitary Koopman composition operator on $L^2(\mu)$,
+$\mathcal Kf=f\circ T$. A noninvertible measure-preserving map
+instead produces an isometry that need not be onto. Neither
+ordinary EDMD nor an arbitrary Galerkin compression is generally
+unitary. Colbrook's mpEDMD [148] uses weighted snapshot
+data and a Gram-aware orthogonal Procrustes solve
+to enforce a finite-dimensional metric isometry.
+It is distinct from `polar_unitary`, which has no
+trajectory, dictionary or measured inner-product structure.
+
+**Dictionary and snapshot inputs.** The generator accepts
+`koopman_mpedmd(n,PX,PY,weights,mode)` where
+$m\ge n$ rows of PX and PY are dictionary evaluations
+at snapshot pairs $(x_j,y_j=T(x_j))$. All observation
+weights $w_j$ are positive; their normalization is fixed by
+
+```math
+W=\mathrm{diag}(w_j/\sum_\ell w_\ell),\qquad
+G=P_X^*W P_X,\qquad A=P_X^*W P_Y.
+```
+
+The measured G must be Hermitian SPD with
+moderate condition number; duplicate or nearly
+linearly dependent dictionary vectors are rejected.
+For $H=G^{1/2}$, form
+
+```math
+B=H^{-1}A H^{-1}=U_B\Sigma V_B^*,
+\qquad Q=U_BV_B^*,\qquad Q^*Q=I.
+```
+
+This Euclidean-unitary Q is the **matrix admitted
+to the database**. The associated coefficient-space
+Koopman matrix and ordinary EDMD matrix are
+
+```math
+K_{\mathrm{mp}}=H^{-1}QH,\qquad
+K_{\mathrm{mp}}^*G K_{\mathrm{mp}}=G,\qquad
+K_{\mathrm{EDMD}}=G^{-1}A.
+```
+
+The first is **G-unitary**, generally not Euclidean
+unitary; the latter is not in general G-unitary.
+The `metric` mode exposes G, A, B,
+H, inverse H, Q, K, EDMD and cross-Gram
+singular values. The `data` mode returns
+these along with the actual sampled dictionaries,
+weights and default snapshot coordinates.
+`edmd` returns the ordinary EDMD
+comparison, **not** a certified unitary.
+
+**Published algorithm orientation.** Colbrook's public
+MATLAB `mpEDMD(G,A)` implementation
+(https://github.com/MColbrook/Measure-preserving-Extended-Dynamic-Mode-Decomposition)
+uses the SVD of $H^{-1}A^*H^{-1}=B^*$
+and computes $V_B U_B^*$ in that adjoint-SVD
+convention. This is equivalent to $\mathrm{polar}(B)$
+above. Incorrectly reversing the adjoint
+would conjugate all phases. A regression test
+independently reproduces the author's
+SVD orientation and coefficient matrix.
+
+A singular **G** is rejected; if **B** is
+rank-deficient, a full SVD still supplies
+a unitary Procrustes completion, but its
+action in the null space is **nonunique**.
+The model exposes a numerical rank and
+`rank_deficient_completion` flag
+rather than claiming that missing-data
+directions have determined phases.
+
+**Exactly soluble default.** The default dictionary
+comprises $\psi_k(x)=e^{ikx}$, $0\le k<n$,
+sampled at $m=\max(64,2n+7)$ equispaced
+points on the circle, with the rotation
+$y_j=x_j+\alpha\pmod{2\pi}$, $\alpha=0.37$.
+This invariant dictionary has $G=I$ in
+exact quadrature arithmetic and
+
+```math
+Q=\mathrm{diag}(1,e^{i\alpha},\ldots,
+e^{i(n-1)\alpha}),\quad
+\lambda_k=e^{ik\alpha},\quad
+m_\ell^{\mathrm{trace}}=\frac1n\sum_{k=0}^{n-1}\lambda_k^\ell.
+```
+
+The `spectral` mode gives this **exact finite
+trace eigenphase/moment law** only for the
+default invariant Fourier rotation. With
+arbitrary noisy or noninvariant snapshot
+dictionaries the *analytic* finite phase
+reference is `unknown`. Numerical
+eigenvalues of Q do not establish an
+infinite Koopman spectral limit [146,148].
+
+**Observable-weighted versus trace phases.**
+For any coefficient vector $c\ne0$ in
+the original (possibly nonorthogonal)
+dictionary, let $v=Hc$. If
+$Q=V\Lambda V^*$ is a unitary Schur
+diagonalization up to roundoff, then
+
+```math
+\mu_c=\sum_j
+\frac{|(V^*Hc)_j|^2}{c^*Gc}
+\,\delta_{\arg\Lambda_{jj}},\qquad
+m_\ell(c)=
+\frac{(Hc)^*Q^\ell (Hc)}{c^*Gc}.
+```
+
+The callback `spectral.observable_measure(c)`
+computes **numerical finite** eigenphases and
+positive normalized cyclic-vector weights.
+These differ from the equal $1/n$ trace weights.
+They are not certified analytic
+infinite-volume eigenphases.
+
+**Validation and cost.** The independent tests
+reproduce the original mpEDMD SVD recipe,
+compare $Q^*Q$ and $K^*GK$ with identities,
+exhibit standard EDMD non-isometry for
+noisy/noninvariant dictionaries, verify
+the default circle phases and moments,
+weight rescaling invariance, singular
+B nonuniqueness, Gram-rank rejection,
+real-data orthogonal outputs, and cyclic
+spectral-measure moments. Dense dictionary
+dimension is capped at $n\le64$ with at
+most 20,000 snapshot pairs. No
+unwarranted fast matrix-free
+action is claimed.
+
+**References:** [148] M. J. Colbrook,
+*The mpEDMD Algorithm for Data-Driven
+Computations of Measure-Preserving
+Dynamical Systems*, SINUM 2023,
+https://doi.org/10.1137/22M1521407;
+[146] Colbrook–Townsend, rigorous
+Koopman spectral computations, CPAM 2024,
+https://doi.org/10.1002/cpa.22125.
+Unlike the *exact* finite-torus permutation
+Koopman family in issue #108, mpEDMD
+approximates dynamics from measured
+snapshot dictionaries.
+
+
+
 ## Bibliography
 
 1. P. J. Davis, *Circulant Matrices*, Wiley, 1979. ISBN 9780471057710. [Library record](https://openlibrary.org/books/OL4407364M/Circulant_matrices).

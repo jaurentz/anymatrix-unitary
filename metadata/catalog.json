@@ -1834,6 +1834,21 @@
       "matrix_free_supported": true,
       "operator_kernel": "um_finite_koopman_apply",
       "operator_note": "O(m^2) permutation and adjoint actions, exact cycles/multiplicities/moments; phase-weighted dual Fourier permutation from M^T; distinct classical finite pullback from quantum cat-map quantization."
+    },
+    {
+      "id": "koopman_mpedmd",
+      "status": "implemented",
+      "category": "signal_processing",
+      "matrix_order": "n complex unitary Gram-whitened data-driven Koopman Procrustes factor, 1<=n<=64, n<=snapshot count<=20000",
+      "representation": "measured dictionary evaluations PX,PY with positive snapshot weights; Gram G=PX'*W*PX SPD, cross A=PX'*W*PY, Q=polar(G^(-1/2)*A*G^(-1/2)) Euclidean unitary; metric Koopman K=G^(-1/2)*Q*G^(1/2)",
+      "spectral_reference": "exact finite exp(+i 0.37 k) trace phases for default invariant Fourier circle rotation; general noisy/noninvariant data unknown analytic finite phases, numerical finite cyclic-vector weights exposed separately",
+      "encyclopedia_references": [
+        146,
+        148
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": null,
+      "operator_note": "Dense SVD/Gram whitening with full-rank Gram check and cross-rank nonunique completion flag. Reports numerical weighted cyclic spectral measures separately from trace, and ordinary EDMD K=G\\A, not generally unitary; no fast operator claim."
     }
   ],
   "probability_measures": [
