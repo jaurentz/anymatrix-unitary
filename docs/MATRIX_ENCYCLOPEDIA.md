@@ -3436,7 +3436,7 @@ This extends the Grassmann lift with a nonzero vertical rotation A,
 but does **not** model intrinsic Stiefel tangent-bundle parallel transport.
 The large unitary spectrum is known from a small 2p-by-2p skew-Hermitian
 eigenproblem and n-2p fixed eigenvalues. The generator computes this small
-eigenproblem for its spectral reference, not a full n-by-n eigensolve.
+eigenproblem for its spectral reference, not a full $N\times N$ eigensolve (here $N=n$).
 Operator mode stores a 2p-by-2p exponential and applies the low-rank update
 in O(np) arithmetic. Edelman–Arias–Smith [97].
 
@@ -4241,7 +4241,7 @@ momentum is a deterministic skew banded matrix;
 neither is a claimed measured physical apparatus.
 
 **Modes and trace spectral data.** The default
-`matrix` output is the first n-by-n increment,
+`matrix` output is the first $N\times N$ increment (here $N=n$),
 `model` exposes the verified first step and
 its momenta and residuals, and `trajectory`
 returns the sequence of increments, body momenta,
@@ -5057,7 +5057,7 @@ Keep **vector spectral measures** $\langle v,E_U(\cdot)v\rangle$ distinct from t
 **Different bundles and different matrix sizes.** Three
 important unitary constructions on a Grassmann manifold
 must not be confused: `grassmann_geodesic` returns
-an **ambient n-by-n** unitary implementing a prescribed
+an **ambient $N\times N$** unitary ($N=n$) implementing a prescribed
 subspace geodesic; `grassmann_holonomy` computes
 the **tautological rank-r U(r)** Berry/Wilczek–Zee
 transport around geodesic polygons; this new
