@@ -5035,6 +5035,248 @@ References [145–148] supply spectral-measure methods and data-driven Koopman b
 
 Keep **vector spectral measures** $\langle v,E_U(\cdot)v\rangle$ distinct from the **normalized trace eigenphase measure** $n^{-1}\sum_j\delta_{\theta_j}$; in general the former is not the latter. Also distinguish certified infinite-operator spectral limits from the finite sample spectrum and from smoothing-induced densities.
 
+## Intrinsic Grassmann tangent Levi–Civita holonomy — [`grassmann_tangent_holonomy.m`](../grassmann_tangent_holonomy.m)
+
+**Different bundles and different matrix sizes.** Three
+important unitary constructions on a Grassmann manifold
+must not be confused: `grassmann_geodesic` returns
+an **ambient n-by-n** unitary implementing a prescribed
+subspace geodesic; `grassmann_holonomy` computes
+the **tautological rank-r U(r)** Berry/Wilczek–Zee
+transport around geodesic polygons; this new
+`grassmann_tangent_holonomy` returns the
+**Levi–Civita transport of arbitrary tangent vectors**.
+Its square matrix has order
+
+```math
+d=r(n-r),
+\qquad
+\dim_{\mathbb R}\mathrm{Gr}_{\mathbb R}(r,n)=d,
+\qquad
+\dim_{\mathbb C}\mathrm{Gr}_{\mathbb C}(r,n)=d.
+```
+
+For **real** Grassmannians the tangent representation
+is a real $d$-by-$d$ orthogonal matrix. For
+**complex** Grassmannians with the canonical Kähler
+metric, Levi–Civita transport commutes with
+the complex structure and gives a complex
+$d$-by-$d$ unitary matrix in complex linear
+tangent coordinates. The ambient dimension
+and tautological fiber rank are **not**
+substitutes for this tangent order.
+
+**Horizontal representatives and orthonormal frames.**
+A point is an equivalence class of real or complex
+$n$-by-$r$ orthonormal frames $Y$ under
+$Y\mapsto YR$, $R\in O(r)$ or $U(r)$.
+Let $Q_Y=\mathop{\mathrm{null}}(Y^*)$ be an
+orthonormal complement and write any horizontal
+tangent as
+
+```math
+\Xi=Q_Y B,\qquad
+Y^*\Xi=0,\quad
+B\in\mathbb F^{(n-r)\times r},\qquad
+\langle\Xi,\Eta\rangle=\mathrm{tr}(B^*C).
+```
+
+Here $\mathbb F=\mathbb R$ or $\mathbb C$.
+The ordered coordinates `vec(B)` use MATLAB
+column-major vectorization and form an orthonormal
+(real or complex) tangent basis. Two vertex frames
+may be joined along their **unique minimizing
+geodesic** when all principal angles are strictly
+below $\pi/2$; a singular adjacent overlap
+is rejected as the Grassmann cut locus.
+
+**Exactly source-matched Grassmann geodesics.**
+For adjacent frames $Y,Z$ compute the polar alignment
+
+```math
+R=\mathop{\mathrm{polar}}(Z^*Y),\quad
+Z_a=ZR,\quad C=Y^*Z_a=C^*>0.
+```
+
+Let $C=V\mathop{\mathrm{diag}}(\cos\sigma_j)V^*$.
+Then the horizontal initial velocity and its
+constant skew(-Hermitian) ambient generator are
+
+```math
+\begin{aligned}
+\Delta&=(Z_a-YC)\,
+ V\mathop{\mathrm{diag}}\!\left(
+    \frac{\sigma_j}{\sin\sigma_j}\right)V^*,\\
+\Omega&=\Delta Y^*-Y\Delta^*,\qquad
+A(t)=e^{t\Omega},\\
+Y(t)&=A(t)Y,\qquad Y(1)=Z_a.
+\end{aligned}
+```
+
+The removable value $\sigma/\sin\sigma=1$
+is used at zero, and its small-angle series
+is used numerically. The formula is the
+Grassmann horizontal principal-angle geodesic
+and logarithm of Edelman–Arias–Smith [97] and
+Bendokat–Zimmermann–Absil [111]. The ambient
+lift $A(1)$ is unitary, but it is **not** the
+tangent holonomy recorded in this family.
+
+**Exact Levi–Civita parallel transport.**
+For a horizontal tangent $\Xi(0)$ at Y,
+define the vector field $\Xi(t)=A(t)\Xi(0)$.
+Since $\Omega$ has only off-diagonal blocks
+between $\mathrm{span}Y$ and its
+orthogonal complement, its derivative
+$\dot\Xi(t)=\Omega\Xi(t)$ lies in
+$\mathrm{span}Y(t)$. Hence its
+horizontal covariant derivative is zero:
+
+```math
+\left(I-Y(t)Y(t)^*\right)\dot\Xi(t)=0.
+```
+
+This directly proves **Levi–Civita parallel
+transport**, not merely projection or
+first-order vector transport. It preserves
+the tangent Frobenius metric and carries
+the geodesic velocity to the endpoint
+geodesic velocity.
+
+To express the transported tangent in
+the **target's own fixed orthonormal
+frames** $(Z,Q_Z)$, use
+
+```math
+\begin{aligned}
+S&=Q_Z^*A(1)Q_Y\in U(n-r),\\
+B_{\mathrm{end}}&=S\,B_{\mathrm{start}}\,R^*,\\
+\mathrm{vec}(B_{\mathrm{end}})
+ &=\left(\overline R\otimes S\right)
+   \mathrm{vec}(B_{\mathrm{start}}).
+\end{aligned}
+```
+
+For real data replace $U$ by $O$.
+Thus each **intrinsic tangent link**
+$T=\overline R\otimes S$ is a square
+$d$-by-$d$ unitary (real orthogonal when
+appropriate). The closed polygon's
+Levi–Civita holonomy is the ordered
+product of these tangent links, **not**
+a product of ambient A matrices or
+the product of the rank-r alignment R's.
+
+**Gauge covariance, inverse paths and validation.**
+Changing local orthonormal Y frames at the
+vertices transforms tangent-coordinate
+matrices covariantly. A closed-loop change
+at its base is a unitary similarity,
+preserving the eigenphases. Reversing a
+polygon gives the inverse holonomy. Tests
+verify all horizontal constraints and
+isometries, inverse-path composition,
+base-fiber gauge covariance, and the
+parallelism of geodesic velocity.
+An **independent** connection ODE on each
+geodesic,
+
+```math
+\dot\Xi(t)=
+-Y(t)\big(\dot Y(t)^*\Xi(t)\big),
+```
+
+is integrated with fourth-order Runge–Kutta
+and compared to $A(t)\Xi(0)$.
+This numerical differential check is
+separate from the algebraic unitary
+product that defines the generator.
+
+**Complex projective geometry and scalar versus
+matrix-valued holonomy.** For
+$\mathbb{CP}^{m}
+=\mathrm{Gr}_{\mathbb C}(1,m+1)$,
+the tautological bundle is a **complex
+line** with a scalar Berry phase, whereas
+the **tangent bundle has complex rank m**.
+For $m=1$ ($\mathbb{CP}^1$), the
+Fubini–Study metric in the standard
+normalization has Gaussian curvature $4$.
+With the current sign convention, for a
+geodesic polygon of unit line frames
+$y_j$ the Berry holonomy and intrinsic
+tangent holonomy satisfy the exact scalar
+relationship
+
+```math
+\beta=\prod_j
+\frac{y_{j+1}^*y_j}{|y_{j+1}^*y_j|},
+\qquad
+U_{\mathrm{tangent}}=\overline{\beta}^{\,2}.
+```
+
+The **square-inverse** is essential: using
+$\beta$ itself would incorrectly classify
+tautological U(1) line holonomy as
+Levi–Civita tangent holonomy. In terms
+of the Fubini–Study signed area, the
+tangent phase has curvature-4 scale,
+twice the Berry-line phase magnitude.
+The `spectral` mode reports
+this **exact finite single-eigenvalue
+trace measure** for complex CP¹ without
+calling eig(U).
+
+For $m=2$, a closed CP² loop acts on a
+**genuine two-dimensional complex
+tangent fiber**. Tests construct two
+loops occupying different, overlapping
+complex directions and verify the
+resulting $2$-by-$2$ matrices do **not
+commute**, a simple concrete manifestation
+of non-Abelian $U(2)$ tangent holonomy.
+This is different from two scalar
+Berry phases associated with the
+tautological line.
+
+**Spectrum, limits and cost.** Except for
+the explicitly solvable CP¹ scalar
+relationship, a generic Grassmann
+geodesic polygon has no claimed
+analytical finite trace eigenphase
+law. The `spectral` mode marks it
+`unknown`, even though the
+finite holonomy matrix itself can be
+diagonalized numerically for exploratory
+studies. No CUE/COE law or limiting
+density is asserted. The model's
+`model` mode exposes the
+per-leg geodesic velocities, ambient
+unitary lifts, polar alignments, orthogonal
+complement changes, and intrinsic
+tangent links, allowing independent
+metric and covariance checks.
+
+The implementation uses dense SVD
+and matrix exponentials of the
+$n$-by-$n$ ambient geodesic generators,
+with $2\le n\le16$. The intrinsic
+$d$-by-$d$ links are Kronecker products;
+**there is no claimed matrix-free
+speedup** from this dense construction.
+Future fast exponential-action techniques
+may change that assessment.
+
+**References:** Edelman–Arias–Smith
+[97] for Grassmann geodesics and
+horizontal geometry; Bendokat–Zimmermann–
+Absil [111] for canonical Grassmann
+Levi–Civita transport and the cut locus;
+Mukunda–Simon [110] for the contrasting
+tautological geometric-phase convention.
+
+
+
 ## Bibliography
 
 1. P. J. Davis, *Circulant Matrices*, Wiley, 1979. ISBN 9780471057710. [Library record](https://openlibrary.org/books/OL4407364M/Circulant_matrices).
