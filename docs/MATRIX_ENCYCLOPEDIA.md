@@ -4024,8 +4024,7 @@ by contrast, leaves ideal $\delta=0$ pairing exact.
 **Efficient construction.** Let C be the product of
 nearest-neighbor CZ gates (including the closing bond
 for periodic chains). Then
-$\exp(-i\sum_{j\in J}\theta_jK_j)=
-C[\prod_{j\in J}\exp(-i\theta_jX_j)]C$.
+$\exp(-i\sum_{j\in J}\theta_jK_j)=C[\prod_{j\in J}\exp(-i\theta_jX_j)]C$.
 The generator implements the chronological CZ, X-rotation,
 CZ and pulse gate sequence using existing
 `um_circuit_apply`/`um_gate_apply`.
@@ -5194,8 +5193,7 @@ product that defines the generator.
 
 **Complex projective geometry and scalar versus
 matrix-valued holonomy.** For
-$\mathbb{CP}^{m}
-=\mathrm{Gr}_{\mathbb C}(1,m+1)$,
+$\mathbb{CP}^{m}=\mathrm{Gr}_{\mathbb C}(1,m+1)$,
 the tautological bundle is a **complex
 line** with a scalar Berry phase, whereas
 the **tangent bundle has complex rank m**.
@@ -5697,13 +5695,11 @@ right-hand sides.
 
 **Exact cyclic CMV-factor identity.**
 Introduce an on-site flip
-$F=\bigoplus_{j=0}^{n-1}
-\begin{bmatrix}0&1\\1&0\end{bmatrix}$.
+$F=\bigoplus_{j=0}^{n-1}\begin{bmatrix}0&1\\1&0\end{bmatrix}$.
 The conditional shift factors as
 $S=FM$, where M swaps the
 neighboring odd/even intersite pairs
-$|j,+\rangle\leftrightarrow
-|j+1,-\rangle$ around the ring;
+$|j,+\rangle\leftrightarrow |j+1,-\rangle$ around the ring;
 the boundary pair carries
 the twist $e^{\pm i\beta}$.
 The local identity is

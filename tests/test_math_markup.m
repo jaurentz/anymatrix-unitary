@@ -5,8 +5,9 @@ end
 
 function test_display_math_fences(tc)
 root=fileparts(fileparts(mfilename('fullpath')));
-paths={'docs/MATRIX_ENCYCLOPEDIA.md','docs/MATHEMATICS.md','README.md'};
-minimum=[15 10 1];
+paths={'docs/MATRIX_ENCYCLOPEDIA.md','docs/MATHEMATICS.md','README.md', ...
+       'docs/STRUCTURED_OPERATORS.md','docs/SPECTRAL_REFERENCE.md'};
+minimum=[15 10 1 9 1];
 for j=1:numel(paths)
     s=fileread(fullfile(root,paths{j}));
     starts=regexp(s,'(?m)^```math\r?$','match');
@@ -72,4 +73,37 @@ readme=fileread(fullfile(root,'README.md'));
 verifyTrue(tc,contains(readme,'\alpha_{2k}'));
 verifyTrue(tc,contains(readme,'\alpha_{2k+1}'));
 verifyTrue(tc,contains(readme,'examples/unit_circle_spectral_bands.m'));
+end
+
+function test_all_public_math_notation(tc)
+% Check GitHub-compatible delimiters, macros and single-line inline math.
+root=fileparts(fileparts(mfilename('fullpath')));
+paths={'README.md','docs/MATHEMATICS.md','docs/MATRIX_ENCYCLOPEDIA.md', ...
+       'docs/STRUCTURED_OPERATORS.md','docs/SPECTRAL_REFERENCE.md'};
+for j=1:numel(paths)
+    s=fileread(fullfile(root,paths{j}));
+    verifyFalse(tc,contains(s,'\operatorname'),paths{j});
+    verifyFalse(tc,contains(s,'\DeclareMathOperator'),paths{j});
+    verifyFalse(tc,contains(s,'\newcommand'),paths{j});
+    verifyFalse(tc,contains(s,'\tag{'),paths{j});
+    verifyFalse(tc,contains(s,'\('),paths{j});
+    verifyFalse(tc,contains(s,'\)'),paths{j});
+    verifyEmpty(tc,regexp(s,'(?m)^\s*\\\[\s*$','match'),paths{j});
+    verifyEmpty(tc,regexp(s,'(?m)^\s*\\\]\s*$','match'),paths{j});
+    lines=splitlines(string(s));
+    inFence=false;
+    for k=1:numel(lines)
+        line=strtrim(lines(k));
+        if startsWith(line,"```") || startsWith(line,"~~~")
+            inFence=~inFence;
+            continue
+        end
+        if inFence
+            continue
+        end
+        dollars=regexp(char(lines(k)),'(?<!\\)\$','match');
+        verifyEqual(tc,mod(numel(dollars),2),0, ...
+            sprintf('Unpaired inline math delimiter in %s line %d',paths{j},k));
+    end
+end
 end

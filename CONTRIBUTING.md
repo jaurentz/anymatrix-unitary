@@ -59,6 +59,6 @@ Use fenced GitHub display mathematics, for example:
 ```
 ````
 
-Bare `$` or `$$` lines are not supported display delimiters.
+Although GitHub supports standalone `$` delimiters, this repository uses fenced `math` blocks for display mathematics to make rendering consistent.
 Run `test_math_markup` in the MATLAB test suite and inspect the actual
 rendered GitHub document before merging changes to mathematical notation.

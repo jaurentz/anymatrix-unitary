@@ -86,10 +86,10 @@ rather than fabricating spectral formulas or silently calling eig().
 
 For U of order N, the finite empirical measure is
 
-\[
+```math
  \mu_N=\frac{1}{N}\sum_{j=1}^{N}\delta_{\arg\lambda_j},
- \qquad m_k=\frac{\operatorname{tr}(U^k)}{N}.
-\]
+ \qquad m_k=\frac{\mathop{\mathrm{tr}}(U^k)}{N}.
+```
 
 It is atomic regardless of the presence of a smooth limiting density.
 For quantum walks and OPUC models, limit and finite quantities may differ,

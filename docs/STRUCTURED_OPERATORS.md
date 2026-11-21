@@ -11,7 +11,7 @@ It complements [MATRIX_FREE.md](MATRIX_FREE.md) (the actual MATLAB function-hand
 
 ## 1. What counts as efficient?
 
-Let $N$ denote the **matrix order** (not the number of qubits, grid points before doubling, tensor modes, or physical sites). Complexity figures below refer to one arbitrary dense vector after any stated setup; multiple right-hand sides usually scale with their count. Let $s=\operatorname{nnz}(U)$, $b$ be a fixed bandwidth/block size, $r$ a low-rank parameter, $g$ a number of local gates/cores, and $L$ a number of tensor factors.
+Let $N$ denote the **matrix order** (not the number of qubits, grid points before doubling, tensor modes, or physical sites). Complexity figures below refer to one arbitrary dense vector after any stated setup; multiple right-hand sides usually scale with their count. Let $s=\mathop{\mathrm{nnz}}(U)$, $b$ be a fixed bandwidth/block size, $r$ a low-rank parameter, $g$ a number of local gates/cores, and $L$ a number of tensor factors.
 
 Four separate attributes must be recorded:
 
@@ -57,7 +57,7 @@ Entries marked **conditional** require hypotheses such as bounded ranks, particu
 | Generic unstructured dense unitary/orthogonal | $\Theta(N^2)$ | $\Theta(N^2)$ standard action | Haar, generic polar/Procrustes; no general subquadratic exact representation (§5A) |
 | Dense complete transform without verified fast action | Typically $\Theta(N^2)$ explicit; defining parameters may be much fewer | $\Theta(N^2)$ direct; fast complete action unverified | Full DPSS and arbitrary graph Fourier; **not** an impossibility claim (§5A) |
 | Rational action of a sparse Hermitian matrix (Cayley) | Sparse factors / factorizations | Sparse solve cost, sometimes $O(N)$ | Exact mathematical unitary; cost depends on fill and factorization |
-| Exponential of sparse skew-Hermitian generator | $O(\operatorname{nnz}(H))$ generator | **Accuracy- and time-dependent** action | $\exp(H)$ is exactly unitary mathematically but generally dense; applied approximately |
+| Exponential of sparse skew-Hermitian generator | $O(\mathop{\mathrm{nnz}}(H))$ generator | **Accuracy- and time-dependent** action | $\exp(H)$ is exactly unitary mathematically but generally dense; applied approximately |
 
 For a sequence of families, **subquadratic** requires the ranks, bandwidths, gate counts, tensor dimensions or other parameters to grow slowly enough with $N$. Big-O claims made for fixed parameters must not be applied when those parameters scale with $N$.
 
@@ -65,7 +65,7 @@ For a sequence of families, **subquadratic** requires the ranks, bandwidths, gat
 
 ### 3.1 Diagonal, monomial and block-diagonal
 
-If $D=\operatorname{diag}(e^{i\theta_j})$, then $D$ is unitary and both its storage and multiplication are linear. A **monomial unitary** $U=DP$, with $P$ a permutation, is equally economical. Weighted cycles have explicitly computable eigenphases, making them particularly useful spectral benchmarks.
+If $D=\mathop{\mathrm{diag}}(e^{i\theta_j})$, then $D$ is unitary and both its storage and multiplication are linear. A **monomial unitary** $U=DP$, with $P$ a permutation, is equally economical. Weighted cycles have explicitly computable eigenphases, making them particularly useful spectral benchmarks.
 
 A direct sum $U=\bigoplus_j U_j$ is unitary if and only if each block is unitary. Bounded block sizes give linear storage/action, while a single growing dense block may dominate the cost. Relevant repository families: [diagonal_phase](../diagonal_phase.m), [weighted_shift](../weighted_shift.m), [cycle_shift](../cycle_shift.m), [orthogonal_blocks](../orthogonal_blocks.m), and [jaynes_cummings](../jaynes_cummings.m).
 
@@ -75,12 +75,12 @@ A direct sum $U=\bigoplus_j U_j$ is unitary if and only if each block is unitary
 ### 3.2 Banded, CMV and block-CMV
 
 For scalar finite CMV matrices,
-$$
+```math
 \Theta(\alpha)=
 \begin{pmatrix}\overline\alpha&\rho\\ \rho&-\alpha\end{pmatrix},
 \quad \rho=(1-|\alpha|^2)^{1/2},\quad |\alpha|<1,\qquad
 \mathcal C=\mathcal L\mathcal M,
-$$
+```
 where $\mathcal L,\mathcal M$ are alternating direct sums of these $2\times2$ cores, with an appropriate **unit-modulus terminal boundary parameter**. This constructs a five-diagonal finite unitary. For fixed-size matrix-valued Verblunsky coefficients, block-CMV analogues have bounded block bandwidth. They remain $O(Nb)$ in stored entries for fixed block size $b$, but the boundary and contractivity constraints are essential [1–3].
 
 Do **not** call a general unitary upper-Hessenberg matrix sparse merely because it is represented by the same core data: it usually has many nonzeros above its first subdiagonal. See [finite_cmv](../finite_cmv.m), [opuc_matrix](../opuc_matrix.m), [block_cmv_pencil](../block_cmv_pencil.m), and [MATRIX_FREE.md](MATRIX_FREE.md).
@@ -100,9 +100,9 @@ Coin-plus-shift quantum walks, closed directed scattering networks, and block ph
 ### 4.1 Adjacent cores, unitary Hessenberg, CMV snakes
 
 An upper-Hessenberg unitary can be represented as
-$$
+```math
 U=G_1G_2\cdots G_{N-1}D,
-$$
+```
 where $G_j$ acts nontrivially on adjacent coordinates and $D$ is a suitable terminal diagonal phase. This representation has $O(N)$ parameters and an $O(N)$ forward/adjoint action **without constructing the usually dense Hessenberg matrix**. Reordering the same local cores gives CMV, inverse-Hessenberg and snake/twisted representations, with potentially different explicit nonzero patterns [1–4].
 
 A chain of $O(N)$ cores is genuinely linear-time, whereas an arbitrary full Reck/Clements-style optical mesh of $O(N^2)$ cores is not. See [etna_hessenberg](../etna_hessenberg.m), [js_core_product](../js_core_product.m), and [um_core_apply](../um_core_apply.m). Distinguish **storage and matvec cost** from the complexity of a particular structured QR/QZ eigenvalue algorithm.
@@ -130,9 +130,9 @@ The literature proves important spectral-equivalence results: for compatible coe
 There are **two distinct meanings** of “X-shaped” that must not be conflated:
 
 **(A) Literal X-shaped nonzero pattern.** Define $J$ as the reversal permutation, $Je_j=e_{N+1-j}$. An X-pattern matrix has
-$$
+```math
 U_{ij}=0 \quad\text{unless}\quad j=i\ \text{or}\ j=N+1-i.
-$$
+```
 In a basis ordered by mirrored pairs $(e_j,e_{N+1-j})$, it is a direct sum of $2\times2$ blocks (plus a possible central $1\times1$ block for odd $N$). It is **unitary if and only if** every mirrored-pair block is unitary and the central entry (if present) has modulus one. It has at most $2N$ nonzeros, and therefore **$O(N)$ storage and multiply**. The entire matrix class is exactly analyzable as pairwise $2\times2$ scattering/rotation blocks. Applications: elementary beam-splitter pairings, paired reflections, mirror couplers and exactly soluble sparse orthogonal spectral benchmarks. This is a different sparse pattern from finite five-diagonal CMV.
 
 **(B) X-shaped *Givens-product factorization*.** In [Van Barel, *Unitary rank structured matrices*, *J. Comput. Appl. Math.* (2008)](https://doi.org/10.1016/j.cam.2007.03.020), the **X-shaped factorization** is a diagram of two crossing Givens-product branches produced during the *block pull-through* process (in particular Figure 5.3), not a claim that the **entries of the resulting matrix** occur only on the diagonal and antidiagonal. It describes efficient representations and reordering of **unitary rank-structured matrices**, and the factor count/rank profile determines the action complexity. This should be cross-indexed with **quasiseparable unitary** representations in §5.1.
@@ -142,13 +142,13 @@ In a basis ordered by mirrored pairs $(e_j,e_{N+1-j})$, it is a direct sum of $2
 ### 4.2 Reflections and constrained low-rank updates
 
 A unitary rank-one phase update is
-$$
+```math
 R(v,\phi)=I+(e^{i\phi}-1)vv^*,\qquad v^*v=1.
-$$
+```
 The Householder reflector is $\phi=\pi$. Its action is $x+(e^{i\phi}-1)v(v^*x)$, requiring $O(N)$ work. More generally, with $V^*V=I_r$, $K\in U(r)$, and a fast unitary $U_0$,
-$$
+```math
 U=U_0\bigl[I+V(K-I_r)V^*\bigr]
-$$
+```
 is **exactly unitary**, stores $V,K$ plus $U_0$, and costs $T(U_0)+O(Nr+r^2)$ per vector. The Hermitian projector $VV^*$ makes this an invariant-subspace unitary update. An arbitrary $U_0+XY^*$ is **not** automatically unitary.
 
 Relevant examples: [grover_operator](../grover_operator.m), [unitary_rank_one_update](../unitary_rank_one_update.m), [entangled_reflection](../entangled_reflection.m), and geometrically motivated low-rank transport maps. [References 4, 5.]
@@ -158,10 +158,10 @@ Relevant examples: [grover_operator](../grover_operator.m), [unitary_rank_one_up
 
 ### 4.3 FFT-diagonal, circulant, Fourier and chirp factorizations
 
-Let $F$ be the normalized DFT and $D=\operatorname{diag}(e^{i\phi_j})$. Then
-$$
+Let $F$ be the normalized DFT and $D=\mathop{\mathrm{diag}}(e^{i\phi_j})$. Then
+```math
 U=F^*DF
-$$
+```
 is an exactly unitary **circulant** matrix, generally dense, with $O(N)$ stored phases and $O(N\log N)$ matvecs. Multiplying several diagonal and Fourier stages (e.g., $D_1F^*D_2F$) retains unitary structure; complexity is proportional to the number of FFT stages. Not every Toeplitz matrix is unitary, and the fact that a Toeplitz matrix is FFT-multipliable is **not** a proof of unitarity.
 
 Related exactly normalized Fourier, DCT/DST, Hartley, Zak, Weyl–Heisenberg and Walsh constructions exploit FFT, permutations, diagonal chirps, or fast butterfly recursions. Conventional DCT/DST type and endpoints matter. Examples: [phase_circulant](../phase_circulant.m), [kicked_harper](../kicked_harper.m), [discrete_fourier](../discrete_fourier.m), [orthogonal_dct](../orthogonal_dct.m), [discrete_sine](../discrete_sine.m), [walsh_hadamard](../walsh_hadamard.m), and [affine_fourier](../affine_fourier.m). [References 6, 7.]
@@ -174,9 +174,9 @@ Related exactly normalized Fourier, DCT/DST, Hartley, Zak, Weyl–Heisenberg and
 Orthonormal compactly supported wavelet transforms have a fast multilevel filter-bank algorithm. For a fixed filter length, the ordinary decimated discrete wavelet transform typically requires $O(N)$ operations even though its complete matrix is not usually banded. A finite transform is orthogonal only for **compatible normalization and boundary extension**.
 
 More generally, if
-$$
+```math
 U=S_mS_{m-1}\cdots S_1,\qquad S_j^*S_j=I,
-$$
+```
 then $U$ is exactly unitary. Storage and action cost are respectively the **sum** of stored stage data and work across stages. This covers local gate circuits, Fourier butterflies, optical networks, lossless filter banks and many Floquet models. It does not imply fast application without a stage-count bound [6–8]. See [daubechies_wavelet](../daubechies_wavelet.m), [optical_mesh](../optical_mesh.m), [dual_unitary_circuit](../dual_unitary_circuit.m), and [orthogonal_butterfly](../orthogonal_butterfly.m).
 
 
@@ -194,9 +194,9 @@ See [haar_tensor_power](../haar_tensor_power.m), [haar_block_tensor_power](../ha
 ### 4.6 Cayley transforms and rational implicit operators
 
 For Hermitian $H$, the Cayley transform
-$$
+```math
 U=(H-iI)(H+iI)^{-1}
-$$
+```
 is exactly unitary and is generally dense even when $H$ is sparse. Applying it through an already factored shifted sparse system can be inexpensive. For Hermitian tridiagonal $H$, banded solves are $O(N)$ after $O(N)$ setup; higher-dimensional sparse problems may have substantial fill. Never claim $O(N)$ for arbitrary sparse matrices or ill-conditioned solves. [References 4, 9.] See [cayley_jacobi](../cayley_jacobi.m), [nonuniform_fem_wave](../nonuniform_fem_wave.m), and [um_cayley_apply](../um_cayley_apply.m).
 
 Likewise, $\exp(iH)$ is unitary for Hermitian $H$, but applying it with Krylov, Taylor, Chebyshev or other exponential-action methods is usually **approximate** and iteration/degree dependent. Store the sparse generator; do not infer that the exponential is sparse or that its action has a uniform linear-time bound [10]. The existing [IMPLEMENTATION_AUDIT.md](IMPLEMENTATION_AUDIT.md) documents these distinctions.
@@ -229,9 +229,9 @@ Semiseparable terminology varies across sources; record the precise rank definit
 ### 5.3 Toeplitz, Hankel, Vandermonde, Cauchy and displacement rank
 
 Low displacement rank means that an operator such as
-$$
+```math
 \nabla_{A,B}(M)=AM-MB
-$$
+```
 (or the Stein analogue) has low rank, so that the structured matrix can be described by generator matrices plus the displacement pair. Toeplitz-like, Cauchy-like and Vandermonde-like classes are key examples. Suitable displacement operators support fast or superfast matvec algorithms, but their complexity and conditioning depend on the operators, nodes, representation and preprocessing [15, 16].
 
 **An arbitrary Toeplitz, Hankel, Cauchy, or Vandermonde matrix is not unitary.** In a unitary database this heading is a *candidate structural representation*, not an independent guarantee of unitary admissibility. Fourier, orthogonal-polynomial and specially normalized transform matrices can exhibit overlapping displacement and fast-transform structure.
