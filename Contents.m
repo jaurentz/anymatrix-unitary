@@ -57,7 +57,8 @@
 %   discrete_fourier     Normalized DFT and exact fourth-root spectrum.
 %   discrete_sine        Orthonormal DST-I, II, III, IV transforms.
 %   walsh_hadamard       Natural/sequency ordered fast Walsh transform.
-%   dpss_transform       Explicit Slepian concentration eigenbasis.
+%   dpss_transform       Explicit 1D Slepian concentration eigenbasis.
+%   spherical_slepian    Real spherical polar-cap Slepian orthogonal eigenbasis.
 %   graph_fourier        Explicit weighted-graph Laplacian eigenbasis.
 %   blaschke_potapov    Rational inner / lossless rank-one product frequency response.
 %   paraunitary_fir     Multichannel FIR polyphase, exact finite periodic unitary.
@@ -80,6 +81,7 @@
 %   gauss_hermite_transform  Hermite Gauss-quadrature orthogonal basis.
 %   hermite_oscillator    Finite GH harmonic oscillator; exact fractional phase flow.
 %   gauss_laguerre_transform Generalized Laguerre quadrature basis.
+%   fourier_laguerre_ball  3D radial-zonal Fourier-Laguerre, exact square tensor and rectangular sampling.
 %   wigner_rotation         Irreducible SO(3) unitary representation.
 %   spherical_harmonic_rotation Direct sum of Wigner blocks.
 %   periodic_sinc_shift     Real circulant fractional shift, FFT.

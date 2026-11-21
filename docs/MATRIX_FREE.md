@@ -126,3 +126,10 @@ fixed SEED and returns exact eigenphase products and moments of that
 *particular sample*, computed from only its d-by-d base factors. These are
 not ensemble means. No nonuniform finite-n ensemble density is asserted
 for the tensor-power constructions.
+
+The square radial-zonal `fourier_laguerre_ball` transform uses `um_tensor_apply`
+with precomputed dense Gaussian radial (P by P) and zonal Legendre (L by L)
+factors. Applying its P*L orthogonal tensor costs O(P*L*(P+L)) per RHS and
+stores O(P^2+L^2) coefficients after O(P^3+L^3) setup; there is no claim
+of a linear- or FFT-time algorithm. Its separately exposed full-spherical
+sampling output is rectangular rather than unitary.
