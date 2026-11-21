@@ -123,3 +123,10 @@ interpret the presence of tests as evidence that they passed.
 
 **Source:** unitary_spectral_reference.m; this is an extension within the
 unitary group, not a patch to upstream Higham--Mikaitis Anymatrix.
+
+For `geronimus_cmv`, `S.underlying.density(theta)` is the **infinite**
+constant-Verblunsky distinguished-vector absolutely continuous density.
+`S.underlying.atoms` records an additional atom when present, and
+`S.underlying.poisson_density(theta,r)` analytically smooths their sum
+for `0<=r<1`. None of these is the finite equal-weight trace measure;
+finite CMV eigenphases and cyclic weights must be computed separately.

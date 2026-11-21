@@ -5956,6 +5956,50 @@ mode; numerical large-time QR rank breakdown is detected. This
 is a nonlinear isospectral deformation, **not** `exp(i*tau*J0)`.
 Sources [23, 153].
 
+
+## Geronimus CMV spectral-measure benchmark — [`geronimus_cmv.m`](../geronimus_cmv.m) and [`szego_geronimus_measure.m`](../szego_geronimus_measure.m)
+
+The existing finite CMV generator admits **complex** constant Verblunsky
+coefficients `a` with `|a|<1`, while its last coefficient is a unit
+boundary phase. The infinite e1 OPUC measure has an explicitly known
+Lebesgue decomposition, *not* a finite CMV trace-density formula.
+Set `theta_a=2*asin(|a|)` and `b=2*arg(1+conj(a))`.
+Its absolutely continuous density relative to `dtheta` on
+`|theta|>theta_a` (principal circle angle) is
+
+```math
+\rho_a(\theta)=\frac{\sqrt{\sin^2(\theta/2)-|a|^2}}
+{2\pi|1+a|\,|\sin((\theta-b)/2)|}.
+```
+
+If `real(a)+|a|^2>0`, it also has an atom at angle `b` of mass
+
+```math
+m_a=\frac{2(\mathrm{Re}\,a+|a|^2)}{|1+a|^2};
+```
+
+otherwise `m_a=0`. In the real case `a=0.8` this is an atom of
+mass `8/9` at phase zero plus continuous mass `1/9`;
+for `a=-0.4` there is no atom. The `a=0` special case has
+uniform density `1/(2*pi)`. The measure is implemented through
+`js_geronimus_density` and the exact Poisson smoothing
+`js_geronimus_poisson`, computed from the constant-coefficient Schur
+fixed point and its Carathéodory function, not by sampling a finite CMV.
+
+The `'spectral'` output of `geronimus_cmv` exposes this formula only
+in `S.underlying` (infinite distinguished-vector measure), and gives
+the *essential* finite-size limiting support in `S.limit`.
+No absolutely continuous spectral mass exists at any finite order.
+For finite-order comparisons, compute eigenpairs of
+`geronimus_cmv(n,a,'cmv',beta)` and distinguish the `e1` weights
+`|v_j(1)|^2` from equal-mass trace weights `1/n`. The terminal
+phase `beta` changes the discrete nodes, and the fixed-radius
+Poisson smoothing of the cyclic measure converges to the infinite
+underlying Poisson-smoothed density. The Rogers–Szegő smooth
+wrapped-Gaussian measure is a complementary control.
+See Colbrook, CMP 384 (2021), Section 6.3, reference [147]; Simon,
+OPUC, reference [5].
+
 ## Bibliography
 
 1. P. J. Davis, *Circulant Matrices*, Wiley, 1979. ISBN 9780471057710. [Library record](https://openlibrary.org/books/OL4407364M/Circulant_matrices).
