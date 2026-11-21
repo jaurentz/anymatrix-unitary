@@ -7225,8 +7225,18 @@ existing independent `Type I` coefficients are intentionally distinct.
 analogue** of the known-spectrum Example 7.5: equally spaced unit
 circle eigenphases, deterministic seeded strictly positive cyclic
 weights, and an inverse finite Hessenberg core realization. The
-real model pairs conjugate weights. The `parameters` output includes
-finite forward eigenphase error for n<=64. This uses our `inverse_opuc`
+real model pairs conjugate weights. For n<=64, the `parameters`
+output independently diagonalizes the generated Hessenberg matrix
+and reports **two distinct** forward diagnostics: the maximum
+computed-eigenvalue/node distance, and the maximum discrepancy
+between prescribed cyclic weights and $|v_j(1)|^2$ from independently
+computed normalized eigenvectors. Nearest-node matching must be
+bijective; the output flags nonunique matching rather than supplying
+a misleading weight-error number. For larger n, both diagnostics
+are `NaN` because a dense eigensolve is deliberately not done.
+This distinction matters: the **trace** eigenphase measure has
+weights $1/n$, while the supplied weights characterize the cyclic
+$e_1$ spectral measure. This uses our `inverse_opuc`
 method, NOT the original Mach--Van Barel--Vandebril software cited
 in ETNA Example 7.5. Consequently one must NOT attribute the
 historical complex-generator failure for n>100, or its exact
