@@ -5467,6 +5467,290 @@ Koopman spectral problem on
 infinite-dimensional spaces.
 
 
+
+## Electric quantum walks and finite skew-shift CMV-factor models — [`electric_quantum_walk.m`](../electric_quantum_walk.m)
+
+**Physical motivation and honest finite closure.**
+The electric quantum walk of Cedzich–Werner [149]
+and Yang [150] is a two-component, discrete-time
+shift-and-coin dynamics on the **infinite** lattice
+$\mathbb Z$, with a phase increasing linearly
+with lattice position. Its relation to
+skew-shift CMV operators is central
+to spectral localization and interval-spectrum
+results. The database contains a **finite
+cyclic ring** of $n$ sites, so the matrix is
+$2n$-by-$2n$ and strictly unitary for all
+admissible real field parameters. An
+irrational field $\omega$ used on this
+finite ring is only a finite window
+closed by a unitary boundary link:
+it is **not** an infinite irrational
+periodic operator. Infinite-volume
+Anderson localization or full-circle
+spectrum theorems [149,150] cannot
+be inferred from a single finite
+ring's eigenvalue plot.
+
+**Exact basis, coin, shift, and phases.**
+Use sites $j=0,\ldots,n-1$ and
+the site-interleaved basis
+$|j,-\rangle,|j,+\rangle$, flattened
+with indices $2j+1,2j+2$.
+For $0\le\gamma\le\pi/2$,
+let $a=\cos\gamma$ and
+$b=\sin\gamma$. Our real
+$SU(2)$ coin, in this ordered
+minus/plus convention, is
+
+```math
+C_\gamma=
+\begin{bmatrix}a&b\\-b&a\end{bmatrix}.
+```
+
+The conditional shift S acts as
+
+```math
+S|j,-\rangle=|j-1,-\rangle,\qquad
+S|j,+\rangle=|j+1,+\rangle,
+```
+
+with site positions interpreted modulo n
+and a boundary twist $\beta$ **in radians**:
+minus crossing the left wrap picks up
+$e^{-i\beta}$, plus crossing the
+right wrap $e^{i\beta}$.
+For electric strength $\omega$ and
+global offset $\vartheta$, both
+measured in cycles, the electric
+potential is the **output-site**
+diagonal operator
+
+```math
+D|j,\pm\rangle
+=e^{2\pi i(\vartheta+j\omega)}|j,\pm\rangle,
+\qquad
+W=D(I_n\otimes C_\gamma)S.
+```
+
+The finite matrix W is unitary because
+all three factors are unitary. Explicit
+sparse output is supported for
+$3\le n\le2048$, and sparse
+forward/adjoint/transpose actions
+for $n\le10^5$. Complex transpose
+and conjugate transpose are
+**distinct** when the electric phase
+or boundary twist is nontrivial;
+the operator implementation handles
+both correctly for multiple
+right-hand sides.
+
+**Exact cyclic CMV-factor identity.**
+Introduce an on-site flip
+$F=\bigoplus_{j=0}^{n-1}
+\begin{bmatrix}0&1\\1&0\end{bmatrix}$.
+The conditional shift factors as
+$S=FM$, where M swaps the
+neighboring odd/even intersite pairs
+$|j,+\rangle\leftrightarrow
+|j+1,-\rangle$ around the ring;
+the boundary pair carries
+the twist $e^{\pm i\beta}$.
+The local identity is
+
+```math
+C_\gamma
+\begin{bmatrix}0&1\\1&0\end{bmatrix}
+=\begin{bmatrix}b&a\\a&-b\end{bmatrix}
+=\Theta(b),\qquad
+\Theta(\alpha)=
+\begin{bmatrix}\overline{\alpha}&\rho\\
+\rho&-\alpha\end{bmatrix}.
+```
+
+Consequently, with
+$L=\bigoplus_{j=0}^{n-1}\Theta(b)$,
+
+```math
+W=DLM,\qquad L^*L=M^*M=D^*D=I.
+```
+
+This is a **finite, exact
+phase-decorated cyclic
+even/odd CMV-factorization**,
+not an approximate CMV surrogate.
+It is independently checked
+against $D(I_n\otimes C_\gamma)S$
+and its eigenvalues and normalized
+trace moments in the tests.
+When $\omega=\vartheta=\beta=0$,
+$D=I$ and the factors form an
+exact standard **cyclic** CMV product
+with even Verblunsky coefficients
+$\alpha_{2j}=b$ and odd coefficients
+$\alpha_{2j+1}=0$. This is not
+the usual **half-line finite CMV**
+with a terminal unit-modulus
+Verblunsky coefficient; no
+unjustified identification
+with `finite_cmv` is made.
+
+For the infinite-lattice walk,
+Yang [150, Lemma 1.1] gives,
+after a diagonal unitary gauge,
+the **formal skew-shift
+Verblunsky parameters**
+
+```math
+\alpha_{2j}
+=b\,e^{2\pi i(j^2\omega+2j\vartheta)},
+\qquad
+\alpha_{2j+1}=0,\qquad
+\rho_{2j}=a,\quad\rho_{2j+1}=1.
+```
+
+The `factors` mode supplies
+these coefficients for the
+selected site window, plus
+the actual D, L, and M
+matrices and a flag identifying
+the zero-field standard cyclic
+CMV case. **The whole-line
+diagonal gauge can carry
+nontrivial monodromy around
+a finite ring**, so these
+formal coefficients are not
+claimed, for arbitrary
+$\omega,\vartheta,\beta$, to
+define a boundary-matched
+standard finite CMV matrix
+with the identical spectrum.
+The factorization $W=DLM$
+*does* remain exact.
+
+**Two solvable finite trace spectra.**
+The `spectral` interface
+follows the database's
+equal-weight **matrix trace**
+convention, not the spectral
+measure of a preferred
+coin/site state.
+
+For $\gamma=0$, the local coin
+is the identity, and W
+splits into **two weighted
+n-cycles** (minus and plus)
+with opposite boundary twist.
+Writing
+
+```math
+\Phi=2\pi\left(n\vartheta+
+\frac{\omega n(n-1)}2\right),
+```
+
+the exact finite eigenphase
+multiset is
+
+```math
+\left\{
+\exp\!\left(
+\frac{i(\Phi-\beta+2\pi k)}n\right),
+\exp\!\left(
+\frac{i(\Phi+\beta+2\pi k)}n\right):
+k=0,\ldots,n-1
+\right\}.
+```
+
+At the other extreme
+$\gamma=\pi/2$, the coin
+is perfectly reflecting.
+Every intersite pair
+$\{|j,+\rangle,|j+1,-\rangle\}$
+becomes an invariant
+two-dimensional bond,
+with eigenphase pair
+
+```math
+\lambda_{j,\pm}
+=\pm i\exp\!\left(
+\frac{i(\phi_j+\phi_{j+1})}{2}\right),
+\qquad
+\phi_j=2\pi(\vartheta+j\omega)
+\pmod{2\pi}.
+```
+
+The boundary twist cancels
+within the bond eigenvalues.
+Each simple bond eigenvector
+is supported on exactly
+two basis states and has
+inverse participation ratio
+$\sum|v_i|^4/(\sum|v_i|^2)^2=1/2$.
+This is an elementary **fully
+decoupled finite localization
+limit**, not evidence for
+nontrivial infinite-lattice
+Anderson localization.
+
+Both limits have **exact finite
+eigenvalue/moment descriptors**
+without calling eig(W).
+For generic $0<\gamma<\pi/2$
+the analytical finite
+eigenphase law is explicitly
+`unknown`. The
+matrix itself can of course
+be diagonalized numerically
+for finite-size comparisons;
+no limiting density or
+Cantor/interval theorem
+is inferred for these rings.
+
+**Reproducibility and tests.**
+The MATLAB tests independently
+assemble the physical
+shift-and-coin matrix,
+including asymmetric wrap
+phases; independently assemble
+the cyclic even/odd CMV factors;
+verify W unitary and
+$W=DLM=DCS$; check the
+standard-CMV zero-field
+reduction, formal skew-shift
+coefficients and finite
+boundary distinction;
+check exact transparent-cycle
+and reflecting-bond eigenphases
+against independent eigensolvers
+and trace powers; test
+strong-coin bond localization,
+rational and irrational
+finite windows, global
+phase covariance, multi-RHS
+forward/transpose/adjoint
+actions, and input rejection.
+All examples distinguish
+the finite **trace** phase
+measure from any infinite
+spectral type or spatially
+weighted wavepacket measure.
+
+**Sources:** [149] Cedzich–Werner,
+*Anderson Localization for Electric
+Quantum Walks and Skew-Shift CMV
+Matrices* (CMP 2021); [150]
+Yang, *Interval Spectrum for
+Electric Quantum Walk and Related
+Skew-Shift CMV Matrices* (LMP
+2025). Both infinite-lattice
+theorems are cited for the
+model and its skew-shift CMV
+connection, **not** as theorems
+about arbitrary finite cyclic
+truncations.
+
+
 ## Bibliography
 
 1. P. J. Davis, *Circulant Matrices*, Wiley, 1979. ISBN 9780471057710. [Library record](https://openlibrary.org/books/OL4407364M/Circulant_matrices).
@@ -5649,3 +5933,7 @@ infinite-dimensional spaces.
 146. M. J. Colbrook and A. Townsend, “Rigorous Data-Driven Computation of Spectral Properties of Koopman Operators for Dynamical Systems,” *Communications on Pure and Applied Mathematics* **77** (2024), 221–283. [DOI](https://doi.org/10.1002/cpa.22125); [preprint](https://arxiv.org/abs/2111.14889).
 147. M. J. Colbrook, “Computing Spectral Measures and Spectral Types,” *Communications in Mathematical Physics* **384** (2021), 433–501. [DOI](https://doi.org/10.1007/s00220-021-04072-4); [author PDF](https://www.damtp.cam.ac.uk/user/mjc249/pdfs/SpecMeasuresMJC.pdf).
 148. M. J. Colbrook, “The mpEDMD Algorithm for Data-Driven Computations of Measure-Preserving Dynamical Systems,” *SIAM Journal on Numerical Analysis* **61** (2023), 1585–1608. [DOI](https://doi.org/10.1137/22M1521407); [preprint](https://arxiv.org/abs/2209.02244).
+
+
+149. C. Cedzich and A. H. Werner, “Anderson Localization for Electric Quantum Walks and Skew-Shift CMV Matrices,” *Communications in Mathematical Physics* **387** (2021), 1257–1279. [DOI](https://doi.org/10.1007/s00220-021-04204-w); [preprint](https://arxiv.org/abs/1906.11931).
+150. F. Yang, “Interval Spectrum for Electric Quantum Walk and Related Skew-Shift CMV Matrices,” *Letters in Mathematical Physics* **115** (2025), article 49. [DOI](https://doi.org/10.1007/s11005-025-01934-z); [preprint](https://arxiv.org/abs/2408.12724).
