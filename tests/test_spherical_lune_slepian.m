@@ -34,7 +34,8 @@ end
 
 function test_independent_nonaxisymmetric_double_quadrature(tc)
 % This reference evaluates fully separated real harmonics on an independent
-% Gauss--Legendre x Gauss--Legendre tensor rule; neither exact-Jacobi
+% Gauss--Legendre colatitude x Gauss--Legendre longitude tensor rule;
+% neither exact-Jacobi
 % parity integration nor analytic longitude formulas are reused.
 for L=[2 3 5]
     for a=[.27 1.19]
@@ -101,15 +102,16 @@ verifyGreaterThan(tc,norm(P.concentration'*P.concentration ...
 verifyEmpty(tc,Z);
 verifyTrue(tc,any(strcmp(properties,'orthogonal')));
 verifyError(tc,@()spherical_lune_slepian(13), ...
-    'MATLAB:expectedLessThanOrEqual');
+    'MATLAB:notLessEqual');
 verifyError(tc,@()spherical_lune_slepian(4,.1,-.1), ...
-    'MATLAB:expectedGreaterThanOrEqual');
+    'MATLAB:notGreaterEqual');
 verifyError(tc,@()spherical_lune_slepian(4,.1,pi,'operator'), ...
     'spherical_lune_slepian:Mode');
 end
 
 function K=direct_double_quadrature(L,phiStart,width,q)
-[x,wx]=independent_legendre_quadrature(q,-1,1);
+[theta,wtheta]=independent_legendre_quadrature(q,0,pi);
+x=cos(theta);wx=wtheta.*sin(theta);
 [phi,wp]=independent_legendre_quadrature(q,phiStart,phiStart+width);
 n=L^2;
 ell=zeros(n,1);m=zeros(n,1);kind=zeros(n,1);
