@@ -136,3 +136,17 @@ verify that the operator supports large sizes without a dense n-by-n
 setup. General Jacobi and associated-Legendre parameters are explicitly
 tested to reject the unsupported fast mode, not silently fall back to
 quadratic/cubic operations.
+
+
+
+
+`tests/test_unitary_hessenberg_pencil.m` tests independent
+unitarity/upper-Hessenberg form of both strict factors, correct
+prescribed finite subdiagonal projective poles, exact zero/infinite
+(reducible) cases, near-reducible poles, generalized eigenvalue
+agreement with eig(B'*A), seeded reproducibility, real conjugate
+eigenvalue pairing, and n=4096 complex multiple-RHS forward/adjoint
+O(n) core application. The auxiliary
+`tests/test_hessenberg_unitary_generalized.m` tests the broader
+Hessenberg–unitary-Hessenberg pencil with fixed poles but demonstrably
+nonunitary numerator and quotient; this remains outside the matrix catalog.

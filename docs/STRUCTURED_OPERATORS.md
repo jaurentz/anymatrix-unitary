@@ -431,3 +431,36 @@ of exact Chebyshev trigonometric identities and standard DCT/DST,
 *not* a claimed implementation of the general Hale--Townsend
 or Slevinsky fast Jacobi-conversion algorithms.
 Source background: [Hale--Townsend (2016)](https://doi.org/10.1093/imanum/drv060).
+
+
+
+
+### 4B. Core-factored strict unitary Hessenberg pencils versus general RQR
+
+`unitary_hessenberg_pencil` is a genuinely O(N)-parameter
+pair A,B of independently unitary upper-Hessenberg matrices.
+A=diag(d)H_a and B=H_b each use N-1 embedded 2-by-2 unitary
+cores and a terminal phase. The **quotient U=B'*A** therefore
+is mathematically exactly unitary and has O(N) matvec/adjoint
+complexity via `um_hessenberg_pencil_apply`. A and B generally
+have dense upper triangles; the core representation, not explicit
+entry sparsity, supplies the efficiency.
+
+The proper Hessenberg pencil pole at index j is the projective
+subdiagonal ratio `xi_j=A(j+1,j)/B(j+1,j)`. Independent
+core-sine choices realize any finite nonzero pole magnitude
+(with finite precision range restrictions), while a left row
+phase supplies its argument. Exactly zero/infinite poles use
+one vanishing core sine and force a REDUCIBLE factor; one
+cannot assert both subdiagonals nonzero and a zero or infinite
+pole simultaneously.
+
+The auxiliary `um_hessenberg_unitary_generalized` deforms
+the numerator on the diagonal, preserving poles and upper
+Hessenberg form while losing numerator/quotient unitarity.
+It is filed as a **nonunitary generalized pencil** in
+`metadata/eigenvalue_problems.json`, not counted among the
+strict unitary generator classes. This is distinct from the
+full rational pole-swapping algorithms in
+[Camps et al. (2020)](https://doi.org/10.1553/etna_vol52s480)
+and their [2025 monograph](https://doi.org/10.1137/1.9781611978377).

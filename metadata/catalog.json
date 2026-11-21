@@ -1985,6 +1985,21 @@
       "matrix_free_supported": false,
       "operator_kernel": null,
       "operator_note": "O(n^3) basis/matrix setup and O(n^2) dense Q storage; H,K are a rectangular rational Arnoldi pencil, not unitary. No invented matrix-free operator. Detects rational breakdown and accepts polynomial infinity and off-circle interior/exterior poles."
+    },
+    {
+      "id": "unitary_hessenberg_pencil",
+      "status": "implemented",
+      "category": "eigenvalue_problems",
+      "matrix_order": "n (2<=n<=2e6 operator; explicit n<=512)",
+      "representation": "A=diag(left_phases)*H(alphaA,betaA) and B=H(alphaB,betaB) independently unitary upper Hessenberg core chains; prescribed projective poles A(j+1,j)/B(j+1,j) including zero/infinity reducible constraints; default U=B'*A; real orthogonal variant",
+      "spectral_reference": "general finite quotient eigenphase counting measure unknown; projective pole ratios are not generalized eigenvalues; all generalized eigenvalues of A-z*B lie on unit circle",
+      "encyclopedia_references": [
+        163,
+        164
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_hessenberg_pencil_apply",
+      "operator_note": "Two O(n) adjacent-core actions and one O(n) diagonal phase, adjoint and multi-RHS. Dense A,B upper Hessenberg but O(n) parameter storage. Projective zero/Inf poles imply one reducible factor; finite proper poles restricted to 1e-4..1e4 for double-precision resolvability. Separate um_hessenberg_unitary_generalized helper is explicitly nonunitary and not in matrix catalog."
     }
   ],
   "probability_measures": [

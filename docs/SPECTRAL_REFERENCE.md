@@ -173,3 +173,15 @@ The real quadrature nodes are eigenvalues of the Jacobi tridiagonal
 recurrence, NOT of the Gauss evaluation matrix. The two FFT-fast
 Chebyshev variants act on the same mathematical orthogonal matrices
 as the original dense generator; no distinct spectral law is inferred.
+
+
+
+
+`unitary_hessenberg_pencil` is a strict pair A,B with a
+unitary quotient U=B'*A, so its generalized eigenvalues lie
+on the unit circle, although their generic **trace** eigenphase
+law is unknown. The projective subdiagonal ratios of A-zB
+are prescribed **poles**, NOT eigenphases. The separate
+`um_hessenberg_unitary_generalized` helper deforms A
+without changing the pole ratios, and its spectrum is in
+general **not** circle-supported.
