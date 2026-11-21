@@ -125,3 +125,15 @@ the n-by-(n-1) Hessenberg pencil identity U*K=H, infinity/polynomial
 reductions, inside/outside finite poles, nearly coincident poles,
 conjugate-reciprocal pole pairs, positive e1 weights versus uniform
 trace phases, multiple node orders and explicit rational breakdown.
+
+
+`tests/test_unitary_hessenberg_pencil.m` tests independent
+unitarity/upper-Hessenberg form of both strict factors, correct
+prescribed finite subdiagonal projective poles, exact zero/infinite
+(reducible) cases, near-reducible poles, generalized eigenvalue
+agreement with eig(B'*A), seeded reproducibility, real conjugate
+eigenvalue pairing, and n=4096 complex multiple-RHS forward/adjoint
+O(n) core application. The auxiliary
+`tests/test_hessenberg_unitary_generalized.m` tests the broader
+Hessenberg–unitary-Hessenberg pencil with fixed poles but demonstrably
+nonunitary numerator and quotient; this remains outside the matrix catalog.

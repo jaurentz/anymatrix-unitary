@@ -6217,6 +6217,63 @@ the true distinctions and exact finite trace/cyclic measures.
 No 'operator' mode is claimed since forming Q is O(n^3) and caching
 it requires O(n^2) storage. Sources [9,162].
 
+## Core-factored strict unitary–unitary Hessenberg pencils — [`unitary_hessenberg_pencil.m`](../unitary_hessenberg_pencil.m)
+
+For N>=2, construct TWO independent core-factored, unitary
+upper-Hessenberg matrices A and B, then use U=B'*A as the
+strictly unitary default matrix. A=diag(d)*H(alphaA,betaA),
+B=H(alphaB,betaB), where H is a product of N-1 local
+2-by-2 Verblunsky cores plus a unimodular terminal closure,
+and d is a diagonal unit-phase vector. The core parameterization
+and quotient have O(N) storage and O(N) forward/adjoint actions.
+Each core has sine rho=sqrt(1-|alpha|^2); the subdiagonal
+entries of H are exactly rho and satisfy Hessenberg sparsity
+below the first subdiagonal. The genuine generalized pencil
+A-zB is a strict unitary-unitary pair, and
+
+```math
+\operatorname{eig}(A,B)=\operatorname{eig}(B^*A),
+\qquad (B^*A)^*(B^*A)=I.
+```
+
+Prescribe N-1 **projective poles** xi_j=A_(j+1,j)/B_(j+1,j),
+not transform eigenvalues. For 0<|xi|<infinity,
+rhoA=t min(1,|xi|) and rhoB=t min(1,1/|xi|), with t=.7.
+The left phase d_(j+1)=xi/|xi| supplies each pole argument.
+Independent seeded Schur phases and terminal phases make real
+(orthogonal) and complex benchmark families. For xi=0,
+rhoA=0 while rhoB>0; for xi=infinity, rhoB=0 while rhoA>0.
+These exactly realizable zero/infinite poles imply a REDUCIBLE
+Hessenberg factor, hence are not proper unreduced pairs.
+In exact arithmetic the strict finite poles can have any nonzero
+modulus; in double precision the generator limits them to
+1e-4<=|xi|<=1e4 for numerically resolved subdiagonals and
+reports achieved ratios separately from targets.
+
+The `pencil` output returns A,B,U and all pole/proper flags;
+`parameters` returns only the compact phase/core data;
+`operator` applies B'*A and its adjoint by core sequences
+without storing dense A or B. The `spectral` output correctly
+marks generic finite trace eigenphases as UNKNOWN: projective
+pole ratios are not generalized eigenvalues.
+
+**Separately classified nonunitary problem:** the auxiliary
+[`um_hessenberg_unitary_generalized.m`](../um_hessenberg_unitary_generalized.m)
+returns A0+gamma*diag((1:N)/(N+1)), B0 for a strict reference
+pair A0,B0. The deformation preserves its offdiagonal pole ratios
+and Hessenberg structure but makes A and B'*A GENERALLY
+NONUNITARY, with generalized eigenvalues not constrained to
+the circle. This belongs to the broader Hessenberg–unitary-
+Hessenberg RQR/rational-QZ class; it is deliberately excluded
+from the square unitary matrix catalog.
+
+The construction is a new **derived benchmark specialization**
+motivated by the pole-swapping literature [163,164]. It does
+NOT implement the Camps–Mach–Vandebril–Watkins swapping
+iterations themselves or claim all RQR problems have unitary
+quotients. The separate nonunitary helper is registered as a
+generalized problem in `metadata/eigenvalue_problems.json`.
+
 ## Bibliography
 
 1. P. J. Davis, *Circulant Matrices*, Wiley, 1979. ISBN 9780471057710. [Library record](https://openlibrary.org/books/OL4407364M/Circulant_matrices).
@@ -6421,3 +6478,6 @@ it requires O(n^2) storage. Sources [9,162].
 161. Ç. Candan, M. A. Kutay and H. M. Ozaktas, “The discrete fractional Fourier transform,” *IEEE Transactions on Signal Processing* **48** (2000), 1329–1337. [DOI](https://doi.org/10.1109/78.839980); [full paper](https://www.ee.bilkent.edu.tr/~haldun/publications/ozaktas166.pdf).
 
 162. N. Van Buggenhout, M. Van Barel and R. Vandebril, “Generation of orthogonal rational functions by procedures for structured matrices,” *Numerical Algorithms* **89** (2022). [DOI](https://doi.org/10.1007/s11075-021-01125-6); [preprint](https://arxiv.org/abs/2103.04788).
+
+163. D. Camps, T. Mach, R. Vandebril and D. S. Watkins, *Pole-Swapping Algorithms for the Eigenvalue Problem*, SIAM Spotlights (2025), Chapters 4–5. [DOI](https://doi.org/10.1137/1.9781611978377).
+164. D. Camps, T. Mach, R. Vandebril and D. S. Watkins, “On pole-swapping algorithms for the eigenvalue problem,” *Electronic Transactions on Numerical Analysis* **52** (2020), 480–508. [DOI](https://doi.org/10.1553/etna_vol52s480); [preprint](https://arxiv.org/abs/1906.08672).

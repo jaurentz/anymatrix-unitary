@@ -146,6 +146,7 @@
 %   floquet_factor_pencil      Two-layer split-step orthogonal pencil.
 %   cayley_hermitian_pencil    Sparse Cayley pencil of a real Jacobi matrix.
 %   left_weighted_unitary_pencil  Ill-scaled coefficient pair with unitary quotient.
+%   unitary_hessenberg_pencil  Core-factored strict unitary Hessenberg pair with prescribed projective poles.
 %
 % External nonlinear/palindromic benchmarks: metadata/eigenvalue_problems.json
 % Public OPUC helpers (not Anymatrix generators):
@@ -178,3 +179,6 @@
 %   lattice_wilson_loop          Non-Abelian U(n) gauge-link products.
 %
 % Test runner: test_run. See docs/MATRIX_ENCYCLOPEDIA.md for references.
+
+% Additional generalized pencil helper (NOT a unitary generator):
+%   um_hessenberg_unitary_generalized  General nonunitary Hessenberg--unitary-Hessenberg pair.

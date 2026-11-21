@@ -165,3 +165,13 @@ EXACT finite eigenphase nodes and uniform 1/n **trace** weights, separately
 from the supplied positive e1 **cyclic** weights. The auxiliary
 n-by-(n-1) Hessenberg recurrence pencil is not itself square/unitary;
 only the full finite similarity closure Q'*diag(nodes)*Q is unitary.
+
+
+`unitary_hessenberg_pencil` is a strict pair A,B with a
+unitary quotient U=B'*A, so its generalized eigenvalues lie
+on the unit circle, although their generic **trace** eigenphase
+law is unknown. The projective subdiagonal ratios of A-zB
+are prescribed **poles**, NOT eigenphases. The separate
+`um_hessenberg_unitary_generalized` helper deforms A
+without changing the pole ratios, and its spectrum is in
+general **not** circle-supported.

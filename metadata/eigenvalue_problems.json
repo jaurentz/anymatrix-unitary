@@ -1,13 +1,14 @@
 {
   "schema_version": "1.0.0",
   "updated": "2026-11-20",
-  "description": "Eigenvalue-problem subclass. Six additional strict unitary pencil generators and the existing finite_cmv family with pencil coefficient outputs. Non-strict nonlinear problems remain documented separately. Public generators preserve [U,properties] and expose strict coefficients via terminal pencil mode. Two positive-metric symplectic-integration families are separately classified as circle_spectrum_only; their physical quotients need not be Euclidean unitary.",
+  "description": "Eigenvalue-problem subclass. Six additional strict unitary pencil generators and the existing finite_cmv family with pencil coefficient outputs. Non-strict nonlinear problems remain documented separately. Public generators preserve [U,properties] and expose strict coefficients via terminal pencil mode. Two positive-metric symplectic-integration families are separately classified as circle_spectrum_only; their physical quotients need not be Euclidean unitary. Finite upper-Hessenberg projective pole pairs are now represented by a strict unitary--unitary generator and a separately classified general Hessenberg--unitary-Hessenberg nonunitary helper.",
   "strict_pencil_criterion": "B nonsingular, AA*=BB*, equivalently inv(B)A unitary in Euclidean inner product",
   "classifications": [
     "strict_unitary_pencil",
     "unitary_on_contour",
     "circle_spectrum_only",
-    "reciprocal_only"
+    "reciprocal_only",
+    "generalized_pencil_not_unitary"
   ],
   "families": [
     {
@@ -228,6 +229,34 @@
       "generator": "gyroscopic_oscillator.m",
       "source_status": "reproducible heterogeneous nearest-neighbor benchmark derived from gyroscopic QEP and Gauss geometry; not measured apparatus",
       "note": "The continuous QEP has imaginary roots under positive energy. The discrete pencil is circle-spectral, not generally strict unitary."
+    },
+    {
+      "id": "unitary_hessenberg_pencil",
+      "classification": "strict_unitary_pencil",
+      "problem_type": "projective_hessenberg_pencil",
+      "status": "implemented",
+      "reference_ids": [
+        163,
+        164
+      ],
+      "pencil": "A=diag(left phases)*H(alphaA,betaA), B=H(alphaB,betaB), both unitary upper Hessenberg, B'*A unitary quotient; poles A(j+1,j)/B(j+1,j)",
+      "root_relation": "generalized eigenvalues eig(A,B)=eig(B'*A) lie on circle; pole ratios are independent projective parameters",
+      "generator": "unitary_hessenberg_pencil.m",
+      "source_status": "Derived core-factored strict unitary-unitary specialization with user-prescribed projective poles; not claimed to be original Camps et al. pole-swapping algorithm"
+    },
+    {
+      "id": "um_hessenberg_unitary_generalized",
+      "classification": "generalized_pencil_not_unitary",
+      "problem_type": "hessenberg_unitary_hessenberg_generalized_pencil",
+      "status": "implemented_auxiliary_benchmark_not_unitary_generator",
+      "reference_ids": [
+        163,
+        164
+      ],
+      "pencil": "A=A0+gamma*diag((1:n)/(n+1)), B=B0, where A0,B0 are strict unitary Hessenberg factors; gamma>0",
+      "root_relation": "same subdiagonal projective pole ratios, generalized eig(A,B)=eig(B'*A) not constrained to unit circle",
+      "generator": "um_hessenberg_unitary_generalized.m",
+      "source_status": "Derived diagonal deformation of a strict core-factored pair; A and quotient generally nonunitary. Explicitly EXCLUDED from unitary matrix catalog."
     }
   ]
 }

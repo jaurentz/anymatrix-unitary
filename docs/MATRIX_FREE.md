@@ -133,3 +133,24 @@ factors. Applying its P*L orthogonal tensor costs O(P*L*(P+L)) per RHS and
 stores O(P^2+L^2) coefficients after O(P^3+L^3) setup; there is no claim
 of a linear- or FFT-time algorithm. Its separately exposed full-spherical
 sampling output is rectangular rather than unitary.
+
+
+## Strict core-factored unitary Hessenberg pencils
+
+`unitary_hessenberg_pencil(n,poles,seed,variant,'operator')`
+returns a function handle for U=B'*A, with two independent
+unitary upper-Hessenberg adjacent-core products A,B and N-1
+user-prescribed projective pole ratios. The implementation
+`um_hessenberg_pencil_apply` applies the forward quotient
+with an A core sweep, O(n) left diagonal phases, and the
+B adjoint core sweep; adjoint actions reverse the factor
+order and conjugate phases. **Both cost O(n)** arithmetic
+and use O(n) stored parameters (not dense A or B).
+The real orthogonal specialization is provided by
+`variant='real'`. Exactly zero/infinite poles require
+a reducible numerator/denominator factor respectively.
+The optional `'pencil'` mode explicitly materializes
+A,B and the unitary quotient for modest n. The related
+`um_hessenberg_unitary_generalized` helper returns a
+**nonunitary** generalized problem and MUST NOT be treated
+as a unitary matrix-free generator.
