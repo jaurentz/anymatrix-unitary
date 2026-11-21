@@ -64,6 +64,7 @@
 %   dpss_transform       Explicit 1D Slepian concentration eigenbasis.
 %   spherical_slepian    Real spherical polar-cap Slepian orthogonal eigenbasis.
 %   spherical_lune_slepian Exact non-axisymmetric meridional-lune Slepian eigenbasis.
+%   spherical_mask_slepian Exact weighted SO(3)-rotated caps/lunes Slepian analysis.
 %   graph_fourier        Explicit weighted-graph Laplacian eigenbasis.
 %   blaschke_potapov    Rational inner / lossless rank-one product frequency response.
 %   paraunitary_fir     Multichannel FIR polyphase, exact finite periodic unitary.

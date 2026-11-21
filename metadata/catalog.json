@@ -1971,6 +1971,20 @@
       "operator_note": "O(n^3) initial expm/QR setup, then O(n) cached shifted tridiagonal solves per RHS; time and Cayley scale distinct."
     },
     {
+      "id": "spherical_mask_slepian",
+      "status": "implemented",
+      "category": "signal_processing",
+      "matrix_order": "L^2 with L<=12, at most 8 weighted SO(3)-rotated caps/lunes",
+      "representation": "Exact bandlimited spherical concentration of a bounded nonnegative weighted mixture of rotated polar caps and meridional lunes via real Condon-Shortley SO(3) coefficient conjugation; real orthogonal Slepian analysis basis",
+      "spectral_reference": "Concentration spectrum [0,1], exact Shannon trace L^2*sum(weight*area_fraction); finite orthogonal analysis eigenphases unknown and distinct",
+      "encyclopedia_references": [
+        156
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": null,
+      "operator_note": "Dense O(L^6) concentration rotation/diagonalization; no arbitrary polygon quadrature or fast action. Nonnegative mask weights sum<=1, so overlaps form a weighted mixture rather than exact binary union."
+    },
+    {
       "id": "spherical_lune_slepian",
       "status": "implemented",
       "category": "signal_processing",

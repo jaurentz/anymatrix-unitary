@@ -587,6 +587,21 @@ and multiple RHS, with no `expm`. Generic angles retain the
 existing dense matrix exponential and reject operator mode
 rather than pretending to be fast.
 
+### Weighted SO(3)-rotated spherical Slepian masks
+
+`spherical_mask_slepian(L,components,mode)` extends exact finite
+spherical concentration to nonnegative weighted mixtures of
+**arbitrarily oriented** polar caps and full-colatitude lunes.
+Each component uses an exact finite concentration matrix,
+conjugated by the properly permuted and signed real SO(3)
+spherical-harmonic rotation. The mask remains in `[0,1]`
+when nonnegative component weights sum to at most one,
+including overlaps. The returned eigenbasis analysis is
+orthogonal; the concentration matrix is **not**.
+Direct Cartesian rotation/quadrature tests check the sign and
+geometric conventions. This is not a generic spherical polygon
+solver or a fast matrix-free transform.
+
 ### Exact non-axisymmetric spherical Slepian transforms
 
 `spherical_lune_slepian(L,phiStart,width,output)` computes an orthogonal real

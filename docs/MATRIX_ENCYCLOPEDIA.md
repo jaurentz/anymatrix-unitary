@@ -6515,6 +6515,98 @@ right-hand sides and a larger $L=48$ action.
 **Issue #118 remains open** for arbitrary spherical polygons,
 certified weighted masks and more scalable cap solvers.
 Source [156].
+## Exact weighted SO(3)-rotated spherical masks — [`spherical_mask_slepian.m`](../spherical_mask_slepian.m)
+
+**Order:** $N=L^2$, harmonic degrees $0,\ldots,L-1$,
+with $L\le12$. Unlike the previous polar-cap and lune
+models, the concentration mask may be a finite mixture of
+**arbitrarily oriented** polar caps and meridional lunes.
+For nonnegative weights $w_j$ with $\sum_j w_j\le1$,
+define the bounded real spherical mask
+
+```math
+W(\Omega)=\sum_j w_j\mathbf{1}_{R_j A_j}(\Omega),
+\quad R_j\in SO(3),\quad 0\le W\le1.
+```
+
+The cap/lune reference regions $A_j$ use the exact
+finite integrations already implemented by
+`spherical_slepian` and `spherical_lune_slepian`.
+The unrotated concentration matrices are $K_{A_j}$.
+If $D_L^{\mathrm{real}}(R)$ denotes the full
+degree-truncated **real orthogonal** Wigner rotation
+expressed in the common real harmonic basis, then
+
+```math
+K_W=\sum_j w_j D_L^{\mathrm{real}}(R_j)
+K_{A_j} D_L^{\mathrm{real}}(R_j)^T,
+\quad 0\preceq K_W\preceq I_N.
+```
+
+Every term is a positive semidefinite contraction,
+and $\sum_j w_j\le1$ guarantees the contraction bound
+even when regions overlap. In the rotating sphere's
+harmonic representation, the implementation corrects
+for the difference between the degree-major Wigner
+basis $(m=-\ell,\ldots,\ell)$ and the
+order-major Slepian basis $(m=0;\cos m\phi;\sin m\phi)$.
+It also includes the exact Condon--Shortley signs:
+the Wigner real cosine basis differs by $(-1)^m$
+and the sine basis by $(-1)^{m+1}$. These signs
+cannot be omitted without rotating the region
+incorrectly.
+
+The exact trace follows from the spherical harmonic
+addition theorem and linearity:
+
+```math
+\mathrm{tr}(K_W)=L^2\sum_j w_j
+\frac{\mathrm{area}(A_j)}{4\pi},
+\qquad
+\mathrm{area}(\mathrm{cap})=2\pi(1-\cos\theta_0),
+\quad
+\mathrm{area}(\mathrm{lune})=2\,\mathrm{width}.
+```
+
+The orthonormal eigenbasis $Q$ of $K_W$ gives the
+real **orthogonal** analysis matrix $U=Q^T$.
+$K_W$ itself is **not unitary**; its concentration
+eigenvalues $\lambda\in[0,1]$ are **not the eigenphases
+of $U$**, whose generic finite distribution is unknown.
+
+Each component is a struct with `type` (`cap` or
+`lune`), `parameters` (cap angle or
+`[phiStart,width]`), nonnegative `weight`, and
+`angles=[alpha,beta,gamma]` for active physical
+$z$-$y$-$z$ rotation. Overlapping regions remain a
+**weighted mask**, not the binary union of geographic
+regions. In particular, adding two unit-weight caps
+is not permitted because their overlap could exceed
+one. Exact regions, eigenvalue ties, and conventions
+are returned in `parameters`. The generator supports
+`matrix`/`analysis`, `basis`, `concentration`,
+`parameters`, and `spectral` modes, with an
+empty mask yielding canonical identity analysis.
+
+**Independent geometric validation:** tests directly
+integrate real Condon--Shortley harmonics over
+physically rotated caps and lunes using Cartesian
+rotations and fresh latitude/longitude quadrature.
+They do not reuse the Wigner coefficient matrix to
+form these reference integrals. Additional tests
+check north/south complementary caps, rotation
+invariance of concentration factors, the Shannon
+trace, contraction bounds and analysis orthogonality.
+
+This supplies a mathematically **exact-in-arithmetic
+weighted mask subclass** without generic polygon
+quadrature; floating-point integration/rotation errors
+remain. It is dense with $O(L^6)$ assembly/eigensolve
+and $O(L^4)$ storage/action, with at most eight
+components. General spherical polygons, sampled
+boundary masks and certified adaptive quadrature
+are still open in issue #118. [156]
+
 ## Exact non-axisymmetric spherical-lune Slepian eigenbases — [`spherical_lune_slepian.m`](../spherical_lune_slepian.m)
 
 **Order:** $N=L^2$, where $L$ is the spherical-harmonic bandlimit
