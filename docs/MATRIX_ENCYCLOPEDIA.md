@@ -6959,6 +6959,36 @@ cubature. This MATLAB implementation is a
 conservative Gaussian reference, not a reproduction
 of either complete paper's specialized algorithm.
 
+**Optional triangle-local adaptive cubature (issue #144).**
+The new adaptive_parameters and adaptive_concentration modes
+refine **each ear-clipped geodesic triangle independently**,
+rather than applying the same tensor-Gaussian order to every
+triangle. For triangle $i$, the integrator doubles the
+order from $\max(8,L+3)$ until the local Frobenius difference
+between successive concentration rules and the difference
+between numerical area and the **independent exact spherical-excess
+area** meet an explicitly allocated tolerance. It records
+the chosen order $q_i$, refinement levels, matrix and area
+differences, and convergence status per triangle. The sum
+$\sum_i\|K_i(q_i)-K_i(q_i/2)\|_F$ bounds, by the matrix triangle
+inequality, only the difference between the corresponding
+**two assembled numerical cubatures**. Crucially, it does
+**not** bound the true integration error
+$\|K_{\mathrm{numerical}}-K_{\mathrm{true}}\|_F$.
+
+The separate exact Shannon trace is checked. On failure,
+adaptive_parameters and adaptive_concentration raise an error
+rather than return an unverified Slepian basis.
+adaptive_diagnostics always returns the last assembled
+concentration $K$, exact triangle areas, and quantitative
+status including failed triangles. quadrature_certified
+remains false. The original global Gaussian-refinement
+modes are unchanged. No ARPIST certification or rigorous
+eigenvector perturbation bound is claimed. For local
+adaptive cubature context see
+[SphericalCubature](https://rdrr.io/cran/SphericalCubature/man/adaptIntegrateSphereTri.html)
+and [Sommariva--Vianello](https://doi.org/10.1016/j.amc.2025.129335).
+
 After measuring and checking its symmetry defect,
 the code diagonalizes the converged $K_q$
 and returns the **real orthogonal analysis
