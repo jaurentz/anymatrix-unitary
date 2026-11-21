@@ -32,7 +32,7 @@ function [U,properties]=schur_hessenberg_flow(n,t,nodes,weights,representation,m
 %   Golinskii, Sb. Math. 197 (2006):
 %   https://doi.org/10.1070/SM2006v197n08ABEH003792
 %   Simon, OPUC (2005): https://doi.org/10.1090/coll054.1
-properties={'square','unitary','normal','hessenberg','scalable', ...
+properties={'square','unitary','normal','scalable', ...
     'parameter-dependent','eigenvalues'};
 if nargin==0,U=[];return;end
 validateattributes(n,{'numeric'},{'scalar','integer','positive','finite','<=',512});
