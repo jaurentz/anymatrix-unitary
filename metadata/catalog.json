@@ -1461,16 +1461,16 @@
       "id": "stiefel_parallel_transport",
       "status": "implemented",
       "category": "geometry",
-      "matrix_order": "d=n*p-p*(p+1)/2, real canonical Stiefel tangent dimension",
+      "matrix_order": "d=n*p-p*(p+1)/2; dense n<=64,d<=256; operator n<=1024,p<=32,d<=16384",
       "representation": "orthonormal moving tangent-coordinate matrix exp(-t*ad_K_horizontal/2), intrinsic Levi-Civita isometry on SO(n)/SO(n-p)",
       "spectral_reference": "finite eigenphases generic unknown; exact orthogonal property from projected Lie bracket; p=1 identity in moving frame",
       "encyclopedia_references": [
         97,
         168
       ],
-      "matrix_free_supported": false,
-      "operator_kernel": null,
-      "operator_note": "Dense d-by-d projected Lie bracket connection, O(d^2) generator setup and O(d^3) expm, O(d^2) storage/application; small n/d prototype, not Nguyen-Sommer fast exponential action."
+      "matrix_free_supported": true,
+      "operator_kernel": "um_stiefel_connection_expmv",
+      "operator_note": "Reference dense O(d^2) connection + O(d^3) expm. Matrix-free approximate O(m*24*n*p^2) Taylor exponential action, O(n*p) working storage per RHS with m=ceil(abs(t)*||K||_F), truncation bound m*exp(1)/25! times amplification; float action near-isometric NOT exactly orthogonal, general Nguyen-Sommer large-time algorithm not claimed."
     },
     {
       "id": "stiefel_geodesic",
