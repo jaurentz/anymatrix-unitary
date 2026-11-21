@@ -118,3 +118,10 @@ the double oscillator eigenvalue at n divisible by 4 and the omitted
 index n-1. Regression tests also verify F(0)=I, F(1)=DFT, 4-periodicity,
 index additivity, adjoint inversion, real symmetric number-operator
 Hamiltonian, exact trace moments, and deterministic column-sign rules.
+
+`tests/test_rational_arnoldi_circle.m` independently checks orthonormal
+weighted rational samples and exact finite unitary multiplication closures,
+the n-by-(n-1) Hessenberg pencil identity U*K=H, infinity/polynomial
+reductions, inside/outside finite poles, nearly coincident poles,
+conjugate-reciprocal pole pairs, positive e1 weights versus uniform
+trace phases, multiple node orders and explicit rational breakdown.

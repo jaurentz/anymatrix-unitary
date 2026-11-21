@@ -159,3 +159,9 @@ finite trace eigenphases `exp(-1i*pi*alpha*k/2)` with k=0,...,n-1
 for odd n and k=0,...,n-2,n for even n. These are the eigenphases
 of the Candan unitary transform (not the discrete oscillator energies);
 its DFT endpoint at alpha=1 is verified using the joint parity basis.
+
+`rational_arnoldi_circle(n,poles,nodes,weights,'spectral')` returns the
+EXACT finite eigenphase nodes and uniform 1/n **trace** weights, separately
+from the supplied positive e1 **cyclic** weights. The auxiliary
+n-by-(n-1) Hessenberg recurrence pencil is not itself square/unitary;
+only the full finite similarity closure Q'*diag(nodes)*Q is unitary.
