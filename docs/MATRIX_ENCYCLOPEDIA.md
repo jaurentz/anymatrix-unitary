@@ -3609,6 +3609,53 @@ Generic eigenphases of the finite **transport** matrix are
 not assigned a closed law; the `spectral` mode returns
 `unknown`. [97,168]
 
+### Intrinsic normal-metric real flag tangent transport — [`real_flag_parallel_transport.m`](../real_flag_parallel_transport.m)
+
+**Order:** $N=d=\sum_{a<b}k_a k_b$, for positive block sizes
+$k_1+\cdots+k_r=n$, $r\ge2$. The real partial flag manifold is
+$SO(n)/S(O(k_1)\times\cdots\times O(k_r))$.
+Its normal-homogeneous quotient metric is induced by
+$\langle X,Y\rangle=\mathrm{tr}(X^T Y)/2$ on skew
+matrices, **not** the metric of an arbitrary embedding or
+a non-normal flag metric.
+
+A horizontal geodesic generator $K$ has zero within-block
+skew components. Let $F_{ij}=e_i e_j^T-e_j e_i^T$ for pairs
+$i<j$ in distinct blocks: these are an orthonormal tangent
+basis. In the moving geodesic frame the Levi–Civita
+connection and finite orthogonal transport are
+
+```math
+S_{(i,j),(a,b)}=-\tfrac12([K,F_{ab}])_{ij},
+\qquad Q(t)=e^{tS},\quad Q(t)^TQ(t)=I_d.
+```
+
+This is an **intrinsic real $d$-by-$d$ tangent parallel
+transport matrix**, not the ambient $n$-by-$n$ rotation.
+Tests independently derive the connection by projecting
+the derivatives of the complete **tuple of flag projectors**
+with the induced $\frac14\sum_a\mathrm{tr}(dP_a^T dP_a)$
+metric, then verify the same $S$, isometry, tangent
+constraints, parallel geodesic velocity and reverse transport.
+
+Two blocks give the symmetric real Grassmann case:
+$[\mathfrak m,\mathfrak m]$ is vertical and $Q=I_d$
+**in the geodesic moving frame**. Three or more blocks
+generally yield nontrivial orthogonal matrices; the
+all-one complete-flag limit agrees with bi-invariant
+orthogonal-group half-adjoint transport.
+The `spectral` mode returns the exact identity spectrum
+for two blocks and labels generic eigenphases **unknown**.
+
+The dense reference supports $3\le n\le32,d\le256$.
+Projected bracket setup is $O(d^2)$, dense
+matrix exponential $O(d^3)$ and storage/action $O(d^2)$.
+This is not a fast flag-manifold exponential-action
+implementation, so the performance requirement in
+issue #55 remains open. Full derivation and independent
+connection test: [real flag transport note](REAL_FLAG_TANGENT_TRANSPORT.md).
+Reference: Nguyen--Sommer [168].
+
 ### Non-Abelian Grassmannian loop holonomy — [`grassmann_holonomy.m`](../grassmann_holonomy.m)
 
 **Order:** $N=r$, from n-by-r orthonormal frames Y_j of a closed subspace
