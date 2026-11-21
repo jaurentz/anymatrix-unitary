@@ -417,10 +417,21 @@ switch family
         if ~(isnumeric(a)&&isscalar(a)&&isfinite(a)&&abs(a)<1)
             error('unitary_spectral_reference:Alpha','Coefficient must be in the open disk.');
         end
+        mu=szego_geronimus_measure(a);
         S.limit.kind='support_only';
         edge=2*asin(abs(a));
-        S.limit.support=[-pi -edge; edge pi];
-        S.notes='Essential bands for constant Verblunsky coefficient; finite boundary phases may place eigenvalues in gaps. Underlying OPUC measure may have an atom.';
+        if a==0,S.limit.support=[-pi pi];
+        else,S.limit.support=[-pi -edge;edge pi];end
+        S.underlying.kind='analytic';
+        S.underlying.density=mu.circle_density;
+        S.underlying.support=mu.ac_support;
+        S.underlying.atoms=mu.point_mass;
+        S.underlying.poisson_density=mu.poisson_density;
+        S.underlying.ac_mass=mu.ac_mass;
+        S.notes=['Infinite constant-Verblunsky e1 measure has an exact ' ...
+            'absolutely continuous arc density and may have an atom. ' ...
+            'The finite CMV trace spectrum is atomic and its trace ' ...
+            'weights 1/n are NOT the infinite e1 weights.'];
 
     case 'periodic_cmv'
         pattern=param(varargin,2,[.25;.2i]);
