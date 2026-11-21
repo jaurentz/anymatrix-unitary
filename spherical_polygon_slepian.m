@@ -49,6 +49,13 @@ function [U,properties]=spherical_polygon_slepian(L,vertices,tol,mode)
 %                      diagnostics, basis labels and tie tolerance
 %        'geometry': triangulation, exact spherical-excess area,
 %                    gnomonic chart diagnostics (no quadrature)
+%        'adaptive_parameters': K,Q,lambda and quantitative per-triangle
+%                    Gaussian refinement diagnostics for an independent
+%                    LOCAL adaptation method (not rigorous bounds)
+%        'adaptive_concentration': concentration K from local adaptation
+%        'adaptive_diagnostics': always returns K and local refinement
+%                    status, including failures and achieved differences
+%                    without silently claiming converged eigenvectors
 %        'spectral': generic finite analysis eigenphases UNKNOWN.
 %
 %   Harmonics are real Condon--Shortley with the SAME m=0, then
@@ -94,7 +101,8 @@ mode=lower(char(mode));
 if ~any(strcmp(mode,{'matrix','analysis','basis', ...
         'concentration','parameters','spectral','geometry', ...
         'complement','complement_basis','complement_analysis', ...
-        'complement_parameters'}))
+        'complement_parameters','adaptive_parameters', ...
+        'adaptive_concentration','adaptive_diagnostics'}))
     error('spherical_polygon_slepian:Mode','Unsupported MODE.');
 end
 G=um_spherical_polygon_geometry(vertices);
@@ -113,23 +121,48 @@ if strcmp(mode,'spectral')
     return
 end
 targetTrace=n*G.area/(4*pi);
-q=max(8,L+3);
-[Kold,areaOld]=um_spherical_polygon_quadrature(L,G,q);
-converged=false;
-indicator=Inf;traceError=Inf;areaError=Inf;
-levels=1;
-while 2*q<=64
-    q=2*q;
-    [K,areaNumerical]=um_spherical_polygon_quadrature(L,G,q);
-    levels=levels+1;
-    indicator=norm(K-Kold,'fro');
-    traceError=abs(trace(K)-targetTrace);
-    areaError=abs(areaNumerical-G.area);
-    scale=max(1,targetTrace);
-    if max([indicator,traceError,areaError])<=tol*scale
-        converged=true;break;
+adaptive=any(strcmp(mode,{'adaptive_parameters', ...
+    'adaptive_concentration','adaptive_diagnostics'}));
+localDiagnostics=[];
+if adaptive
+    [K,areaNumerical,localDiagnostics]= ...
+        um_spherical_polygon_local_quadrature(L,G,tol);
+    converged=localDiagnostics.converged;
+    q=max(localDiagnostics.triangle_orders);
+    levels=max(localDiagnostics.triangle_levels);
+    indicator=localDiagnostics.total_matrix_difference_upper_sum;
+    traceError=localDiagnostics.global_addition_trace_error;
+    areaError=localDiagnostics.total_area_error;
+    if strcmp(mode,'adaptive_diagnostics')
+        U=localDiagnostics;
+        U.concentration=K;
+        U.geometric_area=G.area;
+        U.numerical_area=areaNumerical;
+        U.shannon_number=targetTrace;
+        U.bandlimit=L;
+        U.vertices=G.vertices;
+        U.triangles=G.triangles;
+        return
     end
-    Kold=K;areaOld=areaNumerical;
+else
+    q=max(8,L+3);
+    [Kold,areaOld]=um_spherical_polygon_quadrature(L,G,q);
+    converged=false;
+    indicator=Inf;traceError=Inf;areaError=Inf;
+    levels=1;
+    while 2*q<=64
+        q=2*q;
+        [K,areaNumerical]=um_spherical_polygon_quadrature(L,G,q);
+        levels=levels+1;
+        indicator=norm(K-Kold,'fro');
+        traceError=abs(trace(K)-targetTrace);
+        areaError=abs(areaNumerical-G.area);
+        scale=max(1,targetTrace);
+        if max([indicator,traceError,areaError])<=tol*scale
+            converged=true;break;
+        end
+        Kold=K;areaOld=areaNumerical;
+    end
 end
 if ~converged
     error('spherical_polygon_slepian:Quadrature', ...
@@ -222,9 +255,9 @@ switch mode
         U=Q.';
     case 'basis'
         U=Q;
-    case 'concentration'
+    case {'concentration','adaptive_concentration'}
         U=K;
-    case 'parameters'
+    case {'parameters','adaptive_parameters'}
         U=struct('analysis',Q.','basis',Q,'concentration',K, ...
             'concentration_eigenvalues',lambda, ...
             'bandlimit',L,'vertices',G.vertices, ...
@@ -239,6 +272,7 @@ switch mode
             'quadrature_converged',converged, ...
             'quadrature_certified',false, ...
             'symmetry_defect_before_averaging',symDefect, ...
+            'local_quadrature_diagnostics',localDiagnostics, ...
             'degree',degree,'azimuthal_order',order, ...
             'harmonic_kind',kind,'eigenvalue_original_index',perm(:), ...
             'eigenvalue_tie_tolerance',tieTolerance, ...
