@@ -1928,6 +1928,20 @@
       "operator_note": "O(n^3) initial expm/QR setup, then O(n) cached shifted tridiagonal solves per RHS; time and Cayley scale distinct."
     },
     {
+      "id": "spherical_lune_slepian",
+      "status": "implemented",
+      "category": "signal_processing",
+      "matrix_order": "L^2, bandlimit L<=12; real orthogonal analysis Q' of non-axisymmetric meridional lune concentration",
+      "representation": "dense K=integral_lune Y_a Y_b, exact finite longitude trig integration plus L-node Legendre/Jacobi-1/2 radial quadrature; Q orthogonal eigenbasis",
+      "spectral_reference": "concentration eigenvalues in [0,1], exact trace K=L^2*width/(2pi); eigenphases of the real orthogonal Q' generally unknown",
+      "encyclopedia_references": [
+        156
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": null,
+      "operator_note": "Dense non-axisymmetric lune concentration, O(L^5+L^6) construction/diagonalization and O(L^4) storage/application; exact quadrature in arithmetic, no general polygon or fast polar-cap action."
+    },
+    {
       "id": "spherical_slepian",
       "status": "implemented",
       "category": "signal_processing",
