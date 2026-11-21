@@ -499,7 +499,8 @@
       "spectral_reference": "wrapped Gaussian measure; explicit real q-Verblunsky sequence",
       "encyclopedia_references": [
         5,
-        12
+        12,
+        147
       ],
       "matrix_free_supported": true,
       "operator_kernel": "um_core_apply",
@@ -514,7 +515,8 @@
       "spectral_reference": "constant Schur coefficients; arc support and possible point mass",
       "encyclopedia_references": [
         5,
-        7
+        7,
+        147
       ],
       "matrix_free_supported": true,
       "operator_kernel": "um_core_apply",
