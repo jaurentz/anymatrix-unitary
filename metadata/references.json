@@ -1308,6 +1308,22 @@
       ],
       "permalink": "https://doi.org/10.1137/24M1684189",
       "alternate_permalink": "https://arxiv.org/abs/2408.06054"
+    },
+    {
+      "number": 169,
+      "dois": [
+        "10.1088/1751-8121/adbac7"
+      ],
+      "permalink": "https://doi.org/10.1088/1751-8121/adbac7",
+      "alternate_permalink": "https://arxiv.org/abs/2411.11564"
+    },
+    {
+      "number": 170,
+      "dois": [
+        "10.1111/cgf.13494"
+      ],
+      "permalink": "https://doi.org/10.1111/cgf.13494",
+      "alternate_permalink": ""
     }
   ]
 }
