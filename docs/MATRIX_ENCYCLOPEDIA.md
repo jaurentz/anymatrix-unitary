@@ -485,7 +485,7 @@ quasienergy branches and potential gaps. The current periodic uniform-coin
 version has no physical edge, so **edge states require a separate open or
 interface construction**. **Reference:** [16].
 
-### Face-quaternionic spin-Dirac on an oriented mesh — [mesh_spin_dirac.m](../mesh_spin_dirac.m)
+### Face-quaternionic spin-Dirac on an oriented mesh — [`mesh_spin_dirac.m`](../mesh_spin_dirac.m)
 
 **Order:** $N=4n_F$ quaternion coordinates for $n_F$ oriented
 triangular faces, with a complex unitary propagator on
@@ -497,8 +497,7 @@ naive periodic flat-torus two-spinor finite difference.
 For adjacent faces $i,j$, take the oriented edge vector
 $e_{ij}$ along face $i$, face normals $n_i,n_j$, and a
 reproducible **signed** normal bend
-$\theta_{ij}=\mathrm{atan2}(\langle e_{ij}/|e_{ij}|,
-n_i\times n_j\rangle,\langle n_i,n_j\rangle)$.
+$\theta_{ij}=\mathrm{atan2}(\langle e_{ij}/|e_{ij}|,n_i\times n_j\rangle,\langle n_i,n_j\rangle)$.
 The source hyperedge quaternion has real component
 $2\mathbf H_{ij}=|e_{ij}|\tan(\theta_{ij}/2)$ and
 imaginary vector component $e_{ij}$.
@@ -506,11 +505,11 @@ Let $L(q)$ denote the $4\times4$ REAL matrix of left
 quaternion multiplication. Then the face offdiagonal
 Dirac block from Ye Eq. (19) is
 
-~~~math
+```math
 (D_0)_{ij}=\tfrac12 L(E_{ij})\cos(\theta_{ij}/2)
 =\tfrac12 L\big(|e_{ij}|\sin(\theta_{ij}/2)
  +e_{ij}\cos(\theta_{ij}/2)\big).
-~~~
+```
 
 Reverse shared-edge orientation gives $E_{ji}=\bar E_{ij}$
 and $L(\bar q)=L(q)^T$, hence $D_0^T=D_0$.
@@ -523,11 +522,11 @@ the paper uses face areas in a DIFFERENT generalized squared
 and averaged eigenproblem (Eq. (27)). As a separate
 benchmark choice, set $M=\mathrm{diag}(A_i I_4)$, and
 
-~~~math
+```math
 D_{\mathrm{phys}}=M^{-1}D_0,\quad
 D_{\mathrm{phys}}^T M=MD_{\mathrm{phys}},\qquad
 H=M^{-1/2}D_0M^{-1/2}=H^T.
-~~~
+```
 
 Therefore $U(t)=\exp(-itH)$ is Euclidean unitary in
 mathematical arithmetic and the physical propagator
