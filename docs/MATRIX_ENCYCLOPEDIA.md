@@ -6326,6 +6326,69 @@ Gimbutas–Greengard pseudospectral fast rotation or S2FFT
 Wigner algorithms. Issue #41 remains open for that work.
 Source [108,112].
 
+## Large-order Hermite/Laguerre weighted Gauss transforms — stability diagnostics
+
+The existing [`gauss_hermite_transform.m`](../gauss_hermite_transform.m)
+and [`gauss_laguerre_transform.m`](../gauss_laguerre_transform.m)
+remain **dense** real orthogonal Gauss-evaluation matrices Q in
+mathematical arithmetic. Their rows are Gaussian quadrature nodes;
+their columns are positive-leading orthonormal polynomials weighted
+by the square roots of normalized Gaussian quadrature weights.
+These real nodes are NOT eigenphases of the finite orthogonal Q.
+
+At large order, tiny first components of eigenvectors of the real
+Jacobi tridiagonal can underflow, so the old rule
+`sign(V(1,j))` can spuriously flip polynomial signs. For ascending
+simple Jacobi eigenvalues and strictly positive offdiagonals,
+Sturm oscillation gives the **exact arithmetic** relation
+sign(V(n,j))=(-1)^(n-j)*sign(V(1,j)). The shared
+`um_gauss_basis` now orients each column by whichever endpoint
+has the larger numerical magnitude, while retaining the original
+dense Golub–Welsch eigensystem and positive-leading convention.
+
+The new `output='quadrature'` diagnostic independently computes
+Gaussian normalized Christoffel weights via
+
+```math
+w_j/\mu_0=1/\sum_{k=0}^{n-1}p_k(x_j)^2,
+```
+
+where the three-term polynomial recurrence is dynamically rescaled
+and squared sums accumulated with log-sum-exp, O(n^2). Its
+`log_normalized_weights` can remain finite when the corresponding
+representable double `normalized_weights` underflows to zero.
+These are independently **evaluated approximate weights**;
+large-order logweights are not given certified relative error.
+
+**Polynomials versus physical functions.** For Hermite polynomials
+orthonormal in exp(-x^2)/sqrt(pi), the L2(dx)-normalized Hermite
+functions are h_k(x)=pi^(-1/4)*exp(-x^2/2)*p_k(x). Thus
+h_k(x_j)=Q(j,k+1)/d_j with
+
+```math
+\log d_j=\tfrac14\log\pi+\tfrac12\log(w_j/\sqrt\pi)
++\tfrac12 x_j^2.
+```
+
+For generalized Laguerre weight x^alpha exp(-x)/Gamma(alpha+1),
+the L2(dx)-normalized associated functions are
+h_k(x)=x^(alpha/2)*exp(-x/2)*p_k(x)/sqrt(Gamma(alpha+1)).
+Again h_k(x_j)=Q(j,k+1)/d_j with
+
+```math
+\log d_j=\tfrac12[\log\Gamma(\alpha+1)
++\log(w_j/\Gamma(\alpha+1))+x_j-\alpha\log x_j].
+```
+
+The new `log_function_scaling` reports these positive diagonal
+row factors logarithmically; the unweighted physical function
+sample matrix is generally NOT orthogonal by the Euclidean norm.
+This diagnostic does not claim to implement Webb's full stabilized
+physical Hermite transform [109] or the fast Hermite/Laguerre
+asymptotic/butterfly methods. O(n^3) setup and O(n^2) matrix
+multiplication remain. General fast and high-order error-controlled
+methods remain issue #40. Primary background [104,106,109].
+
 ## Bibliography
 
 1. P. J. Davis, *Circulant Matrices*, Wiley, 1979. ISBN 9780471057710. [Library record](https://openlibrary.org/books/OL4407364M/Circulant_matrices).

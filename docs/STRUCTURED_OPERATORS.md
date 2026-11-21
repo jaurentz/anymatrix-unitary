@@ -477,3 +477,20 @@ fast Wigner or spherical rotation algorithm of
 or the later S2FFT family. The new matrix-free label refers
 to the full block direct sum only, not to a sparse or fast
 single-irrep Wigner factor. Issue #41 retains that research task.
+
+### Hermite/Laguerre stability improvement without a fake fast method
+
+`um_gauss_basis` now orients eigenvectors of irreducible positive
+Jacobi recurrences using the more reliable FIRST or LAST endpoint
+component and the Sturm parity rule. This prevents underflow in
+the tiny first Gaussian eigenvector component from determining
+an arbitrary sign. The optional `quadrature` mode in the
+Hermite/Laguerre public generators independently evaluates
+normalized log Christoffel weights via rescaled polynomial
+recurrences (O(n^2)), with physical Hermite/Laguerre function
+row scaling kept distinct from the orthogonal weighted polynomial
+evaluation. The quadrature nodes and weights do NOT provide
+an FFT-fast action of the full coefficient transform.
+The explicit Q remains O(n^3) setup, O(n^2) storage and apply,
+in contrast with genuinely fast specialized transforms
+([Webb 2026](https://arxiv.org/abs/2604.02041), and [Olver et al.](https://www.cambridge.org/core/journals/acta-numerica/article/abs/fast-algorithms-using-orthogonal-polynomials/4FAD8C7C28EC20EE7583465C1A89AA3D)).

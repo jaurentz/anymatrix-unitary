@@ -207,3 +207,17 @@ a fast O(ell log ell) single-degree Wigner D. The real basis is
 unitarily conjugated from complex Condon–Shortley harmonics using
 `um_wigner_real_basis`, not `real(D)`. The real family also
 provides `'basis'` changes and `'spectral'` exact phase counts.
+
+## Large-order Hermite and Laguerre are NOT fast operators yet
+
+The existing `gauss_hermite_transform` and
+`gauss_laguerre_transform` now provide `'quadrature'`
+diagnostic output, including scaled-recursion **logarithmic**
+Christoffel weights, Sturm endpoint-stabilized eigensystem signs,
+Gauss-node and Gram residuals, and logarithmic rescaling from
+weighted orthogonal POLYNOMIAL transform to physical L2
+FUNCTION samples. This interface is NOT a `'operator'` mode:
+the full Q is still assembled in O(n^3) and applied in O(n^2).
+The log weights can record true tiny quadrature values even when
+double weights underflow; a certified relative error is NOT
+claimed for extreme orders or alpha approaching -1.

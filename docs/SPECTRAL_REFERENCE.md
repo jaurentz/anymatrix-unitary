@@ -194,3 +194,14 @@ multiplicity L-|m| for all m=-(L-1),...,L-1. All eigenphases
 occur in conjugate pairs as demanded by a REAL orthogonal
 representation; the physical rotation angle delta is independent
 of the axis and does not depend on the real/complex basis.
+
+`gauss_hermite_transform(n,'spectral')` and
+`gauss_laguerre_transform(n,alpha,'spectral')` mark the
+eigenphases of the real orthogonal weighted-Gauss polynomial
+evaluation matrices as UNKNOWN. Their independently available
+`'quadrature'` nodes and logarithmic weights are spectral
+information for the real *Jacobi tridiagonal recurrence*,
+not for the unitary/orthogonal sample-evaluation matrix Q.
+The additional `log_function_scaling` maps rows to physical
+Hermite/Laguerre L2 function samples; it does not change
+the finite spectral law of Q.

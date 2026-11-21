@@ -1328,7 +1328,7 @@
       "status": "implemented",
       "category": "signal_processing",
       "matrix_order": "n",
-      "representation": "dense orthogonal Gauss-Hermite evaluation",
+      "representation": "dense orthogonal Gauss-Hermite positive-leading polynomial evaluation, with Sturm-stabilized first/last eigenvector sign and optional scaled three-term Christoffel log-quadrature diagnostics",
       "spectral_reference": "matrix eigenphases unknown; Gauss-Hermite nodes are NOT eigenvalues",
       "encyclopedia_references": [
         104,
@@ -1336,14 +1336,14 @@
       ],
       "matrix_free_supported": false,
       "operator_kernel": null,
-      "operator_note": "Explicit eigendecomposition/exponential; no fast action claimed."
+      "operator_note": "Dense symmetric tridiagonal Golub–Welsch O(n^3) eigensolver setup, O(n^2) memory/application, no fast operator. 'quadrature' mode independently evaluates (potentially underflowed) normalized Gaussian weights on log scale using an O(n^2) scaled recurrence, reports Gram/diagonalization residuals, and exposes logarithmic row scaling for physical L2(dx) Hermite/Laguerre FUNCTIONS distinct from polynomial weighted orthogonal Q."
     },
     {
       "id": "gauss_laguerre_transform",
       "status": "implemented",
       "category": "signal_processing",
       "matrix_order": "n",
-      "representation": "dense orthogonal generalized Laguerre evaluation",
+      "representation": "dense orthogonal generalized Gauss-Laguerre positive-leading polynomial evaluation, with Sturm-stabilized first/last eigenvector sign and optional scaled three-term Christoffel log-quadrature diagnostics",
       "spectral_reference": "matrix eigenphases unknown; Gauss-Laguerre nodes are NOT eigenvalues",
       "encyclopedia_references": [
         104,
@@ -1351,7 +1351,7 @@
       ],
       "matrix_free_supported": false,
       "operator_kernel": null,
-      "operator_note": "Explicit eigendecomposition/exponential; no fast action claimed."
+      "operator_note": "Dense symmetric tridiagonal Golub–Welsch O(n^3) eigensolver setup, O(n^2) memory/application, no fast operator. 'quadrature' mode independently evaluates (potentially underflowed) normalized Gaussian weights on log scale using an O(n^2) scaled recurrence, reports Gram/diagonalization residuals, and exposes logarithmic row scaling for physical L2(dx) Hermite/Laguerre FUNCTIONS distinct from polynomial weighted orthogonal Q."
     },
     {
       "id": "wigner_rotation",
