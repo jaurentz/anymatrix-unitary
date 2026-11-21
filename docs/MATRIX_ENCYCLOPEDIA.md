@@ -5277,6 +5277,196 @@ tautological geometric-phase convention.
 
 
 
+
+## Exact finite classical Koopman dynamics on a modular torus — [`finite_koopman_torus.m`](../finite_koopman_torus.m)
+
+**Classical dynamics, not quantum cat-map quantization.** The finite
+phase space is the abelian group $X_m=(\mathbb Z/m\mathbb Z)^2$,
+equipped with uniform normalized counting measure, $m\ge2$.
+For any integer $2$-by-$2$ matrix $M$ whose determinant is invertible
+modulo $m$ and any integer translation $b$, define the affine map
+
+```math
+T(x)=Mx+b\pmod m,\qquad
+\gcd(\det M,m)=1,\qquad N=|X_m|=m^2.
+```
+
+The default $M=\begin{bmatrix}2&1\\1&1\end{bmatrix}$
+is a familiar hyperbolic cat automorphism, now **reduced
+exactly** on the finite grid. The shear
+$\begin{bmatrix}1&1\\0&1\end{bmatrix}$,
+quarter-turn $\begin{bmatrix}0&-1\\1&0\end{bmatrix}$,
+and a nonzero translation with $M=I$ are alternative
+reproducible exact models. The modular invertibility
+check rejects non-bijective maps (e.g. determinant two
+with even grid modulus).
+
+With the specified coordinates $x=(x_1,x_2)$ and
+MATLAB flattened state index
+$j=1+x_1+m x_2$ ($0\le x_1,x_2<m$), define the
+**finite-state Koopman pullback**
+
+```math
+(U_T f)(x)=f(Tx),\qquad
+(U_T)_{j,k}=\begin{cases}
+1,&k=1+(Tx)_1+m(Tx)_2,\\
+0,&\text{otherwise}.
+\end{cases}
+```
+
+The map is a genuine bijection, so each row and
+column contains exactly one nonzero equal to one.
+Consequently $U_T$ is a **real orthogonal permutation
+matrix**, and hence a strict finite unitary:
+$U_T^TU_T=I$. Its order is $N=m^2$, unlike
+`quantum_cat_map`, whose order n is the
+quantized Hilbert-space dimension and whose
+matrix is a complex metaplectic chirp–Fourier–
+chirp operator [93].
+
+**Exact finite trace eigenphases by orbit structure.**
+The permutation decomposes uniquely into disjoint
+cycles $\mathcal C_a$ of lengths $\ell_a$,
+$\sum_a\ell_a=N$. Restricting Koopman pullback
+to a cycle gives an ordinary cyclic shift, so
+
+```math
+\mathrm{spec}(U_T)=\biguplus_a
+\big\{e^{2\pi i q/\ell_a}:q=0,\ldots,\ell_a-1\big\}.
+```
+
+The **finite equal-weight trace** spectral measure
+is the uniform empirical distribution on this
+multiset, including multiplicity. It is not
+the spectral measure of any selected cyclic
+vector or invariant observable. In particular,
+for any integer $k$,
+
+```math
+m_k=\frac1N\mathrm{tr}(U_T^k)
+=\frac{\#\{x\in X_m:T^k(x)=x\}}{N}
+=\frac1N\sum_{\ell_a\mid k}\ell_a.
+```
+
+The fixed-point formula remains valid for
+negative powers and $k=0$, when all states
+are fixed. The `spectral` mode
+stores the cycle lengths, exact finite
+root-of-unity eigenvalues and a function
+for moments computed using integer
+cycle divisibility, not numerical
+diagonalization. An optional `map`
+mode returns the forward/inverse
+permutations, full cycle decomposition,
+and the finite permutation order
+(where representable without integer overflow).
+
+**Fourier-character conjugacy, including affine phases.**
+The normalized Fourier characters are
+
+```math
+\chi_k(x)=\frac1{\sqrt N}
+e^{2\pi i\,k^Tx/m},\quad k\in X_m.
+```
+
+They form an orthonormal basis of
+$\mathbb C^{N}$, and the exact pullback
+action on a character is
+
+```math
+U_T\chi_k
+=e^{2\pi i k^Tb/m}\chi_{M^Tk}.
+```
+
+Thus the matrix in Fourier-character
+coordinates is again a monomial unitary,
+now with **dual frequency permutation**
+$k\mapsto M^Tk$ and affine phase. The
+`map` diagnostics return both the
+frequency map and phases, using the
+same positive-exponent character
+convention as these formulas.
+Independent tests explicitly assemble
+a dense 2D discrete Fourier basis for
+small moduli and verify the identity
+$F^*U_TF=U_{\mathrm{dual}}$.
+This is an exact finite equivalence,
+not an approximation or a claim that the
+matrix has the eigenvector structure
+of a quantum metaplectic cat map.
+
+A translation $b=(1,0)$ with $M=I$
+consists of **m independent cycles of
+length m**. Each cycle is one of the
+existing `weighted_shift`
+families (with zero phases), after
+reordering states. General linear
+cat/shear/rotation permutations have
+multiple cycle lengths and are not
+one globally weighted cyclic shift.
+
+**Operator representation and limitations.**
+The default `matrix` mode builds a
+sparse $N$-by-$N$ permutation, capped
+at $N\le4096$ to avoid excessive
+explicit allocations. The
+`operator` mode computes both
+forward and adjoint operations by
+indexing the forward or inverse
+permutation. These operations cost
+$O(N)$ per right-hand side and preserve
+complex-valued inputs exactly up to
+copying; they apply to moduli
+$2\le m\le1000$ ($N\le10^6$).
+The complete cycle decomposition is
+$O(N)$ in work and memory.
+
+This finite phase-space permutation
+should **not** be confused with the
+infinite-dimensional Koopman operator
+on $L^2(\mathbb T^2)$ associated
+with the continuous hyperbolic toral
+automorphism. Fixed finite-modulus
+spectra are finite roots of unity and
+do not establish a continuous
+spectrum, convergence of its
+eigenphase laws, or numerical rates
+for the infinite problem.
+Colbrook–Townsend [146] discuss
+rigorous data-driven infinite Koopman
+spectra; the present elementary
+finite permutation is **not
+attributed** to their particular
+experiments. That distinction is
+also relevant to open issues #61
+(geodesic-flow Koopman) and #107
+(mpEDMD data-derived metric
+unitaries).
+
+**Tests.** The implementation is checked
+against independent modular-state
+enumeration for cat maps, shears,
+rotations and translations, including
+a noninvertible rejected example;
+exact cycle roots versus numerical
+matrix eigenvalues and integer trace
+powers; fixed-point moments (including
+negative powers); Fourier-character
+dual conjugacy on small tori and
+complex phases for translations;
+multi-RHS forward/adjoint reversibility;
+and the decomposition of a translation
+into a direct sum of existing cyclic
+permutation blocks.
+
+**References:** Hannay–Berry [93]
+for the distinct quantization of
+classical toral maps; Colbrook–
+Townsend [146] for the rigorous
+Koopman spectral problem on
+infinite-dimensional spaces.
+
+
 ## Bibliography
 
 1. P. J. Davis, *Circulant Matrices*, Wiley, 1979. ISBN 9780471057710. [Library record](https://openlibrary.org/books/OL4407364M/Circulant_matrices).
