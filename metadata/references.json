@@ -1360,6 +1360,22 @@
       "dois": [],
       "permalink": "https://mikaelslevinsky.github.io/FastTransforms/transforms.html",
       "alternate_permalink": "https://mikaelslevinsky.github.io/FastTransforms/"
+    },
+    {
+      "number": 176,
+      "dois": [
+        "10.1017/S0962492906210018"
+      ],
+      "permalink": "https://doi.org/10.1017/S0962492906210018",
+      "alternate_permalink": "https://www.cambridge.org/core/journals/acta-numerica/article/abs/finite-element-exterior-calculus-homological-techniques-and-applications/1A2AEB067BCA561D9ED6D674026539B9"
+    },
+    {
+      "number": 177,
+      "dois": [
+        "10.1103/PhysRevD.104.094504"
+      ],
+      "permalink": "https://doi.org/10.1103/PhysRevD.104.094504",
+      "alternate_permalink": "https://arxiv.org/abs/2101.01026"
     }
   ]
 }
