@@ -36,6 +36,14 @@ function [U,properties]=etna_hessenberg(n,kind,seed,coupling,output)
 %     Mach--Van Barel--Vandebril inverse software of Example 7.5.
 %     The original complex generator's documented loss of accuracy
 %     above n~100 is therefore not automatically reproduced.
+%     For N<=64, 'parameters' independently diagonalizes the generated
+%     matrix and reports BOTH maximum forward eigenvalue error and the
+%     maximum cyclic e1 eigenvector-weight error. Eigenvalues are
+%     nearest-node matched with a verified unique assignment; failure
+%     to uniquely match invalidates the cyclic-weight diagnostic.
+%     For N>64 diagnostics are NaN (no dense eigensolve claimed).
+%   Original source: ETNA 44 (2015), Example 7.5 and ref. [27]:
+%     Mach, Van Barel, Vandebril, JCAM 272 (2014), 377--398.
 %
 %   KIND may be I, II, III, 7.1, 7.1-real, 7.5, 7.5-real,
 %   or the original numeric aliases 1, 2, 3. Outputs are explicit by
@@ -111,11 +119,25 @@ if any(strcmp(kind,{'7.5','7.5-REAL'}))
         U.paper_example='7.5-modern-analogue';
         if n<=64
             M=full(inverse_opuc(n,nodes,weights,'hessenberg'));
-            spectrum=eig(M);
-            U.maximum_forward_node_error= ...
-                max(arrayfun(@(x)min(abs(spectrum-x)),nodes));
+            [V,D]=eig(M);
+            spectrum=diag(D);
+            distance=abs(nodes-spectrum.');
+            [nodeErrors,matches]=min(distance,[],2);
+            U.maximum_forward_node_error=max(nodeErrors);
+            U.eigenvalue_matching_unique=(numel(unique(matches))==n);
+            if U.eigenvalue_matching_unique
+                % The input weights specify the CYCLIC e1 measure,
+                % unlike the uniform empirical trace weights.
+                computedWeights=abs(V(1,matches).').^2;
+                U.maximum_forward_weight_error= ...
+                    max(abs(computedWeights-weights));
+            else
+                U.maximum_forward_weight_error=NaN;
+            end
         else
             U.maximum_forward_node_error=NaN;
+            U.maximum_forward_weight_error=NaN;
+            U.eigenvalue_matching_unique=false;
         end
         return
     end
