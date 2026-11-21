@@ -573,8 +573,14 @@ and exactly integrated latitude factors via Gauss--Legendre / Gauss--Jacobi
 quadrature (even/odd sum of azimuthal orders). The `concentration` mode
 returns a **nonunitary** symmetric contraction, and the `spectral` mode
 correctly leaves the analysis eigenphase law unknown. This is an
-independent exact non-axisymmetric benchmark; arbitrary polygon masks
-and fast commuting polar-cap solvers remain work in progress.
+independent exact non-axisymmetric benchmark. The existing
+`spherical_slepian(L,cap,'operator')` now uses the exact
+**commuting Grünbaum fixed-order tridiagonal matrices**, with
+$O(L^3)$ storage and per-RHS application for $N=L^2$,
+and $O(L^4)$ setup via dense per-block eigensolves.
+The `commuting` mode provides the individual tridiagonal blocks
+and separate concentration eigenvalues. The generic
+polygon/mask case and specialized faster eigensolvers remain open.
 
 ### Finite two-dimensional spin-Dirac propagation
 
