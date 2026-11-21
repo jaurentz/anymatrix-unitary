@@ -1999,7 +1999,7 @@
       ],
       "matrix_free_supported": false,
       "operator_kernel": null,
-      "operator_note": "Dense O(N^3+M*q^2*N^2) setup and O(N^2) storage/action, N=L^2, Gaussian q<=64. Successive-rule Frobenius and independent area/trace error indicators, NOT mathematical certified absolute error bounds; rejects unconverged polygons and ill-conditioned/non-simple/hemisphere-spanning domains."
+      "operator_note": "Dense O(N^3+M*q^2*N^2) setup and O(N^2) storage/action, N=L^2, Gaussian q<=64. Modes complement/complement_basis/complement_analysis/complement_parameters use exact bandlimited whole-sphere Kc=I-K (reverse eigenvector order for descending complementary concentration) without a second quadrature. All complement values inherit original quadrature error. Successive-rule Frobenius and independent area/trace error indicators are NOT mathematical certified absolute error bounds; rejects unconverged polygons and ill-conditioned/non-simple/hemisphere-spanning domains."
     },
     {
       "id": "spherical_mask_slepian",
