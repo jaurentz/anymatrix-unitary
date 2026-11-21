@@ -35,6 +35,75 @@ for n=[3 4 6 9]
 end
 end
 
+function test_exact_finite_ring_cmv_gauge_and_monodromy(tc)
+% Independent original W from direct shift/coin construction was tested
+% above; here the separately built cyclic CMV model must be gauge similar.
+for n=[3 4 5 8 11]
+    for omega=[0 1/4 (sqrt(5)-1)/2]
+        for beta=[0 .37]
+            for theta=[0 .43 pi/2]
+                phase=.17;
+                U=electric_quantum_walk(n,omega,theta,phase,beta);
+                G=electric_quantum_walk(n,omega,theta,phase,beta, ...
+                    'cmv_gauge');
+                verifyTrue(tc,issparse(G.Lambda));
+                verifyTrue(tc,issparse(G.L_even));
+                verifyTrue(tc,issparse(G.M_odd));
+                verifyTrue(tc,issparse(G.U_cmv));
+                verifyLessThan(tc,norm(full(G.Lambda'*G.Lambda ...
+                    -speye(2*n)),'fro'),5e-12*n);
+                verifyLessThan(tc,norm(full(G.L_even'*G.L_even ...
+                    -speye(2*n)),'fro'),5e-12*n);
+                verifyLessThan(tc,norm(full(G.Lambda'*U*G.Lambda ...
+                    -G.U_cmv),'fro'),2e-11*n);
+                verifyLessThan(tc,norm(full(G.U_cmv ...
+                    -G.global_phase*G.L_even*G.M_odd),'fro'), ...
+                    2e-11*n);
+                verifyLessThan(tc,abs(G.global_phase^n-G.monodromy), ...
+                    2e-11*n);
+                verifyLessThan(tc,norm(abs(G.alpha_even) ...
+                    -sin(theta)*ones(n,1)),2e-11*n);
+                verifyEqual(tc,G.alpha_odd,zeros(n,1));
+                verifyLessThan(tc,norm(full(G.M_odd ...
+                    -independent_odd_swap(n,beta)),'fro'),1e-12*n);
+                lam=eig(full(U));mu=eig(full(G.U_cmv));
+                verifyLessThan(tc,max(arrayfun(@(z)min(abs(mu-z)), ...
+                    lam)),2e-9);
+                for k=0:4
+                    verifyLessThan(tc,abs(trace(full(U)^k) ...
+                       -trace(full(G.U_cmv)^k)),2e-9*n);
+                end
+            end
+        end
+    end
+end
+% A nonzero electric field with unit monodromy admits an unscaled
+% same-twist cyclic CMV; generic monodromy needs the scalar g.
+n=5;omega=1/4;phi=1/2;
+G=electric_quantum_walk(n,omega,.48,phi,.31,'cmv_gauge');
+verifyLessThan(tc,abs(G.global_phase-1),1e-12);
+verifyLessThan(tc,abs(G.monodromy-1),1e-12);
+verifyLessThan(tc,norm(full(G.U_cmv-G.L_even*G.M_odd), ...
+    'fro'),1e-11*n);
+G=electric_quantum_walk(6,.271,.48,.17,.31,'cmv_gauge');
+verifyGreaterThan(tc,abs(G.monodromy-1),.1);
+verifyGreaterThan(tc,norm(full(G.U_cmv-G.L_even*G.M_odd), ...
+    'fro'),.1);
+% The sparse gauge and transformed CMV act on large multi-RHS arrays,
+% without forming the default explicit walk (which is size-limited).
+n=201;omega=(sqrt(5)-1)/2;
+G=electric_quantum_walk(n,omega,.41,.09,-.37,'cmv_gauge');
+O=electric_quantum_walk(n,omega,.41,.09,-.37,'operator');
+X=reshape(sin((1:6*n)*.19),2*n,3) ...
+    +1i*reshape(cos((1:6*n)*.21),2*n,3);
+Y=G.Lambda*(G.U_cmv*(G.Lambda'*X));
+verifyLessThan(tc,norm(O(X,'notransp')-Y,'fro'), ...
+    5e-10*norm(X,'fro'));
+verifyLessThan(tc,norm(O(X,'ctransp') ...
+    -G.Lambda*(G.U_cmv'*(G.Lambda'*X)),'fro'), ...
+    5e-10*norm(X,'fro'));
+end
+
 function test_standard_zero_field_cyclic_CMV_and_formal_skew_shift(tc)
 for n=[3 5 8]
     for theta=[.21 .7 pi/2]
