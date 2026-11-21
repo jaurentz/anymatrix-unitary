@@ -54,6 +54,8 @@ Entries marked **conditional** require hypotheses such as bounded ranks, particu
 | Low displacement rank (Toeplitz-/Cauchy-like) | Often \(O(Nr)\) generators | **Conditional** fast algorithms | Only particular members are unitary; fast multiplication depends on displacement operators |
 | Complementary-low-rank / interpolative butterfly | Often \(O(Nr\log N)\) | Often \(O(Nr\log N)\) | Usually approximate, not automatically norm-preserving |
 | Tensor train / matrix-product operator | \(O(Ld^2\chi^2)\) for uniform local size \(d\), bond \(\chi\) | Depends on vector format and bond dimensions | Compact operator description does not mean an arbitrary full vector can be read in \(o(N)\) |
+| Generic unstructured dense unitary/orthogonal | \(\Theta(N^2)\) | \(\Theta(N^2)\) standard action | Haar, generic polar/Procrustes; no general subquadratic exact representation (§5A) |
+| Dense complete transform without verified fast action | Typically \(\Theta(N^2)\) explicit; defining parameters may be much fewer | \(\Theta(N^2)\) direct; fast complete action unverified | Full DPSS and arbitrary graph Fourier; **not** an impossibility claim (§5A) |
 | Rational action of a sparse Hermitian matrix (Cayley) | Sparse factors / factorizations | Sparse solve cost, sometimes \(O(N)\) | Exact mathematical unitary; cost depends on fill and factorization |
 | Exponential of sparse skew-Hermitian generator | \(O(\operatorname{nnz}(H))\) generator | **Accuracy- and time-dependent** action | \(\exp(H)\) is exactly unitary mathematically but generally dense; applied approximately |
 
@@ -295,6 +297,40 @@ For **a full arbitrary vector** of length \(N\), applying the compact operator c
 
 **Applications and primary references.** **One-dimensional quantum many-body simulation and DMRG:** [Schollwöck, *The density-matrix renormalization group in the age of matrix product states* (2011)](https://arxiv.org/abs/1008.3477) describes MPS/MPO representations; [Paeckel et al., *Time-evolution methods for matrix-product states* (2019)](https://arxiv.org/abs/1901.05824) compares practical evolution algorithms. **Higher-dimensional numerical tensor approximation:** [Oseledets, *Tensor-Train Decomposition* (2011)](https://doi.org/10.1137/090752286) supplies a numerical linear algebra foundation. **Quantum-circuit evolutions:** short-depth local unitary gate sequences can have compact MPO descriptions, but repeated time evolution and truncation can increase bonds and spoil exact unitarity. The physically large state-space order is \(N=d^L\), even if the operator's bond dimensions are small.
 
+## 5A. Dense unitary and orthogonal families without a verified fast representation
+
+A **genuinely dense or presently non-fast family** deserves a positive classification in the database. An explicit dense matrix alone is **not** enough: a unitary Hessenberg matrix may be dense but have an \(O(N)\) core representation; a circulant unitary has an FFT action; a sparse-generator exponential can admit an implicit action. These belong in their respective *efficient* classes, not automatically here.
+
+Distinguish two statuses, attached to a **specific family, parameter regime and implementation**:
+
+1. **generic_dense_unstructured.** A generic member has no distinguished exploitable short exact representation or algorithm. The unitary manifold \(U(N)\) has real dimension \(N^2\) and the orthogonal group \(O(N)\) has real dimension \(N(N-1)/2\). Thus there is no regular universal exact parametrization of an unrestricted generic member with \(o(N^2)\) real parameters. Its conventional exact storage and matrix–vector action are \(\Theta(N^2)\). This is *not* a proof that every conceivable algorithm or particular sample needs that much arithmetic.
+2. **dense_no_verified_fast_action.** There may be a recurrence, compact mathematical definition, sparse auxiliary eigenproblem, or specialized partial transform, but **no validated subquadratic action for the complete finite square matrix and its adjoint** is currently available in this repository. This is a research/implementation status, not a mathematical impossibility result.
+
+### 5A.1 Representative families, applications and references
+
+| Family | Classification in the generic case | Application references and exact qualification |
+| --- | --- | --- |
+| **Haar unitary** and unrestricted circular-unitary entry ensembles | **generic_dense_unstructured**; \(O(N^2)\) data/action in the standard model | Random-matrix theory, quantum-chaotic spectra: [Mezzadri (2007)](https://arxiv.org/abs/math-ph/0609050), [Dyson (1962)](https://doi.org/10.1063/1.1703863); [haar_unitary](../haar_unitary.m). A sparse CMV matrix can reproduce CUE **eigenvalues** but is *not* a Haar matrix in its entries: [Killip–Nenciu (2004)](https://doi.org/10.1155/S1073792804141597). |
+| **Haar real orthogonal** and unstructured orthogonal rotations | **generic_dense_unstructured**; a generic full Householder/Givens factorization also takes quadratically many stored parameters or arithmetic | Classical compact groups and random-orthogonal testing: [Mezzadri (2007)](https://arxiv.org/abs/math-ph/0609050); [haar_orthogonal](../haar_orthogonal.m). A short product of reflectors belongs to the *efficient* class instead. |
+| **Polar factor of a general dense nonsingular matrix** | **generic_dense_unstructured** in the absence of structure in its input | Nearest unitary, reorthogonalization, Procrustes: [Higham (1986)](https://doi.org/10.1137/0907079); [polar_unitary](../polar_unitary.m). A normal/circulant/fast-structured input is a separate subfamily and may have a fast polar representation. |
+| **Unstructured Procrustes rotation** | **generic_dense_unstructured** when its cross-covariance is unrestricted | Registration/shape alignment: [Arun–Huang–Blostein (1987)](https://doi.org/10.1109/TPAMI.1987.4767965). Low-dimensional or low-rank special cases should be classified separately. |
+| **Arbitrary Haar-conjugated prescribed-spectrum matrix** \(QDQ^*\) | **generic_dense_unstructured** when \(Q\) is generic dense | Synthetic inverse-spectrum and spectral-density benchmarks; the diagonal phases alone do **not** compress arbitrary eigenvectors. For Fourier/core/short-circuit \(Q\), instead classify by that fast factorization. |
+| **Universal lossless optical mesh** with \(\Theta(N^2)\) independent couplers | **generic_dense_unstructured** in its full universal parametrization despite being a product of unitary cores | Programmable interferometers and linear optics: [Reck et al. (1994)](https://doi.org/10.1103/PhysRevLett.73.58), [Clements et al. (2016)](https://doi.org/10.1364/OPTICA.3.001460); [optical_mesh](../optical_mesh.m). Sparse-depth, butterfly-wired or otherwise restricted meshes can be efficient. |
+| **Complete DPSS/Slepian eigenvector matrix** | **dense_no_verified_fast_action** for the repo's general full-basis action | Time–frequency concentration and multitaper methods: [Slepian (1978)](https://doi.org/10.1002/j.1538-7305.1978.tb02104.x), [Karnik et al., *The Fast Slepian Transform* (2019)](https://doi.org/10.1016/j.acha.2017.07.005); [dpss_transform](../dpss_transform.m). Fast **leading-subspace projections** do not establish a fast complete orthogonal transform. |
+| **Arbitrary graph Fourier eigenvector matrix** | **dense_no_verified_fast_action** for general graph topology | Graph signal processing: [Shuman et al. (2013)](https://doi.org/10.1109/MSP.2012.2235192); [graph_fourier](../graph_fourier.m). Sparse Laplacian storage does not make its full eigenvector matrix sparse or fast. Circulant, product-graph and special graph topologies may be fast. |
+| **Square Gaussian-quadrature orthogonal-polynomial transforms** where no matching fast full action is implemented | **dense_no_verified_fast_action**, *not* intrinsically unstructured | Spectral methods/quadrature: [Gautschi (2004)](https://doi.org/10.1093/oso/9780198506720.001.0001); [Olver–Slevinsky–Townsend (2020)](https://doi.org/10.1017/S0962492920000045). Nodes/weights and a three-term recurrence can provide an \(O(N)\)-parameter mathematical specification, yet direct full evaluation costs \(O(N^2)\). Specialized Hermite, Jacobi, Laguerre and other fast transforms are discussed in §§5.5–5.5a; do not blanket-label them dense. |
+| **Generic dense multichannel scattering matrix** | **generic_dense_unstructured** when channels are unconstrained and no fast network decomposition is specified | Quantum transport: [Beenakker (1997)](https://doi.org/10.1103/RevModPhys.69.731). By contrast, *closed networks of bounded-size local scattering nodes* belong to the sparse-network class (§3.3). |
+
+### 5A.2 Criteria and database metadata
+
+For each **representation** of a family, first ask whether its numeric matrix is genuinely sparse, then whether it has a specified subquadratic exact factorization, a fast forward/adjoint action, or a documented approximate compression. If so, tag that representation with the appropriate efficient class and its precise rank/bandwidth/stage/tolerance assumptions. Only when these checks fail use **generic_dense_unstructured** (quadratic intrinsic degrees of freedom for generic samples) or **dense_no_verified_fast_action** (compact definition or specialized literature, but no verified fast **full** multiply).
+
+Do **not** claim that a missing implementation proves a lower bound. In particular, distinctions between **full transform versus leading eigenspace projection**, **exactly unitary versus approximately orthogonal**, and **setup time versus repeated matvec cost** are mandatory.
+
+Recommended fields: **efficiency_class**, **dense_reason**, **subquadratic_storage_known**, **subquadratic_full_action_known**, **partial_transform_only**, **fast_action_reference**, **representation_exactness**, **checked_date**, **setup_complexity**, and **unitarity_defect**. A family may have multiple representations with different classifications.
+
+This separate class prevents the database from overpromising matrix-free efficiency while leaving room for future discoveries of fast structure.
+
 ## 6. Exactness, unitary preservation and numerical hazards
 
 | Situation | Safe statement | Unsafe inference |
@@ -333,6 +369,7 @@ A family may have **multiple valid representations** (e.g., explicit sparse CMV,
 | **available_spectral_reference** | exact finite spectrum, moments, limiting law, or unknown |
 | **reference_ids / provenance** | primary literature and code implementation |
 | **implementation_status** | implemented, planned, or theoretical reference only |
+| **efficiency_class / dense_reason** | efficient representation or dense status (see §5A); include evidence, restrictions and whether a fast **full** action exists |
 
 For the existing MATLAB contract, see [MATRIX_FREE.md](MATRIX_FREE.md). In particular, the repository uses **'transp' for the conjugate transpose**, not the nonconjugating MATLAB **A.'** operation; this needs to remain consistent across new kernels.
 
