@@ -159,3 +159,14 @@ L-|m| and trace characters, and blockwise matrix-free
 forward/adjoint actions for complex and real harmonics with
 multiple RHS. Sparse explicit matrices are independently
 compared to the cached O(L^3) block operators.
+
+`tests/test_gauss_large_order_stability.m` exercises
+Gauss–Hermite and generalized Gauss–Laguerre transforms with
+alpha as close as -0.999, quadrature orders through n=384,
+Sturm endpoint orientation, Gram/diagonalization residuals,
+forward/adjoint multiple RHS round trips, double underflow in
+tail weights versus finite log Christoffel weights, and
+independently normalized physical Hermite/Laguerre degree-0
+functions. It explicitly rejects an unimplemented `'operator'`
+mode and tests that finite Gaussian nodes are not described
+as eigenphases of Q.
