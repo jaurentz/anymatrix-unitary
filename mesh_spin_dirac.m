@@ -283,10 +283,12 @@ if strcmp(mode,'spectral')
 end
 if strcmp(mode,'cayley_operator')
     h=t/steps;
-    plus=decomposition(speye(N)+.5i*h*H,'lu');
-    minus=decomposition(speye(N)-.5i*h*H,'lu');
+    plusMatrix=speye(N)+.5i*h*H;
+    minusMatrix=speye(N)-.5i*h*H;
+    plus=decomposition(plusMatrix,'lu');
+    minus=decomposition(minusMatrix,'lu');
     U=@(X,flag)um_mesh_spin_dirac_cayley(X,flag, ...
-        N,steps,plus,minus);
+        N,steps,plus,minus,plusMatrix,minusMatrix);
     return
 end
 if N>256
