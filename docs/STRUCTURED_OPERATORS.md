@@ -494,3 +494,26 @@ an FFT-fast action of the full coefficient transform.
 The explicit Q remains O(n^3) setup, O(n^2) storage and apply,
 in contrast with genuinely fast specialized transforms
 ([Webb 2026](https://arxiv.org/abs/2604.02041), and [Olver et al.](https://www.cambridge.org/core/journals/acta-numerica/article/abs/fast-algorithms-using-orthogonal-polynomials/4FAD8C7C28EC20EE7583465C1A89AA3D)).
+
+
+### Spin-weighted harmonics: Jacobi square blocks vs FFT sampling
+
+For fixed spin s and azimuth m, Wigner d^(ell)_(m,-s)
+reduces to a signed positive-leading Jacobi basis with
+a=abs(m+s), b=abs(m-s). This yields a strict
+(L-max(abs(m),abs(s)))-square Gauss–Jacobi **orthogonal**
+weighted evaluation, the `spin_spherical_harmonic_transform`
+default. Its Gauss–Jacobi nodes are **not** matrix eigenphases.
+
+The full s-spin spherical transform has L²-s² coefficients
+and L*(2L-1) Gauss–Legendre/equispaced-azimuth samples,
+so the weighted evaluation has A'*A=I but is rectangular.
+`um_spin_sampling_apply` exploits Fourier separation in
+azimuth to apply the full map and adjoint in O(L³+L² log L)
+rather than O(L^4) dense sampling arithmetic. Exact
+discrete quadrature follows from degree at most 2L-2
+Wigner-d products and the L-node Legendre rule. It is
+a derived exact GL implementation, not a copy of
+[Huffenberger–Wandelt (2010)](https://doi.org/10.1088/0067-0049/189/2/255)
+or the MW equiangular grid. Pole local frames and
+spin +/- conjugation are documented explicitly.

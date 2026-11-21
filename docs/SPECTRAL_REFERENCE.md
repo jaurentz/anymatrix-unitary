@@ -205,3 +205,14 @@ not for the unitary/orthogonal sample-evaluation matrix Q.
 The additional `log_function_scaling` maps rows to physical
 Hermite/Laguerre L2 function samples; it does not change
 the finite spectral law of Q.
+
+
+`spin_spherical_harmonic_transform(L,s,m,'spectral')`
+labels the finite eigenphase law of the SQUARE fixed-(s,m)
+Jacobi latitude transform as UNKNOWN. The Gauss-Jacobi
+quadrature nodes are real and do not describe the
+unitary/orthogonal transform eigenvalues. Its auxiliary
+`'sampling'` and `'sampling_operator'` return an
+L(2L-1)-by-(L²-s²) rectangular isometry rather than a
+square matrix, hence there is no unitary finite trace
+eigenphase counting law for that sampling matrix.

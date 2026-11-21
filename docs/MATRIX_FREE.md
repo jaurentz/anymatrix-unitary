@@ -221,3 +221,21 @@ the full Q is still assembled in O(n^3) and applied in O(n^2).
 The log weights can record true tiny quadrature values even when
 double weights underflow; a certified relative error is NOT
 claimed for extreme orders or alpha approaching -1.
+
+
+## Spin-weighted spherical sampling (rectangular FFT isometry)
+
+`spin_spherical_harmonic_transform(L,s,m)` is a **square real
+orthogonal** fixed-(s,m) Gauss–Jacobi latitude transform (generic
+dense O(M³) setup). The separate `'sampling_operator'` returns
+a RECTANGULAR map of shape [L*(2L-1), L²-s²], with exact-in-arithmetic
+isometry `A'*A=I`; its adjoint is the weighted harmonic analysis.
+For each azimuthal m it contracts the normalized Wigner–Jacobi
+latitude block (precomputed) and uses an FFT in longitude. Data
+storage O(L³), forward/adjoint O(L³+L² log L) per RHS; no
+quadratic-sized full-sphere sampling matrix is constructed.
+`'sampling'` materializes the same rectangular map only for
+L<=12. Row order is theta-fastest, phi-slowest, and the
+Gauss–Legendre physical polar weights are included as square
+roots in the sampling matrix. **The rectangular isometry is
+NOT registered as an independent square unitary family.**
