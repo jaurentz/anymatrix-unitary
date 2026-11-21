@@ -180,7 +180,7 @@
 %   lie_geodesic_transport    Orthogonal Lie-algebra geodesic transport.
 %
 %   stiefel_parallel_transport Intrinsic Stiefel transport; compact Taylor operator action.
-%   real_flag_parallel_transport Normal-metric real flag tangent parallel isometry.
+%   real_flag_parallel_transport Normal-metric real flag; matrix-free projected Lie action.
 %   stiefel_geodesic         Canonical Stiefel geodesic ambient lift.
 %   grassmann_holonomy       Non-Abelian tautological geodesic-loop holonomy.
 %
