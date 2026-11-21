@@ -587,6 +587,26 @@ and multiple RHS, with no `expm`. Generic angles retain the
 existing dense matrix exponential and reject operator mode
 rather than pretending to be fast.
 
+### General simple geodesic-polygon Slepian bases
+
+`spherical_polygon_slepian(L,vertices,tol,'parameters')` now
+constructs concentration on **simple concave or convex
+geodesic spherical polygons**, including regions outside
+the previous cap/lune mixture model. Unit 3D vertices
+are triangulated by gnomonic ear clipping, integrated
+by positive Gaussian rules on radially projected spherical
+triangles, and diagonalized into a real orthogonal
+analysis basis. The independent spherical-excess
+area and harmonic addition-theorem trace provide
+accuracy diagnostics; the code **raises an error**
+when successive-rule convergence is not demonstrated.
+This is a quadrature approximation, **not an exact
+finite-integral or certified absolute-error method**.
+The supported geometry is restricted to a
+well-conditioned open hemisphere, no holes.
+See [the encyclopedia](docs/MATRIX_ENCYCLOPEDIA.md)
+and [remaining #144 research](https://github.com/jaurentz/anymatrix-unitary/issues/144).
+
 ### Weighted SO(3)-rotated spherical Slepian masks
 
 `spherical_mask_slepian(L,components,mode)` extends exact finite

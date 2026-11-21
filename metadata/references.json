@@ -1330,6 +1330,22 @@
       "dois": [],
       "permalink": "https://gaussianprocess.org/gpml/chapters/RW4.pdf",
       "alternate_permalink": "https://gaussianprocess.org/gpml/"
+    },
+    {
+      "number": 172,
+      "dois": [
+        "10.1016/j.cam.2022.114822"
+      ],
+      "permalink": "https://doi.org/10.1016/j.cam.2022.114822",
+      "alternate_permalink": "https://arxiv.org/abs/2201.00261"
+    },
+    {
+      "number": 173,
+      "dois": [
+        "10.1016/j.amc.2025.129335"
+      ],
+      "permalink": "https://doi.org/10.1016/j.amc.2025.129335",
+      "alternate_permalink": "https://arxiv.org/abs/2403.05733"
     }
   ]
 }

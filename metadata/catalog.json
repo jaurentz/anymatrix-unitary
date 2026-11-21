@@ -1971,6 +1971,22 @@
       "operator_note": "O(n^3) initial expm/QR setup, then O(n) cached shifted tridiagonal solves per RHS; time and Cayley scale distinct."
     },
     {
+      "id": "spherical_polygon_slepian",
+      "status": "implemented",
+      "category": "signal_processing",
+      "matrix_order": "L^2 with 1<=L<=10, 3..24 arbitrary simple concave/convex geodesic vertices within a well-conditioned hemisphere",
+      "representation": "Adaptive-in-order positive Gaussian cubature of real spherical-harmonic concentration on gnomonic ear-clipped geodesic polygons, complete real orthogonal numerical eigensynthesis; approximation to mathematical concentration, NOT exact quadrature",
+      "spectral_reference": "Geometric spherical-excess area and addition-theorem trace L^2 area/(4pi); contraction eigenvalues of K are NOT analysis eigenphases (generic unknown)",
+      "encyclopedia_references": [
+        156,
+        172,
+        173
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": null,
+      "operator_note": "Dense O(N^3+M*q^2*N^2) setup and O(N^2) storage/action, N=L^2, Gaussian q<=64. Successive-rule Frobenius and independent area/trace error indicators, NOT mathematical certified absolute error bounds; rejects unconverged polygons and ill-conditioned/non-simple/hemisphere-spanning domains."
+    },
+    {
       "id": "spherical_mask_slepian",
       "status": "implemented",
       "category": "signal_processing",
