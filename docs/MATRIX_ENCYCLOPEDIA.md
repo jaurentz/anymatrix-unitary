@@ -1735,7 +1735,7 @@ C^{(8)}_{kj}=\frac{2}{\sqrt{2n+1}}\cos\left(
 It is real, symmetric, and **orthogonal** in exact arithmetic, hence
 $(C^{(8)})^2=I$. Its **exact finite eigenvalue multiplicities** are
 $+1$ with $\lceil n/2\rceil$ and $-1$ with $\lfloor n/2\rfloor$.
-In particular, $\operatorname{tr}(C^{(8)})=n\bmod 2$ and
+In particular, $\mathrm{tr}(C^{(8)})=n\bmod 2$ and
 the normalized trace moments are $1$ for even powers and
 $(n\bmod 2)/n$ for odd powers. For a proof, write
 $m=2n+1$ and complete the diagonal cosine sum to
