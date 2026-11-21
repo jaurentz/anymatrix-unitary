@@ -4867,6 +4867,162 @@ explicitly fix the curvature, sign, metric
 and fiber-basis conventions.
 
 
+
+## Gauss–Hermite finite harmonic-oscillator spectral flow — [`hermite_oscillator.m`](../hermite_oscillator.m)
+
+**What is and is not a fractional Fourier transform.** The generator
+`hermite_oscillator(n,theta,offset,mode)`
+builds a finite, **exactly unitary** spectral evolution from
+the orthogonal Gauss–Hermite quadrature-evaluation basis
+already provided by `gauss_hermite_transform(n)`.
+It is an independent matrix family, not a second copy of
+the quadrature basis Q, because its input and output are
+**weighted values on the quadrature grid**, and it
+varies continuously as a unitary one-parameter group.
+It is not a claim to implement the Candan–Kutay–Özaktas
+**DFT-compatible discrete fractional Fourier transform** [144]
+(issue #38), nor Campos–Rico-Melgoza–Chávez's different
+asymptotic FFT-based quadrature algorithm [143].
+
+The $n$ real quadrature nodes $x_j$ are the increasing
+eigenvalues of the real symmetric Jacobi matrix with
+offdiagonal entries $\sqrt{k/2}$, $k=1,\ldots,n-1$,
+corresponding to the normalized Gaussian measure
+$e^{-x^2}dx/\sqrt{\pi}$. Write $w_j>0$ for quadrature
+weights normalized so that $\sum_jw_j=1$, and
+$p_k$ for the orthonormal physicists' Hermite
+**polynomials**. The existing
+Golub–Welsch construction [104] gives
+
+```math
+Q_{j,k+1}=\sqrt{w_j}\,p_k(x_j),\qquad
+Q^TQ=I_n,\quad k=0,\ldots,n-1.
+```
+
+Finite Gaussian quadrature exactly integrates products
+of these $n$ polynomials, so Q is an orthogonal matrix,
+not a loose numerical truncation of a continuous integral
+kernel. The **quadrature-weighted nodal** coordinates
+are the chosen physical representation, rather than
+samples on an equispaced FFT grid.
+
+**Strict finite unitary spectral family.** Let
+$\theta\in\mathbb R$ and $\delta\in\{0,\tfrac12\}$,
+where $\delta$ is the optional zero-point energy.
+The complex finite matrix is
+
+```math
+\begin{aligned}
+E_\delta&=\mathop{\mathrm{diag}}(\delta,1+\delta,
+                   \ldots,n-1+\delta),\\
+H_\delta&=QE_\delta Q^T,\\
+U_{\theta,\delta}&=Q
+ \mathop{\mathrm{diag}}_{k=0}^{n-1}
+ \left(e^{-i\theta(k+\delta)}\right)Q^T
+                 =e^{-i\theta H_\delta}.
+\end{aligned}
+```
+
+The **energy matrix** $H_\delta$ is real
+symmetric, and the sample-space evolution is
+unitary. The output has order n, not twice
+the number of quadrature nodes. It obeys the
+exact algebraic identities
+
+```math
+\begin{aligned}
+U_{0,\delta}&=I,\qquad
+U_{\theta,\delta}^*=U_{-\theta,\delta},\\
+U_{\theta,\delta}U_{\varphi,\delta}
+ &=U_{\theta+\varphi,\delta},\\
+\frac{d}{d\theta}U_{\theta,\delta}
+ &=-iH_\delta U_{\theta,\delta}.
+\end{aligned}
+```
+
+With $\delta=0$ (the default), $\theta$ is
+$2\pi$-periodic. Including the continuous
+harmonic oscillator's ground-state contribution
+$\delta=1/2$ makes the unitary
+$2\pi$-**antiperiodic** and $4\pi$-periodic.
+The half-integer shift is a scalar global phase;
+it does not alter normalized power-spectrum
+multiplicities but does shift every eigenphase.
+
+**Exactly finite trace phase measure.** The
+finite trace spectrum is
+
+```math
+\left\{e^{-i\theta(k+\delta)}
+          :k=0,\ldots,n-1\right\},\qquad
+m_\ell=\frac1n\sum_{k=0}^{n-1}
+               e^{-i\ell\theta(k+\delta)},
+\qquad \ell\in\mathbb Z.
+```
+
+These equal-weight trace moments are computed
+from the **specified Hermite energy levels**,
+not by calling a numerical eigensolver on U.
+Coincident/aliased phases retain their finite
+multiplicities (for example $\theta=\pi/2$).
+No thermodynamic or continuous spectral
+density is claimed for this finite family.
+The `spectral` mode records exact
+eigenvalue multiset and all integer Fourier
+moments in the common reference format.
+
+**Do not confuse the Fourier endpoint.** At
+$\theta=\pi/2$, one obtains the finite diagonal
+oscillator-phase map in a **Gauss–Hermite
+quadrature-evaluation basis**. The normalized
+DFT instead has a distinct periodic equispaced
+sampling space and DFT-compatible Hermite-like
+eigenvectors [144]. Thus in general
+
+```math
+U_{\pi/2,0}\ne F_n,\qquad
+F_n(j,k)=n^{-1/2}e^{-2\pi i\,jk/n}.
+```
+
+The tests verify this *non-equality* for several
+nontrivial even and odd matrix orders. In particular
+the present model is neither a chosen branch
+of $F_n^\alpha$ nor the exactly DFT-compatible
+construction requested by issue #38.
+
+**Computation and diagnostic modes.** The
+`basis` mode returns the real Q,
+increasing Gauss–Hermite nodes, normalized
+positive weights, and energy levels.
+The `hamiltonian` mode returns
+the symmetric $H_\delta$;
+`matrix` returns the complex U.
+The existing dense Golub–Welsch eigensolver
+costs $O(n^3)$ to initialize Q.
+Subsequent dense matrix assembly and the
+first spectral basis construction likewise
+have nontrivial cubic cost; no unwarranted
+FFT or matrix-free action is advertised.
+The generator is limited to $1\le n\le256$
+for reproducible moderate-order benchmarks.
+Tests cover quadrature normalization and the
+Hermite three-term recurrence, strict unitarity,
+the group law, both periodicity conventions,
+the Hamiltonian matrix exponential and
+derivative, and exact trace moments.
+
+**References and precise scope:** [104]
+Golub–Welsch for Gauss-quadrature recurrence
+eigenvectors; [143] Campos–Rico-Melgoza–Chávez
+for a distinct fast FrFT quadrature; [144]
+Candan–Kutay–Özaktas for the DFT-compatible
+discrete FrFT. The **particular finite
+sample-space spectral construction and
+global-phase convention above are declared
+here** and do not purport to reproduce
+the published fast algorithms.
+
+
 ## Bibliography
 
 1. P. J. Davis, *Circulant Matrices*, Wiley, 1979. ISBN 9780471057710. [Library record](https://openlibrary.org/books/OL4407364M/Circulant_matrices).
@@ -5041,3 +5197,7 @@ and fiber-basis conventions.
 
 
 142. Y. Nagano, S. Yamaguchi, K. Fujita and M. Koyama, “A Wrapped Normal Distribution on Hyperbolic Space for Gradient-Based Learning,” *Proceedings of Machine Learning Research* **97** (ICML 2019), 4693–4702. [Open proceedings](https://proceedings.mlr.press/v97/nagano19a.html); [preprint](https://arxiv.org/abs/1902.02992).
+
+
+143. R. G. Campos, J. Rico-Melgoza and E. Chávez, “A New Formulation of the Fast Fractional Fourier Transform,” *SIAM Journal on Scientific Computing* **34** (2012), A1110–A1125. [DOI](https://doi.org/10.1137/100812677).
+144. C. Candan, M. A. Kutay and H. M. Ozaktas, “The Discrete Fractional Fourier Transform,” *IEEE Transactions on Signal Processing* **48** (2000), 1329–1337. [DOI](https://doi.org/10.1109/78.839980).

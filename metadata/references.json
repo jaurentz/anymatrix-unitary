@@ -1106,6 +1106,22 @@
       "dois": [],
       "permalink": "https://proceedings.mlr.press/v97/nagano19a.html",
       "alternate_permalink": "https://arxiv.org/abs/1902.02992"
+    },
+    {
+      "number": 143,
+      "dois": [
+        "10.1137/100812677"
+      ],
+      "permalink": "https://doi.org/10.1137/100812677",
+      "alternate_permalink": ""
+    },
+    {
+      "number": 144,
+      "dois": [
+        "10.1109/78.839980"
+      ],
+      "permalink": "https://doi.org/10.1109/78.839980",
+      "alternate_permalink": "https://users.metu.edu.tr/ccandan/pub_dir/dis_frft_SP_TRAN00.pdf"
     }
   ]
 }

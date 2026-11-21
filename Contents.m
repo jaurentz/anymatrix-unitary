@@ -76,6 +76,7 @@
 %   gauss_recurrence_transform  Orthogonal Gaussian transform from any positive Jacobi recurrence.
 %   gauss_jacobi_transform   Jacobi/Legendre/Chebyshev/Gegenbauer/associated Legendre.
 %   gauss_hermite_transform  Hermite Gauss-quadrature orthogonal basis.
+%   hermite_oscillator    Finite GH harmonic oscillator; exact fractional phase flow.
 %   gauss_laguerre_transform Generalized Laguerre quadrature basis.
 %   wigner_rotation         Irreducible SO(3) unitary representation.
 %   spherical_harmonic_rotation Direct sum of Wigner blocks.
