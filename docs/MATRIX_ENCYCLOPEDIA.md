@@ -6242,7 +6242,7 @@ below the first subdiagonal. The genuine generalized pencil
 A-zB is a strict unitary-unitary pair, and
 
 ```math
-\operatorname{eig}(A,B)=\operatorname{eig}(B^*A),
+\mathrm{eig}(A,B)=\mathrm{eig}(B^*A),
 \qquad (B^*A)^*(B^*A)=I.
 ```
 
