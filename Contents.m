@@ -90,11 +90,11 @@
 %   gauss_laguerre_transform Generalized Laguerre basis, stable Sturm signs/log weights.
 %   fourier_zernike_disk   Disk modal-radius Fourier-Jacobi hybrid, exact finite unitary.
 %   fourier_laguerre_ball  3D radial-zonal Fourier-Laguerre, exact square tensor and rectangular sampling.
-%   wigner_rotation         SO(3)/SU(2); exact sparse axis Euler and O(n) actions.
-%   spherical_harmonic_rotation Complex Wigner direct sum; O(L^3) cached block operator.
+%   wigner_rotation         SO(3)/SU(2); exact axis monomial and generic skew-expmv O(ell^2).
+%   spherical_harmonic_rotation Complex Wigner sum; O(L^3) action with no dense setup.
 %   so3_peter_weyl_transform Fixed-pair orthogonal Wigner-Jacobi; rectangular SO3 FFT isometry.
 %   spin_spherical_harmonic_transform Fixed spin/m orthogonal Gauss-Jacobi, rectangular FFT sampling.
-%   real_spherical_harmonic_rotation Real orthogonal Condon-Shortley Wigner direct sum, block operator.
+%   real_spherical_harmonic_rotation Real Condon-Shortley sum; sparse-basis matrix-free action.
 %   periodic_sinc_shift     Real circulant fractional shift, FFT.
 %
 % Geometric and symplectic integration:

@@ -3730,14 +3730,37 @@ D^{(\ell)}(R)=e^{-i\alpha J_z}e^{-i\beta J_y}e^{-i\gamma J_z},
 \qquad J_z=\mathrm{diag}(-\ell,\ldots,\ell).
 ```
 
-The middle factor is calculated by exponentiating the real
-skew-symmetric matrix representing `-i*Jy`. It is unitary without
-evaluating numerically unstable factorial Wigner sums.
-For rotation angle delta satisfying
+The exact mathematical middle factor is the exponential of the
+real skew-symmetric tridiagonal angular-momentum generator
+$K=-iJ_y$. For rotation angle delta satisfying
 `cos(delta/2)=cos(beta/2)*cos((alpha+gamma)/2)`, the exact eigenvalues
-are `exp(-i*m*delta)`, m=-ell,...,ell. For generic Euler middle angle
-the explicit dense matrix is built using `expm`: no asymptotically
-fast **general-angle** action is claimed. [108]
+are `exp(-i*m*delta)`, m=-ell,...,ell. The explicit
+`'matrix'` mode still evaluates the generic case with dense `expm`.
+However, general-angle `'operator'` now applies the **same mathematical
+unitary** with no dense block, using a scaled degree-32 Taylor action
+of $K$ via its two nonzero offdiagonals.
+
+In the spin-ell irrep, $\lVert K\rVert_2=\ell$. Reduce
+beta modulo $4\pi$ (valid for both integer SO(3) and half-integer
+SU(2) representations); choose
+$s=\max(1,\lceil |\beta_{\mathrm{red}}|\ell/2\rceil)$.
+Each scaled step satisfies $\lVert (\beta_{\mathrm{red}}/s)K\rVert_2\le2$.
+The degree-32 polynomial has an exact-arithmetic operator
+remainder at most $\varepsilon=e^2 2^{33}/33!$ per step,
+giving total norm error at most
+$s\varepsilon(1+\varepsilon)^{s-1}$.
+This is **not a floating-point error certificate**: roundoff and
+large-angle argument reduction still require measured validation.
+The generated floating-point action is approximately norm-preserving,
+not literally an orthogonal matrix in arithmetic. At fixed reduced
+beta, per-RHS cost is $O(\\ell^2)$, with $O(\\ell)$ workspace and
+no dense $O(\\ell^3)$ matrix exponential setup.
+This is an exponential-*action* algorithm, not the source-specific
+Gimbutas--Greengard / S2FFT $O(\\ell\\log\\ell)$ Wigner transform.
+Its general scaling/Taylor strategy is related to
+[Al-Mohy--Higham (2011)](https://doi.org/10.1137/100788860),
+but it implements the explicitly bounded fixed-degree prototype,
+**not** their adaptive optimized algorithm. [108]
 
 **Exact special Euler angles (issue #41).** For
 $\beta=q\pi$, integer $q$, the middle Wigner factor is a
@@ -3765,13 +3788,12 @@ to SO(3). These exact angle classes have only $N=2j+1$
 nonzeros, $O(N)$ assembly/storage/action and no
 matrix exponential. The `operator` mode supports
 forward, adjoint, ordinary transpose and multiple RHS
-at exactly represented $\beta=q\pi$, and deliberately
-rejects generic middle angles (including nearby angles)
-rather than substituting a false sparse approximation.
-Tests independently compare with `expm(q\pi K)`
-and cover large half-integer-spin $j>2000$.
-Generic high-degree arbitrary-angle Wigner acceleration
-remains open in #41.
+at exactly represented $\beta=q\pi$ with *algebraically exact*
+monomial actions, distinct from the **approximate** generic-angle
+Taylor-action branch. Near-special angles are not silently rounded
+to a special angle. Tests independently compare with
+`expm(q\pi K)`, including half-integer spin $j>2000$.
+Higher-performance Wigner recurrences / transforms remain open in #41.
 
 ### Degree-truncated spherical rotation — [`spherical_harmonic_rotation.m`](../spherical_harmonic_rotation.m)
 
@@ -7472,18 +7494,24 @@ exp(-i*m*delta) and multiplicities L-|m|, independent of axis.
 The real basis convention and complex representation composition
 were independently tested through arbitrary 3D Euler products.
 
-For **both** complex `spherical_harmonic_rotation` and the new
-real counterpart, `output='operator'` precomputes the per-degree
-blocks and applies them without assembling an L^2-by-L^2 matrix.
-Per RHS application/storage is O(sum_l (2l+1)^2)=O(L^3)
-=O(N^(3/2)), compared with O(N^2)=O(L^4) generic dense action.
-However, the present individual degree-l blocks are **still
-formed by dense matrix exponentials**. The total precomputation
-is O(sum_l (2l+1)^3)=O(L^4), and one irrep's dense multiply
-still costs O(l^2); we do NOT claim to implement the
-Gimbutas–Greengard pseudospectral fast rotation or S2FFT
-Wigner algorithms. Issue #41 remains open for that work.
-Source [108,112].
+For **both** complex `spherical_harmonic_rotation` and the
+real counterpart, `output='operator'` now stores **no dense
+degree matrices**. Each degree uses the arbitrary-angle tridiagonal
+exponential action described above, and the real version surrounds
+it with the sparse Condon--Shortley basis map (exactly $4\ell+1$
+nonzero entries in degree $\ell$). For fixed middle Euler angle,
+both operators apply to each RHS in $O(L^3)=O(N^{3/2})$ work
+for total order $N=L^2$, with at most $O(L^2)$ coefficient
+storage and **no** old $O(L^4)$ exponential setup.
+Low-degree direct matrix mode retains dense per-block exponentials,
+sparse global assembly and exact mathematical orthogonality.
+The operator is a truncated approximate exponential in arithmetic,
+with explicit forward/transpose/adjoint semantics; the complex
+`transp` differs from `ctransp`. A real input has real output
+up to discarded imaginary roundoff; complex RHS are complex-linear.
+No Gimbutas--Greengard or S2FFT fast algorithm is claimed.
+Source [108,112]; [Al-Mohy--Higham exponential-action background](https://doi.org/10.1137/100788860).
+Issue #41 remains open for higher-performance single-degree action.
 
 ## Large-order Hermite/Laguerre weighted Gauss transforms — stability diagnostics
 

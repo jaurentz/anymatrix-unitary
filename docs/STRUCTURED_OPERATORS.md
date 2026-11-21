@@ -482,22 +482,49 @@ Numbers below are local to this note. Existing family-specific references remain
 
 *Scope note:* This is a taxonomy of efficient representations and literature **not** a claim that each general matrix structure defines a unitary matrix family, nor that each technique is implemented in MATLAB here. Exactness and complexity are representation- and parameter-dependent.
 
-### Verified blockwise SO(3) real/complex spherical-harmonic actions
+### Matrix-free SO(3) real/complex spherical-harmonic actions (implemented)
 
-`spherical_harmonic_rotation` and the new
-`real_spherical_harmonic_rotation` both expose a block direct-sum
-`'operator'` on degrees 0,...,L-1. The latter uses an exact
-Condon–Shortley complex-to-real harmonic basis transform,
-so every degree block is real orthogonal rather than the
-nonorthogonal entrywise real part of complex Wigner D.
-For N=L^2, per-matvec work/storage is O(L^3)=O(N^(3/2)).
-The important caveat is O(L^4) *dense* per-degree setup and
-O(ell^2) per-degree application. This is NOT the asymptotically
-fast Wigner or spherical rotation algorithm of
-[Gimbutas–Greengard (2009)](https://doi.org/10.1016/j.jcp.2009.05.014)
-or the later S2FFT family. The new matrix-free label refers
-to the full block direct sum only, not to a sparse or fast
-single-irrep Wigner factor. Issue #41 retains that research task.
+`wigner_rotation(ell,alpha,beta,gamma,'operator')` now acts
+at **arbitrary** middle Euler angle without forming a dense
+Wigner $D$ or the skew tridiagonal generator. The latter has
+two nonzero offdiagonals and spectral norm $\ell$.
+A degree-32 scaled Taylor action with steps
+$s=\max(1,\lceil|\beta_{\mathrm{red}}|\ell/2\rceil)$,
+after a valid SU(2) $4\pi$ beta reduction, has a conservative
+exact-arithmetic truncation bound per substep
+
+```math
+\varepsilon\le\exp(2)\frac{2^{33}}{33!},
+\qquad
+\lVert E_s\rVert_2\le s\varepsilon(1+\varepsilon)^{s-1}.
+```
+
+The bound does **not** certify floating-point roundoff.
+At fixed reduced beta, arbitrary-angle application is
+$O(\ell^2)$ per RHS, with $O(\ell)$ memory and no dense
+$O(\ell^3)$ setup. At **exactly** represented beta integer multiples
+of $\pi$ the existing diagonal/anti-diagonal monomial branch
+remains algebraic $O(\ell)$.
+
+Both `spherical_harmonic_rotation` and
+`real_spherical_harmonic_rotation` now construct *handles* to
+these degree-block actions, not dense Wigner matrices. The real
+version uses the $4\ell+1$-nonzero Condon--Shortley unitary
+complex-to-real basis map $C_\ell$ around each Wigner action,
+so the exact mathematical block is $C_\ell^*D_\ell C_\ell$
+and real orthogonal. For a complete order $N=L^2$ harmonic
+vector, the total action is $O(L^3)=O(N^{3/2})$ at fixed
+beta, with $O(L^2)$ parameters and no old $O(L^4)$
+precomputation. The complex direct sum now correctly
+distinguishes plain transpose from conjugate adjoint.
+
+This is a practical **matrix-free exponential action**, not
+a claim of a Gimbutas--Greengard butterfly/Wigner transform
+or S2FFT-type subquadratic single-degree action; the
+high-degree source-specific fast method remains open in #41.
+References:
+[Al-Mohy--Higham (2011)](https://doi.org/10.1137/100788860),
+[Gimbutas--Greengard (2009)](https://doi.org/10.1016/j.jcp.2009.05.014).
 
 ### Hermite/Laguerre stability improvement without a fake fast method
 

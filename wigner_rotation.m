@@ -19,14 +19,17 @@ function [U,properties]=wigner_rotation(ell,alpha,beta,gamma,output)
 %     S(row m,col m')=(-1)^(ell-m') delta_{m,-m'}.
 %   Consequently special-angle full D is diagonal or anti-diagonal,
 %   with O(ell) storage/action (up to FFT-free complex phases).
-%   OUTPUT='operator' enables exact algebraic forward/adjoint/transpose
-%   multi-RHS action for these beta ONLY, and rejects generic beta.
-%   For ordinary 'matrix' at special beta, sparse output is returned
-%   above order 512; at smaller order legacy dense output is retained.
-%   The branch detects only EXACT represented beta=k*pi, not a
-%   near-pi tolerance that would silently change the requested matrix.
-%   Generic middle angles still use dense O((2*ELL+1)^3) expm setup;
-%   no fast arbitrary-angle Wigner method is claimed.
+%   OUTPUT='operator' supports forward/adjoint/transpose multi-RHS
+%   for ALL finite beta. Exactly represented beta=k*pi still uses
+%   EXACT algebraic diagonal/antidiagonal O(ell) monomial actions.
+%   Generic beta uses UM_WIGNER_SKEW_EXPMV: a degree-32 scaled Taylor
+%   action of the tridiagonal angular-momentum generator, with rigorous
+%   truncation bound and O(ell^2) work per RHS at fixed beta, O(ell)
+%   transient storage, and NO dense expm setup. This finite-precision
+%   action is approximate: do NOT claim it is exactly unitary or an
+%   O(ell log ell) Wigner method. Special-angle 'matrix' returns
+%   sparse for n>512, otherwise legacy dense output. Generic 'matrix'
+%   still uses dense O((2*ELL+1)^3) setup.
 %   Reference: Gimbutas and Greengard, JCP 228 (2009), 5621-5627.
 %   [108] https://doi.org/10.1016/j.jcp.2009.05.014
 %   [112] https://doi.org/10.1007/s00041-008-9013-5
@@ -94,8 +97,8 @@ if axisExact
     return
 end
 if strcmp(output,'operator')
-    error('wigner_rotation:Operator', ...
-        'Fast operator is available only for exactly represented beta=k*pi.');
+    U=@(X,flag)um_wigner_skew_expmv(X,flag,ell,alpha,beta,gamma);
+    return
 end
 c=sqrt((ell-m(1:end-1)).*(ell+m(1:end-1)+1));
 K=(diag(c,1)-diag(c,-1))/2;

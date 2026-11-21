@@ -89,7 +89,9 @@ verifyError(t,@()stiefel_geodesic(6,2,eye(2)),'stiefel_geodesic:Skew');
 verifyError(t,@()grassmann_holonomy(3,3),'grassmann_holonomy:Order');
 P=cat(3,[1;0;0],[0;1;0],[0;0;1]);
 verifyError(t,@()grassmann_holonomy(3,1,P),'grassmann_holonomy:CutLocus');
-verifyError(t,@()wigner_rotation(1.5,.1,.2,.3,'operator'),'wigner_rotation:Operator');
+F=wigner_rotation(1.5,.1,.2,.3,'operator');
+D=wigner_rotation(1.5,.1,.2,.3);
+verifyLessThan(t,norm(F(eye(4),'notransp')-D,'fro'),2e-12);
 end
 
 function assert_spec(t,A,z)
