@@ -132,7 +132,7 @@ Chebyshev I (DCT-III) and II (DST-I) forward and adjoint operations
 with the dense positive-leading Golub-Welsch transform for small
 odd/even n, checks independent trigonometric reference matrices,
 multi-RHS and complex-vector round trips, and uses n=16384 to
-verify that the operator supports large sizes without a dense n-by-n
+verify that the operator supports large sizes without a dense $N\times N$
 setup. General Jacobi and associated-Legendre parameters are explicitly
 tested to reject the unsupported fast mode, not silently fall back to
 quadratic/cubic operations.
@@ -182,7 +182,6 @@ complex multi-RHS FFT forward/adjoint comparisons,
 Condon–Shortley conjugation across opposite spin,
 scalar Y_00/Y_11 normalization and a larger L=24
 operator with no explicit sampling matrix.
-
 
 `tests/test_so3_peter_weyl_transform.m` verifies strict square
 fixed-Wigner-index orthogonality and sign conventions, exact
