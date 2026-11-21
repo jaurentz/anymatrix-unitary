@@ -45,15 +45,7 @@ specify any different physical site count, qubit count, polynomial degree,
 local dimension, rank, bandwidth, depth, and number of right-hand sides.
 Standardize mathematical descriptions on uppercase $N$ for the order of an
 $N\times N$ matrix, including storage, matrix-vector multiplication, spectral
-trace measures, and encyclopedia `**Order:** $N=...## Spectral claims, operator contracts, and source conventions
-
-For every claim of a known spectrum, state whether it is an exact finite
-multiset, a limiting density, or a random ensemble law. Preserve phase and
-boundary conventions, coefficient indexing, and physical dimension. For an
-OPUC family, place explicit weights or coefficient formulas in the common
-measure/Verblunsky layer and reuse the multiplication representation code.
-
- declarations.
+trace measures, and encyclopedia `**Order:** $N=...$` declarations.
 Reserve lowercase $n$ and other symbols for generator inputs, counts of
 physical sites/spins, polynomial degrees, and other auxiliary parameters.
 State $N=n$, $N=2n$, $N=2^n$, etc., explicitly where appropriate, and do
