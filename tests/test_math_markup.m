@@ -86,6 +86,8 @@ for j=1:numel(paths)
     verifyFalse(tc,contains(s,'\DeclareMathOperator'),paths{j});
     verifyFalse(tc,contains(s,'\newcommand'),paths{j});
     verifyFalse(tc,contains(s,'\tag{'),paths{j});
+    verifyEmpty(tc,regexp(s,'(?<![A-Za-z\\])o\s*\(\s*[Nn]','match'), ...
+        sprintf('Avoid little-o complexity notation in %s',paths{j}));
     verifyFalse(tc,contains(s,'\('),paths{j});
     verifyFalse(tc,contains(s,'\)'),paths{j});
     verifyEmpty(tc,regexp(s,'(?m)^\s*\\\[\s*$','match'),paths{j});
