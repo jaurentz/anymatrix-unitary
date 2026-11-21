@@ -25,7 +25,7 @@
 %   bernstein_szego_finite  General finite Bernstein-Szego rational circle weight.
 %   rational_opuc       Pole-parameterized finite rational OPUC unitary model.
 %   unitary_rank_one_update Multiplicative unitary rank-one Hessenberg update.
-%   etna_hessenberg     Type I/II/III reproducible unitary Hessenberg benchmarks.
+%   etna_hessenberg     Type I/II/III and ETNA 2015 Examples 7.1/7.5 Hessenberg benchmarks.
 %   lee_yang_ising      Sparse twisted Floquet-CMV for Ising Lee-Yang zeros.
 %   scattering_zipper   General multichannel scattering zipper with boundary mixing.
 %
