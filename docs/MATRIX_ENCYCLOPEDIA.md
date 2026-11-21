@@ -6854,8 +6854,7 @@ The normalized physical radial functions
 $\sqrt{2(2k+|m|+1)}R_{|m|+2k}^{|m|}(r)$
 are orthonormal for fixed $m$ in
 $L^2([0,1],r\,dr)$. Indeed
-$\int_0^1 R_{|m|+2k}^{|m|}(r)^2r\,dr
-=1/[2(2k+|m|+1)]$. Under
+$\int_0^1 R_{|m|+2k}^{|m|}(r)^2r\,dr=1/[2(2k+|m|+1)]$. Under
 $x=2r^2-1$, the radial weight becomes
 $(1+x)^{|m|}$; the $n_r$-point
 Gauss–Jacobi rule with $(\alpha,\beta)=(0,|m|)$
@@ -6907,9 +6906,7 @@ a mere alias for a single `gauss_jacobi_transform`.
 The `model` output exposes each signed Fourier
 mode, its radial nodes, its physical disk
 radial-function weights
-$w_{j,m}^{\mathrm{phys}}
-=w_{j,m}^{\mathrm{norm}}/
-[2(|m|+1)r_{j,m}^{2|m|}]$,
+$w_{j,m}^{\mathrm{phys}}=w_{j,m}^{\mathrm{norm}}/[2(|m|+1)r_{j,m}^{2|m|}]$,
 its radial degrees and the cached blocks.
 The weights **depend on the angular mode** and
 are not a universal quadrature for arbitrary
