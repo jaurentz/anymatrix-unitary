@@ -1188,13 +1188,13 @@
       "category": "opuc",
       "matrix_order": "n",
       "representation": "Seeded unitary Hessenberg core-factor benchmarks Type I/II/III; paper-faithful correlated Example 7.1 first core columns with a single (m,p), m^(2/B^k), and terminal phase (-1)^(n-1); modern inverse-OPUC analogues of ETNA Example 7.5, including a real conjugate-paired model",
-      "spectral_reference": "Type I/II/III and 7.1: finite trace law unknown. 7.5 inverse spectral modern analog: exact prescribed evenly spaced nodes and e1 weights (given as input), plus explicit finite forward-node diagnostics; not the historic Mach--Van Barel--Vandebril inverse generator",
+      "spectral_reference": "Type I/II/III and 7.1: finite trace law unknown. 7.5 modern inverse spectral analog: exact target uniformly weighted TRACE nodes versus independently prescribed positive CYCLIC e1 weights, with finite n<=64 eigenvalue and first-eigenvector-component weight forward diagnostics (bijective node matching required); not the historical Mach--Van Barel--Vandebril inverse code",
       "encyclopedia_references": [
         8
       ],
       "matrix_free_supported": true,
       "operator_kernel": "um_core_apply",
-      "operator_note": "O(n) core-factor action; Type III near-decoupled four-block structure. Extended support for 7.1/7.1-real (shared m and p and Beta^k exponent), 7.5/7.5-real (distinct documented modern inverse-Szego analogue). Explicit construction is a source-faithful 7.1 distribution, but not claimed to reproduce original random streams or the historical 7.5 floating-point deterioration."
+      "operator_note": "O(n) core-factor action; Type III near-decoupled four-block structure. Extended support for 7.1/7.1-real (shared m and p and Beta^k exponent), 7.5/7.5-real (distinct documented modern inverse-Szego analogue). The inverse benchmark now checks numerical cyclic eigenvector weights as well as node errors when n<=64; matching failure invalidates weight diagnostic, no O(n^3) diagnostic for n>64. Source-faithful 7.1 distribution, not reproduction of historical 7.5 software or its deterioration."
     },
     {
       "id": "quantum_cat_map",
