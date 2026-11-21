@@ -25,11 +25,23 @@ function [Q,properties]=stiefel_parallel_transport(n,p,A,B,t,mode)
 %   MODE='matrix' (default) returns Q; MODE='model' returns Q, K, S,
 %   orthonormal horizontal basis index pairs, Y0 and Yt. MODE='spectral'
 %   labels general finite transform eigenphases UNKNOWN (no closed law).
-%   This transparent prototype explicitly forms the D-by-D connection
-%   and computes its D-by-D exponential, O(D^2) structure-constant
-%   setup and O(D^3) expm, O(D^2) storage/action per RHS.
-%   It does NOT implement Nguyen-Sommer's O(N*P^2) exponential action.
-%   For scope/control, require N<=64 and D<=256.
+%   Dense matrix/model: explicit D-by-D connection and expm, O(D^2)
+%   structure constants, O(D^3) exponential and O(D^2) storage.
+%   Require N<=64,D<=256 for these dense reference modes.
+%
+%   MODE='operator': matrix-free scaled degree-24 Taylor action of
+%   exp(t*S), using ONLY compact (A,B), without forming either n-by-n
+%   K or d-by-d S. Every S times vector costs O(N*P^2) and O(N*P)
+%   work storage (fixed P<=32). For ||S||<=||K||_F, splitting into
+%   m=max(1,ceil(abs(t)*||K||_F)) steps gives a Taylor remainder
+%   at most m*exp(1)/25!*(1+exp(1)/25!)^(m-1) in real arithmetic.
+%   This APPROXIMATE action is not exactly orthogonal; unlike
+%   the dense mathematical expm it incurs polynomial and roundoff
+%   errors. Forward/adjoint/transpose/multi-RHS all supported.
+%   Operator allows N<=1024, D<=16384, P<=32, m<=4096.
+%   This is an explicit projected-Lie-bracket method with a
+%   Taylor action; it does NOT claim to reproduce Nguyen--Sommer's
+%   more sophisticated large-time algorithm or improve its bound.
 %
 %   [97] Edelman, Arias, Smith (1998),
 %   https://doi.org/10.1137/S0895479895290954
@@ -38,9 +50,9 @@ properties={'square','unitary','normal','orthogonal','real', ...
     'parameter-dependent'};
 if nargin==0,Q=[];return;end
 if ~(isnumeric(n)&&isscalar(n)&&isreal(n)&&isfinite(n) ...
-    &&n==floor(n)&&n>=2&&n<=64)
+    &&n==floor(n)&&n>=2&&n<=1024)
     error('stiefel_parallel_transport:Order', ...
-        'N must be an integer from 2 to 64.');
+        'N must be an integer from 2 to 1024.');
 end
 if nargin<2||isempty(p),p=min(2,n);end
 if ~(isnumeric(p)&&isscalar(p)&&isreal(p)&&isfinite(p) ...
@@ -49,10 +61,6 @@ if ~(isnumeric(p)&&isscalar(p)&&isreal(p)&&isfinite(p) ...
         'P must be an integer with 1<=P<=N.');
 end
 d=n*p-p*(p+1)/2;
-if d>256
-    error('stiefel_parallel_transport:Order', ...
-        'Prototype connection dimension must be <=256.');
-end
 if nargin<3||isempty(A)
     A=zeros(p);
     if p>1,A(1,2)=-.27;A(2,1)=.27;end
@@ -85,9 +93,17 @@ if ~(ischar(mode)||(isstring(mode)&&isscalar(mode)))
     error('stiefel_parallel_transport:Mode','MODE must be scalar text.');
 end
 mode=lower(char(mode));
-if ~any(strcmp(mode,{'matrix','model','spectral'}))
+if ~any(strcmp(mode,{'matrix','model','spectral','operator'}))
     error('stiefel_parallel_transport:Mode', ...
-        'MODE must be matrix, model, or spectral.');
+        'MODE must be matrix, model, spectral, or operator.');
+end
+if any(strcmp(mode,{'matrix','model'})) && (n>64||d>256)
+    error('stiefel_parallel_transport:Order', ...
+        'Dense reference requires N<=64 and D<=256.');
+end
+if strcmp(mode,'operator') && (p>32||d>16384)
+    error('stiefel_parallel_transport:OperatorSize', ...
+        'Operator requires P<=32 and D<=16384.');
 end
 if strcmp(mode,'spectral')
     Q=unitary_spectral_reference('stiefel_parallel_transport',d);
@@ -98,7 +114,6 @@ if strcmp(mode,'spectral')
     return
 end
 
-K=[A,-B';B,zeros(n-p)];
 ii=zeros(d,1);jj=zeros(d,1);
 h=0;
 for i=1:p
@@ -106,6 +121,12 @@ for i=1:p
         h=h+1;ii(h)=i;jj(h)=j;
     end
 end
+if strcmp(mode,'operator')
+    Q=@(X,flag)um_stiefel_connection_expmv( ...
+        X,flag,n,p,A,B,t,ii,jj);
+    return
+end
+K=[A,-B';B,zeros(n-p)];
 % For F_ab=e_a e_b'-e_b e_a', take projected bracket coordinates
 % [K,F_ab](i,j). In this canonical horizontal orthonormal basis,
 % -ad_K/2 is the Levi-Civita parallel transport generator.
