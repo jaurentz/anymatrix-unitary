@@ -97,3 +97,10 @@ independent generalized Laguerre radial function evaluations and physical
 r^2dr quadrature normalization, zonal Legendre angular quadrature, square
 radial-zonal Kronecker orthogonality, multi-RHS matrix-free forward/adjoint
 and full-spherical rectangular sampling isometries, including P=L=1.
+
+`tests/test_etna_historical_examples.m` verifies ETNA §7.1 common-draw
+core columns, terminal factor, complex and real seeded realizations and
+matrix-free adjoints. The modern §7.5 inverse-OPUC analogue is tested
+against prescribed equispaced eigenphases, forward construction residual,
+real conjugate-paired weights and finite trace/cyclic measures. This
+is not a bitwise reproduction of the historical Fortran test setup.
