@@ -6000,6 +6000,29 @@ wrapped-Gaussian measure is a complementary control.
 See Colbrook, CMP 384 (2021), Section 6.3, reference [147]; Simon,
 OPUC, reference [5].
 
+## Spherical polar-cap Slepian orthogonal eigenbases — [`spherical_slepian.m`](../spherical_slepian.m)
+
+The real bandlimited spherical harmonic space (degrees 0,...,L-1) has
+dimension L^2. For a polar cap of colatitude Theta form the real symmetric
+concentration matrix K_ab = integral_cap Y_a Y_b dOmega. Its eigenvectors
+form an orthogonal synthesis matrix Q; the generator returns analysis Q'.
+The separately available `concentration` mode returns K, which is NOT unitary.
+
+Polar-cap symmetry separates the real cosine/sine blocks of each azimuthal
+order m. For fixed m, products P_ell^m(x) P_k^m(x) are polynomials of degree
+at most 2L-2 in x=cos(theta), so L-point Gauss-Legendre quadrature evaluates
+the finite cap integrals exactly in mathematics. The eigenvectors are
+sorted by decreasing concentration with deterministic sign convention
+(largest-magnitude coefficient positive), preserving separate cos/sin
+block bases under repeated eigenvalues.
+
+Concentration factors are eigenvalues of K in [0,1], NOT eigenvalues of
+the orthogonal matrix Q'. The latter has a generally unknown phase law.
+The exact Shannon number is trace(K)=L^2*(1-cos(Theta))/2. Empty/full
+caps return the canonical Q=I; `parameters` includes K, eigenvalues and
+real-harmonic basis labels. No general polygon/mask or fast matrix-free
+mode is claimed. The family is distinct from 1D DPSS and Wigner rotations.
+Source [156].
 ## Bibliography
 
 1. P. J. Davis, *Circulant Matrices*, Wiley, 1979. ISBN 9780471057710. [Library record](https://openlibrary.org/books/OL4407364M/Circulant_matrices).
@@ -6192,3 +6215,5 @@ OPUC, reference [5].
 153. W. W. Symes, “The QR algorithm and scattering for the finite nonperiodic Toda lattice,” *Physica D* **4** (1982), 275–280. [DOI](https://doi.org/10.1016/0167-2789(82)90069-0).
 154. A. Mukaihira and Y. Nakamura, “Schur flow for orthogonal polynomials on the unit circle and its integrable discretization,” *J. Comput. Appl. Math.* **139** (2002), 75–94. [DOI](https://doi.org/10.1016/S0377-0427(01)00388-0).
 155. M. J. Cantero et al., “Darboux transformations for CMV matrices,” *Adv. Math.* (2016). [DOI](https://doi.org/10.1016/j.aim.2016.03.042).
+
+156. F. J. Simons, F. A. Dahlen and M. A. Wieczorek, “Spatiospectral Concentration on a Sphere,” *SIAM Review* **48** (2006), 504–536. [DOI](https://doi.org/10.1137/S0036144504445765); [preprint](https://arxiv.org/abs/math/0408424).
