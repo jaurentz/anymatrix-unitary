@@ -5835,8 +5835,8 @@ additional gauge freedom.
 
 The `cmv_gauge` output returns sparse
 $\Lambda$, $L_{\widetilde\alpha}$,
-$M_\beta$, $U_{\mathrm{cmv}}=
-gL_{\widetilde\alpha}M_\beta$, the finite
+$M_\beta$ and
+$U_{\mathrm{cmv}}=gL_{\widetilde\alpha}M_\beta$, the finite
 coefficients, $g$, and $P$. All these
 matrices have $O(n)$ nonzeros and allow
 $O(n)$ action. **The finite coefficients above
