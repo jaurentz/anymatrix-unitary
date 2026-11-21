@@ -6053,6 +6053,37 @@ The radial physical scale tau rescales radii and weights but not the
 normalized square matrix. The quadrature nodes are not its eigenphases;
 its unit-circle trace spectral law is unknown. This family is not the
 Gaussian-weight spherical Gauss–Laguerre (SGL) transform. Sources [157,158].
+## ETNA 2015 Section 7 reproducible examples — [`etna_hessenberg.m`](../etna_hessenberg.m)
+
+Alongside existing Type I/II/controlled Type III, `kind='7.1'`
+implements ETNA Example 7.1 with a **single common m and a single
+common phase p** sampled per matrix. The core k first column is
+ [(-1)^(k-1) p sqrt(1-m^(2/B^k)); sqrt(m^(2/B^k))] 
+for k=1,...,n-1, with terminal factor (-1)^(n-1).
+Here B (passed as `coupling` for this mode only) is the positive
+correlation exponent base, B>=1 (B=2 by default), m uniform
+in (0,1), p uniform on the circle. The optional `7.1-real`
+preset fixes p=1 and gives a real orthogonal analogue. The
+existing independent `Type I` coefficients are intentionally distinct.
+
+`kind='7.5'` and `kind='7.5-real'` give a **modern inverse-OPUC
+analogue** of the known-spectrum Example 7.5: equally spaced unit
+circle eigenphases, deterministic seeded strictly positive cyclic
+weights, and an inverse finite Hessenberg core realization. The
+real model pairs conjugate weights. The `parameters` output includes
+finite forward eigenphase error for n<=64. This uses our `inverse_opuc`
+method, NOT the original Mach--Van Barel--Vandebril software cited
+in ETNA Example 7.5. Consequently one must NOT attribute the
+historical complex-generator failure for n>100, or its exact
+random setup, to this modern realization. The `spectral` mode
+reports target nodes, not an independently validated computed error.
+
+These additions cover paper-defined correlated-core distribution
+and an application-appropriate modern known-spectrum test, but
+faithfully recovering the original historical Example 7.5 code
+and reproducing the paper's exact historical Type III sample
+remain research tasks under issue #33. Source: ETNA 44 (2015),
+pp. 335–336, §7, reference [8].
 ## Bibliography
 
 1. P. J. Davis, *Circulant Matrices*, Wiley, 1979. ISBN 9780471057710. [Library record](https://openlibrary.org/books/OL4407364M/Circulant_matrices).
