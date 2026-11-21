@@ -176,9 +176,10 @@ function test_eigenproblem_registry_integrity(testCase)
 root=fileparts(fileparts(mfilename('fullpath')));
 catalog=jsondecode(fileread(fullfile(root,'metadata','catalog.json')));
 reg=jsondecode(fileread(fullfile(root,'metadata','eigenvalue_problems.json')));
-verifyEqual(testCase,numel(reg.families),17);
+verifyEqual(testCase,numel(reg.families),19);
 classes={'strict_unitary_pencil','unitary_on_contour', ...
-         'circle_spectrum_only','reciprocal_only'};
+         'circle_spectrum_only','reciprocal_only', ...
+         'generalized_pencil_not_unitary'};
 ids={catalog.matrix_families.id};
 implemented=0;
 for j=1:numel(reg.families)
@@ -200,5 +201,7 @@ for j=1:numel(reg.families)
             'External NEPs must not be labeled as unitary matrix generators.');
     end
 end
-verifyEqual(testCase,implemented,10);
+verifyEqual(testCase,implemented,11);
+verifyTrue(testCase,any(strcmp(reg.classifications, ...
+    'generalized_pencil_not_unitary')));
 end
