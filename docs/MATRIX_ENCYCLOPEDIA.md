@@ -3801,14 +3801,54 @@ orthogonal-group half-adjoint transport.
 The `spectral` mode returns the exact identity spectrum
 for two blocks and labels generic eigenphases **unknown**.
 
-The dense reference supports $3\le n\le32,d\le256$.
-Projected bracket setup is $O(d^2)$, dense
-matrix exponential $O(d^3)$ and storage/action $O(d^2)$.
-This is not a fast flag-manifold exponential-action
-implementation, so the performance requirement in
-issue #55 remains open. Full derivation and independent
-connection test: [real flag transport note](REAL_FLAG_TANGENT_TRANSPORT.md).
-Reference: Nguyen--Sommer [168].
+**Dense reference:** `matrix` and `model` assemble the
+$d\times d$ horizontal projected bracket with $O(d^2)$
+assembly and $O(d^3)$ dense exponential, capped at
+$n\le32,d\le256$. This is the mathematical real orthogonal
+Levi–Civita transport in its moving basis.
+
+**Matrix-free operator mode:** in the same horizontal skew
+coordinate system, represent an input vector as an
+$n\times n$ matrix $E$ with $E_{ij}=v_{ij}$,
+$E_{ji}=-v_{ij}$ for cross-block pairs. Its
+projected connection is
+
+```math
+S v=-\tfrac12 P_{\mathfrak m}(KE-EK)
+\qquad (S^T=-S).
+```
+
+This costs $O(n^3)$ for dense $K$ and $O(n^2)$
+working storage per RHS, compared with $O(d^2)$
+for the explicit tangent-space generator; when the
+flag is near-complete, $d=\Theta(n^2)$ and these
+costs differ by a factor of $n$. The operator uses
+a **degree-24 scaled Taylor** exponential of $S$,
+with $m=\max(1,\lceil|t|\|K\|_F\rceil)$ steps.
+The exact-arithmetic truncation error is at most
+$m\epsilon(1+\epsilon)^{m-1}$, where
+$\epsilon=e/25!$ and $\|tS/m\|_2\le1$.
+No floating-point error bound or exact finite-step
+orthogonality is claimed. Forward, adjoint and
+ordinary transpose apply the same action with
+reversed time; complex multi-RHS work because
+the skew matrix assembly uses **nonconjugating**
+transpose. Two-block Grassmann flags return
+identity exactly in the moving geodesic frame.
+
+The implementation supports $n\le256,d\le32768$
+in operator mode, with at most 4096 steps. It
+does not implement the optimized Nguyen–Sommer
+large-time method, a nonnormal metric, complex flags,
+or general closed-form transport eigenphases.
+Independent tests compare the operator against
+dense `expm(tS)`, projected Lie commutator
+columns, transpose/adjoin roundtrips and
+large-order cases. [168]
+
+Full derivation and original independent flag-projector
+connection test:
+[real flag transport note](REAL_FLAG_TANGENT_TRANSPORT.md).
 
 ### Non-Abelian Grassmannian loop holonomy — [`grassmann_holonomy.m`](../grassmann_holonomy.m)
 

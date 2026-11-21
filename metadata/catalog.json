@@ -1447,15 +1447,15 @@
       "id": "real_flag_parallel_transport",
       "status": "implemented",
       "category": "geometry",
-      "matrix_order": "d=(n^2-sum(k_a^2))/2 = sum_{a<b} k_a*k_b; real flag tangent dimension, 3<=n<=32,d<=256",
+      "matrix_order": "d=(n^2-sum(k_a^2))/2 = sum_{a<b} k_a*k_b; real flag tangent dimension, dense n<=32,d<=256; operator n<=256,d<=32768",
       "representation": "Levi-Civita tangent transport on normal homogeneous SO(n)/S(O(k1)x...xO(kr)), Q=expm(-t/2*projection_horizontal ad_K), no ambient frame confusion",
       "spectral_reference": "exact identity trace phases for 2-block real Grassmann geodesic moving frame; generic 3-plus-block finite eigenphases unknown",
       "encyclopedia_references": [
         168
       ],
-      "matrix_free_supported": false,
-      "operator_kernel": null,
-      "operator_note": "Dense O(d^2) projected Lie bracket and O(d^3) exponential; independently validated against induced flag-projector Levi-Civita connection. Normal homogeneous only; not fast Nguyen-Sommer action."
+      "matrix_free_supported": true,
+      "operator_kernel": "um_flag_connection_expmv",
+      "operator_note": "Dense reference O(d^2) connection/O(d^3) expm. Matrix-free projected n-by-n Lie commutator with O(n^3) per step (vs d-by-d O(d^2)), O(n^2) scratch; degree-24 scaled Taylor exp action O(24*m*n^3) and bound m*exp(1)/25! times accumulation, floating roundoff. For 2-block flags exact I in moving frame. Truncated action NOT exactly orthogonal; Nguyen-Sommer optimized long-time method not claimed."
     },
     {
       "id": "stiefel_parallel_transport",
