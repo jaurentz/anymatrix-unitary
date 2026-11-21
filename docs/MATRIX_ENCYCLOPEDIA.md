@@ -6114,6 +6114,48 @@ faithfully recovering the original historical Example 7.5 code
 and reproducing the paper's exact historical Type III sample
 remain research tasks under issue #33. Source: ETNA 44 (2015),
 pp. 335–336, §7, reference [8].
+## Exact Candan discrete fractional Fourier transform — [`discrete_fractional_fourier.m`](../discrete_fractional_fourier.m)
+
+The normalized DFT `F(j,k)=exp(-2*pi*i*j*k/n)/sqrt(n)` is an exact
+special value of the Candan–Kutay–Özaktas finite fractional family,
+not merely a continuous Fourier-integral sampling approximation.
+The real symmetric periodic discrete oscillator
+
+```math
+S_{j,j}=2\cos(2\pi j/n)-4,\qquad
+S_{j,j+1}=S_{j,j-1}=1\quad\text{(cyclic indices; accumulated if coincident)}
+```
+
+commutes with F. Its degeneracy when 4 divides n is resolved
+by eigenanalysis on distinct **even** and **odd** parity subspaces.
+For each parity block, sort the oscillator eigenvectors in descending
+eigenvalue order: the j-th even/odd eigenvector is assigned respectively
+index 2j or 2j+1. The resulting real orthonormal V is uniquely fixed
+up to column signs, which are set by largest-absolute-entry positivity.
+
+The precise discrete Hermite index set is `0,...,n-1` for odd n,
+but **`0,...,n-2,n` for even n**. Thus
+
+```math
+F_{\alpha}=V\,\mathrm{diag}(e^{-i\pi\alpha k/2})\,V^*,
+\qquad F_0=I,\quad F_1=F,\quad
+F_{\alpha}F_{\beta}=F_{\alpha+\beta},\quad
+F_{\alpha+4}=F_\alpha.
+```
+
+All identities hold in exact arithmetic; finite-precision tests
+also verify n divisible by 4, the skipped even-n index, and DFT
+eigenvectors explicitly. `basis` exposes V, k, parity and S;
+`oscillator` returns symmetric S (NOT a unitary matrix), and
+`hamiltonian` returns V diag(k) V* (also NOT a unitary matrix).
+`spectral` supplies the exact finite trace eigenphase law and moments
+for the unitary F_alpha, without inferring a limiting distribution.
+Only explicit dense construction is offered; its O(n^3) eigensolver
+setup and O(n^2) storage do NOT constitute a fast matrix-free action.
+This is distinct from the existing Gauss-Hermite quadrature oscillator
+and fractional Fourier integrals computed by approximate chirp FFTs.
+Reference [161], Section III, Equations (9), (15), (22) and Table IV.
+
 ## Bibliography
 
 1. P. J. Davis, *Circulant Matrices*, Wiley, 1979. ISBN 9780471057710. [Library record](https://openlibrary.org/books/OL4407364M/Circulant_matrices).
@@ -6314,3 +6356,5 @@ pp. 335–336, §7, reference [8].
 
 159. I. Nenciu, “Lax pairs for the Ablowitz-Ladik system via orthogonal polynomials on the unit circle,” *International Mathematics Research Notices* **2005** (2005), 647–686. [DOI](https://doi.org/10.1155/IMRN.2005.647); [preprint](https://arxiv.org/abs/math-ph/0412047).
 160. M. Gekhtman and I. Nenciu, “Multi-Hamiltonian structure for the finite defocusing Ablowitz-Ladik equation,” *Proceedings of the American Mathematical Society* **136** (2008), 2785–2792. [Preprint](https://arxiv.org/abs/0706.2428).
+
+161. Ç. Candan, M. A. Kutay and H. M. Ozaktas, “The discrete fractional Fourier transform,” *IEEE Transactions on Signal Processing* **48** (2000), 1329–1337. [DOI](https://doi.org/10.1109/78.839980); [full paper](https://www.ee.bilkent.edu.tr/~haldun/publications/ozaktas166.pdf).

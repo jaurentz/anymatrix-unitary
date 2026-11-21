@@ -1956,6 +1956,20 @@
       "matrix_free_supported": true,
       "operator_kernel": "um_core_apply",
       "operator_note": "O(n) memory/time core-product apply after O(n^2) inverse Szego setup, dense Lax diagnostic only; exact-in-mathematics isospectral flow with numerical limits for clustered nodes/large time, not an arbitrary ODE integrator."
+    },
+    {
+      "id": "discrete_fractional_fourier",
+      "status": "implemented",
+      "category": "signal_processing",
+      "matrix_order": "n (1<=n<=256)",
+      "representation": "exact Candan-Kutay-Ozaktas discrete fractional Fourier spectral expansion in the real parity-resolved joint eigenbasis of DFT and periodic difference oscillator S; even-n discrete Hermite labels 0,...,n-2,n",
+      "spectral_reference": "exact finite trace eigenphases exp(-i*pi*alpha*k/2), k in {0,...,n-1} for odd n and {0,...,n-2,n} for even n; exact moments by finite sum",
+      "encyclopedia_references": [
+        161
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": null,
+      "operator_note": "O(n^3) parity-block symmetric eigensolver setup, O(n^2) dense basis storage and application; no fictitious FFT-fast matrix-free operator. Full matrix strictly unitary in exact arithmetic and F(1)=normalized DFT; distinct from Gauss-Hermite oscillator."
     }
   ],
   "probability_measures": [
