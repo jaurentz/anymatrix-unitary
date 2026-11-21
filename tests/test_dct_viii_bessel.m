@@ -62,5 +62,6 @@ verifyEqual(testCase,S.finite.moments(0:5),[1 0 1 0 1 0],'AbsTol',eps);
 Sodd=orthogonal_dct(7,8,'spectral');
 verifyEqual(testCase,Sodd.finite.atoms.weights,[4/7;3/7],'AbsTol',eps);
 verifyEqual(testCase,Sodd.finite.moments(0:3),[1 1/7 1 1/7],'AbsTol',eps);
-verifyEqual(testCase,orthogonal_dct(8,4,'spectral').finite.kind,'unknown');
+Sother=orthogonal_dct(8,4,'spectral');
+verifyEqual(testCase,Sother.finite.kind,'unknown');
 end
