@@ -6555,6 +6555,108 @@ right-hand sides and a larger $L=48$ action.
 **Issue #118 remains open** for arbitrary spherical polygons,
 certified weighted masks and more scalable cap solvers.
 Source [156].
+## Geodesic polygon Slepian concentration — [`spherical_polygon_slepian.m`](../spherical_polygon_slepian.m)
+
+**Dimension:** $N=L^2$ real spherical harmonics,
+$0\le\ell<L$, with the same **Condon–Shortley**
+order-major cosine/sine basis as the polar-cap and
+lune generators. Here $L\le10$ and polygon vertices
+are an ordered $M\times3$ array of unit Cartesian
+vectors, $3\le M\le24$. Unlike the closed-form
+cap/lune families, this model handles **general simple
+concave or convex geodesic polygons**, with short
+great-circle edges, provided every vertex lies inside
+a common well-conditioned open hemisphere. It rejects
+self-intersections, holes, near-antipodal edges and
+regions that violate this chart restriction.
+
+The mathematical symmetric concentration matrix and
+area/Shannon identity are
+
+```math
+K_{ab}=\int_{\mathcal P}Y_a(\Omega)Y_b(\Omega)
+\,d\Omega,\qquad 0\preceq K\preceq I_N,
+\quad \mathrm{tr}(K)=\frac{L^2\,\mathrm{area}(\mathcal P)}{4\pi}.
+```
+
+The gnomonic map sends geodesic arcs to straight
+segments in a tangent plane. Therefore planar
+**ear clipping** gives a real geodesic triangle
+decomposition even when the polygon is nonconvex.
+The spherical area is evaluated **independently**
+by the solid-angle/spherical-excess formula
+$2\mathrm{atan2}(\det[a,b,c],1+a\cdot b+b\cdot c+c\cdot a)$
+for each positively oriented spherical triangle.
+
+For each spherical triangle $(a,b,c)$ the Duffy
+square-to-simplex parameterization and radial
+projection use an analytically known surface Jacobian:
+
+```math
+x(s,t)=(1-s)a+s(1-t)b+stc,
+\quad \Omega(s,t)=\frac{x(s,t)}{\|x(s,t)\|},
+\quad
+d\Omega=\frac{s\det[a,b,c]}{\|x(s,t)\|^3}\,ds\,dt.
+```
+
+A positive tensor Gauss–Legendre rule in $(s,t)$
+produces $K_q=\sum_k\omega_k Y(\Omega_k)Y(\Omega_k)^T$.
+In exact arithmetic every such *quadrature matrix*
+is symmetric positive semidefinite. However, a finite
+$q$ is **not polynomial-exact for the mapped
+spherical-harmonic integrands**, and $K_q$ generally
+differs from the true mathematical concentration $K$.
+
+The implementation refines $q$ from
+$\max(8,L+3)$ by doubling (at most $64$),
+checks $\|K_{2q}-K_q\|_F$, checks its
+numerical area against the independently evaluated
+spherical-excess area, and checks
+$\mathrm{tr}(K_q)$ against the exact
+addition-theorem Shannon trace. It either
+satisfies all three requested *convergence
+indicators* or raises a quadrature error.
+**These successive-rule differences are not
+rigorous upper error bounds.** No ARPIST-style
+certified accuracy, strict eigenvector perturbation
+bound or unconstrained spherical mask guarantee
+is asserted; Li–Jiao [172] develop an independently
+analyzed radial-projection method, while
+Sommariva–Vianello [173] study spherical-polygon
+cubature. This MATLAB implementation is a
+conservative Gaussian reference, not a reproduction
+of either complete paper's specialized algorithm.
+
+After measuring and checking its symmetry defect,
+the code diagonalizes the converged $K_q$
+and returns the **real orthogonal analysis
+matrix** $Q_q^T$ (or synthesis $Q_q$).
+$K_q$ itself is **not unitary**; its
+concentration values $\lambda_j\in[0,1]$
+are **not the eigenphases** of $Q_q^T$.
+The generic finite eigenphase law is unknown.
+The `parameters` result exposes quadrature
+order, number of refinements, measured errors,
+a flag `quadrature_certified=false`,
+geometric area, bandlimit, Shannon trace and
+basis labels. Independent regression integrates
+physical harmonics by a **different gnomonic
+Jacobian** and verifies L'Huilier triangle
+area, concave triangulation, clockwise/CCW
+invariance, whole-space rotation invariance,
+orthogonality and explicit nonconvergence errors.
+
+For $N=L^2$, $M$ polygon edges/vertices and
+tensor order $q$, dense arithmetic costs
+$O(N^3+Mq^2N^2)$ with $O(N^2)$ matrix
+storage/action. There is **no matrix-free
+fast polygon eigenbasis** here. Open issue
+[#144](https://github.com/jaurentz/anymatrix-unitary/issues/144)
+still requires truly *certified* numerical
+quadrature error bounds, holes and wider
+polygon domains, and optimized large-$L$
+cap eigenbases. [156,172,173]
+
 ## Exact weighted SO(3)-rotated spherical masks — [`spherical_mask_slepian.m`](../spherical_mask_slepian.m)
 
 **Order:** $N=L^2$, harmonic degrees $0,\ldots,L-1$,
@@ -7448,3 +7550,7 @@ Background [104,108,166,167].
 170. Z. Ye, O. Diamanti, C. Tang, L. Guibas and T. Hoffmann, “A Unified Discrete Framework for Intrinsic and Extrinsic Dirac Operators for Geometry Processing,” *Computer Graphics Forum* **37** (2018). [DOI](https://doi.org/10.1111/cgf.13494).
 
 171. C. E. Rasmussen and C. K. I. Williams, *Gaussian Processes for Machine Learning*, MIT Press (2006), Chapter 4 (“Covariance Functions”), especially periodic covariance kernels obtained by embedding the circle into Euclidean space. [Official chapter](https://gaussianprocess.org/gpml/chapters/RW4.pdf); [book site](https://gaussianprocess.org/gpml/).
+
+172. Y. Li and X. Jiao, “ARPIST: Provably accurate and stable numerical integration over spherical triangles,” *Journal of Computational and Applied Mathematics* **420** (2023), 114822. [DOI](https://doi.org/10.1016/j.cam.2022.114822); [preprint](https://arxiv.org/abs/2201.00261).
+
+173. A. Sommariva and M. Vianello, “Numerical cubature and hyperinterpolation over spherical polygons,” *Applied Mathematics and Computation* **495** (2025), 129335. [DOI](https://doi.org/10.1016/j.amc.2025.129335); [preprint](https://arxiv.org/abs/2403.05733).
