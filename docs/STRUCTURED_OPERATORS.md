@@ -139,6 +139,36 @@ In a basis ordered by mirrored pairs $(e_j,e_{N+1-j})$, it is a direct sum of $2
 
 **Attribution note.** [Watkins (1993)](https://doi.org/10.1137/1035090) is the foundational cited review for unit-circle Lanczos and sparse Laurent representations. The **specific phrase “X-shaped factorization” and the crossing-branches figure** have been verified in *Van Barel (2008)*, not in the accessible abstract of Watkins (1993). Until the original Watkins figure is checked, do not state that Watkins introduced this precise diagram or that its product factor is a literally X-sparse matrix. Preserve both constructions as distinct database structure tags.
 
+### 4.1c Strict core-factored unitary Hessenberg pencils versus general RQR
+
+`unitary_hessenberg_pencil` is a genuinely O(N)-parameter
+pair A,B of independently unitary upper-Hessenberg matrices.
+A=diag(d)H_a and B=H_b each use N-1 embedded 2-by-2 unitary
+cores and a terminal phase. The **quotient U=B'*A** therefore
+is mathematically exactly unitary and has O(N) matvec/adjoint
+complexity via `um_hessenberg_pencil_apply`. A and B generally
+have dense upper triangles; the core representation, not explicit
+entry sparsity, supplies the efficiency.
+
+The proper Hessenberg pencil pole at index j is the projective
+subdiagonal ratio `xi_j=A(j+1,j)/B(j+1,j)`. Independent
+core-sine choices realize any finite nonzero pole magnitude
+(with finite precision range restrictions), while a left row
+phase supplies its argument. Exactly zero/infinite poles use
+one vanishing core sine and force a REDUCIBLE factor; one
+cannot assert both subdiagonals nonzero and a zero or infinite
+pole simultaneously.
+
+The auxiliary `um_hessenberg_unitary_generalized` deforms
+the numerator on the diagonal, preserving poles and upper
+Hessenberg form while losing numerator/quotient unitarity.
+It is filed as a **nonunitary generalized pencil** in
+`metadata/eigenvalue_problems.json`, not counted among the
+strict unitary generator classes. This is distinct from the
+full rational pole-swapping algorithms in
+[Camps et al. (2020)](https://doi.org/10.1553/etna_vol52s480)
+and their [2025 monograph](https://doi.org/10.1137/1.9781611978377).
+
 ### 4.2 Reflections and constrained low-rank updates
 
 A unitary rank-one phase update is
@@ -257,7 +287,7 @@ The distinction matters for tests that need eigenvalues **exactly** on the unit 
 
 Properly weighted *square* orthogonal-polynomial evaluation matrices at a complete Gaussian quadrature rule are orthogonal in exact arithmetic, but **do not automatically have an $O(N\log N)$ transform**. Chebyshev transforms have FFT reductions; faster Jacobi and spherical-harmonic conversion algorithms require more specialized representations and often nontrivial precomputation. Slevinsky's fast Chebyshev–Jacobi transforms and spherical-harmonic conversion work are specific references to consult [19, 20]. Townsend and Slevinsky's [FastTransforms project](https://mikaelslevinsky.github.io/FastTransforms/index.html) is a useful implementation/literature entry point.
 
-The repository's [gauss_jacobi_transform](../gauss_jacobi_transform.m), [gauss_hermite_transform](../gauss_hermite_transform.m), [gauss_laguerre_transform](../gauss_laguerre_transform.m), and [spherical_harmonic_rotation](../spherical_harmonic_rotation.m) should **not** be assigned fast-matvec tags simply because specialized fast algorithms exist somewhere in the literature. The algorithm actually used by each generator must be checked.
+In the current MATLAB implementation, [gauss_jacobi_transform](../gauss_jacobi_transform.m) has an $O(N\log N)$ operator only for the exact Gauss--Chebyshev I and II cases ($\alpha=\beta=-1/2$ and $\alpha=\beta=1/2$). Other Jacobi parameters reject the operator mode. [gauss_hermite_transform](../gauss_hermite_transform.m), [gauss_laguerre_transform](../gauss_laguerre_transform.m), and [spherical_harmonic_rotation](../spherical_harmonic_rotation.m) remain explicitly dense. Specialized literature algorithms must not be attributed to these generators without matching normalization, parameters, and actual implemented forward/adjoint kernels.
 
 
 **Applications and primary references.** **Spectral PDE solvers and rapid conversion between polynomial bases:** [Hale–Townsend, *Fast, Simple, and Stable Chebyshev–Legendre Transform* (2014)](https://doi.org/10.1137/130932223), [Slevinsky, *Chebyshev–Jacobi transform* (2018)](https://doi.org/10.1093/imanum/drw070), and [Townsend–Webb–Olver, *Fast polynomial transforms based on Toeplitz and Hankel matrices* (2018)](https://arxiv.org/abs/1604.07486). **Spherical harmonic analysis and geometric computation:** [Slevinsky, *Fast and backward stable transforms between spherical harmonic expansions and bivariate Fourier series* (2019)](https://doi.org/10.1016/j.acha.2017.11.001). **Software/literature collection:** [FastTransforms](https://github.com/MikaelSlevinsky/FastTransforms). Distinguish the *unitary/orthogonal, properly quadrature-weighted finite evaluation transform* from a **general change-of-basis matrix**, which may be nonunitary; moreover, a fast transform from coefficients to values does not automatically give a fast action for a differently normalized database generator.
@@ -287,6 +317,23 @@ Beyond Jacobi/Chebyshev–Legendre, there are many application-specific fast tra
 **Implementation classification recommended for this repository:** label each entry **verified fast complete operator**, **fast special case only**, **fast subspace/projector only**, **fast related transform but different matrix**, or **no demonstrated fast action**. In particular, [dpss_transform](../dpss_transform.m), [graph_fourier](../graph_fourier.m), [gauss_jacobi_transform](../gauss_jacobi_transform.m), [gauss_hermite_transform](../gauss_hermite_transform.m), [gauss_laguerre_transform](../gauss_laguerre_transform.m), [hahn_transform](../hahn_transform.m) and [dual_hahn_transform](../dual_hahn_transform.m) should not acquire an unconditional $O(N\log N)$ tag merely by citing a paper about a related transform.
 
 For a broad numerical survey, see [Olver–Slevinsky–Townsend, *Fast algorithms using orthogonal polynomials*, *Acta Numerica* (2020)](https://www.cambridge.org/core/journals/acta-numerica/article/abs/fast-algorithms-using-orthogonal-polynomials/4FAD8C7C28EC20EE7583465C1A89AA3D) and [FastTransforms](https://github.com/MikaelSlevinsky/FastTransforms), which covers Jacobi/Legendre/Laguerre, spherical and spin transforms, Proriol polynomials on triangles, and Zernike functions on disks. Many of those are orthogonal **only after specifying the correct discrete weights and square sampling operator**.
+
+### 5.5b Verified FFT Gauss--Chebyshev subset (implemented)
+
+The existing `gauss_jacobi_transform` now provides a **genuine fast
+matrix-free action** for the exact positive-leading, ascending-node
+Gauss-Chebyshev I and II matrices:
+`Q_I=DCTIII*diag((-1).^k)` at (alpha,beta)=(-1/2,-1/2),
+and `Q_II=DSTI*diag((-1).^k)` at (+1/2,+1/2).
+Both share verified O(n log n) FFT kernels for forward and adjoint,
+with O(n) operator description/workspace; no n-by-n matrix is stored.
+The full Gauss-Jacobi and fixed-order associated-Legendre cases
+still use O(n^3) Golub-Welsch setup, O(n^2) multiplication, and
+**do not claim** a fast operator. This specialization is a consequence
+of exact Chebyshev trigonometric identities and standard DCT/DST,
+*not* a claimed implementation of the general Hale--Townsend
+or Slevinsky fast Jacobi-conversion algorithms.
+Source background: [Hale--Townsend (2016)](https://doi.org/10.1093/imanum/drv060).
 
 ### 5.6 Tensor trains and matrix-product operators
 
@@ -323,11 +370,11 @@ Distinguish two statuses, attached to a **specific family, parameter regime and 
 
 ### 5A.2 Criteria and database metadata
 
-For each **representation** of a family, first ask whether its numeric matrix is genuinely sparse, then whether it has a specified subquadratic exact factorization, a fast forward/adjoint action, or a documented approximate compression. If so, tag that representation with the appropriate efficient class and its precise rank/bandwidth/stage/tolerance assumptions. Only when these checks fail use **generic_dense_unstructured** (quadratic intrinsic degrees of freedom for generic samples) or **dense_no_verified_fast_action** (compact definition or specialized literature, but no verified fast **full** multiply).
+For each **representation** of a family, distinguish whether its numeric matrix is genuinely sparse, whether it has a specified compact exact factorization, whether its actual MATLAB operator provides a fast forward/adjoint action, and whether it has a documented approximate compression. An optional operator mode is **not** by itself proof of fast multiplication (a universal optical mesh uses $O(N^2)$ couplers). If a representation is efficient, tag it with the appropriate class and its precise rank/bandwidth/stage/tolerance assumptions. Only when these checks fail use **generic_dense_unstructured** (quadratic intrinsic degrees of freedom for generic samples) or **dense_no_verified_fast_action** (compact definition or specialized literature, but no verified fast **full** multiply).
 
 Do **not** claim that a missing implementation proves a lower bound. In particular, distinctions between **full transform versus leading eigenspace projection**, **exactly unitary versus approximately orthogonal**, and **setup time versus repeated matvec cost** are mandatory.
 
-Recommended fields: **efficiency_class**, **dense_reason**, **subquadratic_storage_known**, **subquadratic_full_action_known**, **partial_transform_only**, **fast_action_reference**, **representation_exactness**, **checked_date**, **setup_complexity**, and **unitarity_defect**. A family may have multiple representations with different classifications.
+Proposed additional fields (not yet implemented in `metadata/catalog.json`): **efficiency_class**, **dense_reason**, **subquadratic_storage_known**, **subquadratic_full_action_known**, **partial_transform_only**, **fast_action_reference**, **representation_exactness**, **checked_date**, **setup_complexity**, and **unitarity_defect**. The current catalog instead records **matrix_free_supported**, **operator_kernel**, and **operator_note** per generator; those specify API coverage and its caveats, not a universal speedup. A family may have multiple representations with different classifications.
 
 This separate class prevents the database from overpromising matrix-free efficiency while leaving room for future discoveries of fast structure.
 
@@ -365,13 +412,13 @@ A family may have **multiple valid representations** (e.g., explicit sparse CMV,
 | **setup_complexity** | preprocessing, factorization, FFT plans, compressed construction |
 | **workspace_complexity** | additional scratch beyond input/output, and RHS batching |
 | **unitarity_defect** | exact by construction vs measured $\|\widetilde U^*\widetilde U-I\|$ |
-| **operator_interface** | yes/no; verified action modes and dimensions |
+| **operator_interface** | implemented flag and verified action modes/dimensions; does not imply a subquadratic algorithm |
 | **available_spectral_reference** | exact finite spectrum, moments, limiting law, or unknown |
 | **reference_ids / provenance** | primary literature and code implementation |
 | **implementation_status** | implemented, planned, or theoretical reference only |
 | **efficiency_class / dense_reason** | efficient representation or dense status (see §5A); include evidence, restrictions and whether a fast **full** action exists |
 
-For the existing MATLAB contract, see [MATRIX_FREE.md](MATRIX_FREE.md). In particular, the repository uses **'transp' for the conjugate transpose**, not the nonconjugating MATLAB **A.'** operation; this needs to remain consistent across new kernels.
+For the existing MATLAB contract and current kernel coverage, see [MATRIX_FREE.md](MATRIX_FREE.md) and [IMPLEMENTATION_AUDIT.md](IMPLEMENTATION_AUDIT.md). The registered operator flags and per-family caveats live in [metadata/catalog.json](../metadata/catalog.json). In particular, the repository uses **'transp' for the conjugate transpose**, not the nonconjugating MATLAB **A.'** operation; this needs to remain consistent across new kernels.
 
 ## 8. Priorities for this repository
 
@@ -383,7 +430,7 @@ For the existing MATLAB contract, see [MATRIX_FREE.md](MATRIX_FREE.md). In parti
 2. Add rigorous **operation-count and adjoint/orthogonality tests** for the existing core, FFT, wavelet, tensor, butterfly and Cayley operators.
 3. Survey **twisted/snake core orderings, X-pattern sparse blocks and X-shaped pull-through factors**, then **bounded-rank quasiseparable unitary and block-CMV variants** with explicit unitary generators; connect to fast QR/QZ rather than merely using general HSS approximations.
 4. Evaluate **structure-preserving hierarchical or butterfly approximations of unitary operators**, including norm-preserving factorizations, approximation error and repeated-power drift.
-5. Examine **fast polynomial transforms** (especially Jacobi/associated Legendre and spherical harmonics) for cases where the *specific orthogonal transform matrix* in the collection can actually use a verified fast algorithm.
+5. Extend the implemented **Gauss--Chebyshev I/II** FFT operator subset to additional Jacobi/associated-Legendre and spherical cases only after verifying the *same finite transform matrix*, including normalization, order, and adjoint.
 6. Keep the **generic Haar, polar, DPSS and arbitrary graph eigenvector matrices** labeled dense unless an exact, family-specific fast representation is demonstrated.
 
 ## References
@@ -413,54 +460,3 @@ Numbers below are local to this note. Existing family-specific references remain
 21. I. V. Oseledets, “Tensor-train decomposition,” *SIAM J. Sci. Comput.* **33** (2011), 2295–2317. [DOI](https://doi.org/10.1137/090752286).
 
 *Scope note:* This is a taxonomy of efficient representations and literature **not** a claim that each general matrix structure defines a unitary matrix family, nor that each technique is implemented in MATLAB here. Exactness and complexity are representation- and parameter-dependent.
-
-
-### Verified FFT subset of Gauss-Jacobi evaluation matrices (2026-11-21)
-
-The existing `gauss_jacobi_transform` now provides a **genuine fast
-matrix-free action** for the exact positive-leading, ascending-node
-Gauss-Chebyshev I and II matrices:
-`Q_I=DCTIII*diag((-1).^k)` at (alpha,beta)=(-1/2,-1/2),
-and `Q_II=DSTI*diag((-1).^k)` at (+1/2,+1/2).
-Both share verified O(n log n) FFT kernels for forward and adjoint,
-with O(n) operator description/workspace; no n-by-n matrix is stored.
-The full Gauss-Jacobi and fixed-order associated-Legendre cases
-still use O(n^3) Golub-Welsch setup, O(n^2) multiplication, and
-**do not claim** a fast operator. This specialization is a consequence
-of exact Chebyshev trigonometric identities and standard DCT/DST,
-*not* a claimed implementation of the general Hale--Townsend
-or Slevinsky fast Jacobi-conversion algorithms.
-Source background: [Hale--Townsend (2016)](https://doi.org/10.1093/imanum/drv060).
-
-
-
-
-### 4B. Core-factored strict unitary Hessenberg pencils versus general RQR
-
-`unitary_hessenberg_pencil` is a genuinely O(N)-parameter
-pair A,B of independently unitary upper-Hessenberg matrices.
-A=diag(d)H_a and B=H_b each use N-1 embedded 2-by-2 unitary
-cores and a terminal phase. The **quotient U=B'*A** therefore
-is mathematically exactly unitary and has O(N) matvec/adjoint
-complexity via `um_hessenberg_pencil_apply`. A and B generally
-have dense upper triangles; the core representation, not explicit
-entry sparsity, supplies the efficiency.
-
-The proper Hessenberg pencil pole at index j is the projective
-subdiagonal ratio `xi_j=A(j+1,j)/B(j+1,j)`. Independent
-core-sine choices realize any finite nonzero pole magnitude
-(with finite precision range restrictions), while a left row
-phase supplies its argument. Exactly zero/infinite poles use
-one vanishing core sine and force a REDUCIBLE factor; one
-cannot assert both subdiagonals nonzero and a zero or infinite
-pole simultaneously.
-
-The auxiliary `um_hessenberg_unitary_generalized` deforms
-the numerator on the diagonal, preserving poles and upper
-Hessenberg form while losing numerator/quotient unitarity.
-It is filed as a **nonunitary generalized pencil** in
-`metadata/eigenvalue_problems.json`, not counted among the
-strict unitary generator classes. This is distinct from the
-full rational pole-swapping algorithms in
-[Camps et al. (2020)](https://doi.org/10.1553/etna_vol52s480)
-and their [2025 monograph](https://doi.org/10.1137/1.9781611978377).

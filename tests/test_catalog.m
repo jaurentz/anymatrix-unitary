@@ -74,3 +74,29 @@ verifyFalse(testCase,contains(maths,'\['));
 verifyFalse(testCase,contains(maths,'\]'));
 verifyGreaterThan(testCase,count(maths,'```math'),6);
 end
+
+function test_dirac_catalog_operator_contract(tc)
+% Guard against documenting an operator that the catalog marks absent.
+root=fileparts(fileparts(mfilename('fullpath')));
+meta=jsondecode(fileread(fullfile(root,'metadata','catalog.json')));
+names={meta.matrix_families.id};
+idx=find(strcmp(names,'dirac_automaton'));
+verifyEqual(tc,numel(idx),1);
+entry=meta.matrix_families(idx);
+verifyTrue(tc,entry.matrix_free_supported);
+verifyEqual(tc,char(entry.operator_kernel),'um_dirac_apply');
+A=dirac_automaton(7,.35);
+U=dirac_automaton(7,.35,'operator');
+X=complex(reshape(1:42,14,3),reshape(42:-1:1,14,3))/50;
+verifyEqual(tc,U([],'size'),[14 14]);
+verifyLessThan(tc,norm(U(X,'notransp')-A*X,'fro'),1e-12);
+verifyLessThan(tc,norm(U(X,'transp')-A'*X,'fro'),1e-12);
+verifyLessThan(tc,norm(U(X,'ctransp')-A'*X,'fro'),1e-12);
+end
+
+function test_documented_inventory_does_not_freeze_stale_counts(tc)
+root=fileparts(fileparts(mfilename('fullpath')));
+readme=fileread(fullfile(root,'README.md'));
+verifyTrue(tc,contains(readme,'metadata/catalog.json'));
+verifyEmpty(tc,regexp(readme,'\b[0-9]+\s+(public\s+)?generators\b','match'));
+end

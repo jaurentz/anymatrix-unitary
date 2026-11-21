@@ -22,30 +22,45 @@ factor order under adjoints. No custom MATLAB matrix class is required.
 
 ## Shared kernels
 
-| Kernel | Families / mathematics | Storage |
-| --- | --- | --- |
-| `um_core_apply` | CMV, Hessenberg, inverse-Hessenberg, arbitrary twisted OPUC core chains and all Szegő coefficient families | O(n) |
-| `um_monomial_apply` | Cyclic/permutation shifts, weighted shifts, diagonal phases, and Weyl–Heisenberg time-frequency shifts | O(n) |
-| `um_fft_apply` | Circulants, CAZAC/Fresnel chirps, completed Hilbert transform, tight-binding cycle, kicked Harper/rotor, quantized baker | O(n) |
-| `um_gate_apply`, `um_circuit_apply` | Two-site qubit gates, XXZ and dual-unitary Floquet circuits | O(1) per local gate |
-| `um_spin_apply` | Floquet Ising chains | O(2^n) phase vector |
-| `um_reflection_apply` | Grover rank-one reflection | O(n) temporary memory |
-| `um_entangled_reflection_apply` | Maximally entangled rank-one phase update | O(d^2) state |
-| `um_tensor_apply` | Repeated or independent-block Haar Kronecker products | O(d^t) state; O(t*d^(t+1)) arithmetic per RHS |
-| `um_tensor_permute_apply` | Schur--Weyl tensor factor permutations by reshape/permute | O(d^t) state |
-| `um_dirac_apply` | Two-component periodic Dirac automaton, shift and local mass mixing | O(n) for multiple RHS |
-| `um_wavelet_apply` | Haar wavelet multilevel transform | O(n) |
-| `um_dct_apply` | DCT I–IV using FFT even extensions | O(n) |
-| `um_hartley_apply` | Hartley involution from normalized DFT and adjoint | O(n) |
-| `um_affine_apply` | Affine Fourier: cached chirp factors and shared Fourier kernel | O(n) |
-| `um_zak_apply` | Polyphase reshape and short FFTs | O(n) |
-| `um_dft_apply` | Reuses normalized Fourier FFT, with explicit size contract | O(n) |
-| `um_dst_apply` | DST-I odd FFT extension and DST-II–IV via DCT | O(n) |
-| `um_walsh_apply` | Fast Walsh butterflies with sequency permutation | O(n) |
-| `um_cayley_apply` | Cayley transform of a Jacobi recurrence using cached sparse triangular solves | O(n) for tridiagonal factors, modulo fill |
-| `um_tridiag_exp_apply`, `um_kick_tridiag_apply` | Bose–Hubbard hopping and kicked-top spin rotations; diagonal phase followed by an Hermitian-tridiagonal exponential | O(n) coefficients; O(n·RHS) workspace |
-| `um_jaynes_apply` | Analytic cavity-QED excitation blocks with uncoupled edge phases | O(n) |
-| `um_cc_geometry`, `um_scattering_apply` | Disjoint two-port scattering networks, CC directed-link topology | O(n) |
+The table distinguishes **stored operator data** from per-vector work.
+Here `N` is the actual matrix order, `q` is the qubit count when `N=2^q`,
+`g` is the number of gates or cores, and `d,t` describe a
+tensor-product dimension `N=d^t`. Workspace for an arbitrary vector is
+at least `O(N)` when a full state vector must be read. Complexity claims
+are per right-hand side, after any separately described setup.
+
+| Kernel(s) | Families / representation | Stored operator data | Action per RHS |
+| --- | --- | --- | --- |
+| `um_core_apply` | CMV, unitary Hessenberg/inverse-Hessenberg and twisted OPUC | `O(N)` coefficients/cores | `O(N)` |
+| `um_monomial_apply` | Diagonal phases, permutations, Weyl–Heisenberg shifts | `O(N)` or less | `O(N)` |
+| `um_fft_apply` | Circulants, CAZAC/Fresnel/Hilbert, kicked rotor/Harper, baker | Typically `O(N)` | `O(N log N)` |
+| `um_dft_apply`, `um_dct_apply`, `um_dst_apply`, `um_hartley_apply`, `um_affine_apply`, `um_zak_apply` | DFT, cosine/sine, Hartley, affine Fourier and Zak | `O(N)` or less; FFT workspace `O(N)` | `O(N log N)` |
+| `um_walsh_apply` | Normalized Walsh–Hadamard | `O(N)` or less | `O(N log N)` |
+| `um_wavelet_apply`, `um_daubechies_apply`, `um_wavelet_packet_apply` | Haar, fixed-tap orthonormal wavelets, wavelet packets | Filters plus transform schedule | `O(N)` for standard fixed-tap decimated wavelets; packets depend on tree |
+| `um_butterfly_apply` | Orthogonal recursive rotation butterfly | `O(N)` angles | `O(N log N)` |
+| `um_gate_apply`, `um_circuit_apply` | Local quantum gates and complete circuits | Gate descriptions `O(g)` | `O(gN)` for full `q`-qubit state |
+| `um_spin_apply` | Floquet Ising families | State-length phase data, typically `O(N)` | Depends on spin layout; commonly `O(qN)` |
+| `um_reflection_apply`, `um_entangled_reflection_apply` | Rank-one reflections and maximally entangled phase updates | `O(N)` state/vector parameters | `O(N)` |
+| `um_tensor_apply` | Haar tensor powers and radial-zonal Fourier–Laguerre product | `O(td^2)` small factors in the uniform case | `O(tdN)`; arbitrary vector remains length `N` |
+| `um_tensor_permute_apply` | Tensor-factor permutations | Small permutation descriptor | `O(N)` |
+| `um_dirac_apply` | Periodic Dirac quantum automaton | Constant local parameters plus order | `O(N)` |
+| `um_cayley_apply` | Tridiagonal Hermitian Cayley transform | `O(N)` factors | `O(N)` after banded factorization |
+| `um_tridiag_exp_apply`, `um_kick_tridiag_apply` | Tridiagonal Hamiltonian exponential actions | `O(N)` coefficients and `O(N)` workspace | Accuracy/time-dependent; no uniform `O(N)` bound |
+| `um_jaynes_apply` | Jaynes–Cummings excitation blocks | `O(N)` local coefficients | `O(N)` |
+| `um_cc_geometry`, `um_scattering_apply` | Chalker–Coddington network | `O(N)` graph and scattering data | `O(N)` |
+| `um_gauss_jacobi_cheb_apply` | **Only** Gauss–Chebyshev I/II weighted evaluation matrices | `O(N)` signs / FFT workspace | `O(N log N)`; other Jacobi parameters reject `'operator'` |
+| `um_hessenberg_pencil_apply` | Strict independently unitary Hessenberg pairs; quotient `B'*A` | `O(N)` core and phase data | `O(N)` |
+| `um_optical_mesh_apply` | Unrestricted Reck/Clements lossless optical mesh | `O(N^2)` coupler parameters | `O(N^2)`; valid operator API, **not** a fast full mesh |
+
+This table summarizes selected verified kernels and is not an exhaustive
+generator inventory. The machine-readable source for the registered
+`'operator'` interface is [metadata/catalog.json](../metadata/catalog.json);
+`matrix_free_supported=true` means an operator output is available for
+the documented parameter regime, **not** that its application is
+subquadratic or that it is available for all parameter values.
+For complete classification of sparse/compact/fast/dense structures,
+see [STRUCTURED_OPERATORS.md](STRUCTURED_OPERATORS.md), and for status
+by implementation see [IMPLEMENTATION_AUDIT.md](IMPLEMENTATION_AUDIT.md).
 
 The specialized `um_core_order` encodes the parity-dependent placement of the
 finite CMV terminal phase and arbitrary snake-shaped insertion sequences.
@@ -58,7 +73,8 @@ Verblunsky coefficients and core ordering; the kernel is shared.
 the dense default. The state vector still has exponential length `2^n`.
 The dense caps and other original parameter conventions remain in place.
 
-All eight signal-processing generators accept the shared final `'operator'` argument.
+The original eight supported signal-processing generators accept the
+shared final `'operator'` argument; additional transforms are covered below.
 DCT I–IV use FFT-based actions even for complex multiple RHS. CAZAC,
 Fresnel, and Hilbert directly reuse the circulant FFT kernel, while
 Weyl–Heisenberg shifts reuse `um_monomial_apply`.
@@ -69,7 +85,8 @@ fast actions: `um_dft_apply` forwards to the shared Fourier kernel,
 `um_walsh_apply` uses fast Walsh butterflies. The DPSS/Slepian and
 general graph Fourier transforms intentionally **do not offer an
 `'operator'` output**: their explicit eigenvector matrices have no
-generic lower-storage or lower-complexity implicit action.
+verified generic lower-storage or lower-complexity **full-basis** implicit
+action in this repository. This is not a mathematical impossibility claim.
 
 Already economical sparse families (e.g., the cyclic shifts and the split-step
 walk) retain their sparse defaults. The Dirac automaton also offers a direct
