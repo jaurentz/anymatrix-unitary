@@ -44,7 +44,7 @@ verifyGreaterThan(tc,norm(U1*U2-U2*U1,'fro'),5e-3);
 quad=[home,a,b,c];
 D=hyperbolic_tangent_holonomy(3,quad,'model');
 verifyLessThan(tc,norm(D.U'*D.U-eye(3),'fro'),4e-11);
-verifyLessThan(tc,D.orientation_determinant-1,3e-11);
+verifyLessThan(tc,abs(D.orientation_determinant-1),3e-11);
 verifyGreaterThan(tc,norm(D.U-eye(3),'fro'),.1);
 J=diag([-1,ones(1,n)]);
 verifyLessThan(tc,norm(D.lorentz'*J*D.lorentz-J,'fro'), ...
