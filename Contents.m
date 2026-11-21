@@ -88,6 +88,7 @@
 %   gauss_hermite_transform  Hermite Gauss orthogonal basis, stable Sturm signs/log weights.
 %   hermite_oscillator    Finite GH harmonic oscillator; exact fractional phase flow.
 %   gauss_laguerre_transform Generalized Laguerre basis, stable Sturm signs/log weights.
+%   fourier_zernike_disk   Disk modal-radius Fourier-Jacobi hybrid, exact finite unitary.
 %   fourier_laguerre_ball  3D radial-zonal Fourier-Laguerre, exact square tensor and rectangular sampling.
 %   wigner_rotation         SO(3)/SU(2); exact sparse axis Euler and O(n) actions.
 %   spherical_harmonic_rotation Complex Wigner direct sum; O(L^3) cached block operator.
