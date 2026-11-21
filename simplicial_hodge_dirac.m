@@ -116,7 +116,7 @@ if ~(isnumeric(faces)&&isreal(faces)&&ismatrix(faces) ...
         'Faces must be integer nF-by-3 vertex indices.');
 end
 F=double(faces);nf=size(F,1);
-if any(F(:,1)==F(:,2)||F(:,2)==F(:,3)||F(:,3)==F(:,1)) ...
+if any(F(:,1)==F(:,2) | F(:,2)==F(:,3) | F(:,3)==F(:,1)) ...
         ||size(unique(sort(F,2),'rows'),1)~=nf ...
         ||numel(unique(F(:)))~=nv
     error('simplicial_hodge_dirac:Topology', ...
@@ -126,7 +126,7 @@ a=V(F(:,1),:);b=V(F(:,2),:);c=V(F(:,3),:);
 normal=cross(b-a,c-a,2);
 areas=.5*sqrt(sum(normal.^2,2));
 edgeScale=max(1,max(abs(V(:))));
-if any(~isfinite(areas)||areas<=1e-12*edgeScale^2)
+if any(~isfinite(areas) | areas<=1e-12*edgeScale^2)
     error('simplicial_hodge_dirac:Geometry', ...
         'All faces must have positive nondegenerate area.');
 end
@@ -164,7 +164,7 @@ m1=accumarray(edgeIndex, ...
     repmat(areas/3,3,1)./(edgeLengths(edgeIndex).^2),[ne 1]);
 m2=1./areas;
 mass=[m0;m1;m2];
-if any(~isfinite(mass)||mass<=0)
+if any(~isfinite(mass) | mass<=0)
     error('simplicial_hodge_dirac:Metric', ...
         'Geometric diagonal metric must be finite and positive.');
 end
