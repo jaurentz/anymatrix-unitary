@@ -5904,14 +5904,14 @@ truncations.
 
 ## Finite integrable isospectral trajectories (November 2026)
 
-### Hessenberg QR/Schur flow — [\`schur_hessenberg_flow.m\`](../schur_hessenberg_flow.m)
+### Hessenberg QR/Schur flow — [`schur_hessenberg_flow.m`](../schur_hessenberg_flow.m)
 
 Start with an unreduced unitary upper-Hessenberg matrix with prescribed distinct
-circle eigenvalues \`z_j\` and strictly positive e1 spectral weights \`w_j(0)\`.
-The positive-diagonal QR factorization of \`exp(t H0)\` defines
-\`H(t)=Q(t)'*H0*Q(t)\`. The exact mathematical flow is unitary,
+circle eigenvalues `z_j` and strictly positive e1 spectral weights `w_j(0)`.
+The positive-diagonal QR factorization of `exp(t H0)` defines
+`H(t)=Q(t)'*H0*Q(t)`. The exact mathematical flow is unitary,
 upper-Hessenberg, and isospectral. Its cyclic weights evolve as
-\`w_j(t) ∝ w_j(0)*exp(2*t*real(z_j))\`. The trace weights remain \`1/n\`.
+`w_j(t) ∝ w_j(0)*exp(2*t*real(z_j))`. The trace weights remain `1/n`.
 Direct QR, inverse OPUC Hessenberg reconstruction, and cross-representation
 finite CMV output are exposed separately; the CMV model is *not* claimed to
 be the direct Hessenberg QR similarity. Real conjugate-paired input
@@ -5921,39 +5921,39 @@ loss of accuracy, whereas the operator path uses existing core actions.
 This is a finite isospectral benchmark, not a claim of a new spectral
 distribution. Sources [5, 151, 152].
 
-### Positive discrete CMV spectral-weight steps — [\`discrete_schur_cmv.m\`](../discrete_schur_cmv.m)
+### Positive discrete CMV spectral-weight steps — [`discrete_schur_cmv.m`](../discrete_schur_cmv.m)
 
-For distinct fixed support \`z_j\` on the circle, choose \`0<h<1/2\` and
-integer \`k>=0\` and multiply every strictly positive weight by
-\`(1+2*h*real(z_j))^k\`, followed by normalization. A finite inverse
+For distinct fixed support `z_j` on the circle, choose `0<h<1/2` and
+integer `k>=0` and multiply every strictly positive weight by
+`(1+2*h*real(z_j))^k`, followed by normalization. A finite inverse
 CMV construction yields a genuine five-diagonal unitary with *unchanged*
 eigenvalues at every step. Evolving e1 cyclic weights must not be
-confused with equal-mass trace weights. With \`h→0\`, \`k*h→t\`,
+confused with equal-mass trace weights. With `h→0`, `k*h→t`,
 the weights approach the continuous Schur-measure deformation
-\`w_j(t) ∝ w_j(0)*exp(2*t*real(z_j))\`. Unlike the documented
+`w_j(t) ∝ w_j(0)*exp(2*t*real(z_j))`. Unlike the documented
 Mukaihira–Nakamura integrable discretization, this particular
 positive-measure step is **only a separately justified benchmark**;
 its integrable Lax/auxiliary-variable formulation is not claimed.
 All finite measures remain atomic, including when limiting OPUC
 measures have continuous densities. Sources [5, 154, 155].
 
-### Toda Jacobi QR flow and symmetric Cayley-unitary matrices — [\`toda_cayley.m\`](../toda_cayley.m)
+### Toda Jacobi QR flow and symmetric Cayley-unitary matrices — [`toda_cayley.m`](../toda_cayley.m)
 
-For a real symmetric irreducible tridiagonal Jacobi matrix \`J0\`,
-factor \`exp(tau*J0)=Q(tau)*R(tau)\` with positive diagonal R and set
-\`J(tau)=Q(tau)'*J0*Q(tau)\`. The exact finite nonperiodic Toda
+For a real symmetric irreducible tridiagonal Jacobi matrix `J0`,
+factor `exp(tau*J0)=Q(tau)*R(tau)` with positive diagonal R and set
+`J(tau)=Q(tau)'*J0*Q(tau)`. The exact finite nonperiodic Toda
 solution remains Jacobi and isospectral. For an *independent*
-Cayley scale \`gamma>0\` set
-\`U(tau,gamma)=(J(tau)-i*gamma*I)/(J(tau)+i*gamma*I)\`.
+Cayley scale `gamma>0` set
+`U(tau,gamma)=(J(tau)-i*gamma*I)/(J(tau)+i*gamma*I)`.
 The unitary is complex symmetric, with fixed eigenvalues
-\`(x_j-i*gamma)/(x_j+i*gamma)\` for \`x_j=eig(J0)\`.
+`(x_j-i*gamma)/(x_j+i*gamma)` for `x_j=eig(J0)`.
 The normalized trace measure is fixed but the distinguished e1
-weights are \`w_j(tau) ∝ w_j(0)*exp(2*tau*x_j)\`.
+weights are `w_j(tau) ∝ w_j(0)*exp(2*tau*x_j)`.
 The constructor accepts classical Jacobi recurrence parameters or
 an arbitrary positive-subdiagonal tridiagonal recurrence. Dense
 QR setup is distinct from cached sparse Cayley solves in operator
 mode; numerical large-time QR rank breakdown is detected. This
-is a nonlinear isospectral deformation, **not** \`exp(i*tau*J0)\`.
+is a nonlinear isospectral deformation, **not** `exp(i*tau*J0)`.
 Sources [23, 153].
 
 ## Bibliography
