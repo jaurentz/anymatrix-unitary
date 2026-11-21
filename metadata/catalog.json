@@ -1739,6 +1739,22 @@
       "matrix_free_supported": false,
       "operator_kernel": null,
       "operator_note": "Full dense n-by-n implicit Newton solve with analytic Jacobian; nonunique/nonexistent branches flagged; no unsupported matrix-free speedup or full phase-space Euclidean orthogonality; Shen/Tran/Leok polar Galerkin method cited as distinct NOT implemented."
+    },
+    {
+      "id": "tensor_fem_wave",
+      "status": "implemented",
+      "category": "eigenvalue_problems",
+      "matrix_order": "2*n_x*n_y (2D) or 2*n_x*n_y*n_z (3D) real orthogonal-symplectic energy-normalized Dirichlet tensor-product FE wave steps",
+      "representation": "separable consistent Q1 bilinear/trilinear FE mass/stiffness Kronecker tensors; orthonormal multidimensional DST-I diagonalization; real block rotations for Gauss-Pade or stable Verlet",
+      "spectral_reference": "exact finite trace eigenphases ± from multi-index w^2=omega0^2+sum c_j^2*(kappa_j/m_j); count degeneracies, phase wrap; no claimed limiting density",
+      "encyclopedia_references": [
+        101,
+        103,
+        141
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_tensor_fem_apply / um_tensor_dst_apply",
+      "operator_note": "O(N log N) tensor-product DST-I, O(N) phase storage; dense matrix/positive-metric pencil for N<=128; sparse real symmetric palindromic mass-weighted Verlet quadratic for N<=10000; stable h*max(w)<2 enforced."
     }
   ],
   "probability_measures": [

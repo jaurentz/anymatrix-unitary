@@ -4255,6 +4255,214 @@ constrained equation, and [140] presents a
 SO(n) method, retained for future independent work.
 
 
+
+## Tensor-product 2D/3D finite-element wave propagators — [`tensor_fem_wave.m`](../tensor_fem_wave.m)
+
+**Nonquantum application and independence from the 1D benchmark.**
+This family advances the constant-coefficient anisotropic linear
+wave equation on a rectangular two- or three-dimensional domain:
+
+```math
+u_{tt}-\sum_{a=1}^{d}c_a^2\,\partial_{x_a}^2u
++\omega_0^2u=0,\qquad
+u|_{\partial\Omega}=0,\quad d=2,3.
+```
+
+The finite-element basis consists of **tensor products of
+continuous piecewise-linear 1D functions**, giving conforming
+bilinear elements in 2D and trilinear elements in 3D. The
+one-dimensional meshes are uniform with $n_a$ unknown interior
+Dirichlet nodal values and spacing $\Delta x_a=L_a/(n_a+1)$.
+The total number of physical displacement nodes is
+$N=\prod_{a=1}^{d}n_a$. The returned real orthogonal step has
+matrix order $2N$, because the phase-space state includes
+both displacement and its canonical momentum.
+
+**Consistent mass, true Galerkin stiffness, and tensor order.**
+For coordinate $a$, the assembled one-dimensional **consistent**
+mass $M_a$ and Laplace stiffness $K_a$ are
+
+```math
+M_a=\frac{\Delta x_a}{6}
+\begin{bmatrix}
+4&1\\ 1&4&1\\ &\ddots&\ddots&\ddots\\ &&1&4
+\end{bmatrix},
+\qquad
+K_a=\frac{1}{\Delta x_a}
+\begin{bmatrix}
+2&-1\\ -1&2&-1\\ &\ddots&\ddots&\ddots\\ &&-1&2
+\end{bmatrix}.
+```
+
+For example in 2D, using the MATLAB first-index-fastest
+flattening $i_x+n_x(i_y-1)$, the physical FE system has
+
+```math
+\begin{aligned}
+M &= M_y\otimes M_x,\\
+K &= c_x^2(M_y\otimes K_x)
+    +c_y^2(K_y\otimes M_x)+\omega_0^2 M,\\
+M\ddot q+Kq&=0,\qquad
+\dot q=M^{-1}p,\quad\dot p=-Kq.
+\end{aligned}
+```
+
+The 3D construction adds the $z$ coordinate as Kronecker
+products in the same order; it is **not** a generic nonuniform
+or noncommuting variable-coefficient finite-element matrix
+(see issue #44). The tensorized assembly is the usual
+Galerkin factorization, not a mass-lumped approximation
+[103,141].
+
+**Exactly known finite multiband frequencies.** The
+orthonormal Dirichlet sine vectors jointly diagonalize each
+1D $M_a,K_a$, with generalized eigen-symbols
+
+```math
+\begin{aligned}
+\theta_{a,j}&=\pi j/(n_a+1),\\
+m_{a,j}&=\frac{\Delta x_a}{3}(2+\cos\theta_{a,j}),\\
+\kappa_{a,j}&=\frac{2}{\Delta x_a}(1-\cos\theta_{a,j}),\\
+\omega_{\boldsymbol j}^{2}
+ &=\omega_0^2+
+   \sum_{a=1}^{d}c_a^2\frac{\kappa_{a,j_a}}{m_{a,j_a}}.
+\end{aligned}
+```
+
+The normal-mode multiplicities are retained exactly by
+enumerating every multi-index $\boldsymbol j$; e.g., for a
+square 2D grid with identical coordinate lengths and speeds,
+the modes $(j,k)$ and $(k,j)$ have the same frequency.
+Rectangular anisotropy removes many such coincidences.
+An orthonormal Kronecker DST basis $V$ diagonalizes the
+physical mass/stiffness simultaneously. Under the
+positive energy change of variables the physical wave
+step becomes a direct sum of planar rotations.
+
+**Gauss–Legendre and Verlet unitary eigenphases.** Write
+$x_{\boldsymbol j}=h\omega_{\boldsymbol j}$ and
+$R_s(z)=P_s(z)/P_s(-z)$, the diagonal $[s/s]$ Padé
+approximation to the exponential, with $s=1,2,3$
+(midpoint, Gauss order four, Gauss order six respectively).
+The exact **finite unit eigenphase multiset** is
+
+```math
+\big\{
+z_{\boldsymbol j},\overline{z_{\boldsymbol j}}:
+\boldsymbol j\in\prod_a\{1,\ldots,n_a\}
+\big\},\qquad
+z_{\boldsymbol j}=R_s(-ih\omega_{\boldsymbol j}).
+```
+
+For velocity Verlet the corresponding phase branch is
+
+```math
+z_{\boldsymbol j}=
+1-\frac{x_{\boldsymbol j}^2}{2}
+-i x_{\boldsymbol j}\sqrt{1-\frac{x_{\boldsymbol j}^2}{4}},
+\qquad h\max_{\boldsymbol j}\omega_{\boldsymbol j}<2.
+```
+
+The strict stability inequality makes the **modified energy
+positive definite** and ensures distinct unit-circle
+conjugate pairs. It is actively enforced; outside this regime
+the generator raises a stability error rather than returning
+a matrix incorrectly labeled unitary. Midpoint and all
+Gauss choices preserve the **original** positive quadratic
+energy, while Verlet preserves a method-dependent
+**modified** quadratic form. Gauss phase wrapping is
+allowed; no artificial principal-argument restriction is
+placed on $R_s$.
+
+The normalized trace spectral measure assigns equal weight
+$1/(2N)$ to each eigenvalue (including repeated eigenvalues).
+Its exact finite Fourier moments for integer $\ell$ are
+
+```math
+m_\ell=\frac1{2N}
+\sum_{\boldsymbol j}
+\left(z_{\boldsymbol j}^{\ell}
++\overline{z_{\boldsymbol j}}^{\ell}\right).
+```
+
+These identities produce the `spectral` mode by reusing
+`um_geometric_spectral`, without calling eig(U).
+**No limiting density or van Hove singularity is asserted.**
+Neither mesh refinement with fixed domain nor a thermodynamic
+large-domain limit is specified as a measure-theoretic
+convergence statement here.
+
+**Real orthogonal representative versus physical symplectic
+step.** With $M,K$ the original FE matrices, let
+$S_h$ denote the physical time map on $[q;p]$. In the
+common orthonormal DST eigenbasis, the positive quadratic
+metric $G=T^TT$ is
+
+```math
+G=\begin{cases}
+\mathop{\mathrm{diag}}(K,M^{-1}),
+&\text{midpoint/Gauss},\\[2pt]
+\mathop{\mathrm{diag}}\!\left(
+K-\tfrac{h^2}{4}KM^{-1}K,\ M^{-1}\right),
+&\text{stable Verlet}.
+\end{cases}
+```
+
+Then $S_h^T G S_h=G$, and
+$U=T S_h T^{-1}$ is real orthogonal. Both $U$ and
+the physical $S_h$ preserve the canonical symplectic
+form with its appropriate coordinates; the positive
+normalization T is **not generally symplectic**.
+The `pencil` mode exposes $A=G S_h$ and
+$B=G$, so $B^{-1}A=S_h$ is circle-spectral, though not
+normally Euclidean orthogonal. It also returns both
+assembled Kronecker FE matrices, metric G and T.
+
+For Verlet, elimination of momentum from the physical
+position recurrence gives the **symmetric palindromic
+matrix quadratic**
+
+```math
+P(z)=z^2 M+z(h^2K-2M)+M.
+```
+
+The `polynomial` mode returns three sparse
+physical coefficient matrices, not the unitary U.
+The structure is a genuine mass-weighted QEP and is
+not replaced by an unjustified identity-mass companion.
+The unit-circle claim requires the strict stable
+Verlet parameter range.
+
+**Matrix-free performance and validation.** The
+`operator` mode stores $O(N)$ complex
+phase samples and applies forward/adjoint
+multidimensional **orthonormal DST-I** transforms
+one coordinate at a time using the existing FFT
+kernel `um_dst1_apply`. For fixed dimension
+$d\le3$, arithmetic complexity is $O(N\log N)$
+per right-hand side; no $2N$-by-$2N$ dense
+matrix is formed. Dense matrix/pencil output is
+restricted to $N\le128$; explicit sparse Verlet
+quadratic output to $N\le10^4$. The tests compare
+small-grid mass/stiffness with an **independent
+entry-by-entry FE assembly**, check the generalized
+eigenvalues and all modes, energy and symplectic
+metrics, a separate physical Padé step, the
+palindromic QEP companion roots, degeneracies
+and anisotropic splitting, phase wrapping and
+large 2D/3D matrix-free adjoint reversibility.
+
+**References:** Hairer–Lubich–Wanner [101] for
+symplectic Gauss–Legendre/Verlet time integrators,
+Cockburn–Du–Sánchez [103] for finite-element wave
+Hamiltonian semidiscretization, and
+Loveland–Valseth–Lukac–Dawson [141] for
+tensor-product finite-element assembly.
+The particular exact DST symbol and eigenphase
+formulas are elementary deductions from this
+special constant-coefficient rectangular model.
+
+
 ## Bibliography
 
 1. P. J. Davis, *Circulant Matrices*, Wiley, 1979. ISBN 9780471057710. [Library record](https://openlibrary.org/books/OL4407364M/Circulant_matrices).
@@ -4423,3 +4631,6 @@ SO(n) method, retained for future independent work.
 138. J. Moser and A. P. Veselov, “Discrete versions of some classical integrable systems and factorization of matrix polynomials,” *Communications in Mathematical Physics* **139** (1991), 217–243. [DOI](https://doi.org/10.1007/BF02352494); [full text](https://projecteuclid.org/journals/communications-in-mathematical-physics/volume-139/issue-2/Discrete-versions-of-some-classical-integrable-systems-and-factorization-of/cmp/1104203302.full).
 139. J. R. Cardoso and P. Miraldo, “Solving the discrete Euler–Arnold equations for the generalized rigid body motion,” *Journal of Computational and Applied Mathematics* **402** (2022), 113814. [DOI](https://doi.org/10.1016/j.cam.2021.113814); [preprint](https://arxiv.org/abs/2109.00505).
 140. X. Shen, K. Tran and M. Leok, “High-order symplectic Lie group methods on SO(n) using the polar decomposition,” *Journal of Computational Dynamics* **9** (2022), 529–551. [DOI](https://doi.org/10.3934/jcd.2022003); [preprint](https://arxiv.org/abs/2201.10768).
+
+
+141. M. Loveland, E. Valseth, M. Lukac and C. Dawson, “Extending FEniCS to work in higher dimensions using tensor product finite elements,” *Journal of Computational Science* **64** (2022), 101831. [DOI](https://doi.org/10.1016/j.jocs.2022.101831); [preprint](https://arxiv.org/abs/2202.00762).
