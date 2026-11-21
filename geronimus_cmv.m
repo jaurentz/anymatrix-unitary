@@ -6,6 +6,9 @@ function [U,properties] = geronimus_cmv(n,a,representation,beta,twists,output)
 %   Interior coefficients must lie in the open disk; |BETA|=1 closes.
 %   See documentation and the corresponding SZEGO_*_MEASURE function.
 %   Verified reference identifiers (see docs/MATRIX_ENCYCLOPEDIA.md):
+%   [147] https://doi.org/10.1007/s00220-021-04072-4
+%   General numerical spectral-measure methodology only; this paper
+%   is NOT a source for the family's specific Verblunsky coefficients.
 %   [5] https://doi.org/10.1090/coll054.1
 %   [5] https://doi.org/10.1090/coll/054.2
 %   [7] https://doi.org/10.1016/j.cam.2006.10.033
