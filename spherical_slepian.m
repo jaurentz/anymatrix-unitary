@@ -123,7 +123,8 @@ if cap==0
     x=ones(q,1);w=zeros(q,1);return
 end
 [d,s]=js_jacobi_recurrence(0,0,q);
-J=diag(d)+diag(s,1)+diag(s,-1);
+J=diag(d);
+if q>1,J=J+diag(s,1)+diag(s,-1);end
 [V,D]=eig(J);
 [t,ord]=sort(diag(D)/2);
 v=V(1,ord).';
