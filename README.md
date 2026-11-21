@@ -564,6 +564,17 @@ W = wigner_rotation(10,.3,.7,-.4);   % integer SO(3)
 V = wigner_rotation(9.5,.3,.7,-.4);  % half-integer SU(2)
 ```
 
+### Exact Wigner axis rotations
+
+`wigner_rotation(j,alpha,beta,gamma,'operator')`
+uses an $O(j)$ **diagonal or anti-diagonal** action whenever the
+middle Euler angle is exactly `beta=k*pi`. This is exact for both
+integer SO(3) and half-integer SU(2) spin, preserving the
+$2\pi$ spinor sign; it supports forward, adjoint, transpose
+and multiple RHS, with no `expm`. Generic angles retain the
+existing dense matrix exponential and reject operator mode
+rather than pretending to be fast.
+
 ### Exact non-axisymmetric spherical Slepian transforms
 
 `spherical_lune_slepian(L,phiStart,width,output)` computes an orthogonal real

@@ -1373,15 +1373,15 @@
       "status": "implemented",
       "category": "signal_processing",
       "matrix_order": "2*ell+1",
-      "representation": "dense spherical harmonic irreducible SO(3) representation",
+      "representation": "irreducible SO(3) integer/ SU(2) half-integer spin Wigner representation; exact diagonal/anti-diagonal monomial Euler beta=k*pi, generic beta dense expm",
       "spectral_reference": "exact exp(-i*m*delta), m=-ell:ell",
       "encyclopedia_references": [
         108,
         112
       ],
-      "matrix_free_supported": false,
-      "operator_kernel": null,
-      "operator_note": "Explicit eigendecomposition/exponential; no fast action claimed."
+      "matrix_free_supported": true,
+      "operator_kernel": "um_wigner_axis_apply",
+      "operator_note": "For EXACT beta=k*pi (including half spin SU2 2pi sign), matrix and operator use O(ell) storage/application, forward/adjoint/ordinary transpose for multiple RHS. General beta remains dense expm setup O(ell^3) and O(ell^2) action; operator rejects it."
     },
     {
       "id": "spherical_harmonic_rotation",
