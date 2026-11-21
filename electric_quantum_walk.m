@@ -33,9 +33,18 @@ function [W,properties]=electric_quantum_walk(n,omega,coinAngle,phase,boundary,m
 %   has formal skew-shift Verblunsky coefficients (Yang 2025)
 %       alpha_(2j)=b*exp(2*pi*i*(j^2*OMEGA+2*j*PHASE)),
 %       alpha_(2j+1)=0.
-%   On a finite ring, arbitrary electric phases and twists can
-%   induce gauge monodromy: these formal coefficients are NOT
-%   asserted to define a boundary-matched standard finite CMV.
+%   Those WHOLE-LINE parameters should not be confused with the
+%   exact finite-ring gauge below. A finite ring always has a gauge
+%   to a scalar times a twisted cyclic CMV with the SAME boundary twist;
+%   absorbing the scalar is subject to a monodromy condition.
+%   Explicitly, with j=0,..,N-1, g=exp(2*pi*i*(PHASE+(N-1)*OMEGA/2)):
+%     alpha_(2j)=b*exp(2*pi*i*OMEGA*j*(N-1-j)), alpha_(2j+1)=0,
+%     Lambda_(j,-)=exp(pi*i*OMEGA*j*(N-j)),
+%     Lambda_(j,+)=exp(pi*i*OMEGA*j*(j+2-N)).
+%   Then Lambda'*W*Lambda=g*L(alpha_even)*M_odd(BOUNDARY).
+%   The ring electric monodromy is P=prod_j D_j=g^N.
+%   For a fixed twist and positive CMV off-diagonals, an unscaled
+%   representation (g=1) needs P=1 (except degenerate coins).
 %
 %   COINANGLE in [0,pi/2] (default .41), OMEGA default
 %   (sqrt(5)-1)/2, PHASE default .13, BOUNDARY default 0.
@@ -44,6 +53,12 @@ function [W,properties]=electric_quantum_walk(n,omega,coinAngle,phase,boundary,m
 %   MODE='matrix' (default): sparse 2N-by-2N unitary.
 %   MODE='operator': sparse O(N) forward, transpose and adjoint
 %       actions for arbitrary numbers of right-hand sides.
+%   MODE='cmv_gauge': exact finite diagonal gauge to a GLOBAL-PHASE-
+%       MULTIPLIED twisted cyclic standard CMV product. Returns sparse
+%       Lambda, U_cmv, L_even, M_odd, global_phase, and Verblunsky data.
+%       Lambda'*W*Lambda=U_cmv=global_phase*L_even*M_odd.
+%       The cyclic boundary twist is preserved, for ANY finite OMEGA.
+%       This is not an ordinary half-line finite CMV truncation.
 %   MODE='factors': exact sparse L,M,D and formal skew-shift
 %       Verblunsky coefficients, with finite-boundary caveat.
 %   MODE='model': W,S,coin,D,L,M and original parameters.
@@ -89,7 +104,7 @@ if ~(ischar(mode)||(isstring(mode)&&isscalar(mode)))
     error('electric_quantum_walk:Mode','MODE must be scalar text.');
 end
 mode=lower(char(mode));
-if ~any(strcmp(mode,{'matrix','operator','factors','model','spectral'}))
+if ~any(strcmp(mode,{'matrix','operator','factors','model','spectral','cmv_gauge'}))
     error('electric_quantum_walk:Mode','Unsupported output mode.');
 end
 if any(strcmp(mode,{'matrix','model'}))&&n>2048
@@ -113,6 +128,38 @@ M=sparse([rowForMinus;rowForPlus], ...
          2*n,2*n);
 sitePhase=exp(2i*pi*mod(phase+omega*j,1));
 d=repelem(sitePhase,2);
+if strcmp(mode,'cmv_gauge')
+    % Exact finite-ring identity. The scalar g accounts for the phase
+    % holonomy of one circuit around the ring: g^n=prod_j sitePhase(j).
+    % It cannot generally be removed without changing the CMV closure.
+    g=exp(2i*pi*mod(phase+omega*(n-1)/2,1));
+    monodromy=exp(2i*pi*mod(n*phase+omega*n*(n-1)/2,1));
+    lambdaMinus=exp(1i*pi*mod(omega*j.*(n-j),2));
+    lambdaPlus=exp(1i*pi*mod(omega*j.*(j+2-n),2));
+    lambda=zeros(2*n,1);
+    lambda(1:2:end)=lambdaMinus;
+    lambda(2:2:end)=lambdaPlus;
+    Lambda=spdiags(lambda,0,2*n,2*n);
+    alphaEven=b*exp(2i*pi*mod(omega*j.*(n-1-j),1));
+    Lcmv=sparse([colMinus;colMinus;colPlus;colPlus], ...
+        [colMinus;colPlus;colMinus;colPlus], ...
+        [conj(alphaEven);a*ones(n,1);a*ones(n,1);-alphaEven], ...
+        2*n,2*n);
+    Ucmv=g*Lcmv*M;
+    W=struct('Lambda',Lambda,'lambda_diagonal',lambda, ...
+        'global_phase',g,'monodromy',monodromy, ...
+        'alpha_even',alphaEven,'alpha_odd',zeros(n,1), ...
+        'L_even',Lcmv,'M_odd',M,'U_cmv',Ucmv, ...
+        'boundary_twist',boundary, ...
+        'notes',['Exact finite-ring gauge: Lambda''*W*Lambda = ', ...
+          'U_cmv = global_phase*L_even*M_odd for every finite ', ...
+          'field and twist; this is cyclic, not half-line CMV. ', ...
+          'The formal whole-line skew-shift coefficients in ', ...
+          'factors mode are a different gauge convention. ', ...
+          'Unscaled fixed-twist CMV needs monodromy 1 ', ...
+          'for nondegenerate coin.']);
+    return
+end
 if strcmp(mode,'operator')
     W=@(X,flag)um_electric_walk_apply(X,flag,d,L,M);
     return
