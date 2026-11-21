@@ -46,7 +46,7 @@ $2n$ for a physical system of size $n$; such cases are explicitly marked.
 ### 1. Cyclic shift — [`cycle_shift.m`](../cycle_shift.m)
 
 **Order:** $n$. **Structure:** real, orthogonal, sparse permutation,
-circulant. **Spectrum:** precisely the $n$th roots of unity.
+circulant. **Spectrum:** precisely the $n$-th roots of unity.
 
 ```math
 P_ne_j=e_{j+1}\quad(e_{n+1}=e_1),\qquad P_n^n=I,\qquad
@@ -341,7 +341,7 @@ rapidly terminating Verblunsky data, a useful dual check of the measure
 and multiplication matrix. All four existing representation choices work.
 **References:** [5, 12].
 
-### 11. Circular-$\beta$ random CMV — [`circular_beta.m`](../circular_beta.m)
+### 11. Circular β random CMV — [`circular_beta.m`](../circular_beta.m)
 
 **Order:** $n$. **Structure:** sparse five-diagonal random unitary.
 The Killip–Nenciu construction chooses independent interior coefficients
@@ -577,7 +577,7 @@ $-\log q$, and its Verblunsky coefficients satisfy
 \alpha_k=(-1)^k q^{(k+1)/2}.
 ```
 
-Its positive circular density is smooth and the $k$th Fourier moment is
+Its positive circular density is smooth and the $k$-th Fourier moment is
 $q^{k^2/2}$. This is a nontrivial parameter-dependent real-coefficient
 OPUC benchmark with a known cyclic-vector measure. **References:** [5, 12].
 

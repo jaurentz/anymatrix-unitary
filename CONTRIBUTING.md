@@ -79,7 +79,10 @@ GitHub's mathematics renderer restricts some otherwise valid LaTeX macros.
 Do not use `\operatorname` or `\DeclareMathOperator` in rendered
 mathematics. For named operators use, for example,
 `\mathop{\mathrm{diag}}` instead of `\operatorname{diag}`.
-Inspect both the GitHub preview and the Markdown source.
+Keep inline mathematics separate from immediately following letters: write
+`$n$-th` instead of `$n$th`, and prefer `circular β` rather than
+`circular-$\beta$` in headings and prose. Inspect both the GitHub preview
+and the Markdown source.
 
 Example of fenced display mathematics:
 

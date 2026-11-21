@@ -106,6 +106,19 @@ for j=1:numel(paths)
         dollars=regexp(char(lines(k)),'(?<!\\)\$','match');
         verifyEqual(tc,mod(numel(dollars),2),0, ...
             sprintf('Unpaired inline math delimiter in %s line %d',paths{j},k));
+        % Verify that inline math is not directly glued to letter suffixes.
+        % GitHub Markdown can display $n$th literally rather than render n.
+        lineText=char(lines(k));
+        mathEnds=regexp(lineText,'(?<!\\)\$[^$\n]+\$','end');
+        for m=1:numel(mathEnds)
+            if mathEnds(m)<numel(lineText)
+                verifyFalse(tc,isletter(lineText(mathEnds(m)+1)), ...
+                    sprintf('Math suffix adjacent to text in %s line %d',paths{j},k));
+            end
+        end
+        % Avoid fragile hyphenated formula headings, e.g. circular-$\beta$.
+        verifyEmpty(tc,regexp(lineText,'[A-Za-z]-\$\\beta\$','match'), ...
+            sprintf('Hyphenated beta math in %s line %d',paths{j},k));
     end
 end
 end

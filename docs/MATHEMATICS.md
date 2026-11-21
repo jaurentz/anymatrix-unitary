@@ -167,7 +167,7 @@ This is the first family added beyond Jacobi to the measure-first dispatcher,
 `js_verblunsky`. Its finite CMV, Hessenberg, inverse Hessenberg and twisted
 realizations are all constructed through the same shared core function.
 
-## Random circular-$\beta$ measures
+## Random circular β measures
 
 The Killip–Nenciu distribution generates a *finite random* discrete spectral
 measure, rather than starting from one predetermined continuous weight.
@@ -181,7 +181,7 @@ coefficients have uniform argument and
 
 The terminal $\beta_{\mathrm{terminal}}$ is uniform on $\mathbb T$ (not
 the positive Dyson parameter). A sparse CMV realization then has precisely
-the circular-$\beta$ eigenangle law in finite dimension. The CUE eigenvalue
+the circular β eigenangle law in finite dimension. The CUE eigenvalue
 law occurs when $\beta=2$, but the sparse CMV matrix is not itself Haar
 unitary in its entries. The implementation samples radial squares by an
 inverse CDF using MATLAB's core `rand` function.
