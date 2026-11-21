@@ -48,7 +48,7 @@ verifyLessThan(tc,norm(F(X,'ctransp')-A'*X,'fro'),2e-10);
 S=discrete_schur_cmv(4,180,.1,[1;1i;-1;-1i],w,'spectral');
 verifyGreaterThan(tc,S.cyclic.weights(1),.999);
 verifyError(tc,@()discrete_schur_cmv(n,1,.5,z,w), ...
-    'MATLAB:expectedLessThan'); % validateattributes bound
+    'MATLAB:notLess'); % validateattributes bound
 end
 
 function test_toda_jacobi_qr_and_cayley(tc)
@@ -112,7 +112,7 @@ for t=[0 .3 -.5]
     verifyLessThan(tc,abs(S.finite.moments(2)-trace(H^2)/n),4e-10);
     V=schur_hessenberg_flow(n,t,z,w,'cmv','inverse');
     verifyLessThan(tc,norm(V'*V-eye(n),'fro'),2e-10);
-    verifyLessThan(tc,norm(sort(angle(eig(V)))- ...
+    verifyLessThan(tc,norm(sort(angle(eig(full(V))))- ...
         sort(angle(eig(H)))),5e-8);
     F=schur_hessenberg_flow(n,t,z,w,'hessenberg','qr','operator');
     X=randn(n,2)+1i*randn(n,2);
