@@ -1447,7 +1447,7 @@
       "status": "implemented",
       "category": "signal_processing",
       "matrix_order": "n",
-      "representation": "Real orthogonal full Gauss-Jacobi weighted evaluation for arbitrary alpha,beta>-1 using Golub-Welsch; exact FFT DCT-III and DST-I specializations for alpha=beta=-1/2 (Chebyshev I) and alpha=beta=+1/2 (Chebyshev II) with ascending-node alternating coefficient signs",
+      "representation": "Real orthogonal Gauss-Jacobi weighted evaluation for arbitrary alpha,beta>-1 using Golub-Welsch; exact O(n log n) FFT operators for all four Chebyshev I--IV pairs alpha,beta=+/-1/2, with positive-leading polynomials and ascending Gauss nodes",
       "spectral_reference": "matrix eigenphases unknown; quadrature nodes belong to real Jacobi tridiagonal",
       "encyclopedia_references": [
         104,
@@ -1456,8 +1456,8 @@
         107
       ],
       "matrix_free_supported": true,
-      "operator_kernel": "um_gauss_jacobi_cheb_apply",
-      "operator_note": "TRUE O(n log n) FFT application with O(n) workspace (and no dense matrix) ONLY for alpha=beta=-1/2 or +1/2; both coincide mathematically with the dense positive-leading Gauss-Jacobi basis. For all other Jacobi parameters, including associated-Legendre m>=0, the operator mode explicitly throws; existing O(n^3) dense setup remains. Exact eigenphases of the orthogonal transform are unknown."
+      "operator_kernel": "um_gauss_jacobi_cheb_apply / um_gauss_jacobi_cheb34_apply",
+      "operator_note": "TRUE O(n log n) forward/adjoint FFT with O(n) workspace per RHS and no dense matrix, for all four alpha,beta=+/-1/2 Chebyshev I--IV parameter pairs. I/II reuse DCT-III and DST-I with ascending-node signs; III/IV use a length-(8n+4) FFT odd-frequency embedding matching the same exact mathematical Gauss-Jacobi basis. For any other Jacobi parameters, including Legendre and associated-Legendre, operator mode throws. General fast connection algorithms unimplemented; eigenphases unknown."
     },
     {
       "id": "real_flag_parallel_transport",

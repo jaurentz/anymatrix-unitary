@@ -318,22 +318,43 @@ Beyond Jacobi/Chebyshev–Legendre, there are many application-specific fast tra
 
 For a broad numerical survey, see [Olver–Slevinsky–Townsend, *Fast algorithms using orthogonal polynomials*, *Acta Numerica* (2020)](https://www.cambridge.org/core/journals/acta-numerica/article/abs/fast-algorithms-using-orthogonal-polynomials/4FAD8C7C28EC20EE7583465C1A89AA3D) and [FastTransforms](https://github.com/MikaelSlevinsky/FastTransforms), which covers Jacobi/Legendre/Laguerre, spherical and spin transforms, Proriol polynomials on triangles, and Zernike functions on disks. Many of those are orthogonal **only after specifying the correct discrete weights and square sampling operator**.
 
-### 5.5b Verified FFT Gauss--Chebyshev subset (implemented)
+### 5.5b Verified FFT Gauss--Chebyshev subsets I--IV (implemented)
 
-The existing `gauss_jacobi_transform` now provides a **genuine fast
-matrix-free action** for the exact positive-leading, ascending-node
-Gauss-Chebyshev I and II matrices:
-`Q_I=DCTIII*diag((-1).^k)` at (alpha,beta)=(-1/2,-1/2),
-and `Q_II=DSTI*diag((-1).^k)` at (+1/2,+1/2).
-Both share verified O(N log N) FFT kernels for forward and adjoint,
-with $O(N)$ operator description/workspace; no $N\times N$ matrix is stored.
-The full Gauss-Jacobi and fixed-order associated-Legendre cases
-still use O(N^3) Golub-Welsch setup, O(N^2) multiplication, and
-**do not claim** a fast operator. This specialization is a consequence
-of exact Chebyshev trigonometric identities and standard DCT/DST,
-*not* a claimed implementation of the general Hale--Townsend
-or Slevinsky fast Jacobi-conversion algorithms.
-Source background: [Hale--Townsend (2016)](https://doi.org/10.1093/imanum/drv060).
+`gauss_jacobi_transform` offers **genuine fast matrix-free actions**
+for exactly four positive-leading, ascending-node Gauss-Jacobi parameter
+pairs. Chebyshev I has `Q_I=DCTIII*diag((-1).^k)` at
+$(\alpha,\beta)=(-1/2,-1/2)$, and Chebyshev II has
+`Q_II=DSTI*diag((-1).^k)` at $(+1/2,+1/2)$.
+
+Chebyshev III and IV use the mixed parameters $(-1/2,+1/2)$ and
+$(+1/2,-1/2)$. With $M=2N+1$, row angles are
+$\theta_j=(2j-1)\pi/M$ for kind III or
+$\theta_j=2j\pi/M$ for kind IV, with $j=N,\ldots,1$
+in **ascending Gauss node order**. The exact orthogonal evaluation
+matrices have entries
+
+```math
+Q^{(III)}_{jk}=\frac{2}{\sqrt{M}}
+ \cos\big((k+\tfrac12)\theta_j\big),\qquad
+Q^{(IV)}_{jk}=\frac{2}{\sqrt{M}}
+ \sin\big((k+\tfrac12)\theta_j\big),
+\quad k=0,\ldots,N-1.
+```
+
+A length-$4M=8N+4$ FFT embedding of matching odd Fourier frequencies
+and reflected positions applies both matrices and their adjoints to
+complex multiple right-hand sides. All four kinds cost
+$O(N\log N)$ time and $O(N)$ workspace per RHS, with **no**
+$N\times N$ matrix assembled or cached. In floating point,
+the FFT action is approximate, not literally exactly isometric.
+
+For **all other** Jacobi parameter pairs, including Legendre and
+fixed-order associated-Legendre blocks, `operator` is explicitly
+rejected rather than hiding dense O(N^2) work. The general
+Hale--Townsend/Slevinsky fast connection problems remain open in #39.
+Sources: [DLMF Chebyshev table](https://dlmf.nist.gov/18.3),
+[Gauss-Chebyshev quadrature](https://dlmf.nist.gov/3.5),
+[Hale--Townsend (2016)](https://doi.org/10.1093/imanum/drv060).
 
 ### 5.6 Tensor trains and matrix-product operators
 

@@ -11,13 +11,16 @@ function [U,properties]=gauss_jacobi_transform(n,alpha,beta,output)
 %   the unit-circle eigenvalues of U.
 %   OUTPUT='matrix' (default) preserves the exact finite Golub-Welsch
 %   matrix for ALL alpha,beta>-1. OUTPUT='operator' supplies a GENUINE
-%   O(N log N), O(N) workspace FFT action for the two classical,
-%   exactly reducible Chebyshev specializations ONLY:
+%   O(N log N), O(N) workspace FFT action for FOUR strictly
+%   finite-orthogonal Chebyshev specializations:
 %      alpha=beta=-1/2: Q=DCT-III * diag((-1)^k) (first kind);
-%      alpha=beta= 1/2: Q=DST-I   * diag((-1)^k) (second kind).
-%   These signs follow ASCENDING Gauss node ordering and POSITIVE-
-%   leading orthonormal Jacobi polynomials. Both forward/adjoint actions
-%   are strictly the same mathematical orthogonal matrix as default.
+%      alpha=beta= 1/2: Q=DST-I   * diag((-1)^k) (second kind);
+%      alpha=-1/2,beta=+1/2: Gauss-Chebyshev III (V_k);
+%      alpha=+1/2,beta=-1/2: Gauss-Chebyshev IV (W_k).
+%   The mixed-parameter cases use a length-(8*N+4) FFT embedding
+%   of half-integer cosine/sine frequencies and require NO dense setup.
+%   All cases match ASCENDING Gauss nodes and POSITIVE-leading
+%   orthonormal Jacobi polynomials, with forward/adjoint multi-RHS.
 %   General alpha,beta (including associated-Legendre m,m) explicitly
 %   REJECT 'operator' pending a verified fast connection algorithm.
 %   OUTPUT='spectral' reports UNKNOWN transform eigenphases: the real
@@ -42,7 +45,7 @@ end
 output=lower(char(output));
 if strcmp(output,'spectral')
     U=unitary_spectral_reference('gauss_jacobi_transform',n);
-    U.reference='Golub--Welsch Gaussian quadrature and fast Chebyshev FFT';
+    U.reference='Golub--Welsch Gaussian quadrature and fast Chebyshev I--IV FFT';
     U.notes=['The Gauss-Jacobi nodes are Jacobi-matrix real eigenvalues, ', ...
         'NOT the generally unknown eigenphases of Q.'];
     return
@@ -52,12 +55,20 @@ if any(strcmp(output,{'operator','implicit'}))
         kind=1;
     elseif alpha==.5 && beta==.5
         kind=2;
+    elseif alpha==-.5 && beta==.5
+        kind=3;
+    elseif alpha==.5 && beta==-.5
+        kind=4;
     else
         error('gauss_jacobi_transform:FastSubset', ...
-            ['Fast FFT mode currently covers only alpha=beta=+/-1/2; ', ...
-             'no hidden dense general Jacobi operator is supplied.']);
+            ['Fast FFT mode covers only all four alpha,beta=+/-1/2 ', ...
+             'Chebyshev pairs; no hidden dense general Jacobi operator.']);
     end
-    U=@(X,flag)um_gauss_jacobi_cheb_apply(X,flag,n,kind);
+    if kind<=2
+        U=@(X,flag)um_gauss_jacobi_cheb_apply(X,flag,n,kind);
+    else
+        U=@(X,flag)um_gauss_jacobi_cheb34_apply(X,flag,n,kind);
+    end
     return
 end
 if ~any(strcmp(output,{'matrix','explicit'}))
