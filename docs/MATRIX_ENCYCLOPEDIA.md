@@ -5023,6 +5023,18 @@ here** and do not purport to reproduce
 the published fast algorithms.
 
 
+
+## Spectral-measure computation: Colbrook and collaborators
+
+References [145–148] supply spectral-measure methods and data-driven Koopman benchmarks, rather than four automatically new finite unitary generators.
+
+- **Resolvent-based density methods [145].** The self-adjoint spectral-measure calculations, including graphene/tight-binding and Dirac examples, provide methodological context and potential *Hermitian-to-unitary* test constructions (e.g., explicitly specified Cayley transforms or Hermitian propagators); their raw operators are **not** unitary matrices.
+- **Data-driven Koopman spectral measures [146].** For invariant measures, composition Koopman operators are isometries; they are unitary on the full $L^2$ space when the dynamics is invertible modulo measure-zero sets. ResDMD/EDMD outputs are **not generally unitary finite matrices**, even if the underlying Koopman operator is unitary. Examples in [146] include circle rotations, tent and Gauss maps, pendulum systems and Lorenz dynamics; admissible finite unitary test matrices require an independently justified exact invariant subspace, a bijective finite-state discretization, or a genuinely structure-preserving approximation.
+- **Spectral-type benchmarks in OPUC [147].** Section 6.3 treats infinite CMV matrices and their **vector** spectral measures, including Rogers–Szegő (wrapped Gaussian) and constant-Verblunsky Geronimus cases with band support and, in some parameter regimes, an additional point mass. The repository already provides `rogers_szego` and `geronimus_cmv` finite generators. A finite unitary CMV truncation has an atomic spectral measure, so it must **not** be labelled as exactly possessing the continuous or mixed spectral type of its infinite counterpart. Those examples instead motivate carefully verified finite-size convergence and smoothing benchmarks.
+- **Measure-preserving finite Koopman approximants [148].** mpEDMD uses a data-dependent **orthogonal Procrustes** construction to enforce measure preservation in a finite-dimensional approximation. In an orthonormalized/Gram-whitened dictionary basis the resulting matrix can be unitary; a raw nonorthogonal-coordinate representation is generally unitary only in its associated positive metric. This suggests a distinct data-derived finite matrix class, provided matrix assembly, conditioning, and the metric are exposed and tested, rather than presenting generic EDMD or ResDMD matrices as unitary.
+
+Keep **vector spectral measures** $\langle v,E_U(\cdot)v\rangle$ distinct from the **normalized trace eigenphase measure** $n^{-1}\sum_j\delta_{\theta_j}$; in general the former is not the latter. Also distinguish certified infinite-operator spectral limits from the finite sample spectrum and from smoothing-induced densities.
+
 ## Bibliography
 
 1. P. J. Davis, *Circulant Matrices*, Wiley, 1979. ISBN 9780471057710. [Library record](https://openlibrary.org/books/OL4407364M/Circulant_matrices).
@@ -5201,3 +5213,7 @@ the published fast algorithms.
 
 143. R. G. Campos, J. Rico-Melgoza and E. Chávez, “A New Formulation of the Fast Fractional Fourier Transform,” *SIAM Journal on Scientific Computing* **34** (2012), A1110–A1125. [DOI](https://doi.org/10.1137/100812677).
 144. C. Candan, M. A. Kutay and H. M. Ozaktas, “The Discrete Fractional Fourier Transform,” *IEEE Transactions on Signal Processing* **48** (2000), 1329–1337. [DOI](https://doi.org/10.1109/78.839980).
+145. M. J. Colbrook, A. Horning and A. Townsend, “Computing Spectral Measures of Self-Adjoint Operators,” *SIAM Review* **63** (2021), 489–524. [DOI](https://doi.org/10.1137/20M1330944); [preprint](https://arxiv.org/abs/2006.01766).
+146. M. J. Colbrook and A. Townsend, “Rigorous Data-Driven Computation of Spectral Properties of Koopman Operators for Dynamical Systems,” *Communications on Pure and Applied Mathematics* **77** (2024), 221–283. [DOI](https://doi.org/10.1002/cpa.22125); [preprint](https://arxiv.org/abs/2111.14889).
+147. M. J. Colbrook, “Computing Spectral Measures and Spectral Types,” *Communications in Mathematical Physics* **384** (2021), 433–501. [DOI](https://doi.org/10.1007/s00220-021-04072-4); [author PDF](https://www.damtp.cam.ac.uk/user/mjc249/pdfs/SpecMeasuresMJC.pdf).
+148. M. J. Colbrook, “The mpEDMD Algorithm for Data-Driven Computations of Measure-Preserving Dynamical Systems,” *SIAM Journal on Numerical Analysis* **61** (2023), 1585–1608. [DOI](https://doi.org/10.1137/22M1521407); [preprint](https://arxiv.org/abs/2209.02244).
