@@ -1,5 +1,5 @@
 function Y=um_dct_apply(X,flag,n,kind)
-%UM_DCT_APPLY FFT-based DCT-I through IV; forward and real transpose.
+%UM_DCT_APPLY FFT-based DCT-I--IV and VIII; forward/transpose/adjoint.
 %   Implements orthonormal transforms without forming cosine matrices.
 %   For complex RHS, cosine transforms remain complex linear.
 if strcmpi(flag,'size'),Y=[n n];return;end
@@ -44,6 +44,18 @@ switch kind
         W=um_dct_apply([X;zeros(n,size(X,2),'like',X)], ...
             'notransp',2*n,2);
         Y=sqrt(2)*W(2:2:2*n,:);
+    case 8
+        % Odd-period DCT-VIII: exact cosine kernel is extracted from
+        % a length 4*(2*n+1) FFT of an even-reflected, odd-grid signal.
+        % Identical embedding handles complex RHS without conjugation.
+        M=2*n+1;
+        L=4*M;
+        odd=(1:2:2*n-1)';
+        V=zeros(L,size(X,2),'like',X);
+        V(odd+1,:)=X/2;
+        V(L-odd+1,:)=X/2;
+        W=fft(V,[],1);
+        Y=(2/sqrt(M))*W(odd+1,:);
 end
 if wasReal,Y=real(Y);end
 end
