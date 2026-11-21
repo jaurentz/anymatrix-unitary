@@ -1324,6 +1324,12 @@
       ],
       "permalink": "https://doi.org/10.1111/cgf.13494",
       "alternate_permalink": ""
+    },
+    {
+      "number": 171,
+      "dois": [],
+      "permalink": "https://gaussianprocess.org/gpml/chapters/RW4.pdf",
+      "alternate_permalink": "https://gaussianprocess.org/gpml/"
     }
   ]
 }
