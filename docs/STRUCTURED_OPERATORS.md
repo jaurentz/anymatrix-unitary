@@ -325,10 +325,10 @@ matrix-free action** for the exact positive-leading, ascending-node
 Gauss-Chebyshev I and II matrices:
 `Q_I=DCTIII*diag((-1).^k)` at (alpha,beta)=(-1/2,-1/2),
 and `Q_II=DSTI*diag((-1).^k)` at (+1/2,+1/2).
-Both share verified O(n log n) FFT kernels for forward and adjoint,
+Both share verified O(N log N) FFT kernels for forward and adjoint,
 with $O(N)$ operator description/workspace; no $N\times N$ matrix is stored.
 The full Gauss-Jacobi and fixed-order associated-Legendre cases
-still use O(n^3) Golub-Welsch setup, O(n^2) multiplication, and
+still use O(N^3) Golub-Welsch setup, O(N^2) multiplication, and
 **do not claim** a fast operator. This specialization is a consequence
 of exact Chebyshev trigonometric identities and standard DCT/DST,
 *not* a claimed implementation of the general Hale--Townsend
@@ -487,11 +487,11 @@ the tiny first Gaussian eigenvector component from determining
 an arbitrary sign. The optional `quadrature` mode in the
 Hermite/Laguerre public generators independently evaluates
 normalized log Christoffel weights via rescaled polynomial
-recurrences (O(n^2)), with physical Hermite/Laguerre function
+recurrences (O(N^2)), with physical Hermite/Laguerre function
 row scaling kept distinct from the orthogonal weighted polynomial
 evaluation. The quadrature nodes and weights do NOT provide
 an FFT-fast action of the full coefficient transform.
-The explicit Q remains O(n^3) setup, O(n^2) storage and apply,
+The explicit Q remains O(N^3) setup, O(N^2) storage and apply,
 in contrast with genuinely fast specialized transforms
 ([Webb 2026](https://arxiv.org/abs/2604.02041), and [Olver et al.](https://www.cambridge.org/core/journals/acta-numerica/article/abs/fast-algorithms-using-orthogonal-polynomials/4FAD8C7C28EC20EE7583465C1A89AA3D)).
 

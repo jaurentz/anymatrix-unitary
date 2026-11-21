@@ -359,7 +359,7 @@ and an independent uniform terminal phase. The eigenangles have joint
 density proportional to $\prod_{j<k}|e^{i\theta_j}-e^{i\theta_k}|^\beta$.
 At $\beta=2$ the **eigenvalue law** is CUE, although the matrix is not
 Haar-distributed on $U(n)$. This tests level repulsion while preserving
-$O(n)$ sparse structure. The RNG-seeded option restores the caller's state.
+$O(N)$ sparse structure. The RNG-seeded option restores the caller's state.
 No Statistics Toolbox is required. **Reference:** [13].
 
 ## C. Random and orthogonal signal-processing matrices
@@ -376,7 +376,7 @@ benchmark rather than a deterministic known-spectrum matrix. **Reference:** [14]
 ### 13. Haar orthogonal — [`haar_orthogonal.m`](../haar_orthogonal.m)
 
 **Order:** $N=n$. **Structure:** dense, real orthogonal. Sign-adjusted QR of
-an $n\times n$ real Gaussian matrix produces Haar distribution on $O(n)$.
+an $N\times N$ real Gaussian matrix produces Haar distribution on $O(N)$.
 Its eigenvalues obey complex-conjugate pairing and determinant/parity
 constraints. **Haar on $O(n)$ is not Dyson's COE.** This distinction matters
 when testing random matrix universality claims. **Reference:** [14].
@@ -697,7 +697,7 @@ counted separately. The default generator has nontrivial deterministic
 channel mixing; callers may pass arbitrary admissible local matrices.
 
 `'pencil'` mode returns `A=W_n`, `B=V_n^*`, so that
-`B^{-1}A=Z_n`. The construction has a sparse `O(nq^2)` description.
+`B^{-1}A=Z_n`. The construction has a sparse `O(Nq)` description.
 Finite eigenvalues lie on the circle; no universal analytic trace
 density is asserted. The source develops transfer-matrix methods,
 matrix-valued spectral measures, and finite/periodic Prüfer-phase
@@ -725,7 +725,7 @@ using final output `'operator'`. This uses the same sparse Hermitian-
 tridiagonal generator and `expmv` action as the Bose–Hubbard dimer
 (MATLAB R2023b+), with a Chebyshev–Bessel fallback on older releases.
 Explicit mode uses `expm` of a sparse tridiagonal generator, whose
-exponential is generally dense. No uniformly $O(n)$-time action is claimed.
+exponential is generally dense. No uniformly $O(N)$-time action is claimed.
 **References:** [28, 29].
 
 ### 29. Integrable kicked Ising chain — [`floquet_ising.m`](../floquet_ising.m)
@@ -1585,7 +1585,7 @@ permutes the rows into increasing zero-crossing count using
 bit-reversed Gray indices; the permutation generally changes
 the eigenvalues of the *transform matrix*, though its singular
 values remain 1. The matrix-free kernel uses a fast Walsh
-butterfly and row permutations, with $O(n)$ storage.
+butterfly and row permutations, with $O(N)$ storage.
 Applications: spread-spectrum signals, coding and image
 processing. [55]
 
@@ -1609,7 +1609,7 @@ concentration order and returns their transpose. This defines
 a real orthogonal transform; its eigenphases are **not**
 the concentration eigenvalues of $B$. The matrix is **explicit
 only**: the generic DPSS eigenbasis does not admit a validated
-fast $O(n)$-storage transform merely by wrapping its dense
+fast $O(N)$-storage transform merely by wrapping its dense
 eigenvectors in a function handle. Applications: multitaper
 estimation, finite-band concentration and leakage suppression. [56]
 
@@ -1727,7 +1727,7 @@ No duplicate matrix generator is registered. q=1 agrees
 with `finite_cmv` using the identical boundary phase convention.
 
 The new `'operator'` output applies even then odd two-fiber cores
-and their boundary blocks in O(n q²) work per right-hand side;
+and their boundary blocks in O(N q) work per right-hand side;
 the adjoint reverses both factor layers and uses the
 Hermitian adjoints of the noncommuting cores. It supports
 multiple complex right-hand sides without constructing U.
@@ -1916,8 +1916,8 @@ nearest-neighbor columns. Every factor is strictly unitary.
 These topologies describe *ideal lossless* finite-mode models; no
 claims about scattering loss, experimental error or gain are made.
 
-The `'operator'` mode retains the O(n^2) coupler parameters and
-multiplies vectors or multiple right-hand sides in O(n^2) arithmetic
+The `'operator'` mode retains the O(N^2) coupler parameters and
+multiplies vectors or multiple right-hand sides in O(N^2) arithmetic
 per right-hand side, with the exact reversed core order on the adjoint.
 At `theta=pi/4` each coupler is 50:50, and `theta=pi/2` gives
 phase-signed routing/permutation matrices. Arbitrary input parameters
@@ -2238,7 +2238,7 @@ B_n=
 ```
 
 Every node is orthogonal with positive determinant, hence `B_n` is
-real orthogonal with determinant 1, a factored O(n log n) action,
+real orthogonal with determinant 1, a factored O(N log N) action,
 and conjugation-symmetric eigenphases. A particular distribution of
 angles (e.g., independent uniform) defines its random ensemble;
 it is not generally Haar on all of `SO(n)`. The matrix-free
@@ -2252,7 +2252,7 @@ linear algebra and structured fast transformations. **Reference:** [89].
 
 ### Butson Hadamard phase tables — [`butson_hadamard.m`](../butson_hadamard.m)
 
-A Butson matrix BH(n,q) is an unnormalized n-by-n matrix
+A Butson matrix BH(n,q), with $N=n$, is an unnormalized $N\times N$ matrix
 with entries among the q-th roots of unity, whose Gram matrix
 is exactly nI. The normalized matrix U=H/sqrt(n) is therefore
 strictly unitary. The generator constructs reproducible **integer
@@ -2312,7 +2312,7 @@ yield Diţă-type deformations, generally not simply Fourier matrices.
 The default choice is deterministic and nontrivial when both factors
 have order at least 2. For a prime n, the default m=1 recovers F_n.
 The `operator` mode applies two FFTs and diagonal phases with
-O(n log n) complexity, including multiple RHS and adjoints. Only
+O(N log N) complexity, including multiple RHS and adjoints. Only
 the undeformed Fourier corner provides an asserted analytic finite
 eigenphase law. A complex Hadamard matrix need not be an involution.
 
@@ -2344,7 +2344,7 @@ When all interior coefficients vanish and v=e_n, the exact finite
 eigenvalues are n-th roots of exp(i*phi)*conj(beta), for boundary beta.
 For generic coefficients and vectors, finite trace eigenphases remain
 unknown. The matrix-free kernel applies the rank-one projector and
-unitary core product in O(n).
+unitary core product in O(N).
 
 **Application:** eigenphase interlacing and motion, rank-sensitive
 unitary eigensolver benchmarks, circular-ensemble perturbation theory,
@@ -2379,7 +2379,7 @@ and coupling allow systematic parameter studies. Coupling values too
 small to resolve in double-precision Schur parameters are rejected.
 
 All three variants are specified by n-1 core parameters and a
-unimodular closure, have O(n) implicit matvecs, and generate finite
+unimodular closure, have O(N) implicit matvecs, and generate finite
 unitary upper Hessenberg matrices. The seeded generator temporarily
 changes the random stream and restores it. No general sample
 eigenphase density is asserted.
@@ -2420,7 +2420,7 @@ even though they have identical adjoint dynamics.
 The implementation does not quantize arbitrary SL(2,Z) maps,
 nor does it assert a uniform finite eigenphase trace measure.
 In operator mode, both forward and adjoint matvecs use one FFT
-and O(n) chirp multiplications, hence O(n log n) complexity.
+and O(N) chirp multiplications, hence O(N log N) complexity.
 
 **Application:** quantized hyperbolic dynamics, quantum chaos,
 semiclassical spectral statistics and unitary FFT-chirp benchmarks.
@@ -2456,7 +2456,7 @@ spectral measure of Q consists of two atoms at 0 and pi,
 not a smooth distribution on the circle.
 
 The first version forms Q by dense symmetric eigendecomposition
-at O(n^3) work. It does not claim a fast Krawtchouk algorithm.
+at O(N^3) work. It does not claim a fast Krawtchouk algorithm.
 The first-component sign convention can become numerically
 delicate at high polynomial degrees or extreme binomial
 probability parameters; validation rejects unresolved zero
@@ -2564,7 +2564,7 @@ of the self-adjoint **difference operator J**. They are not,
 in general, eigenvalues of the orthogonal matrix U. Therefore
 this database does not assign the polynomial grid as
 eigenphases of U. The small, deterministic `eig(J)`
-construction is O(n^3); no fast Hahn transform is claimed.
+construction is O(N^3); no fast Hahn transform is claimed.
 Eigenvector first-component sign setting can become
 ill-conditioned for extreme orders or parameters.
 
@@ -2606,7 +2606,7 @@ those of Hahn's transform; its quadratic **polynomial grid**
 is not itself a unit-circle eigenphase law.
 
 The current implementation reuses the shared Hahn
-Jacobi eigensolver (O(n^3)). **Applications:** quadratic-grid
+Jacobi eigensolver (O(N^3)). **Applications:** quadratic-grid
 discrete spectral expansions, exactly normalized dual bases,
 polynomial transform pair benchmarks. **Reference:** [95];
 DLMF 18.21, "Duality of Hahn and Dual Hahn."
@@ -2656,7 +2656,7 @@ These give an **exact discrete trace spectral measure**
 with at most three distinct atoms. At x=y, R=I and the
 measure is one atom at zero. The ambient rotation has
 rank(R-I)<=2, so the implicit forward/adjoint kernel
-applies in O(n) per right-hand side. This is an
+applies in O(N) per right-hand side. This is an
 application-derived real orthogonal matrix family with
 an exact finite spectral reference, not a random rotation
 or an arbitrary product of Givens matrices.
@@ -3014,7 +3014,7 @@ The Euler orderings differ from velocity Verlet in their physical
 steps and cross-term metrics, although their exact phase pairs
 coincide: exp(±2i asin(h*omega_j/2)). The default normalized
 representative is real orthogonal. `'operator'` reuses the
-O(n log n) FFT diagonalization of the periodic stiffness.
+O(N log N) FFT diagonalization of the periodic stiffness.
 For a generic positive metric normalization, do **not** claim
 standard-J symplecticity without additional structure.
 See Hairer, Lubich and Wanner [101,102].
@@ -3100,7 +3100,7 @@ guarantees unimodular eigenvalues.
 phases is exact for every permitted method, returned without `eig`
 by terminal `'spectral'` mode. The periodic chain diagonalizes in
 the Fourier basis. The explicit real representative is generally
-dense. The terminal `'operator'` mode already provides $O(n\log n)$
+dense. The terminal `'operator'` mode already provides $O(N\log N)$
 FFT-based forward/adjoint actions (including complex multiple
 right-hand sides), using only $O(n)$ stored frequency samples. Its symmetric phase measure
 must be distinguished from the one-sided $n$-point complex
@@ -3177,7 +3177,7 @@ for the Gauss methods, the phases are the diagonal-Padé images
 $R_s(\pm ih\omega_j)$. All eigenvalues are exactly characterized
 at finite dimension. `'spectral'` returns the frequencies and
 phase multiset without an eigensolve; `'operator'` supplies
-$O(n\log n)$ forward and adjoint DST-I actions with $O(n)$
+$O(N\log N)$ forward and adjoint DST-I actions with $O(n)$
 stored frequency samples, including multiple complex right-hand
 sides. The explicit $U$ is generally dense. The standard terminal
 `'spectral'` descriptor exposes `finite.eigenvalues()` and
@@ -3228,7 +3228,7 @@ analytical trace eigenphase law is unknown. This general generator
 reuses the project's `um_gauss_basis` Golub--Welsch routine, extending
 Legendre, Jacobi, Hermite and Laguerre from built-in recurrence
 coefficients to user-defined classical/nonclassical measures.
-It is a dense O(n^3) setup and O(n^2) multiply, not a claimed fast
+It is a dense O(N^3) setup and O(N^2) multiply, not a claimed fast
 Slevinsky/Townsend transform. At n=1, Q=[1]. Nonpositive recurrence
 subdiagonals are rejected. Numerical conditioning may limit very
 large or tightly clustered recurrences.
@@ -3249,7 +3249,7 @@ alpha=beta=lambda-1/2 gives Gegenbauer. The first Jacobi offdiagonal
 uses the exact beta-distribution variance formula, avoiding removable
 0/0 for alpha+beta=-1. The eigenvalues of the real Jacobi tridiagonal
 are quadrature *nodes*, NOT eigenvalues of the orthogonal evaluation
-matrix. Generic construction O(n^3); dense multiplication O(n^2).
+matrix. Generic construction O(N^3); dense multiplication O(N^2).
 For the two *exact* Chebyshev specializations, a new **true FFT
 operator** returns the very same mathematically defined Gauss evaluation
 matrix, **without** constructing or caching it:
@@ -3257,7 +3257,7 @@ matrix, **without** constructing or caching it:
 `Q_II=DSTI*diag((-1).^k)` at alpha=beta=+1/2. The alternating signs
 follow ascending-node ordering (x_j=-cos(j*pi/(n+1)) for second kind)
 and positive-leading polynomial normalization. These forward/adjoint
-operators cost O(n log n) per vector and O(n) workspace, via the existing
+operators cost O(N log N) per vector and O(n) workspace, via the existing
 FFT DCT/DST kernels; roundoff means their explicit numerical products
 need only agree to tolerance. For all other Jacobi parameters, including
 Legendre alpha=beta=0, `'operator'` is **rejected**, not implemented
@@ -3281,7 +3281,7 @@ symmetric Jacobi tridiagonal with zero diagonal and offdiagonal
 `sqrt(k/2)` for k=1,...,n-1. **Spectral properties:** conjugate-paired
 unit-circle eigenvalues; no general closed form for their angles.
 Gauss--Hermite nodes are eigenvalues of the *Jacobi* matrix, not of `Q`.
-**Computational cost:** O(n^3) setup and O(n^2) explicit multiply.
+**Computational cost:** O(N^3) setup and O(N^2) explicit multiply.
 **Applications:** Hermite spectral approximations and Gaussian quadrature. [104,109]
 
 ### Generalized Gauss--Laguerre transform — [`gauss_laguerre_transform.m`](../gauss_laguerre_transform.m)
@@ -3397,7 +3397,7 @@ In particular, the even-order `n=2` frozen family is the identity.
 
 For every admitted variant, `U(tau)U(sigma)=U(tau+sigma)`.
 The optional `'operator'` mode applies the matrix and its conjugate
-adjoint to multiple columns in O(n log n) using FFTs; `'spectral'`
+adjoint to multiple columns in O(N log N) using FFTs; `'spectral'`
 returns exactly the finite trace-measure eigenphases and moments.
 As elsewhere in the library, operator flag `'transp'` means the
 conjugate adjoint. No universal continuous limiting phase density
@@ -3405,7 +3405,7 @@ is asserted without specifying how tau scales with n.
 
 **Applications:** periodic interpolation and fractional translation,
 Dirichlet kernels, exact eigenphase benchmarks, determinant topology
-of O(n), and verification of unitary versus orthogonal numerical
+of O(N), and verification of unitary versus orthogonal numerical
 implementations. Existing code uses the same odd-order default and is
 unaffected. [1,52]
 
@@ -3514,7 +3514,7 @@ original **2x2 block is intrinsic** to hyperbolic tangent
 transport; higher-dimensional identity coordinates are
 spectator benchmark padding, not higher-dimensional
 hyperbolic holonomy. The embedded spectrum is the
-angle pair and n-2 copies of 1. Both matrix and O(n)
+angle pair and n-2 copies of 1. Both matrix and O(N)
 implicit forward/transpose actions are supported.
 
 **Applications:** hyperbolic curvature and area diagnostics,
@@ -4048,7 +4048,7 @@ CZ and pulse gate sequence using existing
 `um_circuit_apply`/`um_gate_apply`.
 It supports dense assembly for $n\le10$ and local
 matrix-free forward/adjoint actions for $n\le20$
-with $O(n2^n)$ state-vector arithmetic per RHS.
+with $O(N log N)$ state-vector arithmetic per RHS.
 Its `spectral` mode uses the exact finite
 multisets and moments **only** at $\delta=0$; otherwise
 it reports an unknown finite analytic law without
@@ -5015,7 +5015,7 @@ The `hamiltonian` mode returns
 the symmetric $H_\delta$;
 `matrix` returns the complex U.
 The existing dense Golub–Welsch eigensolver
-costs $O(n^3)$ to initialize Q.
+costs $O(N^3)$ to initialize Q.
 Subsequent dense matrix assembly and the
 first spectral basis construction likewise
 have nontrivial cubic cost; no unwarranted
@@ -6164,8 +6164,8 @@ eigenvectors explicitly. `basis` exposes V, k, parity and S;
 `hamiltonian` returns V diag(k) V* (also NOT a unitary matrix).
 `spectral` supplies the exact finite trace eigenphase law and moments
 for the unitary F_alpha, without inferring a limiting distribution.
-Only explicit dense construction is offered; its O(n^3) eigensolver
-setup and O(n^2) storage do NOT constitute a fast matrix-free action.
+Only explicit dense construction is offered; its O(N^3) eigensolver
+setup and O(N^2) storage do NOT constitute a fast matrix-free action.
 This is distinct from the existing Gauss-Hermite quadrature oscillator
 and fractional Fourier integrals computed by approximate chirp FFTs.
 Reference [161], Section III, Equations (9), (15), (22) and Table IV.
@@ -6358,7 +6358,7 @@ w_j/\mu_0=1/\sum_{k=0}^{n-1}p_k(x_j)^2,
 ```
 
 where the three-term polynomial recurrence is dynamically rescaled
-and squared sums accumulated with log-sum-exp, O(n^2). Its
+and squared sums accumulated with log-sum-exp, O(N^2). Its
 `log_normalized_weights` can remain finite when the corresponding
 representable double `normalized_weights` underflows to zero.
 These are independently **evaluated approximate weights**;
@@ -6389,7 +6389,7 @@ row factors logarithmically; the unweighted physical function
 sample matrix is generally NOT orthogonal by the Euclidean norm.
 This diagnostic does not claim to implement Webb's full stabilized
 physical Hermite transform [109] or the fast Hermite/Laguerre
-asymptotic/butterfly methods. O(n^3) setup and O(n^2) matrix
+asymptotic/butterfly methods. O(N^3) setup and O(N^2) matrix
 multiplication remain. General fast and high-order error-controlled
 methods remain issue #40. Primary background [104,106,109].
 
