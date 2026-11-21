@@ -86,7 +86,8 @@
 %   gauss_laguerre_transform Generalized Laguerre quadrature basis.
 %   fourier_laguerre_ball  3D radial-zonal Fourier-Laguerre, exact square tensor and rectangular sampling.
 %   wigner_rotation         Irreducible SO(3) unitary representation.
-%   spherical_harmonic_rotation Direct sum of Wigner blocks.
+%   spherical_harmonic_rotation Complex Wigner direct sum; O(L^3) cached block operator.
+%   real_spherical_harmonic_rotation Real orthogonal Condon-Shortley Wigner direct sum, block operator.
 %   periodic_sinc_shift     Real circulant fractional shift, FFT.
 %
 % Geometric and symplectic integration:

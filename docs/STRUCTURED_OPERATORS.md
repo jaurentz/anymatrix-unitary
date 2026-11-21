@@ -464,3 +464,21 @@ strict unitary generator classes. This is distinct from the
 full rational pole-swapping algorithms in
 [Camps et al. (2020)](https://doi.org/10.1553/etna_vol52s480)
 and their [2025 monograph](https://doi.org/10.1137/1.9781611978377).
+
+
+### Verified blockwise SO(3) real/complex spherical-harmonic actions
+
+`spherical_harmonic_rotation` and the new
+`real_spherical_harmonic_rotation` both expose a block direct-sum
+`'operator'` on degrees 0,...,L-1. The latter uses an exact
+Condon–Shortley complex-to-real harmonic basis transform,
+so every degree block is real orthogonal rather than the
+nonorthogonal entrywise real part of complex Wigner D.
+For N=L^2, per-matvec work/storage is O(L^3)=O(N^(3/2)).
+The important caveat is O(L^4) *dense* per-degree setup and
+O(ell^2) per-degree application. This is NOT the asymptotically
+fast Wigner or spherical rotation algorithm of
+[Gimbutas–Greengard (2009)](https://doi.org/10.1016/j.jcp.2009.05.014)
+or the later S2FFT family. The new matrix-free label refers
+to the full block direct sum only, not to a sparse or fast
+single-irrep Wigner factor. Issue #41 retains that research task.
