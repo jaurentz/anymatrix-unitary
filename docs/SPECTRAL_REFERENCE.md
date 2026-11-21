@@ -153,3 +153,9 @@ with prescribed equispaced eigenphases and positive cyclic weights;
 its `parameters.maximum_forward_node_error` is computed separately
 for n<=64, rather than interpreting the *target* spectrum as the
 measured floating-point eigenvalues.
+
+`discrete_fractional_fourier(n,alpha,'spectral')` returns the **exact**
+finite trace eigenphases `exp(-1i*pi*alpha*k/2)` with k=0,...,n-1
+for odd n and k=0,...,n-2,n for even n. These are the eigenphases
+of the Candan unitary transform (not the discrete oscillator energies);
+its DFT endpoint at alpha=1 is verified using the joint parity basis.

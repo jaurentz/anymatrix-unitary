@@ -56,6 +56,7 @@
 %   time_frequency_shift Sparse Weyl-Heisenberg modulation/translation.
 %   periodic_hilbert     Real orthogonal periodic Hilbert completion.
 %   discrete_fourier     Normalized DFT and exact fourth-root spectrum.
+%   discrete_fractional_fourier Candan DFT-compatible fractional Fourier (Hermite parity basis).
 %   discrete_sine        Orthonormal DST-I, II, III, IV transforms.
 %   walsh_hadamard       Natural/sequency ordered fast Walsh transform.
 %   dpss_transform       Explicit 1D Slepian concentration eigenbasis.

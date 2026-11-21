@@ -111,3 +111,10 @@ matrix-free adjoints. The modern §7.5 inverse-OPUC analogue is tested
 against prescribed equispaced eigenphases, forward construction residual,
 real conjugate-paired weights and finite trace/cyclic measures. This
 is not a bitwise reproduction of the historical Fortran test setup.
+
+`tests/test_discrete_fractional_fourier.m` independently checks Candan's
+parity-ordered Hermite basis against DFT for odd and even orders, including
+the double oscillator eigenvalue at n divisible by 4 and the omitted
+index n-1. Regression tests also verify F(0)=I, F(1)=DFT, 4-periodicity,
+index additivity, adjoint inversion, real symmetric number-operator
+Hamiltonian, exact trace moments, and deterministic column-sign rules.
