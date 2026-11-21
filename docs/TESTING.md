@@ -132,7 +132,7 @@ Chebyshev I (DCT-III) and II (DST-I) forward and adjoint operations
 with the dense positive-leading Golub-Welsch transform for small
 odd/even n, checks independent trigonometric reference matrices,
 multi-RHS and complex-vector round trips, and uses n=16384 to
-verify that the operator supports large sizes without a dense n-by-n
+verify that the operator supports large sizes without a dense $N\times N$
 setup. General Jacobi and associated-Legendre parameters are explicitly
 tested to reject the unsupported fast mode, not silently fall back to
 quadratic/cubic operations.

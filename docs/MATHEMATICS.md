@@ -252,7 +252,7 @@ an additional atom. The periodic family takes a finite coefficient
 pattern in the open disk and repeats it indefinitely; the associated
 two-sided/infinite CMV theory gives spectral bands and gaps.
 These statements concern the infinite measures. The code produces
-finite *unitary* n-by-n closures, not principal submatrices of
+finite *unitary* $N\times N$ closures, not principal submatrices of
 infinite CMV operators. Reference: Simon (2005), Parts 1--2.
 
 ### Finite Bernstein--Szego data

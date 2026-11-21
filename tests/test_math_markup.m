@@ -6,8 +6,9 @@ end
 function test_display_math_fences(tc)
 root=fileparts(fileparts(mfilename('fullpath')));
 paths={'docs/MATRIX_ENCYCLOPEDIA.md','docs/MATHEMATICS.md','README.md', ...
-       'docs/STRUCTURED_OPERATORS.md','docs/SPECTRAL_REFERENCE.md'};
-minimum=[15 10 1 9 1];
+       'docs/STRUCTURED_OPERATORS.md','docs/SPECTRAL_REFERENCE.md', ...
+       'docs/SPECTRAL_DISTRIBUTION_ATLAS.md'};
+minimum=[15 10 1 9 1 2];
 for j=1:numel(paths)
     s=fileread(fullfile(root,paths{j}));
     starts=regexp(s,'(?m)^```math\r?$','match');
@@ -79,7 +80,8 @@ function test_all_public_math_notation(tc)
 % Check GitHub-compatible delimiters, macros and single-line inline math.
 root=fileparts(fileparts(mfilename('fullpath')));
 paths={'README.md','docs/MATHEMATICS.md','docs/MATRIX_ENCYCLOPEDIA.md', ...
-       'docs/STRUCTURED_OPERATORS.md','docs/SPECTRAL_REFERENCE.md'};
+       'docs/STRUCTURED_OPERATORS.md','docs/SPECTRAL_REFERENCE.md', ...
+       'docs/SPECTRAL_DISTRIBUTION_ATLAS.md'};
 for j=1:numel(paths)
     s=fileread(fullfile(root,paths{j}));
     verifyFalse(tc,contains(s,'\operatorname'),paths{j});
@@ -121,4 +123,21 @@ for j=1:numel(paths)
             sprintf('Hyphenated beta math in %s line %d',paths{j},k));
     end
 end
+end
+
+function test_matrix_order_convention(tc)
+% All explicit encyclopedia order declarations use the actual N-by-N order.
+root=fileparts(fileparts(mfilename('fullpath')));
+ency=fileread(fullfile(root,'docs','MATRIX_ENCYCLOPEDIA.md'));
+orders=regexp(ency,'(?m)^\*\*Order:\*\*[^\n]*','match');
+verifyGreaterThan(tc,numel(orders),80);
+for k=1:numel(orders)
+    verifyTrue(tc,startsWith(orders{k},'**Order:** $N'), ...
+        sprintf('Matrix-order notation in encyclopedia declaration %d',k));
+end
+verifyTrue(tc,contains(ency,'U\in\mathbb C^{N\times N}'));
+structure=fileread(fullfile(root,'docs','STRUCTURED_OPERATORS.md'));
+verifyTrue(tc,contains(structure,'$N\times N$'));
+matrixFree=fileread(fullfile(root,'docs','MATRIX_FREE.md'));
+verifyTrue(tc,contains(matrixFree,'N=2*n'));
 end

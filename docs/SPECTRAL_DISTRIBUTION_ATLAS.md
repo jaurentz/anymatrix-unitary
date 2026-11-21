@@ -6,20 +6,22 @@
 
 The atlas groups the spectral **measures and density shapes** occurring among the generators of [`anymatrix-unitary`](../README.md), rather than grouping them by application. The same matrix can belong to several morphological classes. For instance, the large-size Dirac automaton trace law is simultaneously absolutely continuous, two-band, gapped, conjugation symmetric, and singular at band edges.
 
+Throughout this atlas, **$N$ is the actual matrix order**; counts of sites,
+particles, or modes are separately defined when they differ.
 For a unitary $N\times N$ matrix $U_N$, write $\lambda_j=e^{i\theta_j}$, $\theta_j\in[-\pi,\pi)$. The finite *normalized trace counting measure* is
 
-$$
+```math
 \mu_N=\frac{1}{N}\sum_{j=1}^N\delta_{\theta_j},\qquad
 m_k=\int e^{ik\theta}\,d\mu_N(\theta)=\frac{\mathrm{tr}(U_N^k)}{N}.
-$$
+```
 
 **Every finite-dimensional measure $\mu_N$ is atomic.** Continuous distributions in this document refer to (i) a verified or derived large-$N$ weak limit of $\mu_N$, (ii) an ensemble average, or (iii) an infinite-dimensional operator's spectral measure at a distinguished vector. These are different quantities and **must not** be exchanged without justification. In particular, a finite CMV matrix's uniform trace weights differ from its Gauss–Szegő quadrature weights and from the infinite OPUC measure.
 
 For a general Borel probability measure $\mu$ on the circle, the Lebesgue decomposition is
 
-$$
+```math
  d\mu(\theta)=\rho_{\mathrm{ac}}(\theta)\,d\theta+\sum_j w_j\,\delta_{\theta_j}+d\mu_{\mathrm{sc}}(\theta).
-$$
+```
 
 Here $\mu_{\mathrm{sc}}$ is **singular continuous**: it has no atoms but is singular relative to angular Lebesgue measure. The nonnegative density $\rho_{\mathrm{ac}}$ need not integrate to one when atoms or a singular-continuous component are present. Throughout, a density is defined **with respect to $d\theta$**, not $d\theta/(2\pi)$; the uniform density is $1/(2\pi)$.
 
@@ -255,7 +257,7 @@ The entries below identify **which measure is being classified** and how strong 
 | [`discrete_fourier`](../discrete_fourier.m), $N=64$ | Finite trace | `finite:atomic`, `finite-points`, `degenerate`, four locations $\{1,-1,\pm i\}$ | Exact reference in `unitary_spectral_reference.m`. Never label its counting law uniform. |
 | [`grover_operator`](../grover_operator.m), $N=128$, marked $M=2$ | Finite trace | `finite:atomic`, `degenerate`, large dominant atom, two rare phases | Exact $\pm2\arcsin\sqrt{M/N}$ and $\pm1$ multiplicities. Useful to test loss of small masses under smoothing. |
 | [`diagonal_phase`](../diagonal_phase.m) with explicitly prescribed angular clusters | Finite trace (synthetic benchmark) | `localized-cluster`, `multimodal`, optionally `hard-gap` **in a chosen limit** | Exact prescribed finite phases; no continuum limit unless a sequence is defined. |
-| [`cycle_shift`](../cycle_shift.m), $N\to\infty$ | Limiting trace | `limit:ac`, `full-circle`, `constant` | Exact $N$th roots of unity; weak limit uniform. |
+| [`cycle_shift`](../cycle_shift.m), $N\to\infty$ | Limiting trace | `limit:ac`, `full-circle`, `constant` | Exact $N$-th roots of unity; weak limit uniform. |
 | [`haar_unitary`](../haar_unitary.m) / [`circular_beta`](../circular_beta.m) | Ensemble-mean density | `ensemble:ac`, `full-circle`, `constant`, `level-correlated` | Uniform expectation; individual finite samples remain atomic and have correlations. |
 | [`haar_special_unitary`](../haar_special_unitary.m), finite $N$ | Ensemble-mean density | `ensemble:ac`, `full-circle`, finite-size angular modulation | Repository cites Nishigaki's exact finite-$N$ expectation; not the same law as unrestricted Haar U($N$). |
 | [`bernstein_szego`](../bernstein_szego.m), $a=0.6$ | Underlying infinite OPUC vector measure | `underlying:ac`, `full-circle`, `smooth-peaked` | Poisson-type positive rational circle density. **Not** generally the finite-CMV trace density. |
