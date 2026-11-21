@@ -80,3 +80,9 @@ positive-measure steps (#105), the Jacobi–Toda QR/Cayley isospectral evolution
 It separately tests fixed trace eigenphases, evolving e1 cyclic weights,
 unitarity, structural zeros, real orthogonal subfamilies, and operator actions.
 Large-time floating-point rank breakdown is documented rather than hidden.
+
+`tests/test_geronimus_spectral_measure.m` validates the analytic infinite
+constant-Verblunsky Geronimus e1 decomposition (continuous arc and possible
+point mass), Poisson smoothing through the Schur/Carathéodory function,
+finite-CMV weighted versus equal-mass trace differences, and smooth
+Rogers–Szegő controls. These are not finite continuous spectral densities.
