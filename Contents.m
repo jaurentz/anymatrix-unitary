@@ -178,7 +178,7 @@
 %   bundle_transport          General block-permutation fiber holonomies.
 %   lie_geodesic_transport    Orthogonal Lie-algebra geodesic transport.
 %
-%   stiefel_parallel_transport Intrinsic real Stiefel tangent parallel isometry.
+%   stiefel_parallel_transport Intrinsic Stiefel transport; compact Taylor operator action.
 %   real_flag_parallel_transport Normal-metric real flag tangent parallel isometry.
 %   stiefel_geodesic         Canonical Stiefel geodesic ambient lift.
 %   grassmann_holonomy       Non-Abelian tautological geodesic-loop holonomy.
