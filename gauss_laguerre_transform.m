@@ -7,6 +7,11 @@ function [U,properties]=gauss_laguerre_transform(n,alpha,output)
 %   in exact arithmetic. The Jacobi diagonal is 2*k+alpha+1
 %   (k=0:N-1), subdiagonal sqrt(k*(k+alpha)) (k=1:N-1).
 %
+%   'quadrature' also audits the exact normalized Gamma moments
+%   m_k=Gamma(alpha+k+1)/Gamma(alpha+1), k<=min(8,2*n-1),
+%   independently of eigenvector sign/Gram residuals. This measures
+%   large-order / near-alpha=-1 numerical moment accuracy, without
+%   claiming certified bounds or fast transforms.
 %   'quadrature' returns real nodes, normalized Gauss weights,
 %   scaled-log Christoffel weights and orthogonality/recurrence
 %   diagnostics. First/last eigenvector endpoint signs are chosen
@@ -56,6 +61,8 @@ else
     [~,U]=um_gauss_basis(d,e);
     U.family='gauss_laguerre_transform';
     U.alpha=alpha;
+    U.moment_diagnostics=um_gauss_moment_diagnostics( ...
+        U.nodes,U.log_normalized_weights,'laguerre',alpha);
     U.log_function_scaling=.5*(gammaln(alpha+1)+ ...
         U.log_normalized_weights+U.nodes-alpha*log(U.nodes));
     U.note=['Physical Laguerre L2(dx) functions are weighted polynomial ', ...
