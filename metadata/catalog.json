@@ -1755,6 +1755,21 @@
       "matrix_free_supported": true,
       "operator_kernel": "um_tensor_fem_apply / um_tensor_dst_apply",
       "operator_note": "O(N log N) tensor-product DST-I, O(N) phase storage; dense matrix/positive-metric pencil for N<=128; sparse real symmetric palindromic mass-weighted Verlet quadratic for N<=10000; stable h*max(w)<2 enforced."
+    },
+    {
+      "id": "nonuniform_fem_wave",
+      "status": "implemented",
+      "category": "eigenvalue_problems",
+      "matrix_order": "2n real orthogonal normalized Gauss step (n>=2; dense n<=128, matrix-free n<=5000)",
+      "representation": "nonuniform 1D continuous piecewise-linear FE consistent sparse SPD mass/stiffness with nonzero commutator; canonical physical Gauss rational S=P(hA0)/P(-hA0), T'*T=diag(K,M^-1), orthogonal U=T*S/T",
+      "spectral_reference": "unknown analytic finite eigenphases for heterogeneous/nonuniform case; exact finite generalized Dirichlet sine frequencies and Gauss-Pade phases in uniform constant-speed limit only",
+      "encyclopedia_references": [
+        101,
+        103
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_nonuniform_fem_apply",
+      "operator_note": "Cache sparse LU of complex-conjugate generalized Padé/Cayley factors and Cholesky triangular energy whitening; no dense mass inverse, FFT, or DST. Physical canonical symplectic step and positive metric pencil in 'pencil' mode; normalized U preserves transformed symplectic form, generally not standard J. Reject condest>1e12."
     }
   ],
   "probability_measures": [

@@ -86,6 +86,7 @@
 %   moser_veselov      Implicit Moser-Veselov SO(n) rigid-body increment and trajectory.
 %   time_skew_magnus    Noncommuting time-dependent orthogonal midpoint/Cayley flow.
 %   geometric_fem_wave    Finite-element Dirichlet wave; mass-weighted palindromic QEP.
+%   nonuniform_fem_wave   Heterogeneous/noncommuting consistent FE; metric Gauss step.
 %   tensor_fem_wave       Separable 2D/3D consistent FE wave; exact phases, DST actions.
 %
 % Nonlinear unitary dynamics:
