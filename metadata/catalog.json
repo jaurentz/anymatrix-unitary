@@ -1819,6 +1819,21 @@
       "matrix_free_supported": false,
       "operator_kernel": null,
       "operator_note": "Dense O(n^3) principal-angle SVD/expm per leg and r(n-r)-dimensional intrinsic Kronecker tangent links; not ambient n-by-n geodesic nor tautological rank-r transport; CP2 non-Abelian U(2) verified; independent Levi-Civita connection ODE tests."
+    },
+    {
+      "id": "finite_koopman_torus",
+      "status": "implemented",
+      "category": "geometry",
+      "matrix_order": "m^2 real orthogonal sparse permutation, 2<=m<=1000; explicit sparse m^2<=4096",
+      "representation": "exact finite Koopman pullback f(x)->f(Mx+b mod m), M in GL(2,Z/mZ); classical finite periodic torus, affine shift, Fourier-character dual permutation",
+      "spectral_reference": "exact finite roots of unity per permutation cycle; tr(U^k)/m^2 equals fixed point count of T^k/m^2; no continuous Koopman spectrum or convergence claimed",
+      "encyclopedia_references": [
+        93,
+        146
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_finite_koopman_apply",
+      "operator_note": "O(m^2) permutation and adjoint actions, exact cycles/multiplicities/moments; phase-weighted dual Fourier permutation from M^T; distinct classical finite pullback from quantum cat-map quantization."
     }
   ],
   "probability_measures": [
