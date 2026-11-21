@@ -6160,6 +6160,96 @@ caps return the canonical Q=I; `parameters` includes K, eigenvalues and
 real-harmonic basis labels. No general polygon/mask or fast matrix-free
 mode is claimed. The family is distinct from 1D DPSS and Wigner rotations.
 Source [156].
+## Exact non-axisymmetric spherical-lune Slepian eigenbases — [`spherical_lune_slepian.m`](../spherical_lune_slepian.m)
+
+**Order:** $N=L^2$, where $L$ is the spherical-harmonic bandlimit
+(degrees $0$ through $L-1$). The region is a **meridional spherical
+lune**, full colatitude but constrained longitude:
+
+```math
+R=\{(\theta,\phi):0\le\theta\le\pi,\quad
+\phi_0\le\phi\le\phi_0+w\},\qquad 0\le w\le2\pi.
+```
+
+Its area is $2w$. Unlike the polar cap, a generic lune couples
+distinct azimuthal orders, producing a dense, genuinely
+**non-axisymmetric** real concentration matrix
+$K_{ab}=\int_R Y_aY_b\,d\Omega$. Its complete real orthonormal
+eigenbasis $Q$ gives a **square orthogonal** analysis transform
+$U=Q^T$, with $U^TU=I_N$. The positive semidefinite contraction
+$K$ is **not unitary**; its real concentration eigenvalues in
+$[0,1]$ are not the eigenphases of $U$. These eigenphases remain
+generally unknown.
+
+The harmonic order and Condon--Shortley normalization match
+`spherical_slepian`: $m=0$, increasing degree; then each
+$m=1,\ldots,L-1$ with cosine followed by sine, each with
+increasing degree. Writing $x=\cos\theta$, the normalized
+latitude factors are
+
+```math
+b_{\ell m}(x)
+=\sqrt{\frac{2\ell+1}{2}\frac{(\ell-m)!}{(\ell+m)!}}
+P_\ell^m(x).
+```
+
+Azimuthal factors are $1/\sqrt{2\pi}$ for $m=0$, or
+$\cos(m\phi)/\sqrt\pi$ and
+$\sin(m\phi)/\sqrt\pi$ for $m>0$.
+The azimuthal integrals of product-to-sum cosines/sines are
+**analytic**, including nonzero cross-$m$ couplings.
+
+Crucially, exact latitude quadrature is possible for
+*every pair* of orders. $P_\ell^m(x)$ equals
+$(1-x^2)^{m/2}$ times a polynomial of degree at most
+$\ell-m$. Thus
+
+- when $m+m'$ is even, the radial product is a polynomial
+  of degree at most $\ell+\ell'\le2L-2$,
+  exactly integrated by $L$-node Gauss--Legendre;
+- when $m+m'$ is odd, the product is
+  $\sqrt{1-x^2}$ times a polynomial of degree at most
+  $\ell+\ell'-1\le2L-3$,
+  exactly integrated by $L$-node
+  Gauss--Jacobi with parameters $(1/2,1/2)$.
+
+This is **exact in real arithmetic** rather than a claim that
+generic masked quadrature is exact. Ordinary double precision
+still introduces roundoff. The addition theorem supplies the
+independent Shannon-number identity
+
+```math
+\mathrm{tr}(K)=N\frac{\mathrm{area}(R)}{4\pi}
+=N\frac{w}{2\pi}.
+```
+
+The complement of a lune is the opposite longitude interval,
+so $K(\phi_0,w)+K(\phi_0+w,2\pi-w)=I_N$.
+Azimuthal rotation conjugates $K$ by explicit real
+cosine/sine $2$-by-$2$ blocks. Both invariants are regression
+tests, alongside an **independent high-order two-dimensional
+quadrature reference**, concentration-spectrum bounds,
+eigen-residuals and orthogonality.
+
+`matrix`/`analysis` returns $Q^T$;
+`basis` returns $Q$;
+`concentration` returns the nonunitary $K$;
+`parameters` returns all matrices, coordinate conventions
+and concentration factors; `spectral` labels the
+finite **analysis eigenphases unknown**. Empty/full lunes
+use $Q=I$. Numerically repeated eigenspaces are canonically
+oriented with coordinate-projector pivots and a documented
+tie tolerance. The model is limited to $L\le12$ with
+dense $O(L^5+N^3)$ setup and $O(N^2)$ storage/application.
+
+**Research scope:** This is a new **exact non-axisymmetric
+subclass**, not a general spherical polygon, an arbitrary
+weighted mask, or the fast polar-cap Sturm--Liouville solver.
+Those remain open in issue #118. The general concentration
+framework follows Simons--Dahlen--Wieczorek [156];
+the lune's particular quadrature split is independently
+derived for this implementation.
+
 ## Square axisymmetric Fourier-Laguerre transforms on the ball — [`fourier_laguerre_ball.m`](../fourier_laguerre_ball.m)
 
 Leistedt–McEwen's Fourier-Laguerre approach uses radial functions
