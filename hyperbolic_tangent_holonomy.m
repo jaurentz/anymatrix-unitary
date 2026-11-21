@@ -36,7 +36,7 @@ function [U,properties]=hyperbolic_tangent_holonomy(n,points,mode)
 %   ICML (2019), source for hyperboloid geodesics / tangent PT:
 %   https://proceedings.mlr.press/v97/nagano19a.html
 %   [113] Hyperbolic geodesic holonomy baseline (Poincare disk).
-%   https://doi.org/10.1137/1.9781611975345
+%   https://doi.org/10.1515/9780691219899
 properties={'square','unitary','orthogonal','real','normal', ...
             'parameter-dependent'};
 if nargin==0,U=[];return;end
@@ -48,7 +48,6 @@ if nargin<2||isempty(points)
     P=zeros(n+1,4);
     if n==2,P=P(:,1:3);end
     P(1,1)=1;
-    v=[.6 .13 .24;.13 .5 -.2];
     if n==2
         w=[.51,.1;.12,.47];
     else
