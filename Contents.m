@@ -113,6 +113,7 @@
 %   electric_quantum_walk  Finite electric two-state ring, exact cyclic CMV factors.
 %   unitary_almost_mathieu  Magnetic quasiperiodic two-state quantum walk.
 %   dirac_automaton      Periodic 1D Dirac cellular automaton (size 2n).
+%   flat_torus_spin_dirac Exact 2D flat spin-Dirac FFT propagator and metric model.
 %   grover_operator      Grover reflections with exact degeneracies.
 %   quantum_baker        Balazs-Voros / Saraceno quantum baker map.
 %   koopman_mpedmd        Weighted snapshot data -> Gram-Procrustes unitary Q.
