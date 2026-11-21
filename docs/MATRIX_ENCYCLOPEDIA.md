@@ -5774,23 +5774,80 @@ Verblunsky parameters**
 ```
 
 The `factors` mode supplies
-these coefficients for the
-selected site window, plus
-the actual D, L, and M
-matrices and a flag identifying
-the zero-field standard cyclic
-CMV case. **The whole-line
-diagonal gauge can carry
-nontrivial monodromy around
-a finite ring**, so these
-formal coefficients are not
-claimed, for arbitrary
-$\omega,\vartheta,\beta$, to
-define a boundary-matched
-standard finite CMV matrix
-with the identical spectrum.
-The factorization $W=DLM$
-*does* remain exact.
+these **whole-line gauge** coefficients for the
+selected site window, plus the original
+$D,L,M$. A whole-line gauge need not be
+periodic on the finite ring: its formal coefficients
+are not by themselves a boundary-matched finite
+cyclic CMV model.
+
+**Exact finite-ring gauge and boundary monodromy (issue #113).**
+There is nevertheless a distinct, explicit
+**finite-ring** diagonal gauge for *every* real
+electric field, phase offset, and boundary twist,
+provided an overall scalar phase is retained.
+In the site-interleaved $(-,+)$ basis put
+
+```math
+\begin{aligned}
+g&=\exp\big(2\pi i[\vartheta+\omega(n-1)/2]\big),\\
+\Lambda_{j,-}&=\exp\big(\pi i\omega j(n-j)\big),\\
+\Lambda_{j,+}&=\exp\big(\pi i\omega j(j+2-n)\big),\\
+\widetilde\alpha_{2j}
+ &=b\exp\big(2\pi i\omega j(n-1-j)\big),\\
+\widetilde\alpha_{2j+1}&=0,\qquad j=0,\ldots,n-1.
+\end{aligned}
+```
+
+Let $L_{\widetilde\alpha}$ be the direct sum of
+$\Theta(\widetilde\alpha_{2j})$, retaining
+$\rho=a\ge0$, and let $M_\beta$ be **the same
+twisted cyclic odd swap** used in $W$. Then
+
+```math
+\boxed{\Lambda^*W\Lambda
+ =g\,L_{\widetilde\alpha}M_\beta.}
+```
+
+This is a diagonal **unitary similarity**, not
+merely agreement of spectra. For the interior bonds
+the identity follows from the recurrences
+$\Lambda_{j+1,-}=gD_j^{-1}\Lambda_{j,-}$
+and $\Lambda_{j,+}=D_jg^{-1}\Lambda_{j-1,+}$.
+The closure at both twisted bonds holds because
+
+```math
+g^n=P=\prod_{j=0}^{n-1}D_j
+=\exp\big(2\pi i[n\vartheta+\omega n(n-1)/2]\big).
+```
+
+Here $P$ is the electric ring **monodromy**.
+For a nondegenerate coin and the *same* twist
+$\beta$ with positive CMV off-diagonals, a gauge
+with **no global scalar** $g$ is possible exactly
+when $P=1$. If a shift of the boundary twist
+by $\pi$ is allowed, $P=-1$ can instead be
+accommodated; without a scalar and with an
+unrestricted standard single twist, the
+necessary boundary condition is $P^2=1$.
+The degenerate endpoint coin cases can have
+additional gauge freedom.
+
+The `cmv_gauge` output returns sparse
+$\Lambda$, $L_{\widetilde\alpha}$,
+$M_\beta$, $U_{\mathrm{cmv}}=
+gL_{\widetilde\alpha}M_\beta$, the finite
+coefficients, $g$, and $P$. All these
+matrices have $O(n)$ nonzeros and allow
+$O(n)$ action. **The finite coefficients above
+are not Yang's infinite-line coefficients**:
+they depend on the selected ring size and are
+in a different gauge. This product is a
+**twisted cyclic CMV**, not the ordinary
+half-line finite CMV with a terminal
+unit-modulus Verblunsky parameter. There is no
+claim that the generic finite eigenphase law
+is known in closed form.
 
 **Two solvable finite trace spectra.**
 The `spectral` interface
