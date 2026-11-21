@@ -1710,7 +1710,7 @@ eigenphases of the **transform matrix**.
 
 ### Orthonormal cosine transforms — [`orthogonal_dct.m`](../orthogonal_dct.m)
 
-**Order:** $N=n$. The parameter `kind` selects DCT-I through DCT-IV.
+**Order:** $N=n$. The parameter `kind` selects DCT-I through DCT-IV, or DCT-VIII (`kind=8`; kinds V--VII are not implemented).
 For type II, with zero-based indices $j,k$, the matrix is
 
 ```math
@@ -1724,10 +1724,34 @@ $\sqrt{2/n}\cos(\pi(k+1/2)(j+1/2)/n)$. Type I uses
 $\sqrt{2/(n-1)}c_kc_j\cos(\pi kj/(n-1))$ for $n\geq2$,
 with $c_0=c_{n-1}=1/\sqrt2$.
 
-All variants are **real orthogonal** with FFT-based implicit actions; I and IV are also symmetric
-involutions. Eigenphases of DCT-II/III generally depend on order and
-are unrelated to the transform-frequency sample points. Uses:
-compression, image coding, cosine-basis spectral methods. [52]
+**DCT-VIII (odd-period mixed boundary).** For $j,k=0,\ldots,n-1$,
+the normalized square matrix is
+
+```math
+C^{(8)}_{kj}=\frac{2}{\sqrt{2n+1}}\cos\left(
+\frac{2\pi(k+1/2)(j+1/2)}{2n+1}\right).
+```
+
+It is real, symmetric, and **orthogonal** in exact arithmetic, hence
+$(C^{(8)})^2=I$. Its eigenvalues are confined to $\{-1,+1\}$;
+numerical tests do not by themselves establish all order-dependent
+multiplicities. Strang's mixed-endpoint second-difference matrix uses
+period $n+1/2$ rather than the conventional DCT-IV period $n$.
+This is the exact special-order reduction of the symmetric Bessel-zero
+quasi-discrete Hankel matrix for $\nu=-1/2$:
+$J_{-1/2}(z)=\sqrt{2/(\pi z)}\cos z$ with zeros
+$j_{-1/2,k}=(k-1/2)\pi$. It is **not** an exact-unity
+certificate for non-half-integer Bessel transforms. An independently
+derived even-reflection/odd-grid FFT embedding of order $8n+4$
+supplies an $O(n\log n)$ forward/adjoint matrix-free action with
+$O(n)$ workspace per right-hand side; this is not an imported fast
+Hankel algorithm.
+
+All supported types are **real orthogonal** with FFT-based implicit actions;
+I, IV, and VIII are symmetric involutions. Eigenphases of DCT-II/III
+generally depend on order and are unrelated to transform-frequency sample
+points. Uses: compression, image coding, cosine-basis spectral methods,
+and distinct mixed-boundary finite differences. [52, 178]
 
 ### Discrete Hartley — [`discrete_hartley.m`](../discrete_hartley.m)
 
