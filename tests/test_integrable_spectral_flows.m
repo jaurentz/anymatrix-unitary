@@ -28,10 +28,9 @@ end
 
 function test_discrete_schur_limit_real_and_operator(tc)
 z=[1;exp(.7i);exp(-.7i);-1];w=[.2;.3;.3;.2];n=4;
-t=.5;err=zeros(3,1);
+err=zeros(3,1);
 for j=1:3
-    h=.2/2^(j-1);k=round(t/h);
-    % Use t=0.4 to make all K*H exactly equal; compare at fixed t.
+    % Compare at fixed t=0.4 with k*h=0.4.
     h=.1/2^(j-1);k=round(.4/h);
     S=discrete_schur_cmv(n,k,h,z,w,'spectral');
     target=w.*exp(.8*real(z));target=target/sum(target);
