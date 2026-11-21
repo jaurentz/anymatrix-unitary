@@ -5975,7 +5975,7 @@ Its absolutely continuous density relative to `dtheta` on
 If `real(a)+|a|^2>0`, it also has an atom at angle `b` of mass
 
 ```math
-m_a=\frac{2(\operatorname{Re}a+|a|^2)}{|1+a|^2};
+m_a=\frac{2(\mathrm{Re}\,a+|a|^2)}{|1+a|^2};
 ```
 
 otherwise `m_a=0`. In the real case `a=0.8` this is an atom of
