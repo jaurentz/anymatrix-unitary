@@ -72,8 +72,10 @@ D=diag((-1).^(par.degree+par.azimuthal_order));
 verifyLessThan(tc,norm(K+D*K*D-eye(L^2),'fro'),3e-10);
 verifyLessThan(tc,abs(trace(K)-L^2/2),3e-11);
 verifyEqual(tc,numel(par.concentration_eigenvalues),L^2);
-verifyError(tc,@()spherical_slepian(5,1,'operator'), ...
-    'spherical_slepian:Mode');
+O=spherical_slepian(5,1,'operator');
+verifyEqual(tc,O([],'size'),[25 25]);
+verifyLessThan(tc,norm(O(eye(25),'notransp') ...
+    *O(eye(25),'ctransp')-eye(25),'fro'),1e-10);
 verifyError(tc,@()spherical_slepian(5,1,'random_region'), ...
     'spherical_slepian:Mode');
 end
