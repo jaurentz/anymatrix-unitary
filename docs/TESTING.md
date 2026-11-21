@@ -192,3 +192,11 @@ forward/adjoint with multiple RHS, independent left/right
 z-axis rotation covariance and a larger L=12 operator roundtrip
 without explicit rectangular construction. Full-row
 dimensions and coefficient counts are checked explicitly.
+
+The DCT-VIII / negative half-integer discrete Hankel specialization is
+independently tested by `tests/test_dct_viii_bessel.m`: explicit Bessel
+values and zeros versus the normalized odd-period cosine matrix,
+Gram/involution identities, complex multi-RHS forward/adjoint/transpose
+FFT actions, and large-order operator roundtrips. Generic finite
+Bessel-zero quasi-DHT nonunitarity remains covered separately by
+`tests/test_hankel_nonunitarity.m`.

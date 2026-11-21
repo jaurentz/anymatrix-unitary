@@ -601,14 +601,15 @@
       "status": "implemented",
       "category": "signal_processing",
       "matrix_order": "n",
-      "representation": "real dense DCT-I--IV",
-      "spectral_reference": "parameter-dependent eigenphases",
+      "representation": "real dense DCT-I--IV or DCT-VIII (odd-period mixed boundary)",
+      "spectral_reference": "DCT-VIII exact two-atom ±1 spectrum (ceil(n/2), floor(n/2)); DCT-I--IV existing order-dependent information",
       "encyclopedia_references": [
-        52
+        52,
+        178
       ],
       "matrix_free_supported": true,
       "operator_kernel": "um_dct_apply",
-      "operator_note": "FFT even-extension DCT-I through IV, O(n) working storage, supports complex multiple RHS."
+      "operator_note": "FFT-based DCT-I--IV and VIII, O(n log n) forward/adjoint with O(n) workspace per RHS. Type VIII is the exactly orthogonal nu=-1/2 Bessel-zero special case, NOT a generic finite Hankel transform."
     },
     {
       "id": "discrete_hartley",

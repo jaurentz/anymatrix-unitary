@@ -49,7 +49,7 @@
 %   daubechies_wavelet   Periodized db2/db3/db4 or custom QMF; wavelet-packet trees.
 %
 % Non-quantum signal-processing transforms:
-%   orthogonal_dct       Orthonormal DCT-I, II, III, IV finite transforms.
+%   orthogonal_dct       Orthonormal DCT-I--IV and odd-period DCT-VIII (nu=-1/2 Hankel).
 %   discrete_hartley     Symmetric real orthogonal Hartley involution.
 %   cazac_circulant      Zadoff-Chu circulant complex Hadamard matrices.
 %   fresnel_transform    Discrete Fresnel chirp transform (OCDM).

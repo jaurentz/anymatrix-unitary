@@ -166,6 +166,18 @@ switch family
             S.notes='Prescribed finite phases; no limiting law follows without a size-dependent phase rule.';
         end
 
+    case 'orthogonal_dct'
+        kind=param(varargin,2,2);
+        if isequal(kind,8)
+            % Symmetric involution. Quadratic Gauss-sum trace:
+            % tr(C8) = mod(n,2). Thus mult(+1)=ceil(n/2).
+            S=exact_finite(S,@() [ones(ceil(n/2),1);-ones(floor(n/2),1)]);
+            S.finite.atoms=atoms([0;pi],[ceil(n/2);floor(n/2)]/n);
+            S.finite.moments=@(k) dct_viii_moments(k,n);
+            S.reference='Strang, SIAM Review 41 (1999), 135--147; quadratic Gauss-sum trace';
+            S.notes='Exact DCT-VIII eigenvalues +/-1, multiplicities ceil(n/2) and floor(n/2), tr(C8)=mod(n,2). This is the nu=-1/2 Bessel-zero specialization.';
+        end
+
     case 'orthogonal_blocks'
         theta=param(varargin,2,0.3*(1:floor(n/2))');
         epsilon=param(varargin,3,1);
@@ -470,6 +482,11 @@ validateattributes(k,{'numeric'},{'integer','finite','real'});
 z=fn();
 sz=size(k);
 m=reshape(mean(bsxfun(@power,z(:),reshape(k,1,[])),1),sz);
+end
+
+function m=dct_viii_moments(k,n)
+validateattributes(k,{'numeric'},{'integer','finite','real'});
+m=double(mod(k,2)==0)+(mod(n,2)/n)*double(mod(k,2)~=0);
 end
 
 function m=shift_moments(k,n)

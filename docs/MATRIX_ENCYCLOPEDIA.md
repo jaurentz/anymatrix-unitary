@@ -1710,7 +1710,7 @@ eigenphases of the **transform matrix**.
 
 ### Orthonormal cosine transforms — [`orthogonal_dct.m`](../orthogonal_dct.m)
 
-**Order:** $N=n$. The parameter `kind` selects DCT-I through DCT-IV.
+**Order:** $N=n$. The parameter `kind` selects DCT-I through DCT-IV, or DCT-VIII (`kind=8`; kinds V--VII are not implemented).
 For type II, with zero-based indices $j,k$, the matrix is
 
 ```math
@@ -1724,10 +1724,44 @@ $\sqrt{2/n}\cos(\pi(k+1/2)(j+1/2)/n)$. Type I uses
 $\sqrt{2/(n-1)}c_kc_j\cos(\pi kj/(n-1))$ for $n\geq2$,
 with $c_0=c_{n-1}=1/\sqrt2$.
 
-All variants are **real orthogonal** with FFT-based implicit actions; I and IV are also symmetric
-involutions. Eigenphases of DCT-II/III generally depend on order and
-are unrelated to the transform-frequency sample points. Uses:
-compression, image coding, cosine-basis spectral methods. [52]
+**DCT-VIII (odd-period mixed boundary).** For $j,k=0,\ldots,n-1$,
+the normalized square matrix is
+
+```math
+C^{(8)}_{kj}=\frac{2}{\sqrt{2n+1}}\cos\left(
+\frac{2\pi(k+1/2)(j+1/2)}{2n+1}\right).
+```
+
+It is real, symmetric, and **orthogonal** in exact arithmetic, hence
+$(C^{(8)})^2=I$. Its **exact finite eigenvalue multiplicities** are
+$+1$ with $\lceil n/2\rceil$ and $-1$ with $\lfloor n/2\rfloor$.
+In particular, $\mathrm{tr}(C^{(8)})=n\bmod 2$ and
+the normalized trace moments are $1$ for even powers and
+$(n\bmod 2)/n$ for odd powers. For a proof, write
+$m=2n+1$ and complete the diagonal cosine sum to
+$G_m=\sum_{j=0}^{m-1}\exp(2\pi i(j+1/2)^2/m)$.
+Its real part gives the trace after division by $\sqrt m$,
+while shifting $j\mapsto j+(m+1)/2$ identifies it with
+$\exp(i\pi m/2)$ times the standard quadratic Gauss sum
+$\sum_{k=0}^{m-1}\exp(2\pi i k^2/m)$; the latter is
+$\sqrt m$ when $m\equiv1\pmod4$ and $i\sqrt m$ when
+$m\equiv3\pmod4$. Strang's mixed-endpoint second-difference matrix uses
+period $n+1/2$ rather than the conventional DCT-IV period $n$.
+This is the exact special-order reduction of the symmetric Bessel-zero
+quasi-discrete Hankel matrix for $\nu=-1/2$:
+$J_{-1/2}(z)=\sqrt{2/(\pi z)}\cos z$ with zeros
+$j_{-1/2,k}=(k-1/2)\pi$. It is **not** an exact-unity
+certificate for non-half-integer Bessel transforms. An independently
+derived even-reflection/odd-grid FFT embedding of order $8n+4$
+supplies an $O(n\log n)$ forward/adjoint matrix-free action with
+$O(n)$ workspace per right-hand side; this is not an imported fast
+Hankel algorithm.
+
+All supported types are **real orthogonal** with FFT-based implicit actions;
+I, IV, and VIII are symmetric involutions. Eigenphases of DCT-II/III
+generally depend on order and are unrelated to transform-frequency sample
+points. Uses: compression, image coding, cosine-basis spectral methods,
+and distinct mixed-boundary finite differences. [52, 178]
 
 ### Discrete Hartley — [`discrete_hartley.m`](../discrete_hartley.m)
 
@@ -7814,3 +7848,5 @@ Background [104,108,166,167].
 176. D. N. Arnold, R. S. Falk and R. Winther, “Finite element exterior calculus, homological techniques, and applications,” *Acta Numerica* **15** (2006), 1–155. [DOI](https://doi.org/10.1017/S0962492906210018).
 
 177. N. Butt, S. Catterall, A. Pradhan and G. C. Toga, “Anomalies and symmetric mass generation for Kähler-Dirac fermions,” *Phys. Rev. D* **104** (2021), 094504. [DOI](https://doi.org/10.1103/PhysRevD.104.094504); [preprint](https://arxiv.org/abs/2101.01026).
+
+178. G. Strang, “The Discrete Cosine Transform,” *SIAM Review* **41** (1999), 135–147, especially §5 on DCT-VIII and mixed endpoint boundary conditions. [DOI](https://doi.org/10.1137/S0036144598336745); [author PDF](https://math.mit.edu/~gs/papers/dct.pdf).
