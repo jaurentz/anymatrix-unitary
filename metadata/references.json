@@ -1,8 +1,8 @@
 {
   "schema_version": "1.0.0",
-  "updated": "2026-11-20",
+  "updated": "2026-11-21",
   "bibliography": "docs/MATRIX_ENCYCLOPEDIA.md",
-  "notes": "Publication DOIs validated against Crossref metadata, arXiv preprint DOI in reference 14 is DataCite registered (not a journal-article DOI), and non-DOI items use stable publisher/library/archival links. The 2021 AFDM conference paper (reference 50) is distinct from the 2022 arXiv article formerly linked. References 58-68 add eigenvalue-problem literature; external nonlinear benchmarks are categorized separately from public unitary matrix generators. References 77-83 review the seven quantum-information publications, including two references retained as context-only; 84-85 support unimodular circular ensembles and efficient Haar eigenvalue sampling. References 86-87 document the original Lohe U(d) matrix synchronization flow and geometric time-discretizations; the later Schrödinger–Lohe wavefunction study is not needed for the matrix generator.",
+  "notes": "Publication DOIs validated against Crossref metadata, arXiv preprint DOI in reference 14 is DataCite registered (not a journal-article DOI), and non-DOI items use stable publisher/library/archival links. The 2021 AFDM conference paper (reference 50) is distinct from the 2022 arXiv article formerly linked. References 58-68 add eigenvalue-problem literature; external nonlinear benchmarks are categorized separately from public unitary matrix generators. References 77-83 review the seven quantum-information publications, including two references retained as context-only; 84-85 support unimodular circular ensembles and efficient Haar eigenvalue sampling. References 86-87 document the original Lohe U(d) matrix synchronization flow and geometric time-discretizations; the later Schrödinger–Lohe wavefunction study is not needed for the matrix generator. References 145–147 add the Colbrook–Horning–Townsend spectral-measure and Koopman literature; 148 adds Colbrook's mpEDMD structure-preserving Koopman approximation as the primary finite-matrix construction reference.",
   "references": [
     {
       "number": 1,
@@ -1122,6 +1122,38 @@
       ],
       "permalink": "https://doi.org/10.1109/78.839980",
       "alternate_permalink": "https://users.metu.edu.tr/ccandan/pub_dir/dis_frft_SP_TRAN00.pdf"
+    },
+    {
+      "number": 145,
+      "dois": [
+        "10.1137/20M1330944"
+      ],
+      "permalink": "https://doi.org/10.1137/20M1330944",
+      "alternate_permalink": "https://arxiv.org/abs/2006.01766"
+    },
+    {
+      "number": 146,
+      "dois": [
+        "10.1002/cpa.22125"
+      ],
+      "permalink": "https://doi.org/10.1002/cpa.22125",
+      "alternate_permalink": "https://arxiv.org/abs/2111.14889"
+    },
+    {
+      "number": 147,
+      "dois": [
+        "10.1007/s00220-021-04072-4"
+      ],
+      "permalink": "https://doi.org/10.1007/s00220-021-04072-4",
+      "alternate_permalink": "https://www.damtp.cam.ac.uk/user/mjc249/pdfs/SpecMeasuresMJC.pdf"
+    },
+    {
+      "number": 148,
+      "dois": [
+        "10.1137/22M1521407"
+      ],
+      "permalink": "https://doi.org/10.1137/22M1521407",
+      "alternate_permalink": "https://arxiv.org/abs/2209.02244"
     }
   ]
 }
