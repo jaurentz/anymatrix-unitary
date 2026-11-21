@@ -39,7 +39,7 @@ function [U,properties]=hermite_oscillator(n,theta,offset,mode)
 %
 %   [104] Golub-Welsch, Math. Comp. 23 (1969), quadrature eigenbasis.
 %         https://doi.org/10.1090/S0025-5718-69-99647-1
-%   [143] R. G. Campos, L. Z. Juarez, J. S. Dehesa (2012), SIAM JSC,
+%   [143] R. G. Campos, J. Rico-Melgoza, E. Chavez (2012), SIAM JSC,
 %         a DISTINCT fast fractional Fourier quadrature algorithm.
 %         https://doi.org/10.1137/100812677
 %   [144] Candan, Kutay and Ozaktas (2000), IEEE TSP, a DISTINCT
