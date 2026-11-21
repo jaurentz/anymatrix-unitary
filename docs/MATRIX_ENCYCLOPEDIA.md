@@ -6393,6 +6393,71 @@ asymptotic/butterfly methods. O(n^3) setup and O(n^2) matrix
 multiplication remain. General fast and high-order error-controlled
 methods remain issue #40. Primary background [104,106,109].
 
+## Spin-weighted spherical harmonics — [`spin_spherical_harmonic_transform.m`](../spin_spherical_harmonic_transform.m)
+
+The spin-weighted sphere basis is normalized with the **repo's**
+integer-spin Wigner `wigner_rotation` convention:
+
+```math
+{}_sY_{\ell m}(\theta,\phi)=(-1)^s
+\sqrt{\frac{2\ell+1}{4\pi}}
+d^\ell_{m,-s}(\theta)e^{im\phi}.
+```
+
+Here `ell>=|s|`, `|m|<=ell`, and Wigner d uses the real generator
+`K=(diag(c,1)-diag(c,-1))/2` with `d=expm(theta*K)`.
+For fixed `(s,m)`, `ell0=max(|s|,|m|)` and
+`a=|m+s|`, `b=|m-s|`, the normalized Wigner latitude basis
+has the exact Jacobi representation
+
+```math
+G_\ell(x)=\sqrt{\frac{2\ell+1}{2}}d^\ell_{m,-s}(\arccos x)
+=\frac{(-1)^{\max(0,m+s)}}{\sqrt{\mu_{a,b}}}
+(1-x)^{a/2}(1+x)^{b/2}p_{\ell-\ell_0}^{(a,b)}(x),
+```
+
+where `mu_(a,b)=integral[-1,1] (1-x)^a(1+x)^b dx` and
+`p_k` are positive-leading Jacobi polynomials orthonormal under
+the **normalized** Jacobi weight. This gives a legitimate
+**square** real orthogonal `(L-ell0)`-by-`(L-ell0)` Gauss–Jacobi
+fixed-order block, with the spin/Condon–Shortley phase
+`(-1)^(s+max(0,m+s))`. Its finite eigenphase spectrum is
+**unknown**: the real Jacobi zeros are quadrature nodes, not
+the eigenvalues of this orthogonal evaluation matrix.
+
+**Full sphere sampling is fundamentally different.** At bandlimit
+`L`, the spin-s coefficient space has `L^2-s^2` dimensions.
+The `L`-point Gauss–Legendre colatitude nodes `x_j`,
+with `2L-1` equispaced azimuths, give
+
+```math
+A_{(j,k),(\ell,m)}=
+\sqrt{\frac{2\pi w_j}{2L-1}}\;{}_sY_{\ell m}
+(\arccos x_j,2\pi k/(2L-1)).
+```
+
+Consequently `A` has size `L(2L-1)` by `L^2-s^2` and
+`A^*A=I` exactly in mathematical arithmetic. Each azimuthal
+mode is separated by discrete Fourier orthogonality and the
+remaining Wigner d product is an ordinary polynomial in x
+of degree at most `2L-2`, integrated exactly by Gauss–Legendre.
+The grid *oversamples*: it is NOT a square unitary except
+at `L=1,s=0`. The `sampling` interface explicitly returns
+this rectangular matrix, while `sampling_operator` returns
+forward/adjoint FFT-separated actions without forming it.
+
+For multiple RHS, the angular blocks use `O(L^3)` stored
+coefficients, `O(L^3+L^2 log L)` per-vector arithmetic; the
+registered *square* Jacobi block remains dense with generic
+`O(M^3)` Gaussian-eigensolver setup. This is a derived
+Gauss–Legendre scheme, **not** the equiangular MW sampling
+theorem or Huffenberger–Wandelt's original fast Wigner method.
+The Condon–Shortley identity
+`conj({}_sY_(ell,m))=(-1)^(m+s) {}_-sY_(ell,-m)`
+is tested for spins `s=0,+/-1,+/-2`, and the local polar
+spin-frame convention is not asserted globally smooth.
+Background references [104,107,165].
+
 ## Bibliography
 
 1. P. J. Davis, *Circulant Matrices*, Wiley, 1979. ISBN 9780471057710. [Library record](https://openlibrary.org/books/OL4407364M/Circulant_matrices).
@@ -6600,3 +6665,5 @@ methods remain issue #40. Primary background [104,106,109].
 
 163. D. Camps, T. Mach, R. Vandebril and D. S. Watkins, *Pole-Swapping Algorithms for the Eigenvalue Problem*, SIAM Spotlights (2025), Chapters 4–5. [DOI](https://doi.org/10.1137/1.9781611978377).
 164. D. Camps, T. Mach, R. Vandebril and D. S. Watkins, “On pole-swapping algorithms for the eigenvalue problem,” *Electronic Transactions on Numerical Analysis* **52** (2020), 480–508. [DOI](https://doi.org/10.1553/etna_vol52s480); [preprint](https://arxiv.org/abs/1906.08672).
+
+165. B. P. Huffenberger and B. D. Wandelt, “Fast and Exact Spin-s Spherical Harmonic Transforms,” *Astrophysical Journal Supplement Series* **189** (2010), 255–260. [DOI](https://doi.org/10.1088/0067-0049/189/2/255); [preprint](https://arxiv.org/abs/1007.3514).

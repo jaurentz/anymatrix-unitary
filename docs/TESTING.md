@@ -170,3 +170,15 @@ independently normalized physical Hermite/Laguerre degree-0
 functions. It explicitly rejects an unimplemented `'operator'`
 mode and tests that finite Gaussian nodes are not described
 as eigenphases of Q.
+
+
+`tests/test_spin_spherical_harmonic_transform.m` independently
+compares the Wigner–Jacobi recurrence with dense
+`wigner_rotation` exponentials for integer m,n and ell
+through 6, checks strict square fixed-(s,m) Gauss–Jacobi
+orthogonality, exact full-sphere rectangular Gram
+A'*A=I and coefficient recovery for spins 0,+/-1,+/-2,
+complex multi-RHS FFT forward/adjoint comparisons,
+Condon–Shortley conjugation across opposite spin,
+scalar Y_00/Y_11 normalization and a larger L=24
+operator with no explicit sampling matrix.

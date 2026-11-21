@@ -2015,6 +2015,22 @@
       "matrix_free_supported": true,
       "operator_kernel": "um_wigner_direct_sum_apply",
       "operator_note": "Per-degree precomputed dense real orthogonal blocks cost O(L^3) storage and O(L^3)=O(N^(3/2)) per RHS action, after O(L^4) setup via matrix exponentials. Not O(L^2 log L) fast Wigner-D. Real matrix verified from exact Condon-Shortley complex-to-real basis and never from entrywise real(D)."
+    },
+    {
+      "id": "spin_spherical_harmonic_transform",
+      "status": "implemented",
+      "category": "signal_processing",
+      "matrix_order": "L-max(abs(s),abs(m)) square fixed-order block, L>|s|,|m|, L<=32",
+      "representation": "strict square real orthogonal fixed spin s, azimuth m Wigner-Jacobi latitude Gauss quadrature block with a=abs(m+s), b=abs(m-s), Condon–Shortley signed normalization; auxiliary L(2L-1)-by-(L^2-s^2) rectangular full spin-weighted spherical sampling isometry and FFT-separated adjoint",
+      "spectral_reference": "finite phase law of square Gauss-Jacobi block UNKNOWN; real quadrature nodes are not eigenphases; full spin sampling has no square unitary spectrum",
+      "encyclopedia_references": [
+        104,
+        107,
+        165
+      ],
+      "matrix_free_supported": false,
+      "operator_kernel": null,
+      "operator_note": "The REGISTERED square unitary/orthogonal block is dense Gauss-Jacobi O(M^3) setup, O(M^2) action; its eigenphase law is unknown. Separate sampling_operator is RECTANGULAR isometry A*A=I with O(L^3) stored latitude blocks and O(L^3+L^2 log L) FFT-separated forward/adjoint. No operator falsely claimed for square block, and not the McEwen-Wiaux equiangular sampling algorithm."
     }
   ],
   "probability_measures": [
