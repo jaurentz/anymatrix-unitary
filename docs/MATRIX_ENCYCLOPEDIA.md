@@ -1733,9 +1733,19 @@ C^{(8)}_{kj}=\frac{2}{\sqrt{2n+1}}\cos\left(
 ```
 
 It is real, symmetric, and **orthogonal** in exact arithmetic, hence
-$(C^{(8)})^2=I$. Its eigenvalues are confined to $\{-1,+1\}$;
-numerical tests do not by themselves establish all order-dependent
-multiplicities. Strang's mixed-endpoint second-difference matrix uses
+$(C^{(8)})^2=I$. Its **exact finite eigenvalue multiplicities** are
+$+1$ with $\lceil n/2\rceil$ and $-1$ with $\lfloor n/2\rfloor$.
+In particular, $\operatorname{tr}(C^{(8)})=n\bmod 2$ and
+the normalized trace moments are $1$ for even powers and
+$(n\bmod 2)/n$ for odd powers. For a proof, write
+$m=2n+1$ and complete the diagonal cosine sum to
+$G_m=\sum_{j=0}^{m-1}\exp(2\pi i(j+1/2)^2/m)$.
+Its real part gives the trace after division by $\sqrt m$,
+while shifting $j\mapsto j+(m+1)/2$ identifies it with
+$\exp(i\pi m/2)$ times the standard quadratic Gauss sum
+$\sum_{k=0}^{m-1}\exp(2\pi i k^2/m)$; the latter is
+$\sqrt m$ when $m\equiv1\pmod4$ and $i\sqrt m$ when
+$m\equiv3\pmod4$. Strang's mixed-endpoint second-difference matrix uses
 period $n+1/2$ rather than the conventional DCT-IV period $n$.
 This is the exact special-order reduction of the symmetric Bessel-zero
 quasi-discrete Hankel matrix for $\nu=-1/2$:
