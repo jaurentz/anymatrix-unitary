@@ -517,3 +517,25 @@ a derived exact GL implementation, not a copy of
 [Huffenberger–Wandelt (2010)](https://doi.org/10.1088/0067-0049/189/2/255)
 or the MW equiangular grid. Pole local frames and
 spin +/- conjugation are documented explicitly.
+
+
+### Peter–Weyl SO(3) FFT isometry versus fixed Wigner rotations
+
+The unitary `wigner_rotation(ell,...)` acts at a single
+rotation on a 2ell+1-dimensional representation.
+The SO(3) group Fourier **sampling** map acts on the
+full coefficient space of L*(4L^2-1)/3 dimensions.
+Gauss–Legendre beta nodes and two 2L-1-point
+equiangular outer Euler grids provide L*(2L-1)^2
+Haar-weighted rows. Two exact Fourier orthogonalities
+and Legendre exactness for products of Wigner d functions
+of degree at most 2L-2 prove A'*A=I. The full map
+is rectangular except L=1. The separate square
+fixed-(m,n) Wigner–Jacobi latitude block is an exact
+orthogonal matrix with UNKNOWN eigenphases.
+FFT-separated full synthesis/adjoint uses O(L^4)
+latitude cache and O(L^4+L^3 log L) apply; it does
+not reproduce the original McEwen torus-extension
+algorithm ([DOI](https://doi.org/10.1109/LSP.2015.2490676)),
+but realizes a Gauss–Legendre scheme of the type
+studied by Khalid et al. ([DOI](https://doi.org/10.1109/LSP.2015.2503295)).

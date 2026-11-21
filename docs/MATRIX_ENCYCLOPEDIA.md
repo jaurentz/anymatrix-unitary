@@ -13,21 +13,18 @@ part of the public repository and is intended to stand alone.
 
 ## General conventions
 
-For a unitary $U\in\mathbb C^{N\times N}$, eigenvalues are written
-$z_j=e^{i\theta_j}$. Throughout this encyclopedia, **$N$ denotes the actual
-matrix order**. A MATLAB generator parameter such as $n$ may instead describe
-physical sites, spins, modes or polynomial coefficients; the relationship to
-$N$ is specified for each family. The **empirical spectral measure** and its moments are
+For a unitary $U\in\mathbb C^{n\times n}$, eigenvalues are written
+$z_j=e^{i\theta_j}$. The **empirical spectral measure** and its moments are
 
 ```math
-\mu_U^{\mathrm{trace}}=\frac1N\sum_{j=1}^N\delta_{z_j},\qquad
-m_k(U)=\frac1N\mathop{\mathrm{tr}}(U^k).
+\mu_U^{\mathrm{trace}}=\frac1n\sum_{j=1}^n\delta_{z_j},\qquad
+m_k(U)=\frac1n\mathop{\mathrm{tr}}(U^k).
 ```
 
 For a unit vector $v$, the different **vector spectral measure** is
 
 ```math
-\mu_{U,v}=\sum_{j=1}^N |q_j^*v|^2\delta_{z_j},
+\mu_{U,v}=\sum_{j=1}^n |q_j^*v|^2\delta_{z_j},
 ```
 
 where $q_j$ are normalized eigenvectors (counting multiplicities with
@@ -48,7 +45,7 @@ $2n$ for a physical system of size $n$; such cases are explicitly marked.
 
 ### 1. Cyclic shift — [`cycle_shift.m`](../cycle_shift.m)
 
-**Order:** $N=n$. **Structure:** real, orthogonal, sparse permutation,
+**Order:** $n$. **Structure:** real, orthogonal, sparse permutation,
 circulant. **Spectrum:** precisely the $n$-th roots of unity.
 
 ```math
@@ -62,7 +59,7 @@ generic permutation with multiple cycle lengths. **Reference:** [1].
 
 ### 2. Phase-weighted cyclic shift — [`weighted_shift.m`](../weighted_shift.m)
 
-**Order:** $N=n$. **Structure:** sparse monomial unitary; becomes a real signed
+**Order:** $n$. **Structure:** sparse monomial unitary; becomes a real signed
 permutation only for phases $0$ or $\pi$. For real weights $\phi_j$,
 
 ```math
@@ -77,7 +74,7 @@ only rotates the perfectly spaced cycle spectrum. **Reference:** [1].
 
 ### 3. Prescribed diagonal phases — [`diagonal_phase.m`](../diagonal_phase.m)
 
-**Order:** $N=n$. **Structure:** sparse diagonal unitary. For real phase inputs
+**Order:** $n$. **Structure:** sparse diagonal unitary. For real phase inputs
 $\theta_j$,
 
 ```math
@@ -91,7 +88,7 @@ The default gives equally spaced roots of unity. **Reference:** [1].
 
 ### 4. Unitary circulant with prescribed phases — [`phase_circulant.m`](../phase_circulant.m)
 
-**Order:** $N=n$. **Structure:** dense circulant with FFT-diagonalization.
+**Order:** $n$. **Structure:** dense circulant with FFT-diagonalization.
 For the normalized DFT $F$ and real phases $\theta_j$,
 
 ```math
@@ -106,7 +103,7 @@ Our implementation uses an inverse FFT of the Fourier eigenvalue samples.
 
 ### 5. Periodic tight-binding propagator — [`cycle_propagator.m`](../cycle_propagator.m)
 
-**Order:** $N=n$. **Structure:** dense circulant. Write $H=P_n+P_n^*$; then
+**Order:** $n$. **Structure:** dense circulant. Write $H=P_n+P_n^*$; then
 
 ```math
 U(t)=e^{-itH},\quad
@@ -121,7 +118,7 @@ The $n=1,2$ cases retain the literal $H=P+P^*$ definition. **Reference:** [2].
 
 ### 6. Real orthogonal rotation blocks — [`orthogonal_blocks.m`](../orthogonal_blocks.m)
 
-**Order:** $N=n$. **Structure:** sparse real block diagonal, orthogonal and
+**Order:** $n$. **Structure:** sparse real block diagonal, orthogonal and
 normal. Each $2\times2$ block is
 
 ```math
@@ -179,7 +176,7 @@ construction for a continuous infinite OPUC measure.
 
 ### Unit-circle polynomial / companion-like unitary realization — [`circle_polynomial_unitary.m`](../circle_polynomial_unitary.m)
 
-**Order:** $N=n$. Input is an admissible polynomial of degree n in
+**Order:** n. Input is an admissible polynomial of degree n in
 descending monomial coefficients, with n **simple** unit-circle roots,
 and optionally positive cyclic spectral weights. For a polynomial,
 the root ordering is not intrinsic; WEIGHTS are therefore paired
@@ -228,7 +225,7 @@ and structured companion background
 
 ### Inverse spectral CMV / Hessenberg — [`inverse_opuc.m`](../inverse_opuc.m)
 
-**Order:** $N=n$. Input is a collection of n **distinct** unit-circle
+**Order:** n. Input is a collection of n **distinct** unit-circle
 points z_j and strictly positive numbers w_j, normalized so
 sum(w_j)=1. This defines a finite **cyclic** spectral measure
 mu_e1=sum_j w_j delta_(z_j). The inverse finite Szego procedure
@@ -276,7 +273,7 @@ quadrature [9].
 
 ### 7. Finite CMV — [`finite_cmv.m`](../finite_cmv.m)
 
-**Order:** $N=n$. **Structure:** sparse five-diagonal unitary. From
+**Order:** $n$. **Structure:** sparse five-diagonal unitary. From
 $\alpha_0,\ldots,\alpha_{n-2}$ in the open unit disk and a terminal
 $\beta\in\mathbb T$, use the local core
 
@@ -294,7 +291,7 @@ coefficients and a real closure produce an orthogonal CMV matrix.
 
 ### 8. General Verblunsky multiplication matrix — [`opuc_matrix.m`](../opuc_matrix.m)
 
-**Order:** $N=n$. **Representations:** `hessenberg`, `inverse_hessenberg`,
+**Order:** $n$. **Representations:** `hessenberg`, `inverse_hessenberg`,
 `cmv`, or `twisted`. The shared function `js_core_product.m` assembles all
 forms from the same interior coefficients and boundary phase. A twisted or
 snake ordering is specified by a binary sequence of prepend/append decisions
@@ -309,7 +306,7 @@ comparison of sparse and dense representations. **References:** [8–10].
 
 ### 9. Jacobi–Szegő / Geronimus lift — [`jacobi_szego.m`](../jacobi_szego.m)
 
-**Order:** $N=n$. **Source measure:** the Jacobi probability measure
+**Order:** $n$. **Source measure:** the Jacobi probability measure
 $(1-t)^a(1+t)^b\,dt$ on $[-1,1]$, $a,b>-1$, lifted by $t=\cos\theta$
 into a conjugation-invariant circle measure. The explicit coefficients are
 
@@ -327,7 +324,7 @@ the original continuous measure. **References:** [5, 7, 11, 12].
 
 ### 10. Bernstein–Szegő / Poisson measure — [`bernstein_szego.m`](../bernstein_szego.m)
 
-**Order:** $N=n$. **Source:** an explicit absolutely continuous probability
+**Order:** $n$. **Source:** an explicit absolutely continuous probability
 measure on the unit circle, with parameter $|a|<1$ and density (with respect
 to $d\theta$)
 
@@ -346,7 +343,7 @@ and multiplication matrix. All four existing representation choices work.
 
 ### 11. Circular β random CMV — [`circular_beta.m`](../circular_beta.m)
 
-**Order:** $N=n$. **Structure:** sparse five-diagonal random unitary.
+**Order:** $n$. **Structure:** sparse five-diagonal random unitary.
 The Killip–Nenciu construction chooses independent interior coefficients
 with uniform angle and
 
@@ -366,7 +363,7 @@ No Statistics Toolbox is required. **Reference:** [13].
 
 ### 12. Haar unitary — [`haar_unitary.m`](../haar_unitary.m)
 
-**Order:** $N=n$. **Structure:** dense, random. Phase-adjusted QR of a
+**Order:** $n$. **Structure:** dense, random. Phase-adjusted QR of a
 complex Gaussian matrix gives Haar distribution on $U(n)$.
 For the circular unitary ensemble (CUE), the **expected** one-point phase
 density is uniform, but finite samples exhibit correlated phases with
@@ -375,7 +372,7 @@ benchmark rather than a deterministic known-spectrum matrix. **Reference:** [14]
 
 ### 13. Haar orthogonal — [`haar_orthogonal.m`](../haar_orthogonal.m)
 
-**Order:** $N=n$. **Structure:** dense, real orthogonal. Sign-adjusted QR of
+**Order:** $n$. **Structure:** dense, real orthogonal. Sign-adjusted QR of
 an $n\times n$ real Gaussian matrix produces Haar distribution on $O(n)$.
 Its eigenvalues obey complex-conjugate pairing and determinant/parity
 constraints. **Haar on $O(n)$ is not Dyson's COE.** This distinction matters
@@ -383,7 +380,7 @@ when testing random matrix universality claims. **Reference:** [14].
 
 ### 14. Haar wavelet transform — [`haar_wavelet.m`](../haar_wavelet.m)
 
-**Order:** $N=n=2^p$. **Structure:** sparse, real orthogonal, multiresolution.
+**Order:** $n=2^p$. **Structure:** sparse, real orthogonal, multiresolution.
 The first analysis step forms adjacent sums/differences divided by
 $\sqrt2$; subsequent levels act only on the coarse half. The `levels`
 parameter ranges from zero (identity) to $p$ (full decomposition).
@@ -395,7 +392,7 @@ matrix are not the wavelet frequencies.** **Reference:** [15].
 
 ### 15. Split-step quantum walk — [`split_step_walk.m`](../split_step_walk.m)
 
-**Order:** $N=2n$ for $n$ sites. **Structure:** sparse, real orthogonal in the
+**Order:** $2n$ for $n$ sites. **Structure:** sparse, real orthogonal in the
 selected rotation-coin convention. The periodic one-step operator is
 
 ```math
@@ -410,7 +407,7 @@ interface construction**. **Reference:** [16].
 
 ### 16. Periodic Dirac quantum cellular automaton — [`dirac_automaton.m`](../dirac_automaton.m)
 
-**Order:** $N=2n$ for $n$ sites. **Structure:** sparse complex unitary.
+**Order:** $2n$ for $n$ sites. **Structure:** sparse complex unitary.
 With mass $m\in[0,1]$, $\nu=\sqrt{1-m^2}$ and periodic cyclic shift $P_n$,
 
 ```math
@@ -435,7 +432,7 @@ spectrum is concentrated at $\pm i$. **References:** [17, 18].
 
 ### 17. Grover search iterate — [`grover_operator.m`](../grover_operator.m)
 
-**Order:** $N=n\geq2$. **Structure:** dense real orthogonal product of two
+**Order:** $n\geq2$. **Structure:** dense real orthogonal product of two
 reflections. Mark the first $M$ basis states, $1\leq M<n$, and let
 $|s\rangle=n^{-1/2}(1,\ldots,1)^T$. Then
 
@@ -451,7 +448,7 @@ miss them. **Reference:** [19].
 
 ### 18. Quantum baker map — [`quantum_baker.m`](../quantum_baker.m)
 
-**Order:** $N=n$ (with $n$ even). **Structure:** dense, product of Fourier transforms.
+**Order:** even $n$. **Structure:** dense, product of Fourier transforms.
 The Balazs–Voros quantization is
 
 ```math
@@ -465,7 +462,7 @@ four-atom eigenvalue spectrum of $F_n$**. **References:** [20, 21].
 
 ### 19. Kicked Harper torus map — [`kicked_harper.m`](../kicked_harper.m)
 
-**Order:** $N=n$. **Structure:** dense explicit matrix, FFT-factorized
+**Order:** $n$. **Structure:** dense explicit matrix, FFT-factorized
 mathematical action. With $D_x(K)$ and $D_p(L)$ defined by diagonal
 phases $e^{-iK\cos(2\pi j/n)}$ and $e^{-iL\cos(2\pi j/n)}$,
 
@@ -483,7 +480,7 @@ not be transferred indiscriminately to every finite test matrix.
 
 ### 20. Cayley image of a Jacobi matrix — [`cayley_jacobi.m`](../cayley_jacobi.m)
 
-**Order:** $N=n$. **Structure:** dense complex unitary, derived from a real
+**Order:** $n$. **Structure:** dense complex unitary, derived from a real
 symmetric tridiagonal Jacobi matrix $J_n$ with Jacobi weight parameters
 $a,b>-1$. For scale $t>0$,
 
@@ -499,7 +496,7 @@ changes. **It is not the same finite matrix as the Jacobi–Szegő lift.**
 
 ### 21. Nonsingular polar factor — [`polar_unitary.m`](../polar_unitary.m)
 
-**Order:** $N=n$. **Structure:** generally dense. If $A=L\Sigma R^*$ is a
+**Order:** $n$. **Structure:** generally dense. If $A=L\Sigma R^*$ is a
 full SVD of a nonsingular matrix, the uniquely determined unitary polar
 factor is $U=LR^*$. For real $A$, $U$ is orthogonal. It is also a
 nearest unitary matrix to $A$ in every unitarily invariant norm.
@@ -555,7 +552,7 @@ dilation theory. **Reference:** [25].
 
 ### 23. Generalized circular Jacobi — [`circular_jacobi.m`](../circular_jacobi.m)
 
-**Order:** $N=n$. **Structure:** unitary, sparse five-diagonal by default.
+**Order:** $n$. **Structure:** unitary, sparse five-diagonal by default.
 For real $a>-1/2$ and $\eta\in\mathbb R$, the positive circle weight is
 proportional to $e^{(\pi-\theta)\eta}|1-e^{i\theta}|^{2a}$ for
 $0<\theta<2\pi$. With $b=a+i\eta$, the Verblunsky sequence is
@@ -572,7 +569,7 @@ The finite boundary $\beta$ is independent of the measure.
 
 ### 24. Rogers--Szego wrapped Gaussian — [`rogers_szego.m`](../rogers_szego.m)
 
-**Order:** $N=n$. **Structure:** real orthogonal if the terminal boundary is
+**Order:** $n$. **Structure:** real orthogonal if the terminal boundary is
 real. For $0<q<1$, the circle measure is a wrapped Gaussian with variance
 $-\log q$, and its Verblunsky coefficients satisfy
 
@@ -586,7 +583,7 @@ OPUC benchmark with a known cyclic-vector measure. **References:** [5, 12].
 
 ### 25. Constant Geronimus CMV — [`geronimus_cmv.m`](../geronimus_cmv.m)
 
-**Order:** $N=n$. **Structure:** unitary five-diagonal by default;
+**Order:** $n$. **Structure:** unitary five-diagonal by default;
 orthogonal for real $a$ and real $\beta$. Use $\alpha_k=a$ for
 all $k\ge0$, $|a|<1$. In the infinite model the measure can have a
 proper absolutely continuous arc and a point mass. This generator
@@ -595,7 +592,7 @@ tests finite approximations to arc gaps with complex coefficients.
 
 ### 26. Periodic Verblunsky CMV — [`periodic_cmv.m`](../periodic_cmv.m)
 
-**Order:** $N=n$. **Structure:** sparse unitary. Repeat a nonempty
+**Order:** $n$. **Structure:** sparse unitary. Repeat a nonempty
 complex or real coefficient pattern $a_0,\ldots,a_{p-1}$ with all
 $|a_j|<1$; close the first $n-1$ entries using a terminal unit
 phase. The infinite periodic theory has bands and gaps governed by
@@ -605,7 +602,7 @@ must be kept distinct from the infinite spectral measure.
 
 ### 27. Finite generalized Bernstein--Szego — [`bernstein_szego_finite.m`](../bernstein_szego_finite.m)
 
-**Order:** $N=n$. **Structure:** unitary, sparse five-diagonal by default.
+**Order:** $n$. **Structure:** unitary, sparse five-diagonal by default.
 Specify a finite complex coefficient list $a_0,\ldots,a_{m-1}$
 strictly inside the disk and set $\alpha_k=0$ for $k\ge m$.
 With the associated reversed polynomial $\Phi_m^*$, the positive
@@ -624,7 +621,7 @@ Schur parameters with an exact and evaluable cyclic-vector density.
 
 ### Lee-Yang Ising zeros via twisted Floquet-CMV — [`lee_yang_ising.m`](../lee_yang_ising.m)
 
-**Order:** $N=2n$ for `n` Ising spins. **Application:** zeros of the partition
+**Order:** `2*n` for `n` Ising spins. **Application:** zeros of the partition
 function of a one-dimensional ferromagnetic Ising model with periodic spin
 boundary conditions. Given positive dimensionless magnetic couplings
 `p_j=J_j/(k_B*T)`, set the `2*n` Verblunsky parameters
@@ -666,7 +663,7 @@ pencils discussed in [69]. **References:** [69, 70].
 
 ### General multichannel scattering zippers — [`scattering_zipper.m`](../scattering_zipper.m)
 
-**Order:** $N=nq$, with even `n>=2` sites and `q>=1` channels per
+**Order:** `n*q`, with even `n>=2` sites and `q>=1` channels per
 site. Marin and Schulz-Baldes [71] specify arbitrary local
 `2q-by-2q` unitary scattering matrices `S_2,...,S_n` whose
 upper-right `q-by-q` blocks are nonsingular, together with
@@ -707,7 +704,7 @@ eigenvalue counting. **Reference:** [71].
 
 ### 28. Quantum kicked top — [`kicked_top.m`](../kicked_top.m)
 
-**Order:** $N=n=2j+1$ (integer or half-integer spin $j>0$). **Structure:**
+**Order:** $n=2j+1$ (integer or half-integer spin $j>0$). **Structure:**
 dense spin rotation times diagonal phase twist. In the $J_z$ basis
 $m=j,j-1,\ldots,-j$, define $J_y=(J_+-J_+^*)/(2i)$ and
 
@@ -730,7 +727,7 @@ exponential is generally dense. No uniformly $O(n)$-time action is claimed.
 
 ### 29. Integrable kicked Ising chain — [`floquet_ising.m`](../floquet_ising.m)
 
-**Order:** $N=2^n$ for $n$ spins. **Structure:** a diagonal Ising layer
+**Order:** $2^n$ for $n$ spins. **Structure:** a diagonal Ising layer
 followed by a Kronecker product of single-spin rotations:
 
 ```math
@@ -751,7 +748,7 @@ capped at $n=11$ sites. **References:** [30, 31].
 
 ### 30. Self-dual kicked Ising chain — [`selfdual_kicked_ising.m`](../selfdual_kicked_ising.m)
 
-**Order:** $N=2^n$ for $n\ge3$ periodic spins, capped at $n=11$
+**Order:** $2^n$ for $n\ge3$ periodic spins, capped at $n=11$
 for explicit dense storage. With real longitudinal fields $b_r$,
 
 ```math
@@ -773,7 +770,7 @@ finite-size phase density. Default $b_r=0.3\sin r$ is deterministic.
 
 ### 31. Driven Kitaev chain, BdG representation — [`driven_kitaev.m`](../driven_kitaev.m)
 
-**Order:** $N=2n$ for $n$ sites in Nambu basis
+**Order:** $2n$ for $n$ sites in Nambu basis
 $(c_1,\ldots,c_n,c_1^\dagger,\ldots,c_n^\dagger)$;
 **not** the $2^n$-dimensional Fock-space propagator.
 Let
@@ -802,7 +799,7 @@ Periodic $n=2$ is disallowed to avoid double-bond ambiguity.
 
 ### 32. Quantum kicked rotor — [`kicked_rotor.m`](../kicked_rotor.m)
 
-**Order:** $N=n$, with normalized negative-exponent Fourier matrix $F_n$.
+**Order:** $n$, with normalized negative-exponent Fourier matrix $F_n$.
 **Structure:** dense but explicitly factored into unitary Fourier and diagonal
 stages. On the finite Fourier grid, define
 
@@ -833,7 +830,7 @@ Applications: quantum chaos, phase aliasing and DFT-based matrix tests.
 
 ### 33. Dual-unitary brickwork Floquet circuits — [`dual_unitary_circuit.m`](../dual_unitary_circuit.m)
 
-**Order:** $N=2^n$ for $n$ qubits; dense matrices are capped at $n=10$.
+**Order:** $2^n$ for $n$ qubits; dense matrices are capped at $n=10$.
 Each elementary two-qubit gate is
 
 ```math
@@ -868,7 +865,7 @@ factor experiments with appropriately chosen randomness.
 
 ### 34. Integrable XXZ Floquet circuits — [`xxz_floquet.m`](../xxz_floquet.m)
 
-**Order:** $N=2^n$ for $n$ spin-$1/2$ sites, capped at $n=10$ for
+**Order:** $2^n$ for $n$ spin-$1/2$ sites, capped at $n=10$ for
 dense assembly. For real rapidity $u$, anisotropy $0<\gamma<\pi$,
 and $\Delta=\cos\gamma$, define
 
@@ -912,7 +909,7 @@ chaotic many-body spectral statistics. **References:** [38, 39].
 
 ### Magnetic unitary almost-Mathieu walk — [`unitary_almost_mathieu.m`](../unitary_almost_mathieu.m)
 
-**Order:** $N=2n$, for `n` cyclic positions with two spin states per
+**Order:** `2n`, for `n` cyclic positions with two spin states per
 position. From [72], equations (2.3)–(2.6), with `lambda1,lambda2`
 in `[0,1]`, magnetic flux frequency `phi` and phase `theta`
 (in cycles), define `W=S_lambda1 Q` where
@@ -953,7 +950,7 @@ couplings. **Reference:** [72].
 
 ### Agassi nuclear pairing and particle-hole propagator — [`agassi_propagator.m`](../agassi_propagator.m)
 
-**Order:** $N=2^{4j}$ in the full Fock space of `4j` fermionic orbitals,
+**Order:** `2^(4j)` in the full Fock space of `4j` fermionic orbitals,
 or `nchoosek(4j,N)` in a selected invariant `N`-particle sector.
 The original Agassi model combines two levels (upper/lower), each with
 `2j` degenerate magnetic substates, in a genuine **fermionic** model.
@@ -1005,12 +1002,12 @@ costs. **Reference:** [75].
 
 ### Extended Lipkin model: collective two-level nuclear dynamics — [`extended_lipkin_propagator.m`](../extended_lipkin_propagator.m)
 
-**Order:** $N=n+1$ for a fixed population of `n>=1` identical two-level bosons,
-with basis indexed by `k=0,...,n` occupied `t` bosons.
+**Order:** `N+1` for a fixed population of `N>=1` identical two-level bosons,
+with basis indexed by `k=0,...,N` occupied `t` bosons.
 The extended Lipkin Hamiltonian of Baid et al. [74], Eqs. (4)-(5), is
 
 ```math
-H_{n,\lambda,\alpha}=(1-\lambda)n_t-\frac{\lambda}{n}Q_\alpha^2,
+H_{N,\lambda,\alpha}=(1-\lambda)n_t-\frac{\lambda}{N}Q_\alpha^2,
 \qquad
 Q_\alpha=s^*t+t^*s+\alpha\,t^*t .
 ```
@@ -1022,7 +1019,7 @@ fixed-total-occupation sector. In the stated basis,
 (n_t)_{kk}=k,\qquad
 (Q_\alpha)_{kk}=\alpha k,\qquad
 (Q_\alpha)_{k,k+1}=(Q_\alpha)_{k+1,k}
-=\sqrt{(k+1)(n-k)}.
+=\sqrt{(k+1)(N-k)}.
 ```
 
 Consequently `H` is **real symmetric pentadiagonal**, with only
@@ -1032,7 +1029,7 @@ Consequently `H` is **real symmetric pentadiagonal**, with only
 forming the exponential.
 
 The dimensionless parameters `0<=lambda<=1` and `alpha` determine
-the nuclear shape-transition phase diagram. The large-`n` mean-field
+the nuclear shape-transition phase diagram. The large-`N` mean-field
 critical line of [74] is `lambda_c=1/(5+alpha^2)`.
 At `alpha=0` the symmetric-to-deformed transition is second-order;
 for nonzero `alpha` it is generically first-order. These transitions
@@ -1042,9 +1039,9 @@ matrix, though finite-size spectral precursors are numerically relevant.
 Two exactly solvable finite benchmarks are explicitly available:
 
 - `lambda=0`: `H=n_t`, so the phases are
-  `exp(-it*k)`, `k=0,...,n`.
-- `lambda=1, alpha=0`: `H=-4*S_x^2/n`, so
-  `exp(4it*m^2/n)`, `m=-n/2,...,n/2`.
+  `exp(-it*k)`, `k=0,...,N`.
+- `lambda=1, alpha=0`: `H=-4*S_x^2/N`, so
+  `exp(4it*m^2/N)`, `m=-N/2,...,N/2`.
 - `t=0`: `U=I` with all eigenvalues one.
 
 These eigenphase formulas are returned lazily by `'spectral'` mode;
@@ -1057,10 +1054,10 @@ Hamiltonian with first- and second-neighbor couplings. **Reference:** [74].
 
 ### Two-dimensional U(3) vibron ESQPT and symmetry-sector clustering — [`vibron_2d_esqpt.m`](../vibron_2d_esqpt.m)
 
-**Order:** $N=(n+1)(n+2)/2$ in the fixed-total-boson-number `n`
+**Order:** `(N+1)(N+2)/2` in the fixed-total-boson-number `N`
 Hilbert space with one scalar boson `sigma` and two circular bosons
 `tau_+`, `tau_-`. Alternatively, specify conserved angular momentum
-`ell=n_+-n_-` for an individual `floor((n-|ell|)/2)+1` dimensional
+`ell=n_+-n_-` for an individual `floor((N-|ell|)/2)+1` dimensional
 sector. The physical model describes bending vibrations and an
 excited-state quantum phase transition (ESQPT). It is a **U(3) model**,
 not another U(2) Lipkin parameterization.
@@ -1068,25 +1065,25 @@ not another U(2) Lipkin parameterization.
 The model in [76], Eqs. (5)-(7), is
 
 ```math
-H_N(\xi)=(1-\xi)n_\tau+\frac{\xi}{n}
-\left[n(n+1)I-W^2\right],\qquad
+H_N(\xi)=(1-\xi)n_\tau+\frac{\xi}{N}
+\left[N(N+1)I-W^2\right],\qquad
 n_\tau=n_++n_-,\quad 0\leq\xi\leq 1,
 ```
 
 where `W^2=(D_+D_-+D_-D_+)/2+ell^2`,
 `D_+=sqrt(2)*(tau_+^* sigma-sigma^* tau_-)` and
 `D_-=D_+^*`. In a fixed `ell` sector use
-`t=n_tau=|ell|,|ell|+2,...,n` and
-`s=n-t`, `p=(t+ell)/2`, `m=(t-ell)/2`:
+`t=n_tau=|ell|,|ell|+2,...,N` and
+`s=N-t`, `p=(t+ell)/2`, `m=(t-ell)/2`:
 
 ```math
 (W^2)_{tt}=2st+2s+t+\ell^2,\qquad
 (W^2)_{t,t+2}=-2\sqrt{s(s-1)(p+1)(m+1)}.
 ```
 
-Thus the sector Hamiltonian `H_(n,ell)` is **real symmetric
+Thus the sector Hamiltonian `H_(N,ell)` is **real symmetric
 tridiagonal**; the full Hamiltonian is block diagonal in
-`ell=-n,...,n`. We supply its unitary evolution
+`ell=-N,...,N`. We supply its unitary evolution
 `U(t)=exp(-itH)` in the same sector order. Its full matrix
 is sparse block diagonal, although each nontrivial exponential block
 is typically dense. `'hamiltonian'` exposes the sparse structured
@@ -1094,11 +1091,11 @@ matrix without computing the exponential.
 
 **Exact finite limits:** At `xi=0`, the energies are `t=n_tau`.
 At `xi=1`, the SO(3) dynamical-symmetry label
-`omega=n,n-2,...,|ell|` gives
+`omega=N,N-2,...,|ell|` gives
 
 ```math
-E_{n,\ell,\omega}=\frac{n(n+1)-\omega(\omega+1)}{n},
-\qquad z_{n,\ell,\omega}(t)=e^{-itE_{n,\ell,\omega}}.
+E_{N,\ell,\omega}=\frac{N(N+1)-\omega(\omega+1)}{N},
+\qquad z_{N,\ell,\omega}(t)=e^{-itE_{N,\ell,\omega}}.
 ```
 
 These formulas provide exact eigenphases and trace moments in
@@ -1108,7 +1105,7 @@ The generic finite eigenphase law is not claimed analytically known.
 **Clustered eigenphases:** For `xi>1/5` the broken-symmetry regime
 has an excited-state separatrix. Pairs of low-lying energies from
 `ell=0` and `ell=1` sectors approach one another **algebraically**
-as `n` increases. The comparable even/odd parity splittings of the
+as `N` increases. The comparable even/odd parity splittings of the
 U(2) Lipkin model can decrease **exponentially** (ultimately below
 floating-point resolution); see Fig. 2 of [76]. The `ell=+q`
 and `ell=-q` sector matrices themselves are exactly identical in
@@ -1127,7 +1124,7 @@ basis and verify the tridiagonal blocks and solvable SO(3) limits.
 
 ### 35. Kicked Bose–Hubbard dimer — [`kicked_bose_hubbard.m`](../kicked_bose_hubbard.m)
 
-**Order:** $N=n+1$ for $n$ identical bosons on **two sites**, in the
+**Order:** $n+1$ for $n$ identical bosons on **two sites**, in the
 fixed-occupation Fock basis $|k,n-k\rangle$ ($0\le k\le n$).
 The two Hermitian generators are
 
@@ -1182,7 +1179,7 @@ model of [42] is related but uses a different drive.
 
 ### 36. Jaynes–Cummings cavity-QED propagator — [`jaynes_cummings.m`](../jaynes_cummings.m)
 
-**Order:** $N=2(n+1)$ for a photon cutoff at occupation $n$.
+**Order:** $2(n+1)$ for a photon cutoff at occupation $n$.
 The **interleaved atom–photon basis** is
 $|g,0\rangle,|e,0\rangle,\ldots,|g,n\rangle,|e,n\rangle$.
 In units $\hbar=1$, write
@@ -1236,7 +1233,7 @@ for exact trace moments, eigenphase clusters and repeated degeneracies.
 
 ### 37. Chalker–Coddington directed network — [`chalker_coddington.m`](../chalker_coddington.m)
 
-**Order:** $N=4n_xn_y$, with directed links $(x,y)$ on the periodic
+**Order:** $4n_xn_y$, with directed links $(x,y)$ on the periodic
 $2n_x\times2n_y$ grid, ordered by the MATLAB index
 $1+(x\bmod 2n_x)+2n_x(y\bmod 2n_y)$.
 The implementation follows the **one-step oriented network**
@@ -1293,7 +1290,7 @@ finite-size one-point eigenphase density is asserted.
 
 ### Szegedy walks for finite Markov chains — [`szegedy_walk.m`](../szegedy_walk.m)
 
-**Order:** $N=n^2$ for an `n-by-n` row-stochastic matrix `P`.
+**Order:** `n^2` for an `n-by-n` row-stochastic matrix `P`.
 In the ordered basis `|i,j>`, introduce the isometries
 
 ```math
@@ -1322,7 +1319,7 @@ finite-CMV realization or a Grover search reflection on marked states.
 
 ### Coined quantum walks on arbitrary finite graphs — [`coined_graph_walk.m`](../coined_graph_walk.m)
 
-**Order:** $N=2m$, the number of directed arcs of an undirected graph with
+**Order:** `2m`, the number of directed arcs of an undirected graph with
 `m` edges. Vertex `v` has `d_v` outgoing arcs and a local unitary
 coin `C_v`. Use the canonical arc ordering sorted by source and
 destination. The shift `S` reverses each arc, so `S^2=I`. Thus
@@ -1350,7 +1347,7 @@ different from fixed one-dimensional walk topologies. **Reference:** [73].
 
 ### Parameterized metric quantum-graph scattering maps — [`metric_quantum_graph.m`](../metric_quantum_graph.m)
 
-**Order:** $N=2m$ directed bonds on a finite undirected metric graph.
+**Order:** `2m` directed bonds on a finite undirected metric graph.
 `L` is a symmetric zero-diagonal matrix whose positive off-diagonal
 entries are physical edge lengths; zeros indicate missing edges. Using
 outgoing directed bonds, the real-wavenumber bond-scattering map is
@@ -1396,7 +1393,7 @@ eigenphases of the **transform matrix**.
 
 ### Orthonormal cosine transforms — [`orthogonal_dct.m`](../orthogonal_dct.m)
 
-**Order:** $N=n$. The parameter `kind` selects DCT-I through DCT-IV.
+**Order:** $n$. The parameter `kind` selects DCT-I through DCT-IV.
 For type II, with zero-based indices $j,k$, the matrix is
 
 ```math
@@ -1417,7 +1414,7 @@ compression, image coding, cosine-basis spectral methods. [52]
 
 ### Discrete Hartley — [`discrete_hartley.m`](../discrete_hartley.m)
 
-**Order:** $N=n$. The orthonormal kernel is
+**Order:** $n$. The orthonormal kernel is
 
 ```math
 H_{jk}=\frac{\cos(2\pi jk/n)+\sin(2\pi jk/n)}{\sqrt n}.
@@ -1430,7 +1427,7 @@ real signal processing, independent of the Hadamard construction. [47]
 
 ### Chu/CAZAC unitary circulants — [`cazac_circulant.m`](../cazac_circulant.m)
 
-**Order:** $N=n$. Choose an integer root $r$ coprime to $n$.
+**Order:** $n$. Choose an integer root $r$ coprime to $n$.
 For $k=0,\ldots,n-1$, define the constant-amplitude sequence as follows.
 
 For **even** $n$,
@@ -1460,7 +1457,7 @@ unitary circulants (not a distinct general matrix class).
 Applications: channel synchronization, radar/sonar pulse coding. [48]
 ### Discrete Fresnel transform — [`fresnel_transform.m`](../fresnel_transform.m)
 
-**Order:** $N=n$. For $d=(j-k)\bmod n$ and
+**Order:** $n$. For $d=(j-k)\bmod n$ and
 $\delta=0$ (even $n$) or $\delta=1/2$ (odd $n$), set
 
 ```math
@@ -1475,7 +1472,7 @@ The matrix is unitary independently of the physical channel. [49]
 
 ### Affine Fourier / AFDM modulation — [`affine_fourier.m`](../affine_fourier.m)
 
-**Order:** $N=n$. For real parameters $c_1,c_2$, define
+**Order:** $n$. For real parameters $c_1,c_2$, define
 
 ```math
 A=D(c_2)F_nD(c_1),\qquad
@@ -1492,7 +1489,7 @@ generally **nonunitary** wireless channel. [50]
 
 ### Finite Zak transforms — [`finite_zak.m`](../finite_zak.m)
 
-**Order:** $N=n=pq$, $p\mid n$. Use the indexing $j+pk$
+**Order:** $n=pq$, $p\mid n$. Use the indexing $j+pk$
 for $0\leq j<p$, $0\leq k<q$. Apply a normalized $q$-point
 DFT to the second coordinate for each fixed first coordinate:
 
@@ -1507,7 +1504,7 @@ is exactly that of $F_q$, each eigenvalue repeated $p$ times. [51]
 
 ### Finite Weyl–Heisenberg shifts — [`time_frequency_shift.m`](../time_frequency_shift.m)
 
-**Order:** $N=n$. Define $T e_j=e_{j+1\bmod n}$ and
+**Order:** $n$. Define $T e_j=e_{j+1\bmod n}$ and
 $M e_j=e^{2\pi i j/n}e_j$, with zero-based indices.
 The generator returns $U=M^pT^q$ for integer $p,q$.
 It is a sparse monomial unitary, and its exact eigenvalues
@@ -1517,7 +1514,7 @@ Gabor time-frequency shifts and Weyl–Heisenberg systems. [51,53]
 
 ### Periodic Hilbert transform completion — [`periodic_hilbert.m`](../periodic_hilbert.m)
 
-**Order:** $N=n$. Start from the DFT multiplier $-i$ at
+**Order:** $n$. Start from the DFT multiplier $-i$ at
 positive frequencies and $+i$ at negative frequencies.
 Replace the conventional *zero* DC multiplier (and, for
 even $n$, zero Nyquist multiplier) by signs $s_0,s_\pi\in\{-1,+1\}$.
@@ -1536,7 +1533,7 @@ that all conventional Hilbert transforms are orthogonal. [52]
 
 ### Normalized discrete Fourier — [`discrete_fourier.m`](../discrete_fourier.m)
 
-**Order:** $N=n$. Define the negative-exponent DFT by
+**Order:** $n$. Define the negative-exponent DFT by
 
 ```math
 F_{jk}=\frac{e^{-2\pi i jk/n}}{\sqrt n},\quad 0\leq j,k<n.
@@ -1552,7 +1549,7 @@ Applications: Fourier spectral analysis, convolution, OFDM. [1,52]
 
 ### Orthonormal sine transforms — [`discrete_sine.m`](../discrete_sine.m)
 
-**Order:** $N=n$. Type II uses the kernel
+**Order:** $n$. Type II uses the kernel
 
 ```math
 S_{kj}=\sqrt{\frac2n}\,c_k
@@ -1571,7 +1568,7 @@ methods, transform coding, and PDE discretizations. [54]
 
 ### Walsh–Hadamard transforms — [`walsh_hadamard.m`](../walsh_hadamard.m)
 
-**Order:** $N=n=2^m$. Natural Sylvester order satisfies
+**Order:** $n=2^m$. Natural Sylvester order satisfies
 
 ```math
 H_1=[1],\qquad
@@ -1591,7 +1588,7 @@ processing. [55]
 
 ### Slepian/DPSS orthogonal basis — [`dpss_transform.m`](../dpss_transform.m)
 
-**Order:** $N=n$, with half-bandwidth $0<W<1/2$.
+**Order:** $n$, with half-bandwidth $0<W<1/2$.
 Let the time-band concentration matrix $B$ have entries
 
 ```math
@@ -1615,7 +1612,7 @@ estimation, finite-band concentration and leakage suppression. [56]
 
 ### Graph Fourier transform — [`graph_fourier.m`](../graph_fourier.m)
 
-**Order:** $N=n$. For a symmetric, nonnegative zero-diagonal
+**Order:** $n$. For a symmetric, nonnegative zero-diagonal
 adjacency $A$, let $L=\mathop{\mathrm{diag}}(A\mathbf{1})-A$.
 If $L=V\Lambda V^T$, sorted by nondecreasing eigenvalues,
 the transform is $U=V^T$. It is real orthogonal. The generator
@@ -1648,7 +1645,7 @@ classifies nonlinear functions and external nonunitary examples.
 
 ### Strict unitary Möbius pencil — [`mobius_unitary_pencil.m`](../mobius_unitary_pencil.m)
 
-**Order:** $N=n$. Let `P=cycle_shift(n)`, `|a|<1`, and set
+**Order:** `n`. Let `P=cycle_shift(n)`, `|a|<1`, and set
 
 ```math
 A=P-aI,\quad B=I-\overline a P,\quad U=B^{-1}A.
@@ -1671,7 +1668,7 @@ are derived from the displayed construction.
 
 ### Lossless integer-delay network pencil — [`unitary_delay_pencil.m`](../unitary_delay_pencil.m)
 
-**Order:** $N=\sum_j\ell_j$, not the number `n` of channels.
+**Order:** `N=sum(delays)`, not the number `n` of channels.
 For positive integer delays `ell_j` and unitary scattering `S`,
 the polynomial nonlinear secular equation is
 
@@ -1692,7 +1689,7 @@ networks. **References:** [58, 60].
 
 ### Scalar CMV factor pencil — [`finite_cmv.m`](../finite_cmv.m)
 
-**Order:** $N=n$; interior Verblunsky coefficients in the open disk, final
+**Order:** `n`; interior Verblunsky coefficients in the open disk, final
 coefficient unimodular. Take the existing finite-CMV factorization
 `C=LM`, with sparse alternating unitary `2-by-2` core blocks and
 terminal closure. The existing `finite_cmv` generator exposes the generalized coefficients
@@ -1703,7 +1700,7 @@ no duplicate generator is registered.
 
 ### Finite block-CMV matrix, matrix spectral measure and strict pencil — [`block_cmv_pencil.m`](../block_cmv_pencil.m)
 
-**Order:** $N=nq$. An independent q-by-q contractive matrix Verblunsky
+**Order:** N=nq. An independent q-by-q contractive matrix Verblunsky
 coefficient alpha_j is supplied for each of n-1 core interfaces.
 The q-by-q terminal beta is unitary. The alternating block factors
 L and M are products of two-fiber matrices
@@ -1753,7 +1750,7 @@ the generic terminal `'spectral'` descriptor remains unknown.
 
 ### Floquet factor pencil — [`floquet_factor_pencil.m`](../floquet_factor_pencil.m)
 
-**Order:** $N=2n$. With periodic two-state partial shifts `Splus,Sminus`
+**Order:** `2*n`. With periodic two-state partial shifts `Splus,Sminus`
 and real orthogonal on-site coin rotations `C1,C2`,
 
 ```math
@@ -1767,7 +1764,7 @@ The pencil is real orthogonal with sparse factors. **Reference:** [16].
 
 ### Hermitian Cayley pencil — [`cayley_hermitian_pencil.m`](../cayley_hermitian_pencil.m)
 
-**Order:** $N=n$. From the same real symmetric Jacobi recurrence `H`
+**Order:** `n`. From the same real symmetric Jacobi recurrence `H`
 used by `cayley_jacobi`, take `A=H-itI`, `B=H+itI`, `t>0`.
 Then `AA^*=BB^*` and the spectrum is the Cayley image of the known
 real Jacobi eigenvalues. The pencil coefficients are sparse tridiagonal
@@ -1775,7 +1772,7 @@ although the quotient is generally dense. **Reference:** [23].
 
 ### Ill-scaled strict unitary pencil — [`left_weighted_unitary_pencil.m`](../left_weighted_unitary_pencil.m)
 
-**Order:** $N=n$. Given the cyclic permutation `P`, choose a positive
+**Order:** `n`. Given the cyclic permutation `P`, choose a positive
 diagonal `B=diag(d_j)` with endpoint ratio `kappa>=1` and set
 `A=BP`. Then `B^{-1}A=P` is real orthogonal even when `A` and
 `B` are far from orthogonal. The eigenvalues are exactly roots of
@@ -1892,7 +1889,7 @@ does not change the empirical trace spectral measure.
 
 ### Lossless optical interferometer meshes — [`optical_mesh.m`](../optical_mesh.m)
 
-**Order:** $N=n$ optical modes. The Reck triangular geometry and the
+**Order:** n optical modes. The Reck triangular geometry and the
 Clements rectangular geometry use n(n-1)/2 consecutive two-port,
 nearest-neighbor lossless couplers. Their adjacency schedules are
 exposed by selecting `layout='reck'` or `layout='clements'`.
@@ -2046,13 +2043,13 @@ This is a useful exact averaging test, not a new family [79,80].
 
 ### Lohe coupled matrix oscillators — [`lohe_matrix_flow.m`](../lohe_matrix_flow.m)
 
-**Definition and construction.** The returned unitary has order $N=d$. For `NOSC=p` coupled oscillators of matrix
+**Definition and construction.** For `NOSC=N` coupled oscillators of matrix
 order `d`, evolve `U_j(t)` on `U(d)` according to
 
 ```math
 \dot U_j=\left[-iH_j+\frac{\kappa}{2}
 \left(\bar U U_j^*-U_j\bar U^*\right)\right]U_j,
-\qquad \bar U=\frac1p\sum_{\ell=1}^p U_\ell,
+\qquad \bar U=\frac1N\sum_{\ell=1}^N U_\ell,
 \qquad H_j=H_j^*.
 ```
 
@@ -2428,16 +2425,16 @@ semiclassical spectral statistics and unitary FFT-chirp benchmarks.
 
 ### Real orthogonal Krawtchouk polynomial transform — [`krawtchouk_transform.m`](../krawtchouk_transform.m)
 
-For matrix order $N=n=m+1$ and $0<p<1$, define a real symmetric Jacobi matrix J,
-with x=0,...,m,
+For n=N+1 and 0<p<1, define a real symmetric Jacobi matrix J,
+with x=0,...,N,
 
 ```math
-J_{xx}=p(m-x)+(1-p)x,\qquad
+J_{xx}=p(N-x)+(1-p)x,\qquad
 J_{x,x+1}=J_{x+1,x}=
--\sqrt{p(1-p)(x+1)(m-x)}.
+-\sqrt{p(1-p)(x+1)(N-x)}.
 ```
 
-The eigenvalues of J are exactly 0,...,m. Order its
+The eigenvalues of J are exactly 0,...,N. Order its
 real orthonormal eigenvectors by these eigenvalues and fix the
 signs by requiring a positive first-row component. Their matrix
 Q is the symmetric orthogonal Krawtchouk transform; its first
@@ -2450,7 +2447,7 @@ Q^T=Q,\quad Q^2=I,\quad
 ```
 
 with eigenvalue multiplicities ceil(n/2) for +1 and
-floor(n/2) for -1. Thus the **Jacobi nodes 0,...,m are
+floor(n/2) for -1. Thus the **Jacobi nodes 0,...,N are
 NOT the eigenvalues of Q**. The finite normalized trace
 spectral measure of Q consists of two atoms at 0 and pi,
 not a smooth distribution on the circle.
@@ -2468,7 +2465,7 @@ signal representations and discrete orthogonal polynomial transforms.
 
 ### Periodic Daubechies wavelets and wavelet-packet trees — [`daubechies_wavelet.m`](../daubechies_wavelet.m)
 
-**Order:** $N=n=2^m$, m>=0. The legacy four-argument function constructs
+**Order:** n=2^m, m>=0. The legacy four-argument function constructs
 periodized orthogonal multilevel approximation-only wavelets.
 ORDER=2,3,4 selects db2/db3/db4 (filter lengths 4,6,8), with db2
 the unchanged default. The analysis low-pass filter h uses the documented
@@ -2511,30 +2508,29 @@ wavelet-packet filter banks, Daubechies, *Ten Lectures on Wavelets*
 
 ### Normalized Hahn polynomial transform — [`hahn_transform.m`](../hahn_transform.m)
 
-For matrix order $N=n$, let $m=n-1$ denote the maximal polynomial degree.
-For real parameters alpha,beta>-1, define
+For N=n-1 and real parameters alpha,beta>-1, define
 Hahn polynomials, normalized by Q_k(0)=1, as
 
 ```math
-Q_k(x;\alpha,\beta,m)
+Q_k(x;\alpha,\beta,N)
 ={}_3F_2\!\left(
 \begin{matrix}-k,\; k+\alpha+\beta+1,\;-x\\
-\alpha+1,\;-m\end{matrix};1\right),
-\quad 0\le k,x\le m.
+\alpha+1,\;-N\end{matrix};1\right),
+\quad 0\le k,x\le N.
 ```
 
 The explicit weight is positive on the finite integer grid:
 
 ```math
-w(x)={\alpha+x\choose x}{\beta+m-x\choose m-x}.
+w(x)={\alpha+x\choose x}{\beta+N-x\choose N-x}.
 ```
 
 A numerically reproducible approach builds the symmetric
 self-adjoint difference matrix J from the coefficients
 
 ```math
-B(x)=(x+\alpha+1)(x-m),\qquad
-D(x)=x(x-\beta-m-1),
+B(x)=(x+\alpha+1)(x-N),\qquad
+D(x)=x(x-\beta-N-1),
 ```
 
 with
@@ -2576,21 +2572,21 @@ Koekoek, Lesky and Swarttouw; DLMF 18.22.
 ### Dual Hahn transform on quadratic spectral grid — [`dual_hahn_transform.m`](../dual_hahn_transform.m)
 
 The dual Hahn polynomial
-`R_x(lambda(k);alpha,beta,m)` is defined by
+`R_x(lambda(k);alpha,beta,N)` is defined by
 
 ```math
-R_x(\lambda(k);\alpha,\beta,m)
+R_x(\lambda(k);\alpha,\beta,N)
 ={}_3F_2\!\left(
 \begin{matrix}-x,\;-k,\;k+\alpha+\beta+1\\
-\alpha+1,\;-m\end{matrix};1\right),
+\alpha+1,\;-N\end{matrix};1\right),
 \quad \lambda(k)=k(k+\alpha+\beta+1).
 ```
 
 The Hahn/dual Hahn duality is exactly
 
 ```math
-Q_k(x;\alpha,\beta,m)
-=R_x(\lambda(k);\alpha,\beta,m).
+Q_k(x;\alpha,\beta,N)
+=R_x(\lambda(k);\alpha,\beta,N).
 ```
 
 Under the matching positive weight and orthonormal
@@ -2690,7 +2686,7 @@ transport identity in the regression tests.
 
 ### Graph connection-Laplacian unitary propagators — [`graph_connection_propagator.m`](../graph_connection_propagator.m)
 
-**Order:** $N=nq$, with n graph vertices and q complex fiber
+**Order:** N=nq, with n graph vertices and q complex fiber
 coordinates per vertex. For every oriented representative edge
 (i,j), the supplied q-by-q unitary connection link R_ij
 maps the **fiber at j to the fiber at i**. A nonnegative
@@ -2762,7 +2758,7 @@ connection Laplacian* [123], and Crane, Desbrun and Schröder [98].
 
 ### Non-Abelian Berry/Wilczek–Zee holonomy from moving eigenspaces — [`berry_wilson_loop.m`](../berry_wilson_loop.m)
 
-**Order:** $N=r$, the rank of the occupied subspace. The input is a
+**Order:** r, the rank of the occupied subspace. The input is a
 closed sequence of m>=2 orthonormal d-by-r frames Q_j, with the
 final overlap closing Q_m to Q_1. Unlike a collection of arbitrary
 gauge links, these frames can represent actual parameter-dependent
@@ -2828,7 +2824,7 @@ The shortest-arc spherical transport operator is already provided by [`sphere_ge
 
 ### Grassmannian geodesic ambient lift — [`grassmann_geodesic.m`](../grassmann_geodesic.m)
 
-**Order:** $N=n$; real orthogonal or complex unitary according to the supplied
+**Order:** n; real orthogonal or complex unitary according to the supplied
 orthonormal frame B=[Y,U] of width 2r. With tangent singular angles a_j,
 the ambient lift is identity outside span(B) and on span(B) rotates by
 
@@ -2845,7 +2841,7 @@ The low-rank action costs O(nr). See Edelman–Arias–Smith [97].
 
 ### Spherical geodesic-loop holonomy — [`geodesic_holonomy.m`](../geodesic_holonomy.m)
 
-**Order:** $N=n\ge3$. Columns of POINTS specify vertices of a closed spherical
+**Order:** n>=3. Columns of POINTS specify vertices of a closed spherical
 geodesic polygon. Multiply shortest-geodesic ambient rotations in path order.
 The result fixes the base point and is orthogonal; its restriction to the
 base tangent space is the Levi-Civita holonomy.
@@ -2865,7 +2861,7 @@ See sphere parallel transport [100] and the classical Gauss–Bonnet theorem.
 
 ### Block-permutation bundle transport — [`bundle_transport.m`](../bundle_transport.m)
 
-**Order:** $N=md$ for $m$ sites, a permutation pi of sites, and unitary
+**Order:** N*d for N sites, a permutation pi of sites, and unitary
 d-by-d link matrices R_j. Define U(e_j tensor v) = e_{pi(j)} tensor R_j v.
 This is a sparse **unitary** block-permutation (real **orthogonal** for
 orthogonal links). For each cycle (j_1,...,j_ell), its holonomy is the
@@ -2873,9 +2869,9 @@ ordered product H = R_{j_ell} ... R_{j_1}. The characteristic polynomial
 on that cycle is det(z^ell I_d - H). Thus each eigenvalue of H produces
 all ell-th roots, with exact multiplicities. For integer k, its trace
 contribution is ell*trace(H^(k/ell)) if ell divides k, and zero
-otherwise. Dividing by m*d gives the equal-weight trace moments.
+otherwise. Dividing by N*d gives the equal-weight trace moments.
 
-The operator/adjoint apply link matrices and reverse edges in O(m*d^2)
+The operator/adjoint apply link matrices and reverse edges in O(N*d^2)
 work per right-hand side. A change of site frames G_j replaces a link
 with G_{pi(j)} R_j G_j^* and conjugates U by the global block-diagonal
 frame matrix. The old `connection_cycle` is the single-cycle d=2
@@ -2890,13 +2886,13 @@ maps and the connection Laplacian," *Comm. Pure Appl. Math.* 65 (2012),
 
 ### Cyclic discrete-connection transport — [`connection_cycle.m`](../connection_cycle.m)
 
-**Order:** $N=2n$; exactly sparse real orthogonal block-permutation matrix.
+**Order:** 2N; exactly sparse real orthogonal block-permutation matrix.
 Each leg carries a prescribed SO(2) connection rotation R(phi_j).
 The holonomy is R(sum(phi_j)), and the exact eigenvalues are
 
 ```math
-\exp\left(i\frac{2\pi k\pm\sum_j\phi_j}{n}\right),
-\qquad k=0,\ldots,n-1.
+\exp\left(i\frac{2\pi k\pm\sum_j\phi_j}{N}\right),
+\qquad k=0,\ldots,N-1.
 ```
 
 This is an **original proposed benchmark** assembled from documented local
@@ -2908,7 +2904,7 @@ Schröder [98].
 
 ### Lie-group geodesic parallel transport — [`lie_geodesic_transport.m`](../lie_geodesic_transport.m)
 
-**Order:** $N=n^2$ real orthogonal matrix representing transport on the real Lie
+**Order:** n² real orthogonal matrix representing transport on the real Lie
 algebra u(n) of skew-Hermitian matrices. Along exp(tK), K=i diag(kappa),
 the left-trivialized transport is exp(-t ad_K/2). In the real orthonormal
 basis consisting of n diagonal and n(n-1)/2 off-diagonal generator pairs,
@@ -2928,7 +2924,7 @@ a different real action. See Lie-group parallel transport [99].
 
 ### Time-dependent noncommuting SO(n) flows — [`time_skew_magnus.m`](../time_skew_magnus.m)
 
-**Order:** $N=n\ge3$. This benchmark treats the time-dependent nonquantum
+**Order:** n>=3. This benchmark treats the time-dependent nonquantum
 flow Y'(t)=A(t)Y(t), with Y(0)=I and **real skew-symmetric**
 
 ```math
@@ -3021,7 +3017,7 @@ See Hairer, Lubich and Wanner [101,102].
 
 ### Periodic coupled oscillators: Gauss–Legendre and Störmer–Verlet — [`geometric_oscillator.m`](../geometric_oscillator.m)
 
-**Order:** $N=2n$ real orthogonal-symplectic, for $n$ mechanical
+**Order:** $2n$ real orthogonal-symplectic, for $n$ mechanical
 displacements. **Application:** vibrational lattice dynamics, periodic
 semidiscretizations of wave equations and structure-preserving integration.
 The physical positive-stiffness oscillator is
@@ -3114,7 +3110,7 @@ in [93, 94]. **References:** [93, 94].
 
 ### One-dimensional finite-element wave equation with consistent mass — [`geometric_fem_wave.m`](../geometric_fem_wave.m)
 
-**Order:** $N=2n$ real orthogonal-symplectic, from a spatially
+**Order:** $2n$ real orthogonal-symplectic, from a spatially
 discretized elastic/acoustic wave model with $n$ interior nodes.
 For the scalar model $q_{tt}-c^2q_{xx}+\omega_0^2q=0$ on $(0,L)$,
 use continuous piecewise-linear finite elements on a uniform grid
@@ -3215,7 +3211,7 @@ current implementation has the fast matvec of Townsend/Slevinsky algorithms.
 
 ### General Gaussian transform from Jacobi recurrences — [`gauss_recurrence_transform.m`](../gauss_recurrence_transform.m)
 
-**Order:** $N=n$. Input is the real diagonal b_0,...,b_(n-1) and strictly
+**Order:** n. Input is the real diagonal b_0,...,b_(n-1) and strictly
 positive subdiagonal a_1,...,a_(n-1) of a finite Jacobi tridiagonal
 J=diag(b)+diag(a,1)+diag(a,-1). This gives simple real quadrature nodes,
 positive Gaussian weights and the orthogonal evaluation transform
@@ -3240,7 +3236,7 @@ and spectral testing. Golub and Welsch [104],
 
 ### Gauss--Jacobi transform — [`gauss_jacobi_transform.m`](../gauss_jacobi_transform.m)
 
-**Order:** $N=n$. **Parameters:** alpha,beta > -1. The weight on [-1,1]
+**Order:** n. **Parameters:** alpha,beta > -1. The weight on [-1,1]
 is `(1-x)^alpha (1+x)^beta`, normalized to probability measure.
 The Gauss evaluation matrix is exactly real orthogonal, constructed
 through the Jacobi recurrence and Golub--Welsch. The special cases
@@ -3267,7 +3263,7 @@ eigenphases are unknown, unrelated to Gauss nodes. [104,105,106]
 
 ### Gauss--Hermite transform — [`gauss_hermite_transform.m`](../gauss_hermite_transform.m)
 
-**Order:** $N=n$. **Construction:** For the normalized Gaussian weight
+**Order:** n. **Construction:** For the normalized Gaussian weight
 `exp(-x^2)/sqrt(pi)` and orthonormal physicists' Hermite polynomials `p_k`,
 the weighted Gauss evaluation matrix is
 
@@ -3286,7 +3282,7 @@ Gauss--Hermite nodes are eigenvalues of the *Jacobi* matrix, not of `Q`.
 
 ### Generalized Gauss--Laguerre transform — [`gauss_laguerre_transform.m`](../gauss_laguerre_transform.m)
 
-**Order:** $N=n$. **Parameter:** alpha > -1. The normalized positive measure
+**Order:** n. **Parameter:** alpha > -1. The normalized positive measure
 has density proportional to `x^alpha exp(-x)` on `[0,infinity)`.
 The Jacobi tridiagonal for the positive-leading orthonormal Laguerre
 polynomials has diagonal `2*k+alpha+1`, k=0,...,n-1, and offdiagonal
@@ -3316,7 +3312,7 @@ we do not claim a fast action here. [104,106,107]
 
 ### Wigner degree-ell rotation — [`wigner_rotation.m`](../wigner_rotation.m)
 
-**Order:** $N=2\ell+1$, ell=0,1,... . **Parameters:** z-y-z Euler angles
+**Order:** 2*ell+1, ell=0,1,... . **Parameters:** z-y-z Euler angles
 (alpha,beta,gamma) in radians. With m=-ell,...,ell, the generator
 builds the complex spherical harmonic representation
 
@@ -3335,7 +3331,7 @@ constructed using `expm`; no fast rotation algorithm claimed. [108]
 
 ### Degree-truncated spherical rotation — [`spherical_harmonic_rotation.m`](../spherical_harmonic_rotation.m)
 
-**Order:** $N=L^2$, with degrees ell=0,...,L-1. **Structure:** sparse block
+**Order:** L^2, with degrees ell=0,...,L-1. **Structure:** sparse block
 diagonal with `D^(ell)(R)` blocks. The phase `exp(-i*m*delta)`
 has multiplicity `L-abs(m)` for m=-(L-1),...,L-1, before merging
 coincident phases. An exact Fourier-moment identity is
@@ -3354,7 +3350,7 @@ representation structure. [108]
 
 ### Periodic sinc/Dirichlet fractional shift — [`periodic_sinc_shift.m`](../periodic_sinc_shift.m)
 
-**Order:** $N=n$ for any positive integer $n$, with an explicit distinction between odd-
+**Order:** arbitrary positive n, with an explicit distinction between odd-
 and even-order constructions. **Parameter:** real shift tau in grid samples.
 The default call is unchanged: it requires ODD n and gives the real
 orthogonal translation with the centered Fourier modes
@@ -3423,7 +3419,7 @@ for related fast *algorithms*, not a blanket assertion of unitarity.
 
 ### Stiefel geodesic ambient lift — [`stiefel_geodesic.m`](../stiefel_geodesic.m)
 
-**Order:** $N=n\ge2p$. Orthonormal frames B=[Y,Q] (n-by-2p), skew-Hermitian
+**Order:** n>=2p. Orthonormal frames B=[Y,Q] (N-by-2p), skew-Hermitian
 p-by-p A, and arbitrary p-by-p R specify tangent H=YA+QR. With
 
 ```math
@@ -3442,7 +3438,7 @@ in O(np) arithmetic. Edelman–Arias–Smith [97].
 
 ### Non-Abelian Grassmannian loop holonomy — [`grassmann_holonomy.m`](../grassmann_holonomy.m)
 
-**Order:** $N=r$, from n-by-r orthonormal frames Y_j of a closed subspace
+**Order:** r, from n-by-r orthonormal frames Y_j of a closed subspace
 polygon in complex Gr(r,n). On each unique shortest geodesic arc the
 canonical tautological-bundle transport, represented in frame coordinates,
 is the unitary polar factor of Y_(j+1)^*Y_j (provided this overlap is
@@ -3574,7 +3570,7 @@ statistics and symmetry-preserving numerical methods.
 
 ### Heterogeneous gyroscopic/Coriolis oscillators — [`gyroscopic_oscillator.m`](../gyroscopic_oscillator.m)
 
-**Order:** $N=2n$ real orthogonal ($n\geq2$ mechanical displacements). **Application:** conservative gyroscopic vibrations and rotating-structure models. This is a reproducible *benchmark specialization*, not experimental apparatus data.
+**Order:** $2n$ real orthogonal ($n\geq2$ mechanical displacements). **Application:** conservative gyroscopic vibrations and rotating-structure models. This is a reproducible *benchmark specialization*, not experimental apparatus data.
 
 For $j=1,\ldots,n$, take diagonal positive $M$ with entries $m_j=1+0.2j/n+0.05\sin j$. Let $D$ be the forward-difference matrix with row $j$ equal to $e_{j+1}^T-e_j^T$, and let $E_{j+1,j}=1$ with all other entries zero. Define
 
@@ -4291,8 +4287,8 @@ bilinear elements in 2D and trilinear elements in 3D. The
 one-dimensional meshes are uniform with $n_a$ unknown interior
 Dirichlet nodal values and spacing $\Delta x_a=L_a/(n_a+1)$.
 The total number of physical displacement nodes is
-$m=\prod_{a=1}^{d}n_a$. The returned real orthogonal step has
-matrix order $N=2m$, because the phase-space state includes
+$N=\prod_{a=1}^{d}n_a$. The returned real orthogonal step has
+matrix order $2N$, because the phase-space state includes
 both displacement and its canonical momentum.
 
 **Consistent mass, true Galerkin stiffness, and tensor order.**
@@ -4451,16 +4447,16 @@ The unit-circle claim requires the strict stable
 Verlet parameter range.
 
 **Matrix-free performance and validation.** The
-`operator` mode stores $O(m)$ complex
+`operator` mode stores $O(N)$ complex
 phase samples and applies forward/adjoint
 multidimensional **orthonormal DST-I** transforms
 one coordinate at a time using the existing FFT
 kernel `um_dst1_apply`. For fixed dimension
-$d\le3$, arithmetic complexity is $O(N\log N)$ (since $N=2m$)
-per right-hand side; no $N$-by-$N$ dense
+$d\le3$, arithmetic complexity is $O(N\log N)$
+per right-hand side; no $2N$-by-$2N$ dense
 matrix is formed. Dense matrix/pencil output is
-restricted to $m\le128$; explicit sparse Verlet
-quadratic output to $m\le10^4$. The tests compare
+restricted to $N\le128$; explicit sparse Verlet
+quadratic output to $N\le10^4$. The tests compare
 small-grid mass/stiffness with an **independent
 entry-by-entry FE assembly**, check the generalized
 eigenvalues and all modes, energy and symplectic
@@ -4689,7 +4685,7 @@ returns the tangent rotation of an $H^2$ triangle embedded by
 an explicitly artificial identity direct sum, this family
 computes the **intrinsic** Levi–Civita holonomy of a closed
 geodesic polygon in genuine hyperbolic $H^n$ for $n=2,\ldots,40$.
-The output is an $N$-by-$N$ real $SO(N)$ matrix in an
+The output is an $n$-by-$n$ real $SO(n)$ matrix in an
 orthonormal tangent basis at the starting vertex.
 For $n\ge3$, non-coplanar polygons can produce
 noncommuting, non-Abelian holonomy.
@@ -6220,7 +6216,7 @@ v_j=Q*h_j, the recurrence column is respectively
 ```
 
 Thus H,K are **rectangular** recurrence matrices, not individually
-unitary, and the conventional reduced $N-1$ order rational compression
+unitary, and the conventional reduced n-1 order rational compression
 does not have to be unitary. The full Q'*Z*Q closure is unitary
 because the entire finite discrete L2 measure space is represented.
 An infinite-measure orthogonal-rational-function recurrence or
@@ -6228,8 +6224,8 @@ arbitrary structured square-pencil completion is not claimed.
 
 Modes 'matrix', 'basis'/'parameters', 'pencil' and 'spectral' expose
 the true distinctions and exact finite trace/cyclic measures.
-No 'operator' mode is claimed since forming Q requires $O(N^3)$ work
-and caching it requires $O(N^2)$ storage. Sources [9,162].
+No 'operator' mode is claimed since forming Q is O(n^3) and caching
+it requires O(n^2) storage. Sources [9,162].
 
 ## Core-factored strict unitary–unitary Hessenberg pencils — [`unitary_hessenberg_pencil.m`](../unitary_hessenberg_pencil.m)
 
@@ -6458,6 +6454,76 @@ is tested for spins `s=0,+/-1,+/-2`, and the local polar
 spin-frame convention is not asserted globally smooth.
 Background references [104,107,165].
 
+## Peter–Weyl Fourier transform on SO(3) — [`so3_peter_weyl_transform.m`](../so3_peter_weyl_transform.m)
+
+Unlike `wigner_rotation(ell,...)`, which is a square Wigner
+representation at **one prescribed rotation**, this construction
+analyzes functions on the entire 3D rotation group. In the
+z-y-z Euler convention, use **normalized Haar measure**
+
+```math
+d\mu(R)=\frac{d\alpha\,\sin\beta\,d\beta\,d\gamma}{8\pi^2},
+\quad\alpha,\gamma\in[0,2\pi),\quad\beta\in[0,\pi].
+```
+
+The L2(dmu)-normalized Peter–Weyl basis is
+
+```math
+F_{\ell mn}(\alpha,\beta,\gamma)
+=\sqrt{2\ell+1}\,e^{-im\alpha}
+d^\ell_{mn}(\beta)e^{-in\gamma}.
+```
+
+For bandlimit `L`, the coefficient dimension is
+`sum_(ell=0..L-1)(2ell+1)^2=L(4L^2-1)/3`.
+A Gauss–Legendre rule of `L` colatitude nodes and
+`M=2L-1` equally spaced values of each outer Euler angle
+gives `L*M^2` distinct sample locations. The **weighted**
+sampling matrix is
+
+```math
+A_{(j,k,h),(\ell,m,n)}=
+\sqrt{\frac{w_j}{2M^2}}\;
+\sqrt{2\ell+1}\,D^\ell_{mn}(\alpha_k,\beta_j,\gamma_h).
+```
+
+Here rows are beta-fastest, then alpha, then gamma;
+columns are ordered ell, m=-ell:ell, n=-ell:ell.
+Both finite Fourier rules resolve differences of azimuthal
+frequencies up to 2L-2. At fixed m,n, products of
+Wigner-d latitude factors are polynomials in x=cos(beta)
+of degree at most 2L-2, so Gauss–Legendre integrates
+them exactly. Hence `A^*A=I` mathematically: exact
+finite Plancherel/Parseval for the bandlimited space.
+Except when L=1, **A is rectangular**, NOT a unitary.
+
+The registered **strict square orthogonal generator** is a
+fixed-Wigner-index latitude block. Set
+`ell0=max(|m|,|n|)`, `a=|m-n|`, `b=|m+n|`.
+The corresponding `L-ell0` Gauss–Jacobi modes yield
+
+```math
+Q_{mn}=(-1)^{\max(0,m-n)}Q_{\mathrm{Gauss\text{-}Jacobi}}
+(L-\ell_0,a,b),\qquad Q_{mn}^*Q_{mn}=I.
+```
+
+Its *finite matrix eigenphases are unknown*; the
+Jacobi zeros are **real quadrature nodes**, not those phases.
+The full `sampling` rectangle is explicitly materialized only
+for L<=7, while `sampling_operator` performs an exact two-angle
+FFT separation with fixed-(m,n) Wigner–Jacobi latitude blocks
+in `O(L^4+L^3 log L)` work and `O(L^4)` cached storage per
+coefficient map, compared to `O(L^6)` naive dense evaluation.
+The adjoint is the weighted group Fourier analysis.
+
+The implementation independently reconstructs the
+Gauss–Legendre scheme related to [167]; it does NOT
+reproduce the distinct McEwen et al. 2015 three-torus
+extension [166] or claim optimized high-bandlimit S2FFT
+Wigner recurrences. The normalization, left/right z-axis
+rotation covariance, and finite Haar Plancherel are tested.
+Background [104,108,166,167].
+
 ## Bibliography
 
 1. P. J. Davis, *Circulant Matrices*, Wiley, 1979. ISBN 9780471057710. [Library record](https://openlibrary.org/books/OL4407364M/Circulant_matrices).
@@ -6667,3 +6733,6 @@ Background references [104,107,165].
 164. D. Camps, T. Mach, R. Vandebril and D. S. Watkins, “On pole-swapping algorithms for the eigenvalue problem,” *Electronic Transactions on Numerical Analysis* **52** (2020), 480–508. [DOI](https://doi.org/10.1553/etna_vol52s480); [preprint](https://arxiv.org/abs/1906.08672).
 
 165. B. P. Huffenberger and B. D. Wandelt, “Fast and Exact Spin-s Spherical Harmonic Transforms,” *Astrophysical Journal Supplement Series* **189** (2010), 255–260. [DOI](https://doi.org/10.1088/0067-0049/189/2/255); [preprint](https://arxiv.org/abs/1007.3514).
+
+166. J. D. McEwen, M. Büttner, B. Leistedt, H. V. Peiris and Y. Wiaux, “A Novel Sampling Theorem on the Rotation Group,” *IEEE Signal Processing Letters* **22** (2015), 2425–2429. [DOI](https://doi.org/10.1109/LSP.2015.2490676); [preprint](https://arxiv.org/abs/1508.03101).
+167. Z. Khalid, S. Durrani, R. A. Kennedy, Y. Wiaux and J. D. McEwen, “Gauss–Legendre Sampling on the Rotation Group,” *IEEE Signal Processing Letters* **23** (2016), 207–211. [DOI](https://doi.org/10.1109/LSP.2015.2503295); [preprint](https://arxiv.org/abs/1508.03353).

@@ -84,9 +84,7 @@ rather than fabricating spectral formulas or silently calling eig().
 
 ## Mathematical distinctions
 
-For a unitary $U\in\mathbb C^{N\times N}$, the finite empirical measure is
-written using uppercase $N$, the actual matrix order (not necessarily a
-physical parameter named $n$):
+For U of order N, the finite empirical measure is
 
 ```math
  \mu_N=\frac{1}{N}\sum_{j=1}^{N}\delta_{\arg\lambda_j},
@@ -218,3 +216,13 @@ unitary/orthogonal transform eigenvalues. Its auxiliary
 L(2L-1)-by-(L²-s²) rectangular isometry rather than a
 square matrix, hence there is no unitary finite trace
 eigenphase counting law for that sampling matrix.
+
+
+`so3_peter_weyl_transform(L,m,n,'spectral')` reports
+UNKNOWN finite matrix eigenphases for the STRICT SQUARE
+fixed-pair Jacobi latitude transform. Gauss–Jacobi nodes are
+real quadrature points, not eigenphases. The full SO(3)
+`'sampling_operator'` and `'sampling'` interfaces are
+rectangular isometries, with no unitary finite trace
+eigenphase law. They are unrelated to the known finite
+phase spectrum of a fixed Wigner rotation D^ell(R).
