@@ -72,6 +72,25 @@ for n=[4 8 12 20 28]
             verifyLessThan(tc,min(abs(lam-nodes(j))),3e-8*n);
         end
         verifyLessThan(tc,P.maximum_forward_node_error,3e-8*n);
+        verifyTrue(tc,P.eigenvalue_matching_unique);
+        verifyLessThan(tc,P.maximum_forward_weight_error,2e-7*n);
+        % Independent diagonalization: compare cyclic eigenvector weights,
+        % NOT the equal-weight empirical trace eigenphase measure.
+        [V,D]=eig(U);
+        eigenvalues=diag(D);
+        distance=abs(nodes-eigenvalues.');
+        [~,match]=min(distance,[],2);
+        verifyEqual(tc,numel(unique(match)),n);
+        numericalCyclicWeights=abs(V(1,match).').^2;
+        verifyLessThan(tc,max(abs(numericalCyclicWeights-P.weights)), ...
+            2e-7*n);
+        for k=0:3
+            observedMoment=sum(numericalCyclicWeights.* ...
+                eigenvalues(match).^k);
+            targetMoment=sum(P.weights.*nodes.^k);
+            verifyLessThan(tc,abs(observedMoment-targetMoment), ...
+                3e-7*n);
+        end
         F=etna_hessenberg(n,name,seed,[],'operator');
         X=randn(n,2)+1i*randn(n,2);
         verifyLessThan(tc,norm(F(X,'notransp')-U*X,'fro'), ...
@@ -90,6 +109,8 @@ A=etna_hessenberg(10,'7.5',2,[],'parameters');
 B=etna_hessenberg(10,'7.5',5,[],'parameters');
 verifyGreaterThan(tc,norm(A.weights-B.weights),.01);
 verifyEqual(tc,A.paper_example,'7.5-modern-analogue');
+verifyTrue(tc,A.eigenvalue_matching_unique);
+verifyLessThan(tc,A.maximum_forward_weight_error,2e-7*10);
 verifyEqual(tc,etna_hessenberg(10,'7.5',2,[],'spectral').finite.kind,'exact');
 S=etna_hessenberg(10,'7.1',2,2,'spectral');
 verifyEqual(tc,S.finite.kind,'unknown');
