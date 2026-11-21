@@ -6260,8 +6260,59 @@ Concentration factors are eigenvalues of K in [0,1], NOT eigenvalues of
 the orthogonal matrix Q'. The latter has a generally unknown phase law.
 The exact Shannon number is trace(K)=L^2*(1-cos(Theta))/2. Empty/full
 caps return the canonical Q=I; `parameters` includes K, eigenvalues and
-real-harmonic basis labels. No general polygon/mask or fast matrix-free
-mode is claimed. The family is distinct from 1D DPSS and Wigner rotations.
+real-harmonic basis labels. The family is distinct from 1D DPSS and Wigner rotations.
+
+**Commuting Grünbaum tridiagonal and matrix-free action.**
+Simons--Dahlen--Wieczorek [156, section 5.4, equations (5.18)--(5.19)]
+derive an operator commuting exactly with every fixed-order
+spherical-cap concentration kernel. In the repository's bandlimit
+convention (maximum degree $L-1$, not the paper's $L$) the
+real symmetric tridiagonal $T_m$ is **the negative** of
+their Grünbaum matrix, with entries
+
+```math
+(T_m)_{\ell,\ell}=\ell(\ell+1)\cos\Theta,\qquad
+(T_m)_{\ell,\ell+1}
+=\big[L^2-(\ell+1)^2\big]
+\sqrt{\frac{(\ell+1)^2-m^2}{(2\ell+1)(2\ell+3)}},
+\quad m\le\ell<L-1.
+```
+
+The matrices $T_m$ and $K_m$ commute exactly in mathematical
+arithmetic. Unlike the severely clustered spectrum of $K_m$,
+the tridiagonal $T_m$ has simple, separated eigenvalues.
+This selects stable coefficient eigenvectors even when
+concentration factors approach zero or one. Its spectral
+parameters $\chi$ are **not** concentration factors
+$\lambda$, nor eigenphases of the orthogonal analysis matrix.
+
+The `commuting` mode exposes all $T_m$,
+their orthonormal eigenvectors, the original basis labels and
+the globally concentration-sorted permutation. Each
+$\lambda$ is independently obtained from the
+$L$-point cap Gaussian quadrature Rayleigh quotient,
+not from diagonalizing $K$. The
+`operator` mode applies that basis and its adjoint/transpose
+to multiple right-hand sides as independent azimuthal blocks
+plus permutation, without ever assembling $K$ or full $Q$.
+The *finite mathematical orthogonal operator* is the exact
+Slepian eigenbasis; floating-point errors of the generic
+per-block eigensolver are not zero.
+
+For $N=L^2$, storage and **per-RHS multiplication** are
+$O(L^3)=O(N^{3/2})$ rather than $O(N^2)$.
+This implementation still uses generic dense `eig(T_m)`
+for each tridiagonal block, and direct cap quadrature
+Rayleigh quotients: setup is $O(L^4)$, not an
+$O(L^2)$ specialized symmetric-tridiagonal eigensolver.
+Structured modes support $L\le64$; dense legacy
+modes retain $L\le24$. Independent regression verifies
+the *commutator* $[K_m,T_m]$, the cap eigen-residual,
+the concentration trace, full/empty caps, multiple complex
+right-hand sides and a larger $L=48$ action.
+
+**Issue #118 remains open** for arbitrary spherical polygons,
+certified weighted masks and more scalable cap solvers.
 Source [156].
 ## Exact non-axisymmetric spherical-lune Slepian eigenbases — [`spherical_lune_slepian.m`](../spherical_lune_slepian.m)
 
