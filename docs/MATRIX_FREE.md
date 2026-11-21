@@ -23,7 +23,11 @@ factor order under adjoints. No custom MATLAB matrix class is required.
 ## Shared kernels
 
 The table distinguishes **stored operator data** from per-vector work.
-Here `N` is the actual matrix order, `q` is the qubit count when `N=2^q`,
+Throughout this document, uppercase `N` is the order of the matrix being
+applied, independently of the public MATLAB argument name. The input `n`
+can instead denote physical sites or spins; identify the relationship
+explicitly. For example, `dirac_automaton(n,m)` has `N=2*n`.
+Here `q` is the qubit count when `N=2^q`,
 `g` is the number of gates or cores, and `d,t` describe a
 tensor-product dimension `N=d^t`. Workspace for an arbitrary vector is
 at least `O(N)` when a full state vector must be read. Complexity claims

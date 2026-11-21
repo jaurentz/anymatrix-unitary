@@ -11,7 +11,7 @@ It complements [MATRIX_FREE.md](MATRIX_FREE.md) (the actual MATLAB function-hand
 
 ## 1. What counts as efficient?
 
-Let $N$ denote the **matrix order** (not the number of qubits, grid points before doubling, tensor modes, or physical sites). Complexity figures below refer to one arbitrary dense vector after any stated setup; multiple right-hand sides usually scale with their count. Let $s=\mathop{\mathrm{nnz}}(U)$, $b$ be a fixed bandwidth/block size, $r$ a low-rank parameter, $g$ a number of local gates/cores, and $L$ a number of tensor factors.
+Use **$N$ for the matrix order** in every $N\times N$ unitary/orthogonal representation and its complexity bounds; physical counts and generator input parameters retain separate symbols (such as $n$, $q$, or $L$). Complexity figures below refer to one arbitrary dense vector after any stated setup; multiple right-hand sides usually scale with their count. Let $s=\mathop{\mathrm{nnz}}(U)$, $b$ be a fixed bandwidth/block size, $r$ a low-rank parameter, $g$ a number of local gates/cores, and $L$ a number of tensor factors.
 
 Four separate attributes must be recorded:
 
@@ -326,7 +326,7 @@ Gauss-Chebyshev I and II matrices:
 `Q_I=DCTIII*diag((-1).^k)` at (alpha,beta)=(-1/2,-1/2),
 and `Q_II=DSTI*diag((-1).^k)` at (+1/2,+1/2).
 Both share verified O(n log n) FFT kernels for forward and adjoint,
-with O(n) operator description/workspace; no n-by-n matrix is stored.
+with $O(N)$ operator description/workspace; no $N\times N$ matrix is stored.
 The full Gauss-Jacobi and fixed-order associated-Legendre cases
 still use O(n^3) Golub-Welsch setup, O(n^2) multiplication, and
 **do not claim** a fast operator. This specialization is a consequence

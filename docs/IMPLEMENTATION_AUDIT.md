@@ -8,19 +8,23 @@ actions. MATLAB numeric matrices remain the default Anymatrix output.
 
 ## Implemented and shared
 
+All tabulated costs use uppercase `N` for the actual matrix order. Let `g`
+denote the number of gates, `m` the truncation order for exponential actions,
+and `RHS` the number of right-hand sides. Physical input sizes may differ.
+
 | Matrix families | Kernel | Memory without explicit matrix | Action per column |
 | --- | --- | --- | --- |
-| OPUC / Verblunsky coefficient variants (CMV, Hessenberg, inverse, twisted) | `um_core_apply` | O(n) | O(n) |
-| `phase_circulant`, `cycle_propagator`, `kicked_harper`, `kicked_rotor`, `quantum_baker` | `um_fft_apply` | O(n) | O(n log n) |
-| `cycle_shift`, `weighted_shift`, `diagonal_phase` | `um_monomial_apply` | O(n) | O(n) |
-| `grover_operator` | `um_reflection_apply` | O(n) | O(n) |
-| `haar_wavelet` | `um_wavelet_apply` | O(1) coefficients | O(n) |
-| `floquet_ising`, `selfdual_kicked_ising` | `um_spin_apply` | O(2^n) phases | O(n 2^n) |
-| `dual_unitary_circuit`, `xxz_floquet` | `um_circuit_apply` | O(n) local gates | O(depth n 2^n) |
-| `cayley_jacobi` | `um_cayley_apply` | O(n) sparse factors (typically) | O(n) |
-| `kicked_bose_hubbard`, `kicked_top` | `um_kick_tridiag_apply` + `um_tridiag_exp_apply` (`expmv`/fallback) | O(n) coefficient data and O(n·RHS) workspace | O(n·m·RHS), m is Chebyshev truncation order |
-| `jaynes_cummings` | `um_jaynes_apply` | O(n) excitation block coefficients | O(n·RHS) |
-| `chalker_coddington` | `um_cc_geometry` + `um_scattering_apply` | O(n) scattering ports, phases, and blocks | O(n·RHS) |
+| OPUC / Verblunsky coefficient variants (CMV, Hessenberg, inverse, twisted) | `um_core_apply` | O(N) | O(N) |
+| `phase_circulant`, `cycle_propagator`, `kicked_harper`, `kicked_rotor`, `quantum_baker` | `um_fft_apply` | O(N) | O(N log N) |
+| `cycle_shift`, `weighted_shift`, `diagonal_phase` | `um_monomial_apply` | O(N) | O(N) |
+| `grover_operator` | `um_reflection_apply` | O(N) | O(N) |
+| `haar_wavelet` | `um_wavelet_apply` | O(1) coefficients | O(N) |
+| `floquet_ising`, `selfdual_kicked_ising` | `um_spin_apply` | O(N) phases, N=2^n | O(N log N) |
+| `dual_unitary_circuit`, `xxz_floquet` | `um_circuit_apply` | O(g) gates | O(gN), N=2^n |
+| `cayley_jacobi` | `um_cayley_apply` | O(N) sparse factors (typically) | O(N) |
+| `kicked_bose_hubbard`, `kicked_top` | `um_kick_tridiag_apply` + `um_tridiag_exp_apply` (`expmv`/fallback) | O(N) coefficient data and O(N·RHS) workspace | O(N·m·RHS), m is Chebyshev truncation order |
+| `jaynes_cummings` | `um_jaynes_apply` | O(N) excitation block coefficients | O(N·RHS) |
+| `chalker_coddington` | `um_cc_geometry` + `um_scattering_apply` | O(N) scattering ports, phases, and blocks | O(N·RHS) |
 | `dirac_automaton` | `um_dirac_apply` | O(N) state, constant local parameters | O(N·RHS) |
 | `discrete_fourier`, `orthogonal_dct`, `discrete_sine`, `discrete_hartley`, `walsh_hadamard`, `affine_fourier`, `finite_zak` | Shared FFT, DCT/DST, Walsh, chirp and Zak kernels | O(N) or less operator data, O(N) FFT workspace | O(N log N·RHS) |
 | `orthogonal_butterfly` | `um_butterfly_apply` | O(N) rotation angles | O(N log N·RHS) |
@@ -44,12 +48,12 @@ forward/adjoint tests, and parameter conditions must be checked.
 The final `'operator'` argument returns `@(X,flag) ...`; valid flags are
 `'notransp'`, `'transp'` (conjugate transpose), `'ctransp'`,
 and `'size'`. Multiple right-hand sides are supported. Materialize
-an n-by-n matrix using `op(eye(n),'notransp')` only when memory allows.
+an $N\times N$ matrix using `op(eye(N),'notransp')` only when memory allows.
 
 The Hermitian-tridiagonal exponential defaults to MATLAB's **`expmv`**
 (R2023b and later), using a sparse tridiagonal matrix. For R2020b–R2023a,
 a Chebyshev–Bessel fallback with numerical tail selection remains available.
-No uniformly O(n)-time or certified arbitrary-tolerance claim is made.
+No uniformly $O(N)$-time or certified arbitrary-tolerance claim is made.
 The *explicit* Bose–Hubbard and kicked-top generators call MATLAB **`expm`**
 on a sparse Hermitian-tridiagonal input; the result is generally dense.
 Matrix-free mode never constructs that full exponential.
@@ -58,7 +62,7 @@ Jaynes–Cummings and Chalker–Coddington retain their sparse numeric defaults.
 ## Already economical as MATLAB sparse arrays
 
 `orthogonal_blocks`, `split_step_walk`, `dirac_automaton`,
-`jaynes_cummings` and `chalker_coddington` have O(n) nonzeros. There is no compelling memory advantage from replacing
+`jaynes_cummings` and `chalker_coddington` have $O(N)$ nonzeros. There is no compelling memory advantage from replacing
 their normal sparse return values. Their sparse adjoints already use MATLAB
 `A'` correctly. Unlike `orthogonal_blocks` and `split_step_walk`,
 `dirac_automaton` also exposes a separate O(N) forward/adjoint
