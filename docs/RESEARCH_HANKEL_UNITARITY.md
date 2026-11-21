@@ -35,6 +35,36 @@ T_{jk}=\sqrt{\frac{2}{n+1}}\sin\frac{jk\pi}{n+1},
 ```
 the orthonormal DST-I matrix. This is a genuine finite orthogonal transform but **not a new generic Bessel family**, and should be deduplicated against the existing DST / Chebyshev-II coverage. Other special-order collapses need individual verification.
 
+### The negative half-integer exception: DCT-VIII (implemented)
+
+For $\nu=-1/2$ the positive Bessel zeros are
+$j_{-1/2,k}=(k-1/2)\pi$ and $J_{-1/2}(z)=\sqrt{2/(\pi z)}\cos z$.
+Substitution into the **same finite normalized kernel** above yields
+
+```math
+T_{jk}=\frac{2}{\sqrt{2n+1}}
+\cos\left(\frac{2\pi(j-1/2)(k-1/2)}{2n+1}\right),
+\quad j,k=1,\ldots,n.
+```
+
+This is precisely the **DCT-VIII** (not DCT-IV): Strang's
+odd-period cosine basis with period $n+1/2$. Its exact finite
+orthogonality follows from the mixed-boundary symmetric second-difference
+eigenvectors or finite cosine sums. The newly supported
+`orthogonal_dct(n,8)` and its FFT operator in `um_dct_apply`
+supply this special case without introducing a redundant generic
+Bessel generator; `tests/test_dct_viii_bessel.m` independently
+checks the Bessel formula, orthogonality, and complex multi-RHS
+forward/adjoint application. The operator uses a length $8n+4$ FFT
+and $O(n\log n)$ work, rather than claiming Townsend's particular
+Hankel approximation is finite unitary.
+
+This **does not** settle integer-order or general-order finite DHT
+unitarity, and standard DCT-VIII is not advertised as a novel
+nontrigonometric Bessel transform. Reference: G. Strang,
+*The Discrete Cosine Transform*, SIAM Review **41** (1999), 135--147,
+https://doi.org/10.1137/S0036144598336745.
+
 ### Orthogonalization is a different family, not a repair to the source
 
 For nonsingular finite $T$, the polar factor $Q=T(T^T T)^{-1/2}$ is mathematically orthogonal. When $T$ is real symmetric, $Q$ is a symmetric involution with eigenvalues $\pm1$, assuming no zero eigenvalue. But this is **a derived polar-corrected transform**, not the original finite Bessel quadrature kernel. A generic dense polar computation destroys any promised fast-asymptotic apply complexity, so the current library should not silently use it as a replacement. The general `polar_unitary` constructor already covers the abstract polar operation; duplicating it here would add no independently justified fast Hankel algorithm.
