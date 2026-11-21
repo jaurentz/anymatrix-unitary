@@ -3433,8 +3433,43 @@ skew-symmetric matrix representing `-i*Jy`. It is unitary without
 evaluating numerically unstable factorial Wigner sums.
 For rotation angle delta satisfying
 `cos(delta/2)=cos(beta/2)*cos((alpha+gamma)/2)`, the exact eigenvalues
-are `exp(-i*m*delta)`, m=-ell,...,ell. **Action:** explicit dense matrix
-constructed using `expm`; no fast rotation algorithm claimed. [108]
+are `exp(-i*m*delta)`, m=-ell,...,ell. For generic Euler middle angle
+the explicit dense matrix is built using `expm`: no asymptotically
+fast **general-angle** action is claimed. [108]
+
+**Exact special Euler angles (issue #41).** For
+$\beta=q\pi$, integer $q$, the middle Wigner factor is a
+monomial matrix (not a dense Wigner $d$). In the actual code order
+$m=-j,\ldots,j$ (integer or half-integer spin $j$), put
+$\eta=(-1)^{2j}$ and
+$S_{m,m'}=(-1)^{j-m'}\delta_{m,-m'}$. Then
+
+```math
+e^{-i\beta J_y}=
+\begin{cases}
+I,&q\equiv0\pmod4,\\
+S,&q\equiv1\pmod4,\\
+\eta I,&q\equiv2\pmod4,\\
+\eta S,&q\equiv3\pmod4.
+\end{cases}
+```
+
+The full Euler matrix multiplies each nonzero row by
+$\exp(-i\alpha m)$ and each nonzero column by
+$\exp(-i\gamma m')$. In particular, a $2\pi$ rotation is
+$-I$ for half-integer spin but $+I$ for integer spin:
+the **SU(2) double cover is retained**, not incorrectly collapsed
+to SO(3). These exact angle classes have only $N=2j+1$
+nonzeros, $O(N)$ assembly/storage/action and no
+matrix exponential. The `operator` mode supports
+forward, adjoint, ordinary transpose and multiple RHS
+at exactly represented $\beta=q\pi$, and deliberately
+rejects generic middle angles (including nearby angles)
+rather than substituting a false sparse approximation.
+Tests independently compare with `expm(q\pi K)`
+and cover large half-integer-spin $j>2000$.
+Generic high-degree arbitrary-angle Wigner acceleration
+remains open in #41.
 
 ### Degree-truncated spherical rotation — [`spherical_harmonic_rotation.m`](../spherical_harmonic_rotation.m)
 
