@@ -5331,7 +5331,7 @@ $\sum_a\ell_a=N$. Restricting Koopman pullback
 to a cycle gives an ordinary cyclic shift, so
 
 ```math
-\operatorname{spec}(U_T)=\biguplus_a
+\mathrm{spec}(U_T)=\biguplus_a
 \big\{e^{2\pi i q/\ell_a}:q=0,\ldots,\ell_a-1\big\}.
 ```
 
