@@ -6991,6 +6991,25 @@ framework follows Simons--Dahlen--Wieczorek [156];
 the lune's particular quadrature split is independently
 derived for this implementation.
 
+## Exclusion: the common finite Bessel-zero discrete Hankel matrix
+
+The normalized integer-order Bessel-zero quasi-discrete Hankel matrix is
+**not exactly orthogonal at finite order** in general. In particular,
+for Bessel order 0 and matrix order 5 the symmetric normalization has
+$\lVert T^T T-I\rVert_F\approx3.6356\times10^{-6}$. This exceeds rounding
+error and is a truncation defect. It must **not** be added as an
+Anymatrix `unitary` or `orthogonal` generator by assuming the
+infinite-order discrete Bessel identity is finite-exact. A
+half-integer Bessel specialization reduces to the existing DST-I,
+and a polar projection is a **different**, typically dense
+derived family rather than the original fast DHT.
+
+For formula, source-specific qualifications, independent numerical
+table and negative MATLAB regression, see
+[Finite Hankel exact-unitarity research note](RESEARCH_HANKEL_UNITARITY.md)
+and `tests/test_hankel_nonunitarity.m`. The open research directions
+remain tracked in [issue #29](https://github.com/jaurentz/anymatrix-unitary/issues/29).
+
 ## Fourier–Zernike disk modal-radius unitary hybrid — [`fourier_zernike_disk.m`](../fourier_zernike_disk.m)
 
 **Order:** $N=n_r n_\phi$, with $1\le n_r\le128$ and
