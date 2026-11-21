@@ -97,8 +97,9 @@ for L=[1 2 5 9 16]
     verifyEqual(tc,FA([],'size'),[N N]);
     verifyEqual(tc,FB([],'size'),[N N]);
     X=randn(N,3)+1i*randn(N,3);
-    for pair={FA,A;FB,B}
-        op=pair{1,1};matrix=pair{1,2};
+    ops={FA,FB};matrices={A,B};
+    for caseIndex=1:2
+        op=ops{caseIndex};matrix=matrices{caseIndex};
         verifyLessThan(tc,norm(op(X,'notransp')-matrix*X,'fro'), ...
             2e-10*N);
         verifyLessThan(tc,norm(op(X,'transp')-matrix'*X,'fro'), ...
