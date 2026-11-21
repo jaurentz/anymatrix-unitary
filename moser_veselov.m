@@ -45,9 +45,14 @@ function [F,properties]=moser_veselov(n,h,J,M,steps,mode)
 properties={'square','unitary','orthogonal','normal','real', ...
             'parameter-dependent'};
 if nargin==0,F=[];return;end
-validateattributes(n,{'numeric'},{'scalar','integer','finite','>=',3,'<=',16});
+if ~(isnumeric(n)&&isscalar(n)&&isreal(n)&&isfinite(n) ...
+        &&n==floor(n)&&n>=3&&n<=16)
+    error('moser_veselov:Order','N must be an integer from 3 to 16.');
+end
 if nargin<2 || isempty(h),h=.15;end
-validateattributes(h,{'numeric'},{'scalar','real','finite','positive'});
+if ~(isnumeric(h)&&isscalar(h)&&isreal(h)&&isfinite(h)&&h>0)
+    error('moser_veselov:Step','H must be positive and finite.');
+end
 if nargin<3 || isempty(J)
     d=(1:n)';
     J=diag(1+.2*d+.08*sin(d));
