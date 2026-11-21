@@ -130,3 +130,7 @@ constant-Verblunsky distinguished-vector absolutely continuous density.
 `S.underlying.poisson_density(theta,r)` analytically smooths their sum
 for `0<=r<1`. None of these is the finite equal-weight trace measure;
 finite CMV eigenphases and cyclic weights must be computed separately.
+
+`spherical_slepian` reports an unknown orthogonal-matrix trace phase law;
+concentration eigenvalues belong instead to the distinct symmetric cap
+matrix returned in `concentration` mode.
