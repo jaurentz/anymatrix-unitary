@@ -241,6 +241,21 @@
       "operator_note": "Already O(n) sparse; custom action not needed."
     },
     {
+      "id": "simplicial_hodge_dirac",
+      "status": "implemented",
+      "category": "geometry",
+      "matrix_order": "N=nVertices+nEdges+nFaces of an oriented triangular surface, dense N<=256, sparse cochain generator N<=20000",
+      "representation": "Finite Hodge-de Rham/Kahler-Dirac on complete 0/1/2 simplicial cochains, metric normalized to sparse real symmetric H and exactly unitary U(t)=exp(-itH). NOT a two-component spin-Dirac or Ye et al. triangle-mesh spin-connection discretization.",
+      "spectral_reference": "Generic finite eigenphases unknown; chiral Gamma H Gamma=-H implies conjugate +/- unitary phase pairing; exact nullity beta0+beta1+beta2 of H guarantees at least as many eigenphases equal 1, additional time-alias eigenphases possible.",
+      "encyclopedia_references": [
+        176,
+        177
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_simplicial_hodge_cayley",
+      "operator_note": "Sparse exact Hermitian generator and cached sparse rational Cayley steps, each mathematically unitary but O(steps^-2) approximation to exp(-itH), NOT exact exp operator; dense expm remains reference. Positive explicit lumped 0/1/2 cochain metric not verified continuum Hodge star. Spin-Dirac issue #59 remains open."
+    },
+    {
       "id": "flat_torus_spin_dirac",
       "status": "implemented",
       "category": "geometry",

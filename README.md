@@ -553,6 +553,27 @@ and finite-spectrum qualifications.
 
 The canonical `daubechies_wavelet` generator supports periodized db2, db3 and db4 wavelets. Its historical `daubechies_wavelet(n,levels,output)` call remains valid (db2); request higher orders with `daubechies_wavelet(n,levels,output,order)`. The single implementation preserves the cited wavelet construction and does not duplicate `quantum_cat_map` or `krawtchouk_transform`.
 
+### Simplicial Hodge–Dirac unitary flow
+
+`simplicial_hodge_dirac(vertices,faces,t,'generator')` builds
+a sparse real symmetric **metric-normalized Hodge–de Rham/
+Kähler–Dirac** operator from an oriented triangle mesh;
+`'matrix'` returns the dense exact-in-arithmetic
+unitary exponential. The exact zero-mode count is the
+sum of simplicial Betti numbers, and the chiral grading
+forces nonzero generator eigenvalues into plus/minus pairs.
+The `'cayley_operator'` is an explicitly labeled sparse
+**unitary rational approximation**, not the exponential.
+
+This family is **not** a two-component spin Dirac
+operator and not a substitute for the curved
+spin-connection discretization still open in
+[issue #59](https://github.com/jaurentz/anymatrix-unitary/issues/59).
+The cochain metric is a specified positive diagonal
+lumping, not a claim to exact Whitney or circumcentric
+DEC convergence. See the [mathematical and spectral
+derivation](docs/MATRIX_ENCYCLOPEDIA.md).
+
 ### Further geometry: Stiefel frames and Grassmann holonomy
 
 The canonical `stiefel_geodesic` is an ambient square unitary lift of the canonical Stiefel geodesic, with a compact O(np) action. The distinct `stiefel_parallel_transport(n,p,A,B,t)` returns a **d-by-d intrinsic real orthogonal Levi–Civita tangent transport** with `d=np-p(p+1)/2`, represented in canonical moving orthonormal tangent frames. Its dense implementation uses an explicit Lie-bracket connection exponential (O(d^3) setup), with an independent ambient-connection ODE regression. A new `'operator'` mode applies the *same* projected connection using compact A/B blocks with O(n p²) per commutator action, a scaled degree-24 Taylor exponential and a rigorously bounded *truncation* error; it is **numerically near-isometric**, not a mathematically exact orthogonal truncated polynomial. This is separate from the Nguyen–Sommer specialized long-time method, which remains future work. The new `real_flag_parallel_transport(blockSizes,K,t)` extends the same normal-homogeneous quotient philosophy to real partial flag manifolds: its intrinsic **d-by-d** tangent transport has `d=sum_{a<b} k_a*k_b` and nontrivial three-block examples. Its connection has independent projector-metric validation; [full derivation](docs/REAL_FLAG_TANGENT_TRANSPORT.md). Its new `'operator'` mode avoids the d-by-d connection by applying the projected n-by-n Lie commutator in O(n³) per action, O(n²) scratch (versus O(d²) explicit generator work). The scaled Taylor exponential has a stated exact-arithmetic truncation bound, but its numerical action is only **near-orthogonal**, not exactly orthogonal. Optimized large-time Nguyen–Sommer actions and non-normal metrics remain open. The separate `grassmann_holonomy` computes non-Abelian tautological-bundle holonomy from polar-overlap links (not Levi-Civita tangent transport). `grassmann_tangent_holonomy(n,r,frames,field,mode)` instead computes intrinsic **Levi–Civita tangent holonomy** in real Gr(r,n) (orthogonal) or complex Gr(r,n) (unitary), on the correct square tangent fiber r(n-r). Complex CP¹ tangent holonomy is exactly the inverse-square of the Berry line phase, while CP² has noncommuting U(2) tangent loops. Generic analytic finite spectra unknown; no matrix-free acceleration claimed. The existing `wigner_rotation` now accepts integer and half-integer spin j; no second Wigner implementation is registered. The original Mukunda–Simon, Bendokat–Zimmermann–Absil, and Kostelec–Rockmore references are retained.
