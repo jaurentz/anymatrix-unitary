@@ -6,6 +6,10 @@ function [U,properties]=gauss_hermite_transform(n,output)
 %   exactness implies Q'*Q=I mathematically.
 %   Jacobi diagonal 0, offdiagonal sqrt(k/2), k=1,...,N-1.
 %
+%   'quadrature' also audits the exact normalized Hermite measure
+%   moments m_(2k)=(2k-1)!!/2^k, m_(2k+1)=0, for degrees up to
+%   min(8,2*n-1), independently of eigenvector sign/Gram residuals.
+%   Reported moment errors are measured, not rigorous upper bounds.
 %   'quadrature' returns a diagnostic struct with sorted real
 %   Hermite nodes, normalized weights and LOG normalized weights
 %   from rescaled Christoffel polynomials. Tiny tail weights can
@@ -54,6 +58,8 @@ if strcmp(output,'matrix')
 else
     [~,U]=um_gauss_basis(d,e);
     U.family='gauss_hermite_transform';
+    U.moment_diagnostics=um_gauss_moment_diagnostics( ...
+        U.nodes,U.log_normalized_weights,'hermite');
     U.log_function_scaling=.25*log(pi)+ ...
         .5*U.log_normalized_weights+.5*U.nodes.^2;
     U.note=['The quadrature operator Q is orthogonal; physical Hermite ', ...
