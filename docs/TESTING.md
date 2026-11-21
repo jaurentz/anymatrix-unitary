@@ -73,3 +73,10 @@ preservation of support eigenphases versus changed cyclic weights,
 exact support loss and dimension reduction, conjugation covariance,
 operator/adjoint actions and annihilation guards. It delegates to
 `inverse_opuc` rather than registering a redundant Anymatrix class.
+
+The `test_integrable_spectral_flows.m` suite verifies the discrete finite CMV
+positive-measure steps (#105), the Jacobi–Toda QR/Cayley isospectral evolution
+(#104), and the unitary Hessenberg positive-diagonal QR/Schur flow (#103).
+It separately tests fixed trace eigenphases, evolving e1 cyclic weights,
+unitarity, structural zeros, real orthogonal subfamilies, and operator actions.
+Large-time floating-point rank breakdown is documented rather than hidden.
