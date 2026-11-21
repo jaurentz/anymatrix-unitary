@@ -94,6 +94,38 @@ for j=1:steps
 end
 end
 
+function test_discrete_Manakov_Lax_isospectral_pencil(tc)
+% Moser--Veselov (1991) full Lax polynomial invariants, beyond
+% momentum conjugation and norm conservation:
+% L_k(z)=h*M_k+z*J^2 and A_k(z)=F_k-z*J.
+% L_(k+1)(z)*A_k(z)=A_k(z)*L_k(z).
+for n=[3 4 6]
+    D=moser_veselov(n,.14,[],[],8,'trajectory');
+    J=D.J;h=D.h;
+    for k=1:D.steps
+        F=D.F(:,:,k);
+        M=D.M(:,:,k);
+        Mnext=D.M(:,:,k+1);
+        for z=[0 .19 -.37 .11+.17i]
+            L=h*M+z*(J*J);
+            Lnext=h*Mnext+z*(J*J);
+            A=F-z*J;
+            verifyLessThan(tc,norm(Lnext*A-A*L,'fro'), ...
+                3e-10*max(1,norm(L,'fro')*norm(A,'fro')));
+            for p=1:4
+                verifyLessThan(tc,abs(trace(Lnext^p)-trace(L^p)), ...
+                    6e-10*max(1,norm(L,'fro')^p));
+            end
+        end
+    end
+end
+B=moser_veselov(4,.14,[],[],1,'model');
+for z=[.2 -.1i]
+    verifyLessThan(tc,norm(B.next_lax(z)*B.lax_intertwiner(z) ...
+      - B.lax_intertwiner(z)*B.lax(z),'fro'),2e-10);
+end
+end
+
 function test_zero_momentum_identity_and_finite_spectral_reference(tc)
 for n=[3 4 5 8]
     F=moser_veselov(n,.45,[],zeros(n));
