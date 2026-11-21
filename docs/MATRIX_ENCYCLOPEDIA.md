@@ -3733,8 +3733,7 @@ $m=\max(1,\lceil|t|\|K\|_F\rceil)$ substeps, with
 $\|S\|_2\le\|K\|_2\le\|K\|_F$, so
 $\|tS/m\|_2\le1$. The exact-arithmetic
 one-step remainder satisfies
-$\|e^{hS}-\sum_{k=0}^{24}(hS)^k/k!\|_2
-\le e/25!$. The complete truncated approximation has
+$\|e^{hS}-\sum_{k=0}^{24}(hS)^k/k!\|_2\le e/25!$. The complete truncated approximation has
 a bound at most $m\epsilon(1+\epsilon)^{m-1}$,
 $\epsilon=e/25!$, excluding floating roundoff.
 All actions support multiple real or complex RHS and the
