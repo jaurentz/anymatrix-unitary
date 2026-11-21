@@ -1373,7 +1373,7 @@
       "status": "implemented",
       "category": "signal_processing",
       "matrix_order": "n",
-      "representation": "dense orthogonal Gauss-Hermite positive-leading polynomial evaluation, with Sturm-stabilized first/last eigenvector sign and optional scaled three-term Christoffel log-quadrature diagnostics",
+      "representation": "dense orthogonal Gauss-Hermite positive-leading polynomial evaluation, with Sturm-stabilized first/last eigenvector sign and optional scaled three-term Christoffel log-quadrature diagnostics; independently validated analytic low-degree moments of normalized real-line Gaussian quadrature",
       "spectral_reference": "matrix eigenphases unknown; Gauss-Hermite nodes are NOT eigenvalues",
       "encyclopedia_references": [
         104,
@@ -1381,14 +1381,14 @@
       ],
       "matrix_free_supported": false,
       "operator_kernel": null,
-      "operator_note": "Dense symmetric tridiagonal Golub–Welsch O(n^3) eigensolver setup, O(n^2) memory/application, no fast operator. 'quadrature' mode independently evaluates (potentially underflowed) normalized Gaussian weights on log scale using an O(n^2) scaled recurrence, reports Gram/diagonalization residuals, and exposes logarithmic row scaling for physical L2(dx) Hermite/Laguerre FUNCTIONS distinct from polynomial weighted orthogonal Q."
+      "operator_note": "Dense symmetric tridiagonal Golub–Welsch O(n^3) eigensolver setup, O(n^2) memory/application, no fast operator. 'quadrature' mode independently evaluates (potentially underflowed) normalized Gaussian weights on log scale using an O(n^2) scaled recurrence, reports Gram/diagonalization residuals, and exposes logarithmic row scaling for physical L2(dx) Hermite/Laguerre FUNCTIONS distinct from polynomial weighted orthogonal Q. In addition, independent normalized Hermite moment checks 0..min(8,2n-1) use analytic even/odd Gaussian moments and log-Christoffel quadrature, recording scaled residuals and finite representability. These are real quadrature moments, not unitary Q eigenphase moments; no certified bound or fast operator."
     },
     {
       "id": "gauss_laguerre_transform",
       "status": "implemented",
       "category": "signal_processing",
       "matrix_order": "n",
-      "representation": "dense orthogonal generalized Gauss-Laguerre positive-leading polynomial evaluation, with Sturm-stabilized first/last eigenvector sign and optional scaled three-term Christoffel log-quadrature diagnostics",
+      "representation": "dense orthogonal generalized Gauss-Laguerre positive-leading polynomial evaluation, with Sturm-stabilized first/last eigenvector sign and optional scaled three-term Christoffel log-quadrature diagnostics; independently validated analytic low-degree moments of normalized real-line Gaussian quadrature",
       "spectral_reference": "matrix eigenphases unknown; Gauss-Laguerre nodes are NOT eigenvalues",
       "encyclopedia_references": [
         104,
@@ -1396,7 +1396,7 @@
       ],
       "matrix_free_supported": false,
       "operator_kernel": null,
-      "operator_note": "Dense symmetric tridiagonal Golub–Welsch O(n^3) eigensolver setup, O(n^2) memory/application, no fast operator. 'quadrature' mode independently evaluates (potentially underflowed) normalized Gaussian weights on log scale using an O(n^2) scaled recurrence, reports Gram/diagonalization residuals, and exposes logarithmic row scaling for physical L2(dx) Hermite/Laguerre FUNCTIONS distinct from polynomial weighted orthogonal Q."
+      "operator_note": "Dense symmetric tridiagonal Golub–Welsch O(n^3) eigensolver setup, O(n^2) memory/application, no fast operator. 'quadrature' mode independently evaluates (potentially underflowed) normalized Gaussian weights on log scale using an O(n^2) scaled recurrence, reports Gram/diagonalization residuals, and exposes logarithmic row scaling for physical L2(dx) Hermite/Laguerre FUNCTIONS distinct from polynomial weighted orthogonal Q. In addition, independent normalized Gamma(a=alpha+1) moment checks 0..min(8,2n-1) use analytic rising-factorial moments and log-Christoffel quadrature, recording scaled residuals including near alpha=-1. These are real quadrature moments, not unitary Q eigenphase moments; no certified bound or fast operator."
     },
     {
       "id": "wigner_rotation",
