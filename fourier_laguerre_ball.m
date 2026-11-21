@@ -89,15 +89,19 @@ if strcmp(output,'matrix')
 end
 % Gauss-Laguerre J for x^2*exp(-x) and Gauss-Legendre J for dx.
 pr=(0:P-1)'; jr=(1:P-1)';
-Jr=diag(2*pr+3)+diag(sqrt(jr.*(jr+2)),1) ...
-    +diag(sqrt(jr.*(jr+2)),-1);
+Jr=diag(2*pr+3);
+if P>1
+    sr=sqrt(jr.*(jr+2));
+    Jr=Jr+diag(sr,1)+diag(sr,-1);
+end
 [Vr,Dr]=eig(Jr);
 [xr,ir]=sort(diag(Dr));wr=2*(Vr(1,ir).').^2;
 % Raw positive physical weights may overflow at very large P or tau.
 % They are included only in diagnostic output, never used to form Qr.
 rw=tau^3*exp(xr).*wr;
 ja=(1:L-1)';ea=ja./sqrt(4*ja.^2-1);
-Ja=diag(ea,1)+diag(ea,-1);
+Ja=zeros(L);
+if L>1,Ja=Ja+diag(ea,1)+diag(ea,-1);end
 [Va,Da]=eig(Ja);
 [xa,ia]=sort(diag(Da));wa=2*(Va(1,ia).').^2;
 if strcmp(output,'parameters')
