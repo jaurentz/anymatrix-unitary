@@ -18,6 +18,9 @@ for n=[1 2 3 5 8 13 32]
     if n>1
         verifyGreaterThan(testCase,norm(Q-orthogonal_dct(n,4),'fro'),1e-3);
     end
+    S=orthogonal_dct(n,8,'spectral');
+    z=S.finite.eigenvalues();
+    verifyLessThan(testCase,abs(trace(Q)-sum(z)),5e-12*n);
 end
 end
 
@@ -50,5 +53,14 @@ verifyError(testCase,@()F(ones(n-1,1),'notransp'),'um_dct_apply:Dimension');
 verifyError(testCase,@()F(ones(n,1),'invalid'),'um_dct_apply:Flag');
 S=orthogonal_dct(8,8,'spectral');
 verifyEqual(testCase,S.dimension,8);
-verifyEqual(testCase,S.finite.kind,'unknown'); % no false generic-phase law
+verifyEqual(testCase,S.finite.kind,'exact');
+z=S.finite.eigenvalues();
+verifyEqual(testCase,sum(abs(z-1)<eps),4);
+verifyEqual(testCase,sum(abs(z+1)<eps),4);
+verifyEqual(testCase,S.finite.atoms.weights,[.5;.5],'AbsTol',eps);
+verifyEqual(testCase,S.finite.moments(0:5),[1 0 1 0 1 0],'AbsTol',eps);
+Sodd=orthogonal_dct(7,8,'spectral');
+verifyEqual(testCase,Sodd.finite.atoms.weights,[4/7;3/7],'AbsTol',eps);
+verifyEqual(testCase,Sodd.finite.moments(0:3),[1 1/7 1 1/7],'AbsTol',eps);
+verifyEqual(testCase,orthogonal_dct(8,4,'spectral').finite.kind,'unknown');
 end
