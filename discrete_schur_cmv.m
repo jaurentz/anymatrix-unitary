@@ -28,6 +28,7 @@ function [U,properties]=discrete_schur_cmv(n,k,h,nodes,weights,output)
 %   Cantero et al., Adv. Math. (2016):
 %   https://doi.org/10.1016/j.aim.2016.03.042
 %   Simon, OPUC (2005): https://doi.org/10.1090/coll054.1
+%   Simon, OPUC part 2: https://doi.org/10.1090/coll/054.2
 properties={'square','unitary','normal','scalable', ...
     'parameter-dependent','eigenvalues'};
 if nargin==0,U=[];return;end
