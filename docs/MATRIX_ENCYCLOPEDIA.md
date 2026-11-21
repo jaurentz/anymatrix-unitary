@@ -3703,15 +3703,58 @@ orthogonal-group parallel transport. For general `p`,
 the geodesic velocity is a fixed vector in these transported
 coordinates because `[K,K]=0`.
 
-**Algorithms and scope.** The implementation forms all
-`d`-by-`d` structure constants and evaluates a **dense
-matrix exponential**, `O(d²)` generator setup,
-`O(d³)` exponential, `O(d²)` storage and multiplication
-per right-hand side. It is limited to `n<=64,d<=256`.
-The improved `O(np²)` small-time and `O(tp³)`
-large-time exponential-action method of Nguyen–Sommer [168],
-general flag-manifold transport and other Stiefel metrics
-are **not** implemented by this prototype.
+**Dense reference:** the original `matrix` and `model`
+modes assemble the real $d\times d$ projected connection
+and its **exact mathematical orthogonal exponential**
+$Q=e^{tS}$, at $O(d^2)$ assembly, $O(d^3)$ setup and
+$O(d^2)$ storage/action. These remain capped at
+$n\le64,d\le256$.
+
+**Scalable matrix-free tangent action:** `operator` applies
+the *same projected Stiefel Levi–Civita connection* without
+constructing $S$ or the full $n\times n$ matrix $K$.
+Represent an arbitrary horizontal skew matrix as
+$E=\begin{bmatrix}E_{11}&-E_{21}^T\\E_{21}&0\end{bmatrix}$.
+The required projected bracket has only two blocks:
+
+```math
+[K,E]_{11}=AE_{11}-E_{11}A-B^TE_{21}+E_{21}^TB,
+\qquad
+[K,E]_{21}=BE_{11}-E_{21}A.
+```
+
+Thus applying $S=-\frac12 P_{\mathfrak m}\mathrm{ad}_K$
+to tangent coordinates uses $O(np^2)$ arithmetic and
+$O(np)$ work storage for small $p$ instead of a dense
+$d\times d$ multiplication. The helper
+`um_stiefel_connection_expmv.m` applies a *degree-24
+scaled Taylor exponential*: it splits time into
+$m=\max(1,\lceil|t|\|K\|_F\rceil)$ substeps, with
+$\|S\|_2\le\|K\|_2\le\|K\|_F$, so
+$\|tS/m\|_2\le1$. The exact-arithmetic
+one-step remainder satisfies
+$\|e^{hS}-\sum_{k=0}^{24}(hS)^k/k!\|_2
+\le e/25!$. The complete truncated approximation has
+a bound at most $m\epsilon(1+\epsilon)^{m-1}$,
+$\epsilon=e/25!$, excluding floating roundoff.
+All actions support multiple real or complex RHS and the
+adjoint/transpose using time reversal.
+
+**Mathematical distinction:** the underlying $Q=e^{tS}$
+is *exactly orthogonal*; the **truncated polynomial
+action** is *not exactly orthogonal* and need not preserve
+norm to zero residual in floating point. Unlike a
+product-of-orthogonal-core scheme it guarantees only an
+a priori truncation error and tested near-isometry.
+The operator requires $n\le1024,p\le32,d\le16384$
+and at most 4096 substeps. Setup stores $A,B$ and basis
+indices in $O(np)$, and applying to each RHS costs
+$O(24mnp^2)$ (plus data storage). This is an
+explicit low-rank projected-bracket Taylor action;
+we do **not** claim it is the Nguyen–Sommer [168]
+specialized optimized long-time exponential-action
+algorithm or that it achieves their large-time
+$O(tp^3)$ bound. Noncanonical metrics remain open.
 
 The tests compare its intrinsic tangent vectors against
 an **independently integrated ambient canonical
