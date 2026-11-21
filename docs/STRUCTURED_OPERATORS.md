@@ -510,7 +510,15 @@ Hermite/Laguerre public generators independently evaluates
 normalized log Christoffel weights via rescaled polynomial
 recurrences (O(N^2)), with physical Hermite/Laguerre function
 row scaling kept distinct from the orthogonal weighted polynomial
-evaluation. The quadrature nodes and weights do NOT provide
+evaluation. The new `um_gauss_moment_diagnostics` helper independently audits
+the low-degree analytic moments (Hermite Gaussian even moments and
+generalized-Laguerre Gamma moments) from the logarithmic Gaussian
+weights, through degree $\min(8,2N-1)$. The public `'quadrature'`
+metadata reports momentwise absolute and scaled errors, including
+stress tests as Laguerre $\alpha\downarrow-1$.
+This is a diagnostic of the **real-line measure**, not an
+eigenphase-moment estimator for the orthogonal evaluation matrix.
+The quadrature nodes and weights do NOT provide
 an FFT-fast action of the full coefficient transform.
 The explicit Q remains O(N^3) setup, O(N^2) storage and apply,
 in contrast with genuinely fast specialized transforms
