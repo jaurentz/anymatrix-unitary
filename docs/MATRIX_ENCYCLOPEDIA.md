@@ -6458,6 +6458,76 @@ is tested for spins `s=0,+/-1,+/-2`, and the local polar
 spin-frame convention is not asserted globally smooth.
 Background references [104,107,165].
 
+## Peter–Weyl Fourier transform on SO(3) — [`so3_peter_weyl_transform.m`](../so3_peter_weyl_transform.m)
+
+Unlike `wigner_rotation(ell,...)`, which is a square Wigner
+representation at **one prescribed rotation**, this construction
+analyzes functions on the entire 3D rotation group. In the
+z-y-z Euler convention, use **normalized Haar measure**
+
+```math
+d\mu(R)=\frac{d\alpha\,\sin\beta\,d\beta\,d\gamma}{8\pi^2},
+\quad\alpha,\gamma\in[0,2\pi),\quad\beta\in[0,\pi].
+```
+
+The L2(dmu)-normalized Peter–Weyl basis is
+
+```math
+F_{\ell mn}(\alpha,\beta,\gamma)
+=\sqrt{2\ell+1}\,e^{-im\alpha}
+d^\ell_{mn}(\beta)e^{-in\gamma}.
+```
+
+For bandlimit `L`, the coefficient dimension is
+`sum_(ell=0..L-1)(2ell+1)^2=L(4L^2-1)/3`.
+A Gauss–Legendre rule of `L` colatitude nodes and
+`M=2L-1` equally spaced values of each outer Euler angle
+gives `L*M^2` distinct sample locations. The **weighted**
+sampling matrix is
+
+```math
+A_{(j,k,h),(\ell,m,n)}=
+\sqrt{\frac{w_j}{2M^2}}\;
+\sqrt{2\ell+1}\,D^\ell_{mn}(\alpha_k,\beta_j,\gamma_h).
+```
+
+Here rows are beta-fastest, then alpha, then gamma;
+columns are ordered ell, m=-ell:ell, n=-ell:ell.
+Both finite Fourier rules resolve differences of azimuthal
+frequencies up to 2L-2. At fixed m,n, products of
+Wigner-d latitude factors are polynomials in x=cos(beta)
+of degree at most 2L-2, so Gauss–Legendre integrates
+them exactly. Hence `A^*A=I` mathematically: exact
+finite Plancherel/Parseval for the bandlimited space.
+Except when L=1, **A is rectangular**, NOT a unitary.
+
+The registered **strict square orthogonal generator** is a
+fixed-Wigner-index latitude block. Set
+`ell0=max(|m|,|n|)`, `a=|m-n|`, `b=|m+n|`.
+The corresponding `L-ell0` Gauss–Jacobi modes yield
+
+```math
+Q_{mn}=(-1)^{\max(0,m-n)}Q_{\mathrm{Gauss\text{-}Jacobi}}
+(L-\ell_0,a,b),\qquad Q_{mn}^*Q_{mn}=I.
+```
+
+Its *finite matrix eigenphases are unknown*; the
+Jacobi zeros are **real quadrature nodes**, not those phases.
+The full `sampling` rectangle is explicitly materialized only
+for L<=7, while `sampling_operator` performs an exact two-angle
+FFT separation with fixed-(m,n) Wigner–Jacobi latitude blocks
+in `O(L^4+L^3 log L)` work and `O(L^4)` cached storage per
+coefficient map, compared to `O(L^6)` naive dense evaluation.
+The adjoint is the weighted group Fourier analysis.
+
+The implementation independently reconstructs the
+Gauss–Legendre scheme related to [167]; it does NOT
+reproduce the distinct McEwen et al. 2015 three-torus
+extension [166] or claim optimized high-bandlimit S2FFT
+Wigner recurrences. The normalization, left/right z-axis
+rotation covariance, and finite Haar Plancherel are tested.
+Background [104,108,166,167].
+
 ## Bibliography
 
 1. P. J. Davis, *Circulant Matrices*, Wiley, 1979. ISBN 9780471057710. [Library record](https://openlibrary.org/books/OL4407364M/Circulant_matrices).
@@ -6667,3 +6737,6 @@ Background references [104,107,165].
 164. D. Camps, T. Mach, R. Vandebril and D. S. Watkins, “On pole-swapping algorithms for the eigenvalue problem,” *Electronic Transactions on Numerical Analysis* **52** (2020), 480–508. [DOI](https://doi.org/10.1553/etna_vol52s480); [preprint](https://arxiv.org/abs/1906.08672).
 
 165. B. P. Huffenberger and B. D. Wandelt, “Fast and Exact Spin-s Spherical Harmonic Transforms,” *Astrophysical Journal Supplement Series* **189** (2010), 255–260. [DOI](https://doi.org/10.1088/0067-0049/189/2/255); [preprint](https://arxiv.org/abs/1007.3514).
+
+166. J. D. McEwen, M. Büttner, B. Leistedt, H. V. Peiris and Y. Wiaux, “A Novel Sampling Theorem on the Rotation Group,” *IEEE Signal Processing Letters* **22** (2015), 2425–2429. [DOI](https://doi.org/10.1109/LSP.2015.2490676); [preprint](https://arxiv.org/abs/1508.03101).
+167. Z. Khalid, S. Durrani, R. A. Kennedy, Y. Wiaux and J. D. McEwen, “Gauss–Legendre Sampling on the Rotation Group,” *IEEE Signal Processing Letters* **23** (2016), 207–211. [DOI](https://doi.org/10.1109/LSP.2015.2503295); [preprint](https://arxiv.org/abs/1508.03353).

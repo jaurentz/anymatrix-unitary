@@ -182,3 +182,13 @@ complex multi-RHS FFT forward/adjoint comparisons,
 Condon–Shortley conjugation across opposite spin,
 scalar Y_00/Y_11 normalization and a larger L=24
 operator with no explicit sampling matrix.
+
+`tests/test_so3_peter_weyl_transform.m` verifies strict square
+fixed-Wigner-index orthogonality and sign conventions, exact
+normalized Haar sample weights, rectangular full group Gram
+A'*A=I and Parseval, independent degree-2 Wigner
+D-matrix evaluation at nontrivial Euler triples, dual FFT
+forward/adjoint with multiple RHS, independent left/right
+z-axis rotation covariance and a larger L=12 operator roundtrip
+without explicit rectangular construction. Full-row
+dimensions and coefficient counts are checked explicitly.

@@ -243,3 +243,20 @@ L<=12. Row order is theta-fastest, phi-slowest, and the
 Gauss–Legendre physical polar weights are included as square
 roots in the sampling matrix. **The rectangular isometry is
 NOT registered as an independent square unitary family.**
+
+
+## Exact SO(3) Peter–Weyl Fourier sampling (rectangular)
+
+`so3_peter_weyl_transform(L,m,n)` registers only a strictly
+square real Gauss–Jacobi fixed-(m,n) Wigner latitude block.
+Its additional `'sampling_operator'` is an exact-in-arithmetic
+RECTANGULAR map of size L*(2L-1)^2 by L*(4L^2-1)/3, with
+A'*A=I and normalized Haar measure
+d(alpha)*sin(beta)*d(beta)*d(gamma)/(8*pi^2). The kernel
+`um_so3_sampling_apply` caches normalized Wigner–Jacobi
+latitude blocks (O(L^4) storage) and separates both outer
+Euler angles by FFT (O(L^4+L^3 log L) per RHS), versus
+O(L^6) dense rectangular multiplication. Its adjoint
+provides exact finite weighted analysis. This is NOT a
+square unitary, nor a Wigner D rotation of one fixed
+irreducible coefficient vector.
