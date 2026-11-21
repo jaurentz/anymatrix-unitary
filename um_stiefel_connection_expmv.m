@@ -73,7 +73,9 @@ end
             E11(indDown)=-V(top,rhs);
             E21=zeros(n-p,p,'like',V);
             if n>p,E21(indMixed)=-V(cross,rhs);end
-            W11=A*E11-E11*A-B'*E21+E21'*B;
+            % Horizontal skew blocks are complex-linear over complex RHS:
+            % use ordinary transpose E21.', never conjugate E21'.
+            W11=A*E11-E11*A-B'*E21+E21.'*B;
             W21=B*E11-E21*A;
             W(top,rhs)=-.5*W11(indUp);
             if n>p,W(cross,rhs)=.5*W21(indMixed);end
