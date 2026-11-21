@@ -566,6 +566,18 @@ V = wigner_rotation(9.5,.3,.7,-.4);  % half-integer SU(2)
 
 ## Hyperbolic and gauge holonomy
 
+### Exact non-axisymmetric spherical Slepian transforms
+
+`spherical_lune_slepian(L,phiStart,width,output)` computes an orthogonal real
+spherical-harmonic **Slepian analysis basis** for a full-latitude meridional
+lune. The finite concentration integrals have analytic longitude factors
+and exactly integrated latitude factors via Gauss--Legendre / Gauss--Jacobi
+quadrature (even/odd sum of azimuthal orders). The `concentration` mode
+returns a **nonunitary** symmetric contraction, and the `spectral` mode
+correctly leaves the analysis eigenphase law unknown. This is an
+independent exact non-axisymmetric benchmark; arbitrary polygon masks
+and fast commuting polar-cap solvers remain work in progress.
+
 The existing `geodesic_holonomy` implements spherical polygon parallel transport and now additionally cites Needham. The new `hyperbolic_triangle_holonomy`, `hyperbolic_tangent_holonomy` gives the area rotation of a Poincaré-disk triangle (with optional identity padding). The new `lattice_wilson_loop` gives U(n) gauge-link products and gauge-conjugacy-invariant eigenphases and traces. Both new families support matrix-free actions.
 
 ## Automatic tests
