@@ -3442,7 +3442,7 @@ in O(np) arithmetic. Edelman–Arias–Smith [97].
 
 ### Intrinsic canonical Stiefel tangent transport — [`stiefel_parallel_transport.m`](../stiefel_parallel_transport.m)
 
-**Order:** `d=np-p(p+1)/2`, the *real tangent-space dimension*
+**Order:** $N=np-p(p+1)/2$, the *real tangent-space dimension*
 of `St(p,n)`, for `1<=p<=n`. This is a **genuinely different
 square matrix** from the ambient `n`-by-`n` Stiefel geodesic
 lift above. The source and target are different tangent spaces;
@@ -3451,7 +3451,7 @@ the matrix is represented in canonical **orthonormal moving frames**.
 The round canonical Stiefel metric and geodesic generator are
 
 ```math
-g_Y(V,W)=\operatorname{tr}(V^T(I-YY^T/2)W),\qquad
+g_Y(V,W)=\mathrm{tr}(V^T(I-YY^T/2)W),\qquad
 K=\begin{bmatrix}A&-B^T\\B&0\end{bmatrix},
 \quad Y(t)=e^{tK}\begin{bmatrix}I_p\\0\end{bmatrix},
 ```
