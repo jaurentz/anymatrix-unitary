@@ -1855,7 +1855,7 @@
       "status": "implemented",
       "category": "quantum",
       "matrix_order": "2n complex sparse unitary two-state cyclic electric walk, n>=3, explicit n<=2048, operator n<=100000",
-      "representation": "phase-decorated cyclic CMV-factor W=D*L_even*M_odd identical to electric shift-coin D*(I_n kron C)*S, spatial phase exp(2pi i(phase+j*omega)), opposite +/- boundary twist",
+      "representation": "phase-decorated cyclic W=D*L*M with exact finite-ring diagonal similarity Lambda'*W*Lambda=g*L(alpha)*M for all finite fields and twists; global scalar g^n=product site phases",
       "spectral_reference": "exact two weighted n-cycle trace phases for transparent coin=0 and exact reflecting-bond pairs for coin=pi/2; generic coin and irrational finite cyclic window unknown analytic finite trace law",
       "encyclopedia_references": [
         149,
@@ -1863,7 +1863,8 @@
       ],
       "matrix_free_supported": true,
       "operator_kernel": "um_electric_walk_apply",
-      "operator_note": "Sparse O(n) forward, ordinary transpose and adjoint multiple-RHS action; exact cyclic even/odd CMV-factor model with formal infinite-lattice skew-shift Verblunsky data. Standard cyclic CMV exact at zero field/offset/twist; generic field periodic boundary gauge not falsely equated to infinite CMV."
+      "operator_note": "Sparse O(n) forward, ordinary transpose and adjoint multiple-RHS action. cmv_gauge returns exact O(n)-sparse boundary-matched, scalar-multiplied finite cyclic CMV similarity, finite Verblunsky data and monodromy; distinct from formal infinite-lattice coefficients. Generic eigenphases still unknown.",
+      "finite_cmv_gauge_supported": true
     },
     {
       "id": "schur_hessenberg_flow",
