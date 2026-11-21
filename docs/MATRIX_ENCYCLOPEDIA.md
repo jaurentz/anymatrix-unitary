@@ -6978,7 +6978,7 @@ derived for this implementation.
 The normalized integer-order Bessel-zero quasi-discrete Hankel matrix is
 **not exactly orthogonal at finite order** in general. In particular,
 for Bessel order 0 and matrix order 5 the symmetric normalization has
-\(\|T^T T-I\|_F\approx3.6356\times10^{-6}\). This exceeds rounding
+$\lVert T^T T-I\rVert_F\approx3.6356\times10^{-6}$. This exceeds rounding
 error and is a truncation defect. It must **not** be added as an
 Anymatrix `unitary` or `orthogonal` generator by assuming the
 infinite-order discrete Bessel identity is finite-exact. A
