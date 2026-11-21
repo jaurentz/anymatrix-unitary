@@ -1960,15 +1960,15 @@
       "id": "spherical_slepian",
       "status": "implemented",
       "category": "signal_processing",
-      "matrix_order": "L^2, bandlimit L<=24; real orthogonal analysis Q' of spherical cap-concentration eigenvectors",
-      "representation": "fixed azimuthal-m real harmonic blocks, exact L-point Gauss-Legendre cap integrals; deterministic per-block eigenbasis sorted by concentration",
+      "matrix_order": "L^2, dense explicit cap eigenbasis L<=24; structured Grünbaum operator/commuting modes L<=64",
+      "representation": "Exact polar-cap Gauss–Legendre fixed-m concentration plus source-derived commuting Grünbaum tridiagonal blocks; orthogonal eigenbasis, per-m cos/sin degeneracies",
       "spectral_reference": "Q eigenphases generally unknown; concentration eigenvalues of symmetric K in [0,1] are NOT eigenvalues of Q",
       "encyclopedia_references": [
         156
       ],
-      "matrix_free_supported": false,
-      "operator_kernel": null,
-      "operator_note": "Dense blockwise cap eigenbasis; no fast operator claimed. Separate concentration output K is symmetric positive semidefinite, not unitary; basis output Q."
+      "matrix_free_supported": true,
+      "operator_kernel": "um_spherical_cap_slepian_apply",
+      "operator_note": "Structured commuting-tridiagonal setup O(L^4) via dense per-block eig plus Gaussian Rayleigh quotients, storage and action O(L^3), matrix-free multiple-RHS forward/adjoint. Analytical Grünbaum eigenvalues are NOT concentration factors or orthogonal analysis eigenphases. Dense original K modes still available L<=24."
     },
     {
       "id": "fourier_laguerre_ball",
