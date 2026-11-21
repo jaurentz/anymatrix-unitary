@@ -5,6 +5,7 @@
 %   weighted_shift       Sparse phase-weighted cyclic permutation.
 %   diagonal_phase       Sparse unitary with prescribed eigenphases.
 %   phase_circulant      Fourier-conjugated prescribed phase matrix.
+%   periodic_rbf_propagator FFT Gaussian periodic kernel to exact unitary exp(itK).
 %   cycle_propagator     Exactly solved tight-binding propagator on a cycle.
 %   orthogonal_blocks    Prescribed real orthogonal rotation blocks.
 %
