@@ -4127,6 +4127,38 @@ and Euclidean orthogonality of its configuration factor are
 different assertions. The generator does not compute or
 claim a full phase-space Jacobian.
 
+**Full Moser–Veselov/Manakov Lax invariants.**
+Beyond the conjugacy invariants of M, the original paper [138]
+derives an isospectral deformation of a matrix polynomial.
+For an arbitrary (real or complex) scalar $z$, define
+
+```math
+L_k(z)=hM_k+zJ^2,\qquad A_k(z)=F_k-zJ.
+```
+
+The implicit equation and the momentum conjugation law imply
+the **exact discrete Lax intertwining relation**
+
+```math
+L_{k+1}(z)\,A_k(z)=A_k(z)\,L_k(z).
+```
+
+Where $A_k(z)$ is nonsingular, the two matrices
+$L_k(z)$ and $L_{k+1}(z)$ are similar; as an algebraic
+identity, the entire characteristic polynomial in the
+spectral variable is invariant from step to step.
+This is a particularly useful **structured matrix pencil**
+associated with the rigid-body map, but it is **not**
+a generally unitary matrix or a unit-circle eigenvalue
+problem. The `model` mode exposes
+`lax(z)`, `next_lax(z)`
+and `lax_intertwiner(z)`. The tests verify the
+Lax residual and the first four trace moments of $L_k(z)$
+at real and complex z, independently of the SO(n)
+orientation invariants. The scaled variable hM is used
+consistently with our physical-step convention.
+
+
 **Numerical solution and branch policy.**
 Solving $F^TJ-JF=hM$ is a genuine nonlinear matrix problem.
 It need not admit an admissible solution for arbitrary inertia
