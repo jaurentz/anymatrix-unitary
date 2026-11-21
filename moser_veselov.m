@@ -7,6 +7,9 @@ function [F,properties]=moser_veselov(n,h,J,M,steps,mode)
 %   The discrete Euler--Arnold update in this SAME convention is
 %       M_next = F*M*F',   Q_next = Q*F'.
 %   In particular, Q*M*Q' is exactly conserved up to rounding.
+%   The Moser-Veselov/Manakov Lax pencil L_k(z)=h*M_k+z*J^2 obeys
+%       L_(k+1)(z)*(F-z*J)=(F-z*J)*L_k(z),
+%   and therefore preserves its characteristic polynomial for every z.
 %   Note carefully the transpose of F in the orientation update;
 %   substituting Q_next=Q*F while retaining the above momentum
 %   equation is an inconsistent choice of frame convention.
@@ -25,7 +28,7 @@ function [F,properties]=moser_veselov(n,h,J,M,steps,mode)
 %
 %   MODE='matrix'     First n-by-n SO(n) increment F.
 %   MODE='model'      First F, J,M, next momentum and orientation,
-%                     residual and explicitly defined Casimirs.
+%                     residual, Casimirs and Lax polynomial maps.
 %   MODE='trajectory' STEPS consecutive implicit increments with
 %                     Q(:,:,k), M(:,:,k), F(:,:,k), residuals.
 %                     Q(:,:,1)=I, M(:,:,1)=initial M.
@@ -150,6 +153,9 @@ if strcmp(mode,'model')
     Q_next=F';
     M_next=F*M*F';
     F=struct('F',F,'Q_next',Q_next,'M_next',M_next, ...
+        'lax',@(z)h*M+z*(J*J), ...
+        'next_lax',@(z)h*M_next+z*(J*J), ...
+        'lax_intertwiner',@(z)F-z*J, ...
         'J',J,'M',M,'h',h, ...
         'residual',norm(F'*J-J*F-h*M,'fro'), ...
         'spatial_momentum_residual',norm(Q_next*M_next*Q_next'-M,'fro'), ...
