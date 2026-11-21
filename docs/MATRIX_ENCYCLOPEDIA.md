@@ -6769,6 +6769,24 @@ $K_q$ itself is **not unitary**; its
 concentration values $\lambda_j\in[0,1]$
 are **not the eigenphases** of $Q_q^T$.
 The generic finite eigenphase law is unknown.
+The complement $\mathbb S^2\setminus\mathcal P$ needs **no second
+approximate integral**. Whole-sphere orthonormality gives
+$K_{\mathcal P^c}=I-K_{\mathcal P}$ exactly at the mathematical
+level. The modes `complement`, `complement_basis`,
+`complement_analysis` and `complement_parameters` use
+this identity for the *numerically assembled* polygon matrix.
+If $K_{\mathcal P}Q=Q\mathrm{diag}(\lambda)$
+with decreasing $\lambda$, the complementary basis
+reverses the original columns: $Q_c=Q(:,N:-1:1)$.
+Its descending concentration values are
+$1-\lambda_{N:-1:1}$. The complementary spherical
+area is $4\pi-\mathrm{area}(\mathcal P)$ and
+its Shannon trace is
+$N(4\pi-\mathrm{area}(\mathcal P))/(4\pi)$.
+**Complement quadrature inherits the original integration error**;
+the identity supplies no rigorous a posteriori bound and the
+complement concentrations are not unitary eigenphases.
+
 The `parameters` result exposes quadrature
 order, number of refinements, measured errors,
 a flag `quadrature_certified=false`,

@@ -65,7 +65,7 @@
 %   spherical_slepian    Real spherical polar-cap Slepian orthogonal eigenbasis.
 %   spherical_lune_slepian Exact non-axisymmetric meridional-lune Slepian eigenbasis.
 %   spherical_mask_slepian Exact weighted SO(3)-rotated caps/lunes Slepian analysis.
-%   spherical_polygon_slepian Approximate geodesic-polygon Slepian orthogonal basis with quadrature diagnostics.
+%   spherical_polygon_slepian Geodesic-polygon Slepian basis and exact complementary-region identity; approximate quadrature diagnostics.
 %   graph_fourier        Explicit weighted-graph Laplacian eigenbasis.
 %   blaschke_potapov    Rational inner / lossless rank-one product frequency response.
 %   paraunitary_fir     Multichannel FIR polyphase, exact finite periodic unitary.

@@ -38,6 +38,13 @@ function [U,properties]=spherical_polygon_slepian(L,vertices,tol,mode)
 %   MODE='matrix' or 'analysis': Q' (default, real orthogonal)
 %        'basis': Q (orthogonal)
 %        'concentration': K (NONUNITARY, approximate integral)
+%        'complement': I-K (NONUNITARY, inferred by exact bandlimited
+%                      whole-sphere identity, not a second quadrature)
+%        'complement_basis': complement eigenvector matrix Qc, ordered
+%                            by DESCENDING complementary concentration
+%        'complement_analysis': Qc' (orthogonal transform)
+%        'complement_parameters': Qc, I-K, 1-flipud(lambda), exact
+%                                 complement area, shared diagnostics
 %        'parameters': K,Q,lambda,exact geometric area, integration
 %                      diagnostics, basis labels and tie tolerance
 %        'geometry': triangulation, exact spherical-excess area,
@@ -47,6 +54,11 @@ function [U,properties]=spherical_polygon_slepian(L,vertices,tol,mode)
 %   Harmonics are real Condon--Shortley with the SAME m=0, then
 %   cos(m*phi)/sin(m*phi), ell=m,...,L-1 basis as spherical_slepian.
 %   Trace(K) should converge to N*area/(4*pi) (addition theorem).
+%   For the whole-sphere orthonormal harmonic basis, K(P^c)=I-K(P)
+%   EXACTLY in mathematical arithmetic. The computed complement inherits
+%   all quadrature errors of K(P): no new certified error bound is
+%   obtained from this identity. Since complement eigenvalues are 1-lambda,
+%   DESCENDING complement order reverses the original eigenvector order.
 %   Positive numerical cubature yields PSD K up to floating roundoff.
 %   The returned basis is numerically orthogonal after eig(K);
 %   it is NOT claimed to be an exact basis of the mathematical K
@@ -80,7 +92,9 @@ if ~(ischar(mode)||(isstring(mode)&&isscalar(mode)))
 end
 mode=lower(char(mode));
 if ~any(strcmp(mode,{'matrix','analysis','basis', ...
-        'concentration','parameters','spectral','geometry'}))
+        'concentration','parameters','spectral','geometry', ...
+        'complement','complement_basis','complement_analysis', ...
+        'complement_parameters'}))
     error('spherical_polygon_slepian:Mode','Unsupported MODE.');
 end
 G=um_spherical_polygon_geometry(vertices);
@@ -174,6 +188,36 @@ for m=0:L-1
     end
 end
 switch mode
+    case 'complement'
+        U=eye(n)-K;
+    case 'complement_basis'
+        U=Q(:,end:-1:1);
+    case 'complement_analysis'
+        U=Q(:,end:-1:1).';
+    case 'complement_parameters'
+        Qc=Q(:,end:-1:1);
+        Kc=eye(n)-K;
+        lc=1-flipud(lambda);
+        U=struct('analysis',Qc.','basis',Qc, ...
+            'concentration',Kc, ...
+            'concentration_eigenvalues',lc, ...
+            'bandlimit',L,'vertices',G.vertices, ...
+            'geometric_area',4*pi-G.area, ...
+            'complement_of_polygon_area',G.area, ...
+            'shannon_number',n-targetTrace, ...
+            'quadrature_order',q,'quadrature_levels',levels, ...
+            'quadrature_difference_fro',indicator, ...
+            'addition_trace_difference',abs(trace(Kc)-(n-targetTrace)), ...
+            'quadrature_requested_tolerance',tol, ...
+            'quadrature_converged',converged, ...
+            'quadrature_certified',false, ...
+            'symmetry_defect_before_averaging',symDefect, ...
+            'notes',['Exact whole-sphere harmonic identity K(Pc)=I-K(P) ', ...
+            'applied to numerically integrated polygon K(P). ', ...
+            'Thus K(Pc) inherits polygon quadrature error; ', ...
+            'successive-rule differences are NOT certified bounds. ', ...
+            'Complement eigenvalues are concentration factors, ', ...
+            'NOT eigenphases of the orthogonal analysis.']);
     case {'matrix','analysis'}
         U=Q.';
     case 'basis'
