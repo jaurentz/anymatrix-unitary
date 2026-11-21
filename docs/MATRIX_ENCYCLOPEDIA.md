@@ -3755,6 +3755,25 @@ representability. These Gaussian moments concern the **real
 quadrature measure**, not trace moments or eigenphases of the
 orthogonal matrix. They are measured numerical diagnostics,
 **not certified error bounds** or a fast application.
+**Low-memory Gaussian-data mode.** The new
+nodes_weights output computes **only** sorted Gauss nodes,
+normalized (and logarithmic) Christoffel weights, exact
+analytic moment reference values and measured residuals,
+and positive physical-function logarithmic row scalings.
+It forms neither the eigenvector matrix of the Jacobi
+tridiagonal nor the full orthogonal evaluation matrix $Q$.
+Eigenvalues are found using tridiagonal Sturm inertia
+counts in $O(N)$ arithmetic per trial point and bisection;
+the complexity is $O(N^2\log(1/u))$ work and $O(N)$
+storage for machine precision target $u$, followed by
+$O(N^2)$ rescaled Christoffel recurrences. The returned
+Sturm brackets are **numerical**, not rigorously
+interval-certified floating-point eigenvalue enclosures.
+This is a genuine reduction in **quadrature-data storage**,
+not a subquadratic application of the full transform $Q$.
+Compare [Golub--Welsch (1969)](https://doi.org/10.1090/S0025-5718-69-99647-1)
+and [Webb--Maierhofer (2026)](https://arxiv.org/abs/2604.02041).
+
 **Applications:** Hermite spectral approximations and Gaussian quadrature. [104,109]
 
 ### Generalized Gauss--Laguerre transform — [`gauss_laguerre_transform.m`](../gauss_laguerre_transform.m)
@@ -3783,6 +3802,22 @@ are small; it separately checks the true polynomial basis
 orthogonality and the physical Laguerre-function row scaling.
 No evidence is asserted for a fast full coefficient transform:
 the cost remains $O(N^3)$ setup and $O(N^2)$ storage/action.
+The same nodes_weights mode uses Sturm bisection
+of the positive Jacobi tridiagonal and scaled
+log-Christoffel polynomials **without** constructing
+the dense $Q$ eigenvectors. Generalized Laguerre
+$\alpha>-1$ is supported, including near
+$\alpha=-1$ numerical stress cases. The returned
+diagnostic explicitly separates the real Gaussian
+nodes, the normalized Gamma quadrature moments,
+and the **unknown** unitary eigenphases of $Q$.
+Storage is $O(N)$, eigenvalue-only setup
+$O(N^2\log(1/u))$ plus $O(N^2)$ logweights,
+and the full polynomial transform remains
+dense $O(N^2)$ for ordinary matrix-vector
+application. Sturm enclosures are approximate
+finite-precision results, not certified intervals.
+
 **Applications:** radial numerical spectral methods.
 **Action:** explicit dense, not fast. [104,106]
 
