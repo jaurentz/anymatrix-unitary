@@ -104,6 +104,83 @@ matvec algorithms, exposing accidental dependence on eigenvector localization.
 Our implementation uses an inverse FFT of the Fourier eigenvalue samples.
 **Reference:** [1].
 
+### Periodic Gaussian RBF unitary propagators — [`periodic_rbf_propagator.m`](../periodic_rbf_propagator.m)
+
+**Order:** $N=n$, the number of equally spaced points
+$\theta_j=2\pi j/n$ on the circle. For a finite positive
+lengthscale $\ell>0$, the **periodic Gaussian/RBF kernel**
+from Rasmussen--Williams [171, chapter 4] is
+
+```math
+K_{jk}=\exp\left(-\frac{2\sin^2(\pi(j-k)/n)}{\ell^2}\right),
+\qquad 0\le j,k<n.
+```
+
+This real symmetric *positive definite* Gram matrix is
+**not unitary**; because $K\succ0$, its Euclidean polar
+factor is the uninteresting identity. Instead, the
+application-derived mathematical unitary is the
+functional-calculus propagator
+
+```math
+U(t)=e^{itK},\qquad U(t)^*U(t)=I_n,\quad U(t)^T=U(t).
+```
+
+The kernel's positive definiteness follows from its
+Fourier--Bessel series. Writing
+$\kappa=\ell^{-2}$ and $I_m$ for the modified Bessel
+function, for every angle $\varphi$,
+
+```math
+e^{-\kappa(1-\cos\varphi)}
+=e^{-\kappa}\sum_{m\in\mathbb{Z}}
+I_{|m|}(\kappa)e^{im\varphi}.
+```
+
+All coefficients are strictly positive for $\kappa>0$.
+With first column
+$c_r=e^{-2\sin^2(\pi r/n)/\ell^2}$,
+the finite real, strictly positive kernel eigenvalues are
+
+```math
+\mu_k=\sum_{r=0}^{n-1}c_r e^{-2\pi i rk/n}
+=n e^{-\kappa}\sum_{q\in\mathbb Z}
+I_{|k+qn|}(\kappa).
+```
+
+Therefore $K=F^*\mathrm{diag}(\mu_k)F$ and
+$U=F^*\mathrm{diag}(e^{it\mu_k})F$ in the normalized
+negative-frequency DFT convention. The **finite matrix trace
+eigenphases** are explicitly $e^{it\mu_k}$, with normalized
+trace moments $n^{-1}\sum_k e^{itp\mu_k}$.
+These are NOT the positive kernel eigenvalues themselves.
+No universal asymptotic circle law is asserted.
+
+The `matrix` mode returns dense complex symmetric $U$
+(up to floating roundoff), and the `kernel` mode returns
+the separate, *nonunitary* positive Gram matrix.
+`parameters` exposes the first kernel column, its real
+Fourier spectrum, the unitary eigenphases, and moment handle;
+`spectral` supplies the standardized exact finite trace
+spectrum. The `operator` uses an $O(n\log n)$ FFT
+forward/adjoint action, supporting multiple RHS and
+the **ordinary transpose** $U^T=U$, distinct from
+the generally different adjoint $U^*$.
+It stores only $O(n)$ kernel/phase samples; for
+$n>2048$ use `operator` rather than constructing dense
+$U$. Finite mathematical unitarity is exact;
+ordinary FFT roundoff is not zero.
+
+This is a reproducible **RBF application specialization of
+the existing `phase_circulant` family**. Nonuniform nodes,
+generic Gaussian or Matérn Gram matrices, and arbitrary fast
+matrix exponentials are not covered. Tests compare with an
+independently assembled $\mathrm{expm}(itK)$, explicit
+`phase_circulant`, the positive Fourier--Bessel alias formula,
+all transpose/adjoint actions, and large $n$ matrix-free
+roundtrips. The other #29 objectives (finite Hankel, wider
+Zernike and spherical Gauss--Laguerre) remain open. [171]
+
 ### 5. Periodic tight-binding propagator — [`cycle_propagator.m`](../cycle_propagator.m)
 
 **Order:** $N=n$. **Structure:** dense circulant. Write $H=P_n+P_n^*$; then
@@ -7195,3 +7272,5 @@ Background [104,108,166,167].
 169. A. Donís Vela and C. W. J. Beenakker, “Single-cone Dirac edge states on a lattice,” *Journal of Physics A: Mathematical and Theoretical* **58** (2025), 105302. [DOI](https://doi.org/10.1088/1751-8121/adbac7); [preprint](https://arxiv.org/abs/2411.11564).
 
 170. Z. Ye, O. Diamanti, C. Tang, L. Guibas and T. Hoffmann, “A Unified Discrete Framework for Intrinsic and Extrinsic Dirac Operators for Geometry Processing,” *Computer Graphics Forum* **37** (2018). [DOI](https://doi.org/10.1111/cgf.13494).
+
+171. C. E. Rasmussen and C. K. I. Williams, *Gaussian Processes for Machine Learning*, MIT Press (2006), Chapter 4 (“Covariance Functions”), especially periodic covariance kernels obtained by embedding the circle into Euclidean space. [Official chapter](https://gaussianprocess.org/gpml/chapters/RW4.pdf); [book site](https://gaussianprocess.org/gpml/).
