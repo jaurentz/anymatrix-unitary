@@ -3653,6 +3653,23 @@ symmetric Jacobi tridiagonal with zero diagonal and offdiagonal
 unit-circle eigenvalues; no general closed form for their angles.
 Gauss--Hermite nodes are eigenvalues of the *Jacobi* matrix, not of `Q`.
 **Computational cost:** O(N^3) setup and O(N^2) explicit multiply.
+The `'quadrature'` mode additionally exposes
+`moment_diagnostics`: independently compute normalized Gaussian
+moments of the quadrature nodes and **logarithmic** Christoffel
+weights, and compare them with exact analytic moments
+
+```math
+m_{2r}=\frac{(2r-1)!!}{2^r},\qquad m_{2r+1}=0.
+```
+
+The audit checks degrees $0,\ldots,\min(8,2N-1)$ because
+an $N$-node Gaussian rule is mathematically exact up to degree
+$2N-1$. It reports an absolute residual for each moment,
+scaled by $\max(1,|m_k|)$, plus a flag for finite
+representability. These Gaussian moments concern the **real
+quadrature measure**, not trace moments or eigenphases of the
+orthogonal matrix. They are measured numerical diagnostics,
+**not certified error bounds** or a fast application.
 **Applications:** Hermite spectral approximations and Gaussian quadrature. [104,109]
 
 ### Generalized Gauss--Laguerre transform — [`gauss_laguerre_transform.m`](../gauss_laguerre_transform.m)
@@ -3664,8 +3681,25 @@ polynomials has diagonal `2*k+alpha+1`, k=0,...,n-1, and offdiagonal
 `sqrt(k*(k+alpha))`, k=1,...,n-1. Its ordered eigenvectors yield
 the weighted Gauss evaluation matrix `Q` with `Q'*Q=I`.
 **Spectral properties:** conjugate eigenphase pairs; quadrature nodes
-are NOT eigenvalues of `Q`. **Applications:** radial numerical spectral
-methods. **Action:** explicit dense, not fast. [104,106]
+are NOT eigenvalues of `Q`. The `'quadrature'` mode also
+reports `moment_diagnostics`, independently comparing the
+log-Christoffel-weighted Gauss nodes against the exact
+normalized Gamma moments
+
+```math
+m_k=\frac{\Gamma(\alpha+k+1)}{\Gamma(\alpha+1)}
+=\prod_{r=1}^k (\alpha+r),
+\qquad 0\le k\le\min(8,2N-1).
+```
+
+Regression includes generalized Laguerre parameters close
+to $\alpha=-1$, where the first few normalized Gamma moments
+are small; it separately checks the true polynomial basis
+orthogonality and the physical Laguerre-function row scaling.
+No evidence is asserted for a fast full coefficient transform:
+the cost remains $O(N^3)$ setup and $O(N^2)$ storage/action.
+**Applications:** radial numerical spectral methods.
+**Action:** explicit dense, not fast. [104,106]
 
 ### Associated-Legendre specialization — [`gauss_jacobi_transform.m`](../gauss_jacobi_transform.m)
 
