@@ -485,6 +485,91 @@ quasienergy branches and potential gaps. The current periodic uniform-coin
 version has no physical edge, so **edge states require a separate open or
 interface construction**. **Reference:** [16].
 
+### Face-quaternionic spin-Dirac on an oriented mesh — [`mesh_spin_dirac.m`](../mesh_spin_dirac.m)
+
+**Order:** $N=4n_F$ quaternion coordinates for $n_F$ oriented
+triangular faces, with a complex unitary propagator on
+$\mathbb C^N$. This implements the *intrinsic face-spinor
+Dirac operator* of Ye, Diamanti, Tang, Guibas and Hoffmann
+(2018), Eqs. (12), (19), not the cochain Hodge--Dirac or the
+naive periodic flat-torus two-spinor finite difference.
+
+For adjacent faces $i,j$, take the oriented edge vector
+$e_{ij}$ along face $i$, face normals $n_i,n_j$, and a
+reproducible **signed** normal bend
+$\theta_{ij}=\mathrm{atan2}(\langle e_{ij}/|e_{ij}|,n_i\times n_j\rangle,\langle n_i,n_j\rangle)$.
+The source hyperedge quaternion has real component
+$2\mathbf H_{ij}=|e_{ij}|\tan(\theta_{ij}/2)$ and
+imaginary vector component $e_{ij}$.
+Let $L(q)$ denote the $4\times4$ REAL matrix of left
+quaternion multiplication. Then the face offdiagonal
+Dirac block from Ye Eq. (19) is
+
+```math
+(D_0)_{ij}=\tfrac12 L(E_{ij})\cos(\theta_{ij}/2)
+=\tfrac12 L\big(|e_{ij}|\sin(\theta_{ij}/2)
+ +e_{ij}\cos(\theta_{ij}/2)\big).
+```
+
+Reverse shared-edge orientation gives $E_{ji}=\bar E_{ij}$
+and $L(\bar q)=L(q)^T$, hence $D_0^T=D_0$.
+Nonmanifold edges, inconsistent oriented adjacency and
+degenerate faces are rejected.
+
+**Positive face-area metric (clearly labeled a derived model):**
+Ye's Eq. (19) already defines a Euclidean symmetric matrix;
+the paper uses face areas in a DIFFERENT generalized squared
+and averaged eigenproblem (Eq. (27)). As a separate
+benchmark choice, set $M=\mathrm{diag}(A_i I_4)$, and
+
+```math
+D_{\mathrm{phys}}=M^{-1}D_0,\quad
+D_{\mathrm{phys}}^T M=MD_{\mathrm{phys}},\qquad
+H=M^{-1/2}D_0M^{-1/2}=H^T.
+```
+
+Therefore $U(t)=\exp(-itH)$ is Euclidean unitary in
+mathematical arithmetic and the physical propagator
+$V_{\mathrm{phys}}=M^{-1/2}U(t)M^{1/2}$ is $M$-unitary.
+This does **not** claim to reproduce Ye's Eq. (27) or
+the spectrum of that particular discretized generalized problem.
+
+**Gauge and boundary:** per-face unit quaternions $g_i$
+define $G=\bigoplus_i L(g_i)$ and the local spin-frame
+transformation $H_g=G^THG$ and $U_g=G^TUG$.
+This **local gauge change does not select a new global
+spin structure**. Free boundaries omit missing neighboring
+face contributions, while closed mode requires all edges
+to have two incident faces. No additional continuum
+self-adjoint boundary condition is inferred.
+
+**Exact finite reference:** the default planar square split
+into two triangles has $A_1=A_2=1/2$ and one shared edge
+of length $\sqrt2$. The normalized $H$ has eigenvalues
+$\pm\sqrt2$, each repeated four times. Hence the true
+unitary phases are $\exp(\mp it\sqrt2)$ each with
+multiplicity four. More generally two faces with one common
+edge give $\lambda=|e|/(2\sqrt{A_1A_2})$ and $H$
+eigenvalues $\pm\lambda$ (multiplicity four).
+Generic curved mesh finite eigenphase laws and zero-mode
+counts are reported **unknown**, not assigned from edge lengths.
+
+**Storage and action:** the sparse geometric Hamiltonian
+has $O(n_F)$ nonzeros. The full unitary is computed via
+dense expm only for $N\le256$; output modes distinguish
+the generator from the exact mathematical exponential.
+An optional cached sparse-factor rational Cayley action uses
+$[(I+itH/(2s))^{-1}(I-itH/(2s))]^s$.
+Each Cayley factor is mathematically unitary but the finite
+product only approximates expm to second order for fixed time.
+Forward/transpose/adjoint multi-RHS and local gauge covariance
+are independently checked. The rational method is **not** a
+source-specific fast intrinsic-Dirac propagator and does not
+settle global spin structures or exact mesh-refinement spectra.
+
+**Source:** [Ye et al., Computer Graphics Forum 37 (2018)](https://doi.org/10.1111/cgf.13494),
+Eq. (12), (19), (27), Theorem 4.3; encyclopedia reference [170].
+
 ### Simplicial Hodge–Dirac/Kähler–Dirac propagator — [`simplicial_hodge_dirac.m`](../simplicial_hodge_dirac.m)
 
 **Order:** $N=n_0+n_1+n_2$, the total number
@@ -494,9 +579,9 @@ or Kähler–Dirac** construction on the full
 cochain complex $C^0\oplus C^1\oplus C^2$.
 It is **not** the spinor Dirac operator of
 Ye–Diamanti–Tang–Guibas–Hoffmann [170],
-and it does **not** finish the curved spin-Dirac
-work required in issue #59. Its independent
-mathematical background comes from finite
+and it is distinct from the face-quaternionic
+spin-Dirac in mesh_spin_dirac.
+Its independent mathematical background comes from finite
 element exterior calculus [176] and
 discrete Kähler–Dirac fermions [177].
 

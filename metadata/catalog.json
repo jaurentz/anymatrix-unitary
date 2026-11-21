@@ -241,6 +241,20 @@
       "operator_note": "Already O(n) sparse; custom action not needed."
     },
     {
+      "id": "mesh_spin_dirac",
+      "status": "implemented",
+      "category": "geometry",
+      "matrix_order": "4*nFaces, quaternionic face-spinor on oriented triangular surface; exact dense 4F<=256; sparse generator and rational Cayley up to 4F<=12000",
+      "representation": "Ye--Diamanti--Tang--Guibas--Hoffmann (2018) intrinsic FACE quaternion Dirac Eq(12),(19): D0_ij=.5 L(E_ij)*cos(theta_ij/2), E_ij=|e|tan(theta_ij/2)+e_ij. Real symmetric D0 and explicitly DERIVED lumped face-area metric H=M^(-1/2)D0 M^(-1/2), U=expm(-itH). Local quaternion gauges and curved closed triangulations. NOT cochain Hodge Dirac or original Ye Eq(27) generalized squared eigenproblem.",
+      "spectral_reference": "Exact two-face single-edge +/-|e|/(2sqrt(A_i A_j)) each 4-fold, phases exp(∓it λ); t=0 all phases +1. Arbitrary mesh finite phase law and zero modes UNKNOWN, not replaced by real Dirac eigenvalues.",
+      "encyclopedia_references": [
+        170
+      ],
+      "matrix_free_supported": true,
+      "operator_kernel": "um_mesh_spin_dirac_cayley",
+      "operator_note": "Sparse generator O(number of shared face edges) storage; 'cayley_operator' caches sparse LU factors of I±itH/(2s) for a mathematically unitary rational Cayley step, with O(s^-2) fixed-time approximation error to the true exponential. Forward/plain transpose/conjugate adjoint + multiple RHS. Operator is not exact expm and sparse direct-solve fill costs are matrix dependent. Euclidean U from dense expm <=256, physically M-unitary V from face-area mass. Per-face gauge is local not a global spin topology classifier; boundary='free' omits missing adjacent faces."
+    },
+    {
       "id": "simplicial_hodge_dirac",
       "status": "implemented",
       "category": "geometry",
